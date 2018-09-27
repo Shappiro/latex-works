@@ -1,0 +1,694 @@
+\documentclass[10pt,twoside,openany,x11names,svgnames,italian,a5paper,dvipsnames,table]{memoir}
+\usepackage[italian]{babel}
+\usepackage{lmodern}
+\usepackage{wallpaper}
+\usepackage{tikz}
+\usetikzlibrary{shapes,positioning}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[outercaption]{sidecap}
+
+\usepackage[xindy,nopostdot]{glossaries}
+
+\usepackage{wrapfig}
+\usepackage{minibox}
+\usepackage{pdfpages}
+\usepackage{subcaption}
+
+\usepackage{tabularx, booktabs}
+
+\usepackage{lipsum}
+\usepackage[ISBN=978-80-85955-35-4]{ean13isbn}
+\usepackage{graphicx}
+\usepackage{titlesec}% http://ctan.org/pkg/titlesec
+\graphicspath{ {./img/} {./img/chap/} {./img/logo/} {./img/front/} {./img/icon/} {./img/back/} {} }
+
+% Captions
+\usepackage[labelfont={footnotesize,sf,bf},textfont={footnotesize,sf}]{caption}
+
+% Links
+\usepackage[pdftitle={LIFE + T.E.N.: Azione A8 - Piano d’azione per la conservazione del gambero di fiume in Trentino},
+     pdfauthor={Sezione Zoologia dei Vertebrati, MUSE - Museo delle Scienze},
+     colorlinks,linktocpage=true,linkcolor=RoyalBlue,urlcolor=BrickRed,citecolor=OliveGreen,bookmarks]{hyperref}
+
+% Adjust margins around typeblock
+\setlrmarginsandblock{23mm}{18mm}{*}
+\setulmarginsandblock{23mm}{23mm}{*}
+
+% Header and footer heights
+\setheadfoot{\baselineskip}{10mm}
+\setlength\headsep{7mm}
+
+% Apply and enforce layout
+\checkandfixthelayout
+
+% Command to hold chapter illustration image
+\newcommand\chapterillustration{}
+
+\usepackage{xcolor}
+\definecolor[named]{GreenTea}{HTML}{CAE8A2}
+\definecolor[named]{MilkTea}{HTML}{C5A16F}
+\definecolor{verylightgray}{gray}{0.95}
+\definecolor{grey}{gray}{0.5} % 0-nero; 1-bianco
+
+% Pantone for ANFIBI
+\definecolor[named]{LightBlue}{HTML}{006EB5}
+\definecolor[named]{SlimeGreen}{HTML}{009B71}
+\definecolor[named]{EggYellow}{HTML}{F59701}
+% Pantone for SPECIE ORNITICHE ALTA QUOTA
+\definecolor[named]{DarkGreen}{HTML}{012F08}
+\definecolor[named]{LightGray}{HTML}{817F84}
+\definecolor[named]{Ice}{HTML}{4470B7}
+% Pantone for SPECIE ORNITICHE AMBIENTI PRATIVI
+% Pantone for SPECIE ORNITICHE FORESTALI
+\definecolor[named]{LightGreen}{HTML}{00A131}
+\definecolor[named]{YellowGreen}{HTML}{97C000}
+\definecolor[named]{PureGreen}{HTML}{01832D}
+% Pantone for SPECIE ORNITICHE ZONE UMIDE
+\definecolor[named]{PureBrown}{HTML}{4F250D}
+\definecolor[named]{Azure}{HTML}{0082CD}
+\definecolor[named]{GreenAzure}{HTML}{01994C}
+
+\renewcommand{\labelitemi}{\textcolor{grey}{$\bullet$}}
+\newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
+\newcommand{\etal}{\textsl{et al}. }
+\newcommand{\ph}{\emph{Ph}. }
+\newcommand{\ie}{\emph{i}.\emph{e}. }
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newsubfloat{figure} % Allow subfloats in figure environment
+
+\newcommand{\chaptercolor}{Azure}
+\newcommand{\toprectanglecolor}{Azure}
+\newcommand{\pageboxcolor}{LightBlue}
+\newcommand{\backgroundrectanglecolor}{Azure!60!white}
+\newcommand{\decoratelinecolor}{SlimeGreen}
+\newcommand{\titlecolor}{Azure!90!black}
+\newcommand{\backpagecolor}{Azure}
+
+\newcommand{\tablespecie}[2]{\parbox[t]{2.5cm}{#1 \newline \emph{#2}}}
+
+\nouppercaseheads
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% BEGIN DOCUMENT STYLYING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\bibsection}{%
+\section{\bibname}
+\prebibhook}
+
+% CHAPTER STYLE DEFINITION BEGIN
+\makechapterstyle{chapterstyle}{
+% Vertical space before main text 
+  \setlength\beforechapskip{0pt}
+  \setlength\midchapskip{0pt}
+  \setlength\afterchapskip{70mm}
+
+  \renewcommand*\printchaptername{}
+  \renewcommand*\printchapternum{}
+  %% Re-define how the chapter title is printed
+  \def\printchaptertitle##1{
+    % Background image at top of page
+    \ThisULCornerWallPaper{1}{\chapterillustration}
+    % Draw a semi-transparent rectangle across the top
+    \tikz[overlay,remember picture]
+    \fill[fill=\chaptercolor,opacity=.7]
+      (current page.north west) rectangle 
+      ([yshift=-3cm] current page.north east);
+      % Check if on an odd or even page
+      \strictpagecheck\checkoddpage
+      % On odd pages, "logo" image at lower right
+      % corner; Chapter number printed near spine
+      % edge (near the left); chapter title printed
+      % near outer edge (near the right).
+      \ifoddpage{
+        % Insert picture in lower right corner
+        \ThisLRCornerWallPaper{.25}{pallipes_small_right.png}
+        % Chapter heading style for ODD pages
+        \begin{tikzpicture}[overlay,remember picture]
+          \node[anchor=south west,
+            xshift=20mm,yshift=-30mm,
+            font=\sffamily\bfseries\huge] 
+            at (current page.north west) 
+            {}; %\chaptername\chapternamenum\thechapter
+          \node[fill=\chaptercolor,text=white,
+            font=\Huge\bfseries, 
+            inner ysep=12pt, inner xsep=20pt,
+            rectangle,anchor=east, 
+            xshift=-20mm,yshift=-30mm] 
+            at (current page.north east) {##1};
+        \end{tikzpicture}
+      }
+      % On even pages, "logo" image at lower left
+      % corner; Chapter number printed near outer
+      % edge (near the right); chapter title printed
+      % near spine edge (near the left).
+      \else {
+        % Insert picture in lower left corner
+        \ThisLLCornerWallPaper{.25}{pallipes_small_left.png}
+        % Chapter heading style for EVEN pages
+        \begin{tikzpicture}[overlay,remember picture]
+          \node[anchor=south east,
+            xshift=-20mm,yshift=-30mm,
+            font=\sffamily\bfseries\huge] 
+            at (current page.north east)
+            {}; % \chaptername\chapternamenum\thechapter
+          \node[fill=\chaptercolor,text=white,
+            font=\Huge\bfseries,
+              inner sep=12pt, inner xsep=20pt,
+              rectangle,anchor=west,
+              xshift=20mm,yshift=-30mm] 
+              at ( current page.north west) {##1};
+        \end{tikzpicture}
+      } % END IF
+      \fi
+    } 
+} % END CHAPTER STYLE
+
+
+% CHAPTER STYLE FOR UNNUMBERED CHAPTERS
+\makechapterstyle{chapterstyleunnumbered}{
+  % Vertical Space before main text starts
+  \setlength\beforechapskip{0pt}
+  \setlength\midchapskip{0pt}
+  \setlength\afterchapskip{47mm}
+
+  \renewcommand*\printchaptername{}
+  \renewcommand*\printchapternum{}
+  %% Re-define how the chapter title is printed
+  \def\printchaptertitle##1{
+    % Draw a semi-transparent rectangle across the top
+    \tikz[overlay,remember picture]
+    \fill[fill=\toprectanglecolor,opacity=.7]
+      (current page.north west) rectangle 
+      ([yshift=-3cm] current page.north east);
+    % Check if on an odd or even page
+    \strictpagecheck\checkoddpage
+      \ifoddpage{
+        \begin{tikzpicture}[remember picture, overlay]
+        \node[fill=\chaptercolor,text=white,
+          font=\Huge\bfseries, 
+          inner ysep=12pt, inner xsep=20pt,
+          rectangle,anchor=east, 
+          xshift=-20mm,yshift=-30mm] 
+          at (current page.north east) {##1};
+        \end{tikzpicture}
+      }
+      \else {
+        \begin{tikzpicture}[remember picture, overlay]
+          \node[fill=\chaptercolor,text=white,
+            font=\Huge\bfseries,
+            inner sep=12pt, inner xsep=20pt,
+            rectangle,anchor=west,
+            xshift=20mm,yshift=-30mm] 
+            at ( current page.north west) {##1};
+        \end{tikzpicture}
+      } % END IF
+      \fi
+    } 
+} % END CHAPTER STYLE
+
+
+% Set the uniform width of the colour box
+% displaying the page number in footer
+% to the width of "99"
+\newlength\pagenumwidth
+\settowidth{\pagenumwidth}{99}
+
+% PAGE NUMBER COLOR BOX STYLE
+\tikzset{pagefooter/.style={
+anchor=base,font=\sffamily\bfseries\small,
+text=white,fill=\pageboxcolor,text centered,
+text depth=17mm,text width=\pagenumwidth}}
+
+%%%%%
+%% Re-define running headers on non-chapter odd pages
+%%%%%
+\makeoddhead{headings}
+% Left header is empty but I'm using it as a hook to paint the
+% background rectangles underneath everything else
+{\begin{tikzpicture}[remember picture,overlay]
+\fill[\backgroundrectanglecolor] (current page.north east) 
+	rectangle (current page.south west);
+\fill[white, rounded corners] 
+	([xshift=-10mm,yshift=-20mm]current page.north east) rectangle 	
+	([xshift=15mm,yshift=17mm]current page.south west);
+\end{tikzpicture}}%
+% Blank centre header
+{}%
+% Display a decorate line and the right mark (chapter title)
+% at right end
+{\begin{tikzpicture}[xshift=-.75\baselineskip,yshift=.25\baselineskip,remember picture, overlay,fill=\decoratelinecolor,draw=\decoratelinecolor]\fill circle(3pt);\draw[semithick](0,0) -- (current page.west |- 0,0);\end{tikzpicture}\textcolor{white}{\sffamily\itshape\small\rightmark}}
+
+%%%%%
+%% Re-define running footers on ODD pages
+%% i.e. display the page number on the right
+%%%%%
+\makeoddfoot{headings}{}{}{\tikz[baseline]\node[pagefooter]{\thepage};}
+\makeoddfoot{plain}{}{}{\tikz[baseline]\node[pagefooter]{\thepage};}
+
+%%%%%
+%% Re-define running headers on non-chapter EVEN pages
+%%%%%
+\makeevenhead{headings}
+% Draw the background rectangles; then the left mark (section
+% title) and the decorate line
+{{\begin{tikzpicture}[remember picture,overlay]
+  \fill[\backgroundrectanglecolor] (current page.north east) rectangle (current page.south west);
+  \fill[white, rounded corners] ([xshift=-15mm,yshift=-20mm]current page.north east) rectangle ([xshift=10mm,yshift=17mm]current page.south west);
+\end{tikzpicture}}%
+\textcolor{white}{\sffamily\itshape\small\leftmark}
+\begin{tikzpicture}[xshift=.5\baselineskip,yshift=.25\baselineskip,remember picture, overlay,fill=\decoratelinecolor,draw=\decoratelinecolor]\fill (0,0) circle (3pt); \draw[semithick](0,0) -- (current page.east |- 0,0 );\end{tikzpicture}}{}{}
+\makeevenfoot{headings}{\tikz[baseline]\node[pagefooter]{\thepage};}{}{}
+\makeevenfoot{plain}{\tikz[baseline]\node[pagefooter]{\thepage};}
+% Empty centre and right headers on even pages
+{}{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% END DOCUMENT STYLYING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setsecnumdepth{chapter}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% DOCUMENTMATTER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newglossaryentry{aplogruppi}
+{
+  name=aplogruppi,
+  description={In genetica si definisce aplogruppo un gruppo di aplotipi tra loro differenti, tutti però originati dallo stesso aplotipo ancestrale.}
+}
+
+\newglossaryentry{aplotipi}
+{
+  name=aplotipi,
+  description={Serie di alleli che si trovano in loci associati su un singolo cromosoma e che vengono ereditati insieme.}
+}
+
+\newglossaryentry{ecotoni}
+{
+  name=ecotoni,
+  description={Zone di transizione fra due comunità ecologiche diverse. Per esempio fra foresta e prateria.}
+}
+
+\newglossaryentry{biocenosi}
+{
+  name=biocenosi,
+  description={In ecologia è il complesso di popolazioni animali e vegetali che vivono e interagiscono fra loro in uno stesso ambiente, con il quale formano un ecosistema.}
+}
+
+
+
+\makeglossaries
+\begin{document}
+
+\frontmatter
+
+%%%%%%%
+% Cover page
+%%%%%%%
+% No header nor footer on the cover
+\thispagestyle{empty}
+% Bar across the top
+\tikz[remember picture,overlay]%
+\node[fill=\chaptercolor,text=white,font=\LARGE\bfseries,text=Cornsilk,%
+minimum width=\paperwidth,minimum height=5em,anchor=north]%
+at (current page.north){
+\begin{tabular}{c}
+LIFE + T.E.N.: Azione A8\\
+\end{tabular}};
+
+% Cover illustration
+\ThisLLCornerWallPaper{1}{grassland.jpg}
+
+\vspace*{1\baselineskip}
+% Title
+{\bfseries\textcolor{\titlecolor}{\selectfont
+\\
+{\emph{Action plans} per la conservazione di specie focali \\[0.05cm]
+di interesse comunitario} \\[0.3cm]
+{\huge\noindent Gambero di fiume}}} \\
+
+\vspace*{2\baselineskip}
+
+
+
+% Footer image
+\begin{tikzpicture}[remember picture, overlay]
+  \node[fill=\chaptercolor,font=\LARGE\bfseries,text=Cornsilk,%
+  minimum width=\paperwidth,minimum height=5em,anchor=south]%
+  at (current page.south) {}; 
+  \node[anchor=south,inner sep=0pt] at (current page.south) { \includegraphics[width=\textwidth]{footer.png}};
+\end{tikzpicture}
+
+
+
+\vspace*{6\baselineskip}
+
+\includepdf[pages={1}]{second_cover_gamb.pdf}
+
+\cleartorecto
+
+% Invoke fancy unnumbered chapter style
+% for the table of contents
+\chapterstyle{chapterstyleunnumbered}
+\setlength\afterchapskip{10mm}
+\setcounter{tocdepth}{0}
+\tableofcontents*
+
+% Main matter starts here; resets page-numberings to arabic numeral 1
+\mainmatter
+
+% Invoke the chapterstyle chapter style
+\chapterstyle{chapterstyle}
+\setlength\afterchapskip{10mm}
+% Public domain image from
+% http://www.public-domain-image.com/objects/computer-chips/slides/six-computers-chips-circuits.html
+\chapter{Che cos'\`e un piano di azione}
+\footnotesize
+\vspace{.5cm}
+In generale, l'approccio ecosistemico costituisce la strategia più corretta ed efficace per la conservazione della natura: attraverso la conservazione degli ecosistemi, ovvero degli ambienti naturali e delle relazioni che si instaurano tra le varie componenti che in essi si rinvengono, si garantisce la conservazione sia delle singole specie che dei processi ecologici e dei fenomeni di interazione tra specie e tra fattori biotici e abiotici che consentono la presenza delle specie stesse.
+Vi sono tuttavia alcune situazioni nelle quali le misure di tutela ambientale possono non essere sufficienti per garantire la sopravvivenza di specie minacciate, che necessitano di misure di conservazione dedicate e spesso specie-specifiche. In questi casi è necessario seguire un approccio specie-specifico, intervenendo direttamente sui \emph{taxa} fortemente minacciati di estinzione, che richiedono misure urgenti di conservazione. L’approccio specie – specifico prevede misure di intervento delineate in documenti tecnici denominati “Piani d’Azione” \cite{EUCOUNCIL98}.
+
+Un piano d’azione si basa sulle informazioni disponibili relative a biologia, ecologia, distribuzione ed abbondanza della specie trattata ed in base a queste propone misure d’intervento, delineate a partire dalla definizione delle minacce che mettono a rischio la sopravvivenza della specie. Il piano d’azione si compone poi degli obiettivi volti ad assicurare la conservazione della specie nel lungo periodo e delle corrispondenti azioni necessarie per realizzarli.
+
+Una corretta strategia di conservazione relativa ad una determinata specie deve contemplare la pianificazione degli obiettivi nel breve, medio e lungo periodo e deve essere flessibile e modificabile nel tempo. Infatti periodiche verifiche circa lo stato di realizzazione ed avanzamento delle azioni, in rapporto al raggiungimento degli obiettivi, possono mettere in luce la necessità di un loro adeguamento, in funzione anche di scenari mutati.
+
+La finalità del Piano d'Azione qui sviluppato nell’ambito dell'Azione A.8 del LIFE+T.E.N., è fornire delle linee guida sulle azioni da intraprendere per ottenere la tutela e la conservazione del gambero di fiume \emph{Austropotamobius pallipes} tramite il recupero e la conservazione degli \emph{habitat}, e la successiva reintroduzione in aree in cui il gambero è oggi estinto; il sostentamento delle popolazioni relittuali, favorendo la loro irradiazione in altre aree del Trentino idonee a questa specie e quindi l’espansione dell’areale della specie. \\
+
+
+\normalsize
+   
+\setlength\afterchapskip{55mm}
+\chapter{Inquadramento generale}
+\renewcommand\chapterillustration{6.jpg}
+
+\section{Distribuzione e status di conservazione del gambero di fiume in Italia e in Europa}
+La distribuzione dei gamberi d’acqua dolce in Europa è stata influenzata nel tempo da fenomeni naturali quali eventi geologici, climatici  
+\begin{wrapfigure}[15]{l}{.6\textwidth}
+\vspace{-.3cm}
+\includegraphics[width=.59\textwidth]{2.jpg}
+\caption*{\textbf{Gambero di fiume} \emph{Austropotamobius pallipes}. Rio S. Colomba, Monte Calisio, Trento \\ (\ph Sonia Endrizzi).}
+\end{wrapfigure}
+e attività antropiche, che hanno comportato la traslocazione di specie a livello globale e l’estinzione di intere popolazioni. 
+
+A partire dalla fine del XIX secolo si è infatti assistito ad una rapida contrazione nell’areale delle specie europee, causata principalmente dal progressivo degrado degli ecosistemi acquatici e dall’introduzione di gamberi alloctoni, vettori dell’oomicete \emph{Aphanomyces astaci}, la cosiddetta “peste del gambero”. Il territorio europeo ospita attualmente 5 specie native di gamberi d’acqua dolce appartenenti ai generi \emph{Astacus} e \emph{Austropotamobius} \cite{Souty} e 7 specie aliene appartenenti ai generi \emph{Procambarus}, \emph{Pacifastacus}, \emph{Orconectes} e \emph{Cherax} originari del Nord America e dell’Australia \cite{DAISIE}. 
+Il gambero di fiume \href{http://217.199.4.93/webgis/?specie=Austropotamobius%20pallipes}{\emph{Austropotamobius pallipes}} è attualmente presente in 18 Paesi dell’Europa centro orientale, in un’area delimitata a nord dalla Scozia, a sud e a ovest dalla Spagna e a est dal Montenegro. In Italia è diffuso in tutte le regioni ad eccezione della Sicilia e delle piccole isole. La tassonomia del gambero di fiume è ancora oggi oggetto di dibattito nella comunità scientifica \cite{Souty}. Le analisi molecolari effettuate fino a questo momento hanno infatti permesso di identificare diverse linee evolutive, interpretate come variabilità intraspecifica da alcuni autori \cite{Chiesa} ed interspecifica da altri \cite{Fratini}, \cite{Zaccara}. In attesa di studi più approfonditi, il gambero di fiume è considerato specie \emph{complex} per via della complessità della sua struttura genetica. Questa caratteristica è da tenere ben presente nell’ambito di interventi di gestione e di conservazione della specie.
+
+Il gambero di fiume è inserito nella Lista Rossa della IUCN e classificato come “\emph{Endangered} A2ce” ossia in pericolo di estinzione a causa di una riduzione della popolazione superiore al 50\% osservata negli ultimi 10 anni e dovuta al declino degli habitat disponibili e all’introduzione di competitori e parassiti alloctoni \cite{IUCN}. Il gambero di fiume è inoltre inserito nell’allegato III della Convenzione di Berna (specie di fauna protette; \cite{eucouncil}) e negli allegati II e V della Direttiva Habitat (specie animali e vegetali d’interesse comunitario la cui conservazione richiede la designazione di zone speciali di conservazione e il cui prelievo e sfruttamento in natura potrebbe formare oggetto di misure di gestione \cite{eucommission}).
+
+
+\section{Biologia ed ecologia}
+
+
+
+I gamberi d’acqua dolce svolgono un ruolo importante nel mantenimento del naturale equilibrio degli ecosistemi acquatici, influenzando la distribuzione e l’abbondanza degli altri organismi attraverso il loro comportamento onnivoro, e rappresentando una importante risorsa alimentare per pesci, uccelli e mammiferi \cite{Souty} \cite{Fleury} \cite{Beja}.
+
+In particolare, il gambero di fiume occupa una discreta varietà di habitat distribuendosi in fiumi, torrenti, ruscelli, canali, laghi e stagni, dalle aree di pianura a quelle montane fino a 1500 montane di quota. Si tratta di una specie capace di adattarsi a diverse condizioni fisico-chimiche delle acque, sopratutto per quanto riguarda la concentrazione di ossigeno e la temperatura. La presenza del gambero di fiume sembra invece essere fortemente influenzata dalle caratteristiche fisiche degli habitat, prediligendo substrati duri e un ambiente diversificato, caratterizzato da massi, ciottoli, radici e detrito vegetale, in grado di offrire rifugio ai gamberi nelle varie fasi del loro ciclo vitale \cite{Souty} \cite{Endrizzi13a}. Determinante per la presenza della specie è inoltre l’adeguata concentrazione di calcio, indispensabile nella formazione del carapace in seguito al processo della muta \cite{Jussila} e la bassa concentrazione di inquinanti organici e di pesticidi.
+
+\begin{wrapfigure}[13]{r}{.6\textwidth}
+\vspace{-.3cm}
+\includegraphics[width=.6\textwidth]{7bis.jpg}
+\caption*{Piccoli di \emph{Austropotamobius pallipes} ancora attaccati all’addome della madre \\ (\ph Sonia Endrizzi).}
+\label{fig:austro_piccoli}
+\end{wrapfigure}
+
+Il gambero di fiume ha uno sviluppo lento e alcuni individui possono superare i 10 anni di vita. La maturità sessuale può essere raggiunta tra il secondo o il sesto anno di età in rapporto alle condizioni ambientali. Le femmine sono in grado di produrre fino a 200 uova che vengono fecondate in autunno e conservate nella porzione ventrale dell’addome fino al momento della schiusa, la primavera successiva \cite{Abrahamsson}. Dalle uova nascono piccoli che presentano le stesse sembianze dell’adulto e che mantengono il contatto con la madre fino al compimento delle prime mute, dopodiché si allontanano per condurre vita indipendente \cite{Mazzoni}.
+Il gambero di fiume presenta una dieta molto diversificata costituita da macrofite, alghe, detrito organico, invertebrati, piccoli vertebrati e uova. La dieta varia generalmente in rapporto all’età dell’individuo, all’habitat e alla stagione. Gli adulti si nutrono, infatti, prevalentemente di detrito organico e macrofite, mentre i giovani individui prediligono una dieta a base di macroinvertebrati \cite{Souty} \cite{Reynolds}. Fenomeni di cannibalismo sono molto frequenti nei gamberi e sono accentuati soprattutto in situazioni di stress, per mancanza di risorse alimentari e sovrappopolamento dell’habitat. Tale comportamento è messo in atto generalmente dagli individui adulti nei confronti dei giovani e dalle specie più aggressive nei confronti di quelle più miti \cite{Abrahamsson} \cite{Elgar}.
+
+   
+\chapter{Stato della specie in Trentino}
+\renewcommand\chapterillustration{4.jpg}
+
+\section{Distribuzione, ecologia e status di conservazione}
+Il monitoraggio dei gamberi d’acqua dolce, effettuato tra il 2010 e il 2012 in sette bacini idrografici del Trentino (Adige, Avisio, Brenta, Chiese, Fersina, Noce, Sarca), ha permesso di rilevare la presenza di venti popolazioni di gambero di fiume e quattro popolazioni della specie alloctona invasiva \emph{Orconectes limosus}, distribuite tra 150 e 1200 m di quota \cite{Endrizzi13a}. Le analisi genetiche effettuate sulle popolazioni native rilevate hanno permesso di distinguere due diversi \gls{aplogruppi} e nove \gls{aplotipi} distribuiti sul territorio\footnote{\url{http://217.199.4.93}} \cite{Endrizzi13b}. Il confronto tra i dati storici ricavati da precedenti studi \cite{Fratini} \cite{Albrecht} \cite{PAT} \cite{Maiolini} \cite{Paoli} \cite{Pagotto} e da interviste alla popolazione locale con quelli ottenuti nell’ambito dei recenti monitoraggi, ha evidenziato una forte contrazione nell’areale del gambero autoctono in Trentino nel corso degli ultimi 50 anni. Ventidue popolazioni segnalate in passato sono infatti risultate estinte e in quattro casi sostituite dalla specie alloctona. Tre popolazioni della specie nativa sono inoltre scomparse nel corso dei due anni di monitoraggio. Le cause del declino sono riconducibili al degrado degli ecosistemi acquatici, alla pesca eccessiva, alla pressione competitiva esercitata dalla specie aliena invasiva e alla diffusione della peste del gambero. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.7\columnwidth]{./img/map.jpg}
+    \caption*{Popolazioni di \textbf{gambero di fiume} \emph{Austropotamobius pallipes} (cerchio) e alloctono \textbf{gambero americano} \emph{Orconectes limosus} (quadrato) rilevate in Trentino tra il 2010 e il 2012, ed estinzioni di popolazioni di gambero autoctono rilevate tra il 2010 e il 2012 (cerchio nero) e nel corso dell’ultimo secolo (croce). \cite{Endrizzi13a}}
+\label{img:gambero_distr}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\columnwidth]{./img/map2.jpg}
+    \caption*{Sinistra: distribuzione geografica degli aplotipi COI mtDNA nelle popolazioni di gambero di fiume in Trentino. I polimorfismi presenti in una stessa popolazione sono rappresentati in percentuale con colori che corrispondono agli aplotipi indicati in figura 3; i due aplogruppi sono indicati in cifre. Destra: albero filogenetico (\emph{maximum likelihood}) delle popolazioni trentine. I rettangoli di diversi colori corrispondono ai 9 aplotipi rilevati confrontati con sequenze mitocondriali di popolazioni italiane e europee registrate in GenBank (\url{http://www.ncbi.nlm.nih.gov/genbank/}).}
+\label{img:gambero_gene}
+\end{figure}
+
+L’analisi dei dati ambientali rilevati ha messo in evidenza come la presenza del gambero autoctono sia favorita dall’esistenza di vegetazione riparia e da un substrato diversificato caratterizzato da massi, ciottoli, materiale legnoso e detriti in alveo, in grado di offrire ombreggiamento, rifugi e nutrienti. Oggi queste condizioni si conservano nei laghi montani e nei corsi d'acqua che scorrono lungo le pendici dei rilievi e che, a causa della discontinuità del territorio, sono state risparmiate dallo sfruttamento antropico. Difficile invece trovarle nel fondovalle dove lo sviluppo urbano e agricolo ha modificato gli ecosistemi acquatici, in maniera sostanziale. Popolazioni relitte sono state rilevate in piccoli bacini isolati di aree urbane e rurali di fondovalle che ancora conservano un sufficiente grado di naturalità. In assenza di adeguati piani di conservazione, la situazione di queste popolazioni è però ancora precaria. La loro presenza è comunque una testimonianza della possibilità di una convivenza armoniosa fra questo organismo e le attività antropiche, realizzabile sulla base di una gestione sostenibile degli ecosistemi acquatici.
+\begin{wrapfigure}[16]{l}{.6\textwidth}
+\includegraphics[width=.59\textwidth]{1.JPG}
+\caption*{\textbf{Gambero di fiume} \emph{Austropotamobius pallipes}. Rio Farinella, Monte Calisio, Trento \\ (\ph Sonia Endrizzi).}
+\end{wrapfigure}
+Presenza e abbondanza delle popolazioni non si sono mostrate particolarmente sensibili alla variabilità chimico fisica delle acque dei siti indagati.  Il ciclo vitale dei gamberi è invece risultato condizionato dalle diverse temperature registrate tra i vari siti di campionamento, con periodi di attività dei gamberi, di sviluppo delle uova e di muta tardivi alle quote maggiori rispetto al fondovalle \cite{Endrizzi13a}. 
+
+Si ricorda che il gambero di fiume è protetto in Trentino dal Decreto n. 23-25/Leg 2009 del Presidente della Provincia (Legge provinciale sulle foreste e sulla protezione della natura; Consiglio della Provincia Autonoma Di Trento, 2009).
+
+
+
+\chapter{Fattori di minaccia}
+\renewcommand\chapterillustration{5.jpg}
+
+A partire dalla metà del XIX secolo le popolazioni di gamberi europee hanno subito un forte declino causato principalmente dal degrado degli ecosistemi acquatici e dalla diffusione di specie alloctone \cite{Souty}. 
+Gli estesi interventi di regimazione dei sistemi fluviali hanno determinato profondi cambiamenti negli ecosistemi acquatici con conseguenze anche molto gravi sulle biocenosi. La canalizzazione dei corsi d’acqua e l’eliminazione degli \gls{ecotoni} ripari hanno infatti comportato la semplificazione delle morfologie fluviali con progressiva perdita di microhabitat e di biodiversità. La costruzione di sbarramenti artificiali ha determinato la frammentazione e l’isolamento delle popolazioni con conseguente impoverimento della variabilità genetica e maggiore rischio di estinzione \cite{Lortscher}. Le attività agricole e industriali causano inquinamento termico, chimico ed organico delle acque provocando il declino delle popolazioni più sensibili \cite{Matthews}. In Trentino, la quasi totale scomparsa degli habitat idonei alla vita del gambero di fiume ha interessato in particolar modo il fondovalle, dove si concentrano queste attività. Gli interventi di bonifica delle aree umide, la canalizzazione e l’interramento dei corsi d’acqua, la totale asportazione della vegetazione acquatica e l’assenza di barriere e fasce tampone, utili a limitare l’immissione di inquinanti organici e di pesticidi nelle acque, hanno determinato la quasi totale estinzione del gambero autoctono da queste aree, e minacciano la sopravvivenza delle popolazioni relitte ancora esistenti \cite{Endrizzi13a}.
+
+\subsection{L'invasione di specie aliene}
+
+I gamberi d’acqua dolce rappresentano ancora oggi un’importante risorsa alimentare per molti Paesi europei. In risposta al forte declino delle specie autoctone, verso la fine dell’800, sono stati importati gamberi di origine americana, più produttivi e resistenti ai disturbi ambientali. 
+
+Le specie alloctone si sono poi diffuse rapidamente e in modo incontrollato in gran parte dei Paesi europei causando una forte pressione competitiva nei confronti delle popolazioni native e favorendo la propagazione della peste del gambero, di cui sono risultati essere i naturali vettori. La peste del gambero è causata da un oomicete, originario degli Stati Uniti, che determina solo raramente la morte del gambero americano, mentre risulta letale per le specie europee. Questo parassita può essere facilmente traslocato da un corpo idrico all’altro anche attraverso il movimento di imbarcazioni, attrezzatura da pesca e animali. Il controllo della malattia risulta quindi molto difficile e la conservazione delle specie autoctone di decapodi è fortemente a rischio \cite{DAISIE}. In Trentino è stata rilevata la presenza di quattro popolazioni della specie alloctona \href{http://217.199.4.93/webgis}{\emph{Orconectes limosus}} distribuite in quattro laghi di bassa quota, alcuni dei quali occupati in passato dal gambero nativo. La possibilità di diffusione spontanea o di traslocazione della specie alloctona in altre aree del Trentino, mette a rischio la conservazione delle popolazioni native presenti \cite{Endrizzi13a}. Le analisi istologiche e bio-molecolari effettuate su varie popolazioni di \emph{Austropotamobius pallipes} e \emph{Orconectes limosus} hanno confermato la positività alla peste del gambero di tre popolazioni alloctone e due autoctone \cite{Minghetti} \cite{Pretto}. Il parassita potrebbe essere quindi in parte responsabile dei fenomeni estintivi del gambero di fiume in Trentino e rappresenta una grave minaccia per le popolazioni ancora presenti.
+
+
+La parassitosi più diffusa naturalmente tra le popolazioni europee di decapodi è quella causata da microsporidii del genere \emph{Thelohania}, responsabili della cosiddetta “malattia della porcellana”. Il parassita attacca le fibre muscolari dei gamberi determinandone la perdita delle funzionalità e la morte. La malattia può essere facilmente individuata nelle fasi avanzate dell’infestazione, per via della colorazione bianca opaca assunta dalla muscolatura addominale dei gamberi \cite{Alderman}. Infestazioni da \emph{Thelohania sp.} sono state rilevate sporadicamente e generalmente con tassi d’infestazione molto bassi nelle popolazioni di gambero di fiume in Italia e in Spagna \cite{Mori} \cite{Dieguez}. In natura i parassiti giocano infatti un ruolo importante nel mantenimento del naturale equilibrio delle popolazioni. Gravi infestazioni potrebbero però verificarsi in popolazioni già stressate per via delle cattive condizioni ambientali \cite{Vogt}. In Trentino il tasso di infestazione da \emph{Thelohania sp.} registrato nelle popolazioni di gambero di fiume osservate è risultato molto basso \cite{Endrizzi13a} e non è quindi da considerare una minaccia per la loro conservazione \cite{Alderman}. Per evitare che eventuali condizioni di stress generino infestazioni tali da comprometterne la sopravvivenza, bisognerebbe monitorare queste popolazioni periodicamente.
+
+
+\begin{SCtable}[][p]
+  \includegraphics[width=.55\columnwidth]{6.JPG}
+  \caption*{Il \textbf{gambero di fiume} \emph{Austropotamobius pallipes} presenta carapace di forma bombata con rostro breve, caratterizzato da bordi divergenti e denti laterali quasi indistinguibili (\ph Sonia  Endrizzi).}
+\end{SCtable}
+\begin{SCtable}[][p]
+  \includegraphics[width=.55\columnwidth]{11.JPG}
+  \caption*{Nel \textbf{gambero americano} \emph{Orconectes limosus} il carapace, a livello del solco cefalico è caratterizzato da diverse spine. Il rostro presenta bordi quasi paralleli e denti laterali ben evidenti (\ph Francesco Mezzo).}
+\end{SCtable}
+\begin{SCtable}[][p]
+  \includegraphics[width=.55\columnwidth]{8.JPG}
+  \caption*{Nel \textbf{gambero di fiume} \emph{Austropotamobius pallipes} il telson caratterizzato da due spine (\ph Sonia Endrizzi).}
+\end{SCtable}
+\begin{SCtable}[][p]
+  \includegraphics[width=.55\columnwidth]{9.JPG}
+  \caption*{Le chele nel \textbf{gambero americano} \emph{Orconectes limosus} sono poco sviluppate, con margine interno regolare e punta uncinata con bande nere-arancio. Presenza di una spina a livello del carpo (\ph Sonia Endrizzi).}
+\end{SCtable}
+
+\begin{comment}
+  \begin{figure}
+    \subbottom[\emph{Austropotamobius pallipes} presenta carapace di forma bombata con rostro breve, caratterizzato da bordi divergenti e denti laterali quasi indistinguibili (\ph Sonia Endrizzi)]{\includegraphics[width=.49\columnwidth]{6.JPG}}
+    \subbottom[In \emph{Orconectes limosus} il carapace, a livello del solco cefalico è caratterizzato da diverse spine. Il rostro presenta bordi quasi paralleli e denti laterali ben evidenti (\ph Francesco Mezzo).]{\includegraphics[width=.48\textwidth]{11.JPG}} \par
+    \subbottom[In \emph{Austropotamobius pallipes} il telson caratterizzato da due spine.]{\includegraphics[width=.48\textwidth]{8.JPG}} 
+    \subbottom[Le chele in \emph{Orconectes limosus} sono poco sviluppate, con margine interno regolare e punta uncinata con bande nere-arancio. Presenza di una spina a livello del carpo.]{\includegraphics[width=.48\textwidth]{9.JPG}} 
+  \caption*{Caratteristiche macroscopiche distintive di \emph{Austropotamobius pallipes} e \emph{Orconectes limosus}.}
+  \end{figure}
+\end{comment}
+\subsection{Il prelievo illegale}
+
+In passato la pesca eccessiva ha impoverito molte delle popolazioni di decapodi in Europa \cite{Endrizzi13a}. In alcune valli del Trentino, soprattutto nell’area occidentale e nel Tesino, i decapodi hanno rappresentato fino agli anni ’70, una risorsa alimentare importante per le popolazioni locali. L’eccessiva pesca potrebbe aver contribuito all’estinzione della specie nativa in quelle come in altre aree. Inoltre il prelievo illegale rappresenta ancora oggi un serio problema per la conservazione delle specie native in Europa \cite{Souty}. E in Trentino, come emerge da alcune interviste con la popolazione, sembra essere una pratica ancora in voga che sottopone la specie nativa a ulteriore rischio.
+
+
+\chapter{Strategie di conservazione}
+\renewcommand\chapterillustration{7.jpg}
+
+\section{Obiettivo generale}
+Il drastico declino delle popolazioni di gambero di fiume registrato in Trentino-Alto Adige ha comportato una forte riduzione delle popolazioni in provincia di Trento \cite{Endrizzi13a}, e la quasi totale scomparsa della specie in quella di Bolzano \cite{Fureder} \cite{Sint}. Per garantire la conservazione delle popolazioni ancora presenti sul territorio e favorire nuove ricolonizzazioni è indispensabile mettere a punto un efficace piano di gestione della specie e dei suoi habitat. Sarà quindi necessario istituire nuove aree protette per la conservazione delle popolazioni di gambero di fiume ancora presenti sul territorio, attuare interventi di riqualificazione ambientale e mantenere una gestione sostenibile degli ecosistemi acquatici, al fine di ripristinare la loro naturale funzionalità ecologica.
+
+
+\section{Obiettivi specifici}
+La conservazione del gambero di fiume in Trentino può essere garantita soltanto attraverso una corretta gestione delle popolazioni e dei loro habitat, ed è perseguibile mediante il raggiungimento di obiettivi specifici, quali:
+  \begin{itemize}\itemsep0pt
+    \item la raccolta di informazioni relative alla distribuzione storica e attuale delle specie di gambero presenti sul territorio provinciale;
+    \item la valutazione delle condizioni ambientali degli attuali o potenziali habitat del gambero di fiume;
+    \item l’identificazione delle minacce che mettono a rischio la conservazione della specie autoctona e dei suoi habitat;
+    \item la conduzione di studi molecolari per la conservazione del patrimonio genetico delle popolazioni locali;
+    \item la definizione di aree di protezione per la conservazione di \emph{Austropotamobius pallipes} e dei suoi habitat;
+    \item l’individuazione di aree idonee a interventi di riqualificazione per il recupero delle funzionalità ecologiche degli habitat acquatici, al fine di favorire future riconolizzazioni del gambero di fiume sul territorio;
+    \item l’attuazione di interventi di ripopolamento e di reintroduzione per favorire una nuova espansione della specie autoctona;
+    \item l’attuazione di interventi di prevenzione e mitigazione delle minacce: controllo della diffusione di specie alloctone e di parassiti che possono causare infestazioni letali (peste del gambero, malattia della porcellana), di prelievi illegali, e del verificarsi di eventi di degrado delle condizioni ambientali;
+    \item l'organizzazione di monitoraggi periodici per valutare la variazione nel tempo dello stato di conservazione, della distribuzione delle popolazioni di decapodi, dell’integrità ecologica degli habitat e dei rischi legati alla conservazione del gambero di fiume;
+    \item l’organizzazione di campagne informative rivolte ai pescatori, alla popolazione locale ed ai turisti, relative all’importanza della conservazione della specie, ai comportamenti corretti da tenere per evitare impatti negativi sulle popolazioni e agli interventi che si intendono attuare;
+    \item l’adeguamento delle normative per la conservazione del gambero di fiume e dei suoi habitat e per il controllo della diffusione delle specie alloctone.
+  \end{itemize}
+
+   
+\chapter{Azioni di conservazione}
+\renewcommand\chapterillustration{15.jpg}
+
+\section{Ricerche e monitoraggio delle popolazioni di gambero di fiume e dei loro habitat}
+
+Il monitoraggio delle popolazioni di gambero d’acqua dolce su tutto il territorio del Trentino è indispensabile per ottenere informazioni utili a definire lo status di conservazione della specie autoctona e l’integrità dei loro habitat. 
+
+\begin{wrapfigure}[15]{l}{.6\textwidth}
+\begin{center}
+\vspace{-.8cm}
+\includegraphics[width=.59\textwidth]{9.jpg}
+\caption*{Femmina di \textbf{gambero di fiume} \emph{Austropotamobius pallipes} con piccoli, in allevamento (\ph Sonia Endrizzi).}
+\end{center}
+\end{wrapfigure}
+La creazione di una mappa di distribuzione e di un database relativi alle specie presenti sul territorio provinciale rappresentano strumenti essenziali per lo sviluppo di politiche di gestione efficaci. A tal fine risulta importante il campionamento delle singole popolazioni per il rilievo di: densità (attraverso, ad esempio, il calcolo della CPUE, numero di individui catturati in rapporto allo sforzo di campionamento) e struttura (attraverso la raccolta di dati biometrici come peso, lunghezza del carapace e delle chele e la caratterizzazione per sesso al fine del calcolo della \emph{sex ratio}). La raccolta di dati relativi alle caratteristiche ambientali degli habitat è inoltre necessaria a individuare possibili aree di intervento e di protezione. Risulta quindi importante definire la tipologia del corpo idrico che ospita la popolazione rilevata, l’ombreggiamento, il tipo di substrato, la presenza di vegetazione acquatica e riparia e la disponibilità di rifugi per i gamberi (massi, ciottoli, materiale vegetale e radici in alveo) oltre alle caratteristiche fisico-chimiche delle acque (temperatura, ossigeno percentuale e disciolto, pH, conducibilità, torbidità, velocità). Fondamentale è inoltre il rilievo delle possibili minacce presenti a livello locale e di bacino come l’esistenza di specie di gambero alloctone, di fonti inquinanti e di disturbo ambientale (colture intensive, centrali idroelettriche, attività industriali, scarichi civili non trattati) poste a monte delle popolazioni di gambero autoctone.
+
+\section{Caratterizzazione genetica delle popolazioni di gambero autoctone}
+
+\begin{wrapfigure}[15]{l}{.6\textwidth}
+\vspace{-.8cm}
+\begin{center}
+\includegraphics[width=.59\textwidth]{14.jpg}
+\caption*{Campionamento di una popolazione della specie aliena invasiva di \textbf{gambero americano} \emph{Orconectes limosus}, lago di Madrano, Valsugana, Trento (\ph Bruno Maiolini).}
+\end{center}
+\end{wrapfigure}
+
+La caratterizzazione genetica delle popolazioni di gambero di fiume presenti in Trentino è importante per lo sviluppo di una corretta politica di gestione e conservazione della specie. 
+
+Le indagini molecolari effettuate su gran parte delle popolazioni rilevate fino ad oggi sul territorio provinciale e basate sul sequenziamento del gene mitocondriale COI \cite{Endrizzi13b}, offrono una prima analisi della variabilità inter e intra-popolazionistica esistente. La presenza di diversi aplogruppi e aplotipi distribuiti sul territorio che condividono, in alcuni casi, lo stesso habitat, suggerisce l’esistenza di fenomeni di traslocazione di individui ad opera dell’uomo che potrebbero sussistere tutt’oggi. La presenza di linee evolutive tipiche di altre regioni potrebbe influenzare l’adattabilità delle popolazioni all’ambiente con maggiori rischi di estinzione, soprattutto in condizioni di stress. La creazione di una mappa genetica di tutte le popolazioni di gambero di fiume presenti in Trentino, attraverso analisi di base (sequenziamento dei geni mitocondriali COI e 16S) o più approfondite (attraverso l’analisi di microsatelliti), rappresenta quindi uno strumento utile alla gestione della specie, soprattutto nell’ottica di effettuare interventi di reintroduzione e ripopolamento.
+
+\section{Individuazione e mitigazione delle minacce}
+Al fine di evitare l’estinzione delle popolazioni di gambero di fiume ancora presenti in Trentino e favorire una futura nuova espansione della specie sul territorio è necessario individuare le minacce presenti e i metodi utili a contrastarle. 
+
+Le popolazioni di gambero di fiume risultano attualmente quasi del tutto segregate nelle aree montane per via del forte degrado e della scomparsa degli habitat di fondovalle. Una gestione più sostenibile dei corsi d’acqua nelle aree urbane e agricole e il ripristino di aree umide permetterebbero non solo di recuperare gli habitat idonei alla vita del gambero di fiume ma di migliorare la qualità ecologica dell’intero territorio di fondovalle. Un piano di riqualificazione e riconnessione ecologica degli habitat del gambero di fiume dovrebbe pertanto prevedere:
+
+\begin{itemize}\itemsep0pt
+  \item la creazione, dove possibile, di fasce di vegetazione riparia utile a svolgere funzioni di: ombreggiamento, apporto di materia organica, barriera nei confronti di pesticidi ed altri inquinanti provenienti da emissioni diffuse, e tampone per l’intercettazione dei nutrienti rilasciati dai terreni agricoli (fosfati e composti azotati responsabili dei fenomeni di eutrofizzazione);
+  \item il taglio selettivo della vegetazione acquatica (limitato ad una sponda o a scacchiera), importante non solo per fornire rifugio e nutrimento ai gamberi ma anche per garantire la presenza di un'elevata biodiversità; 
+  \item la rimozione della vegetazione dall’alveo entro le 12 ore successive al taglio in modo da evitare fenomeni di eutrofia;
+  \item l’attuazione di interventi meno invasivi, utili ad evitare movimentazioni del fondo, e limitati a periodi dell’anno compatibili con il compimento delle fasi più delicate del ciclo vitale della maggioranza degli organismi (ad esempio due volte l’anno, in inverno e tarda estate);
+  \item il mantenimento o il ripristino di un substrato naturale in alveo per favorire la disponibilità di rifugi per i gamberi ma anche di microhabitat utili a garantire una elevata biodiversità; 
+  \item il mantenimento di un deflusso adeguato alla tipologia del corso d’acqua che permetta di garantire le naturali caratteristiche fisico-chimiche delle acque;
+  \item la creazione di stagni e laghetti in parchi pubblici o terreni non sfruttati al fine di recuperare aree umide scomparse in seguito alle opere di bonifica.
+\end{itemize}
+
+\subsection{Contenimento delle specie alloctone}
+L'elevata densità di individui rende generalmente impossibile la completa eradicazione delle popolazioni alloctone di gamberi sul territorio, a meno che non si tratti di colonizzazioni molto recenti. Si rende quindi necessario individuare e monitorare con regolarità le popolazioni alloctone quantomeno per limitarne un'ulteriore espansione che potrebbe generare insostenibili pressioni competitive sulla specie nativa e una rapida diffusione della peste del gambero.  L’eradicazione delle popolazioni alloctone risulta generalmente impossibile per via dell’elevata densità di individui, a meno che non si tratti di colonizzazioni molto recenti. Il monitoraggio periodico delle popolazioni, l’organizzazione di campagne educative e la creazione di una normativa che vieti la traslocazione delle specie da parte di persone non autorizzate, rimangono gli unici strumenti per contrastarne la diffusione. Il mantenimento di alcune barriere presenti lungo le aste fluviali potrebbe essere considerato in alcuni casi utile ad evitare la diffusione delle specie alloctone lungo l’intero bacino.
+
+La prevenzione e il controllo di infestazioni da parassiti letali per il gambero di fiume, come quelli responsabili della peste del gambero e della malattia della porcellana, possono essere effettuati attraverso periodiche analisi istologiche e biomolecolari da effettuare su individui di popolazioni autoctone e alloctone. I corpi idrici caratterizzati dalla presenza di popolazioni infestate dovrebbero essere sottoposti a particolare regolamentazione, soprattutto per quanto riguarda la pesca, in modo tale da evitare la diffusione dei parassiti da un bacino ad un altro. 
+
+\section{Individuazione delle aree di intervento}
+Attraverso l’elaborazione di tutte le informazioni che si possono ottenere mediante le attività di monitoraggio e le analisi di laboratorio (distribuzione storica ed attuale delle specie di decapodi, status e caratterizzazione genetica delle popolazioni native, condizioni degli habitat e minacce) sarà possibile individuare le aree e le tipologie di intervento che possono essere attuate nel tempo, quali:
+\begin{itemize}\itemsep0pt
+  \item aree di ripristino ambientale che permettano una futura nuova espansione delle popolazioni del gambero di fiume, limitandone così la frammentazione e favorendo il flusso genico tra di esse;
+  \item aree meritevoli di tutela per la presenza di popolazioni vitali di gambero di fiume attraverso, ad esempio, l’istituzione di zone speciali di conservazione, previste dalla Rete Natura 2000 e/o la creazione di corridoi di connessione ecologica tra siti SIC e ZPS esistenti; 
+  \item aree idonee ad interventi di reintroduzione o caratterizzate dalla presenza di popolazioni di gambero di fiume che possono essere rivitalizzate attraverso l’introduzione di nuovi individui;
+  \item aree considerate a rischio, per la presenza di popolazioni alloctone e/o infestazioni da peste del gambero, che devono essere tenute sotto controllo.
+\end{itemize}
+
+Le aree di intervento per il ripristino e la reintroduzione di popolazioni di gambero di fiume dovrebbero essere identificate all’interno della \href{http://www.comune.trento.it/Aree-tematiche/Ambiente-e-territorio/Tutela-degli-ecosistemi-naturali/Rete-Natura-2000}{Rete Natura 2000}, in quanto la rete è destinata alla conservazione della diversità biologica e alla tutela di habitat, e di specie animali e vegetali ritenute meritevoli di protezione. Tuttavia, i monitoraggi effettuati recentemente hanno evidenziato l'estinzione di molte popolazioni segnalate in passato e in alcuni casi addirittura la loro sostituzione con la specie alloctona.
+Sarebbe quindi auspicabile la definizione di un Piano Provinciale che metta in atto una ridefinizione, aggiornamento dell'areale delle specie di gambero al fine anche di integrare la connettività ecologica tramite la creazione di opportuni corridoi faunistici tra aree dove la specie è ancora presente.
+
+\section{Reintroduzioni e ripopolamenti}
+Interventi di reintroduzione e di ripopolamento possono essere attuati per il recupero delle popolazioni di gambero di fiume estinte o poco vitali. A tal fine è necessario innanzitutto assicurarsi che le cause del declino siano cessate. Le caratteristiche genetiche delle popolazioni presenti all’interno del bacino idrografico in cui si intende operare devono essere sempre considerate. L’individuazione o la creazione di una struttura idonea all’allevamento del gambero di fiume permetterebbe di ottenere esemplari geneticamente compatibili con le popolazioni presenti nelle aree di intervento, evitando il continuo prelievo di individui in natura e offrendo così maggiori garanzie di successo. Tali tecniche di allevamento e reintroduzione sono già state implementate con successo in Italia nei progetti \href{http://www.lifecrainat.eu/progetto.php}{LIFE08 NAT/IT/000352} “CRAINat - \emph{Conservation and recovery of \emph{Austropotamobius pallipes} in Italian Natura2000 sites}”, \href{http://www.sinanet.isprambiente.it/gelso/banca-dati/ente-di-gestione-area-protetta/parco-regionale-della-valle-del-lambro/conservazione-del-gambero-di-fiume-austropotamobius-pallipes-in-due-sic-della-lombardia}{LIFE00/IT/7159} “\emph{Conservazione di \emph{Austropotamobius pallipes} in due SIC della Lombardia}”; “\href{http://ec.europa.eu/environment/life/project/Projects/index.cfm/fuseaction/home.showFile/rep/file/fil/index.cfm?fuseaction=search.dspPage&n_proj_id=2467&docType=pdf}{LIFE03 NAT/IT/000137} \emph{\emph{Austropotamobius pallipes}: tutela e gestione nei SIC dell’Italia Centrale”}. 
+Nell’ambito del progetto Life+TEN è in corso un’azione dimostrativa di reintroduzione di \emph{Austropotamobius pallipes} in due siti selezionati del Trentino: un’area protetta (il biotopo provinciale Fontanazzo), in cui il gambero di fiume era presente in passato, ed all’interno di un sistema di fossi agricoli (Piana Rotaliana), che conservano una buona qualità delle acque e che saranno preventivamente sottoposti a interventi di ripristino ambientale e gestiti in modo sostenibile. L’azione dimostrativa rappresenta un esempio prezioso per i futuri interventi di reintroduzione che si vorranno attuare sul territorio, sia in ambienti naturali che ripristinati.
+
+\newpage
+\section{Informazione e sensibilizzazione della popolazione}
+Il successo di un piano di gestione per la conservazione della specie si ottiene anche attraverso il consenso e la collaborazione della popolazione locale. L’organizzazione di campagne informative, relative agli interventi che si vogliono attuare sul territorio e di sensibilizzazione sulle problematiche legate alla conservazione del gambero di fiume, è essenziale per il raggiungimento di buoni risultati.
+
+Comportamenti errati da parte della popolazione, come l’introduzione di specie alloctone, il prelievo e la traslocazione di organismi e la generazione di impatti ambientali, sono infatti spesso dovuti ad una mancanza di informazione. Ad esempio, l’organizzazione di campagne informative sui metodi di disinfezione delle attrezzature e di sensibilizzazione, rivolte soprattutto ai pescatori, potrebbero aiutare a contrastare il problema della trasmissione di patogeni da bacini in cui sono presenti specie alloctone portatrici di peste del gambero.
+
+Popolazioni di gambero di fiume sono state rilevate anche all’interno di laghetti da pesca privati, nelle pescicolture e nei loro emissari. Alcune di queste popolazioni sono scomparse probabilmente a causa di sistemi di gestione errati. Instaurare rapporti di collaborazione con i proprietari degli impianti sarebbe utile a garantire la conservazione della specie nativa anche in questi ambienti.
+
+Nonostante il gambero di fiume rientri nella lista delle specie protette in Trentino (Allegato C della legge provinciale sulle foreste e sulla protezione della natura) \cite{consiglioPAT09}, il suo prelievo è consentito e regolamentato dalle norme per l’esercizio della pesca nella provincia di Trento \cite{consiglioPAT79}, che si limitano ad imporre una misura minima di prelievo di 7 cm e un periodo di fermo pesca di tre mesi, dal 1 aprile al 30 giugno.
+
+L’armonizzazione delle normative vigenti sul territorio provinciale è necessaria per garantire l’effettiva protezione del gambero di fiume. Sarebbe inoltre importante la creazione di norme che prevedano la protezione, non solo delle specie minacciate ma anche dei loro habitat, oltre al divieto di introduzione di specie alloctone in natura.
+
+%\newpage
+%\setlength\afterchapskip{10mm}
+%\renewcommand\chapterillustration{}
+%\printglossaries
+
+
+\setlength\afterchapskip{10mm}
+\chapter{Bibliografia}
+\renewcommand\chapterillustration{}
+\renewcommand*{\bibname}{}
+\begingroup
+\renewcommand{\addcontentsline}[3]{}% Remove functionality of \addcontentsline
+\renewcommand{\section}[2]{}% Remove functionality of \section
+\begin{thebibliography}{9}
+\footnotesize
+\bibitem{EUCOUNCIL98} Council of Europe, 1998. \emph{Drafting and implementing action plans for threatened species.} Environmental encounters, Council of Europe (Ed), Strasbourg, 39: 1-4.
+\bibitem{Souty} Souty-Grosset C., Holdich D.M., Noël P.Y., Reynolds J.D., Haffner P., 2006. \emph{Atlas of crayfish in Europe. Musem National d’Histoire Naturelle Paris}, 187 pp.
+\bibitem{DAISIE} DAISIE, 2012. \emph{European invasive alien species}. \url{http://www.europe-aliens.org}
+\bibitem{Chiesa} Chiesa S., Scalici M., Negrini R., Gibertini G. Nonnis Marzano F., 2011. \emph{Fine-scale genetic structure, phylogeny and systematics of threatened crayfish species complex}. Molecular Phylogenetics and evolution 61. 1-11.
+\bibitem{Fratini} Fratini S., Zaccara S., Barbaresi S., Grandjean F., Souty-Grosset C., Crosa G.,  Gherardi F., 2005. \emph{Phylogeography of the threatened crayfish (genus \emph{Austropotamobius}) in Italy: implications for its taxonomy and conservation}. Heredity 94: 108-118.
+\bibitem{Zaccara} Zaccara S., Stefani F., Galli P., Nardi P.A., Crosa G., 2004. \emph{Taxonomic implications in conservation management of white-clawed crayfish (\emph{Austropotamobius pallipes}) (\emph{Decapoda}, \emph{Astacidae}) in Northern Italy}. Biological Conservation 120: 1–10.
+\bibitem{IUCN} IUCN 2013. \emph{IUCN Red List of Threatened Species}. Version 2013.2. \url{http//iucnredlist.org}.
+\bibitem{eucouncil} Consiglio d’Europa, 1979. \emph{Convenzione relativa alla conservazione della vita selvatica e dell’ambiente naturale in Europa}. \url{http://conventions.coe.int}
+\bibitem{eucommission} Commissione Europea, 1992. \emph{Direttiva 92/43/EEC del Consiglio del 21 maggio 1992 relativa alla conservazione degli habitat naturali e seminaturali e della flora e della fauna selvatiche}. Gazzetta Ufficiale, L 206, 22/07/1992, pp. 7-50.
+\bibitem{Fleury} Fleury B.E., Sherry T.W., 1995. \emph{Long-term population trends of colonial wading birds in the southern United States: the impact of crayfish aquaculture on Louisiana populations}. The Auk, 112: 613–32.
+\bibitem{Beja} Beja P.R., 1996. \emph{An analysis of otter Lutra lutra predation on introduced American crayfish Procambarus clarkii in Iberian streams}. Journal of Applied Ecology, 33: 1156–70.
+\bibitem{Endrizzi13a} Endrizzi S., Bruno M. C., Maiolini B., 2013 A. \href{http://www.jlimnol.it/index.php/jlimnol/article/view/jlimnol.2013.e28}{\emph{Distribution and biometry of native and alien crayfish in Trentino (Italian Alps)}}. Journal of Limnology 72: 343-360.
+\bibitem{Jussila} Jussila J., Henttonen P., Huner J.V., 1995. \emph{Calcium, magnesium and manganese content of the noble crayfish \emph{Astacus astacus} (L.) branchial carapace and its relationships to water and sediment mineral contents of two ponds and one lake incentral Finland}. Freshwater Crayfish, 10: 230-238.
+\bibitem{Abrahamsson} Abrahamsson S.A.A., 1966. \emph{Dynamics of an isolated population of the crayfish \emph{Astacus astacus} Linné}. Oikos, 17: 96–107.
+\bibitem{Mazzoni} Mazzoni D., Gherardi F., Ferrarini P., 2004. \emph{Guida al riconoscimento dei gamberi d’acqua dolce}. Regione Emilia Romagna, Greentime SpA editrice, 56 pp.
+\bibitem{Reynolds} Reynolds J.D., O’Keeffe C., 2005. \emph{Dietary patterns in stream- and lake- dwelling populations of \emph{Austropotamobius pallipes}}. Bull. Fr. Pêche Piscic., 376-377:715-730.
+\bibitem{Elgar} Elgar M.A., Crespi, B.J., 1992. \emph{Ecology and evolution of cannibalsim. In: Cannibalism Ecology and Evolution among Diverse Taxa}. Oxford University Press, pp. 1–12.
+\bibitem{Endrizzi13b}Endrizzi S., Bruno M.C., Maiolini B., 2013 B. \emph{Distribution, threats and conservation of \emph{Austropotamobius pallipes} complex in Trentino (Italian Alps)}. VIII Symposium for European Freshwater Sciences (SEFS), Münster. Book of abstract pp. 109.
+\bibitem{Albrecht} Albrecht H., 1982. \emph{Das System der europäischen Flußkrebse (\emph{Decapoda}, \emph{Asticidae}) Vorschlag und Begrüdung}. Mitt. Hamb. Zool. Mus. Inst. 79:187-210.
+\bibitem{PAT} Provincia Autonoma di Trento, 2004. \href{http://www.areeprotette.provincia.tn.it/natura2000/ animali/in_austropotamobius_pallipes.html}{\emph{Rete Natura 2000, le specie animali: \emph{Austropotamobius pallipes}}.}
+\bibitem{Maiolini} Maiolini B., Bruno M.C., Carolli M., Dori M., 2007. \href{http://www.alpine-space.org/uploads/media/Alplakes_Ecological_indicator_of_lake_status.pdf}{\emph{Benthic macroinvertebrates community as ecological indicator of lake status}}. ALPLAKES ed., Milano: 51 pp.
+\bibitem{Paoli} Paoli F., 2007. \emph{Specie aliene invasive in Alta Valsugana. Distribuzione di \emph{Orconectes limosus} e \emph{Dreissena polymorpha}}. Tesi di laurea. Università di Padova. 82 pp. 
+\bibitem{Pagotto} Pagotto G., 1995. \emph{Studio e sperimentazione finalizzati alla identificazione delle possibilità di ripopolare con il gambero la parte veneziana del fiume Caomaggiore}. W.W.F. Delegazione Veneto Publ., Vicenza: 130 pp.
+\bibitem{Lortscher} Lörtscher, M., Clalüna, M., Sholl, A., 1998. \emph{Genetic population structure of \emph{Austropotamobius pallipes} (Lereboullet, 1858) (\emph{Decapoda}: \emph{Astacidae}) in Switzerland, based on allozyme data}. Aquat. Sci. 60, 118–129.
+\bibitem{Matthews} Matthews M.A., Reynolds J.D., 1995. \emph{A population study of the white-clawed crayfish \emph{Austropotamobius pallipes} (Lereboullet) in an Irish reservoir}. Biol. Environ.: Proc. R. Ir. Acad., 95B: 99-109.
+\bibitem{Minghetti} Minghetti G., Cappelletti C., Ciutti F., Bruno M. C., Endrizzi S., Quaglio F., Manfrin A., Pretto T. \emph{Indagine sullo stato sanitario del gambero americano \emph{Orconectes limosus} in quattro popolazioni del Trentino}. IV Convegno AIIAD – Ittiologia come governance delle acque dolci italiane, Torino, 15-17 November 2012. Book of abstract pp. 55
+\bibitem{Pretto} Pretto T., Manfrin A., 2011. \emph{Patologie dei gamberi d’acqua dolce nel contesto del progetto LIFE+ RARITY}. Istituto Zooprofilattico Sperimentale delle Venezie, Laboratorio Nazionale di riferimento per le malattie dei crostacei. Ed. Adria: 9 pp. 
+
+%\end{thebibliography}
+
+%\makeatletter
+%\renewcommand\@biblabel[1]{\textcolor{\backgroundrectanglecolor}{$\bullet$}}
+%\makeatother
+
+%\renewcommand*{\bibname}{Bibliografia non citata}
+%\begin{thebibliography}{9}
+%\footnotesize
+
+
+\bibitem{Alderman} Alderman D.J., Polglase J.L., 1988. \emph{Pathogens, parasites and commensals}. In:  Holdich D.M., Lowery R.S.(Eds), Freshwater crayfish. Biology, management and exploitation. Croom Helm, London: pp. 167 - 212 e 426-479.
+\bibitem{Mori} Mori M., Salvadio S., 2000. \emph{The occurrence of \emph{Thelohania contejeani} Henneguy, a microsporidian parasite of the crayfish \emph{Austropotamobius pallipes} (Lereboullet), in Liguria Region (NW Italy)}. Journal of Limnology, 59: 167-169.
+\bibitem{Dieguez} Dieguez-Uribeondo J., Pinedo-Ruiz J., Muzquiz J.L., 1997. \emph{Thelohania contejeani in the province of Alava}, Spain. B. Fr. Peche Piscic. 347:749-752
+\bibitem{Vogt} Vogt G, 1999. \emph{Disease of European freshwater crayfish with particolar emphasis on interspecific transmission of pathogens}, p. 87-103. In: F. Gherardi and D.M. Holdich (eds.), Crayfish in Europe as alien species. How to make the best of a bad situation? Balkema.
+\bibitem{Fureder} Füreder L., Oberkofler B., Hanel R., Leiter J., Thaler B., 2003. \emph{The freshwater crayfish \emph{Austropotamobius pallipes} in south Tyrol: heritage species and bioindicator}. B. Fr. Peche Piscic. 370-371:79-95.
+\bibitem{Sint} Sint D., Dalla Via J., Füreder L., 2007. \emph{Phenotipical characterization of indigenous freshwater crayfish populations}. J. Zool. 273: 210-219
+\bibitem{consiglioPAT09} Consiglio della Provincia Autonoma di Trento, 2009. \href{http://www.consiglio.provincia.tn.it}{\emph{Regolamento di attuazione del titolo IV, capo II (Tutela della flora, fauna, funghi e tartufi) della legge provinciale 23 maggio 2007 n. 11 (Legge provinciale sulle foreste e sulla protezione della natura)}}. Decreto del presidente della provincia 26 ottobre 2009, n. 23-25/Leg
+\bibitem{consiglioPAT79} Consiglio della Provincia Autonoma di Trento, 1979. \href{http://www.consiglio.provincia.tn.it}{\emph{Regolamento di esecuzione alla legge provinciale 12 dicembre 1978, n. 60 (Norme per l'esercizio della pesca nella provincia di Trento" e successive modifiche ed integrazioni)}.} Decreto del presidente della giunta provinciale 3 dicembre 1979, n. 22-18/Leg. (ultima revisione 2008)
+\end{thebibliography}
+\endgroup
+\cleartoverso
+
+
+
+%%%%%%%%%%%
+% Back cover
+%%%%%%%%%%%
+\normalsize
+% Temporarily enlarge this page to push
+% down the bottom margin
+\enlargethispage{3\baselineskip}
+\thispagestyle{empty}
+\pagecolor{\backpagecolor}
+%\pagecolor[HTML]{0E0407}
+\begin{center}
+\vspace*{\fill}
+
+\begin{figure}[htp]
+\captionsetup{font=normalsize}
+\centering
+\subcaptionbox*{\url{www.lifeten.tn.it}}[.3\linewidth]{\includegraphics[width=.3\columnwidth]{logo_LIFETEN.png}}
+\subcaptionbox*{\url{www.provincia.tn.it}}[.3\linewidth]{\includegraphics[width=.15\columnwidth]{logo_PAT.png}}
+\subcaptionbox*{\url{www.muse.it}}[.3\linewidth]{\includegraphics[width=.3\columnwidth]{logo_MUSE_verde_nospace.png}}
+\end{figure}
+\textbf{\textcolor{LightGoldenrod!50!Gold}{MUSE - Museo delle Scienze}}
+
+\vspace*{\baselineskip}
+
+\textbf{\textcolor{LightGoldenrod}{Sezione di Zoologia dei Vertebrati}}
+\end{center}
+
+\end{document}
+
+\end{document}

@@ -1,0 +1,93 @@
+\begin{adjustwidth}{-3.5cm}{0cm}
+\pagestyle{CIOpage}
+\chapter[]{\textbf{Il monitoraggio del re di quaglie }\textbf{\textit{Crex crex}}\textbf{ in Friuli Venezia Giulia (anni
+2000-2012)}}
+
+
+\textsc{Fabrizio Florit}$^{1*}$, \textsc{Gianluca Rassati}$^{2**}$ \\
+\index{Florit Fabrizio} \index{Rassati Gianluca}
+\noindent\color{MUSEBLUE}\rule{27cm}{2pt}
+\vspace{1cm}
+\end{adjustwidth}
+
+\marginnote{\raggedright $^1$Regione autonoma Friuli Venezia Giulia - Servizio caccia, risorse ittiche e biodiversità - Ufficio studi faunistici Via Sabbadini, 31 - 33100 Udine \\
+$^2$Regione autonoma Friuli Venezia Giulia - Ispettorato Agricoltura e Foreste di Tolmezzo Via San Giovanni Bosco, 8 - 33028 Tolmezzo \\
+\vspace{.5cm}
+{\emph{\small $^*$Autore per la corrispondenza: \href{mailto:fabrizio.florit@regione.fvg.it}{fa\allowbreak bri\allowbreak zio.\allowbreak flo\allowbreak rit@\allowbreak re\allowbreak gio\allowbreak ne.\allowbreak fvg.\allowbreak it}}} \\
+{\emph{\small $^**$Autore per la corrispondenza: \href{mailto:gianluca.rassati@regione.fvg.it}{gian\allowbreak lu\allowbreak ca.\allowbreak ras\allowbreak sa\allowbreak ti@\allowbreak re\allowbreak gio\allowbreak ne.\allowbreak fvg.\allowbreak it}}} \\
+\keywords{\textit{Crex crex}, monitoraggio, Friuli Venezia Giulia}
+{\textit{Crex crex}, monitoring, Friuli Venezia Giulia}
+} 
+\noindent \textsc{\color{MUSEBLUE} Summary} / Autonomous Region of Friuli Venezia Giulia has been coordinating annual surveys of Corncrake since 2000. The data collected between 2000 and 2012 by Regional Forest Service rangers and Office for fauna studies are presented.
+Number of singing males is analyzed in relation to consistence and trend of regional population which is the most
+important within Italian breeding range. Population trend over last thirteen years, although with annual fluctuations, is negative. The geocoded information on the distribution of the species is the basis for implementing specific
+measures for the conservation of grassland habitats, mainly located in the pre-alpine and alpine areas of Friuli
+Venezia Giulia.\\
+
+\section*{Introduzione}
+La Lista Rossa 2011 degli Uccelli Nidificanti in Italia classifica il re di quaglie \textit{Crex crex} vulnerabile (VU) secondo il criterio D1 - popolazione minore di 1000 individui maturi (Peronace \textit{et al}. 2012). Nel contesto del ristretto areale di nidificazione italiano il Friuli Venezia Giulia ospita la più consistente popolazione di questa specie di notevole interesse conservazionistico. 
+
+
+\section*{Metodi}
+Un programma di monitoraggio del re di quaglie coordinato dalla Regione autonoma Friuli Venezia Giulia è stato avviato nel 2000 e si è avvalso del personale del Corpo forestale regionale (CFR) e dell’Ufficio studi faunistici (Gottardo \textit{et al}. 2001 e 2003; Florit \& Rassati 2005, 2009, 2010, 2013 e 2014).
+
+I dati sono stati archiviati in una banca dati georeferita utile per estrarre informazioni dettagliate sulla presenza,
+\ localizzazione e distribuzione della specie nel territorio regionale. La distribuzione in sintesi viene rappresentata in Unità di Rilevamento della Carta Tecnica Regionale Numerica (CTR, griglia di dimensioni pari a $3.200$x$2.800$ m), e riguarda il numero di maschi cantori censiti in periodo riproduttivo da metà maggio a fine giugno durante indagini notturne.
+
+
+\section*{Risultati e discussione}
+Nella tabella (Tab. \ref{Florit_tab_1}) sono riportati i dati relativi al monitoraggio regionale del re di quaglie nel periodo 2000-2012. 
+Negli ultimi tredici anni l’andamento demografico, seppure con fluttuazioni annuali, appare negativo. Rispetto ai primi tre anni di indagine la consistenza della popolazione regionale evidenzia un netto calo. In particolare nell’ultimo biennio, a fronte di uno sforzo di indagine superiore (155 e 148 Unità di Rilevamento indagate rispettivamente nel 2011 e 2012), la consistenza della popolazione appare paragonabile ai valori minimi registrati nel biennio 2005 e 2006 (122 e 79 UR indagate). 
+
+Nel biennio 2011-2012 la distribuzione dei maschi cantori nel territorio regionale è circoscritta a tre nuclei
+principali: Carnia, Prealpi Carniche e Prealpi Giulie (Fig. \ref{Florit_fig_1} e \ref{Florit_fig_2}). Alla diminuzione della popolazione è corrisposta una contrazione dell’areale di nidificazione.
+
+L’apparente abbandono di siti storici di nidificazione indica la necessità di continuare il monitoraggio del re di quaglie, coordinando le indagini a livello locale anche con le regioni limitrofe al fine di condividere comuni
+strategie di gestione degli habitat prativi, calibrate in funzione delle peculiarità delle diverse aree rurali
+(Rassati, 2004; Rassati \& Tout, 2002).
+
+\begin{table}[!h]
+\centering
+\begin{tabular}{>{\raggedleft\arraybackslash}p{.7\columnwidth}>{\raggedleft\arraybackslash}p{.7\columnwidth}>{\raggedleft\arraybackslash}p{.7\columnwidth}>{\raggedleft\arraybackslash}p{.7\columnwidth}>{\raggedleft\arraybackslash}p{.7\columnwidth}>{\raggedleft\arraybackslash}p{.7\columnwidth}>{\raggedleft\arraybackslash}p{.7\columnwidth}>{\raggedleft\arraybackslash}p{.7\columnwidth}>{\raggedleft\arraybackslash}p{.7\columnwidth}>{\raggedleft\arraybackslash}p{.7\columnwidth}>{\raggedleft\arraybackslash}p{.7\columnwidth}>{\raggedleft\arraybackslash}p{.7\columnwidth}>{\raggedleft\arraybackslash}p{.7\columnwidth}>{\raggedleft\arraybackslash}p{.7\columnwidth}}
+\toprule
+	& \textbf{2000} & \textbf{2001} & \textbf{2002} & \textbf{2003} & \textbf{2004} & \textbf{2005} & \textbf{2006} & \textbf{2007} & \textbf{2008} & \textbf{2009} & \textbf{2010} & \textbf{2011} & \textbf{2012}\\
+	\textbf{Tot n. \male\male} & 325 & 199 & 205 & 157 & 146 & 91 & 76 & 133 & 115 & 96 & 120 & 87 & 76 \\
+	\textbf{UR occupate} & 93 & 79 & 81 69 & 60 & 45 & 33 & 58 & 54 & 46 & 51 & 38 & 36 \\ 
+	\textbf{UR indagate} & 177 & 198 & 202 & 202 & 169 & 122 & 79 & 147 & 153 & 167 & 155 & 155 & 148 \\
+\end{tabular}
+\caption{Risultati del monitoraggio del re di quaglie in Friuli Venezia Giulia negli anni 2000-2012 (n. \male\male: numero di maschi cantori; UR: Unità di Rilevamento, corrispondenti ad un elemento della griglia della CTR))}
+\label{Florit_tab_1}
+\end{table}
+
+\begin{figure}
+\centering
+\includegraphics[width=.6\columnwidth]{Florit_fig_1.jpg}
+\caption{Distribuzione del re di quaglie rilevata nel 2011 nelle celle indagate}
+\label{Florit_fig_1}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=.6\columnwidth]{Florit_fig_2.jpg}
+\caption{Distribuzione del re di quaglie rilevata nel 2012 nelle celle indagate}
+\label{Florit_fig_2}
+\end{figure}
+
+\section*{Ringraziamenti}
+Per la raccolta dei dati in campo ringraziamo il personale del Corpo forestale regionale, dei Parchi naturali regionali e dell’Ufficio studi faunistici.
+
+Un ringraziamento a Renato Castellani, Matteo De Luca, Bruno Dentesani, Luca Dorigo, Sergio Gollino, Roberto Parodi, Davide Pasut, Pierluigi Taiariol, Paolo Utmar e Valter Simonitti, per i dati inediti forniti. 
+
+\section*{Bibliografia}
+\begin{itemize}\itemsep0pt
+	\item Florit, F. \& Rassati, G., 2005 - Il Re di quaglie \textit{Crex crex }in Friuli Venezia Giulia: 5 anni di monitoraggio (2000-2004). \textit{Avocetta}, 29: 110.
+	\item Florit, F. \& Rassati, G., 2009 - Aggiornamento sull’attività di monitoraggio del Re di quaglie \textit{Crex crex }promosso dalla Regione autonoma Friuli Venezia Giulia: anni 2007-2008. \textit{Alula}, 16 (1-2): 92-93.
+	\item Florit F. \& Rassati G., 2010 - Corncrake (\textit{Crex crex}) monitoring in Friuli Venezia Giulia (North-eastern Italy). Abstracts Bird Numbers 2010 “Monitoring, indicators and targets” 18th Conference of the European Bird Census Council, Càceres, Spain, 22-26 March 2010.
+	\item Florit, F. \& Rassati, G., 2013 - Il monitoraggio di una specie prioritaria per l’Unione Europea promosso dalla Regione autonoma Friuli Venezia Giulia: il Re di quaglie \textit{Crex crex}. \textit{Rivista italiana di Ornitologia}, 82 (1-2): 177-179.
+	\item Florit, F. \& Rassati, G., 2014 - Distribuzione del re di quaglie \textit{Crex crex} in Friuli Venezia Giulia in relazione alla rete regionale di aree naturali tutelate. Atti XVI Conv. It. Orn., Cervia (RA), 22-25 settembre 2011. Scritti, Studi e Ricerche di Storia Naturale della Repubblica di San Marino: 162-164.
+	\item Gottardo, E., Luise, R., Zorzenon, T., Ota, D. \& Florit F., 2001 - Il censimento del Re di quaglie \textit{Crex crex} nel Friuli-Venezia Giulia nel 2000. \textit{Avocetta}, 25: 212.
+	\item Gottardo, E., Luise, R., Zorzenon, T., Ota, D., Di Gallo, M., Facchin, G. \& Florit, F., 2003 - Il censimento del Re di quaglie \textit{Crex crex }in Friuli-Venezia Giulia negli anni 2001 e 2002\textit{. Avocetta}, 27: 111.
+	\item Peronace, V., Cecere, J.C., Gustin, M. \& Rondinini, C. 2012 - Lista Rossa 2011 degli Uccelli Nidificanti in Italia. \textit{Avocetta}, 36(1): 11-58.
+	\item Rassati G., 2004 - Evoluzione faunistica nelle aree rurali abbandonate. La presenza del Re di quaglie (\textit{Crex crex}) e della Lepre comune (\textit{Lepus europaeus}). \textit{Agribusiness Paesaggio \& Ambiente}, VII (1): 41-48.
+	\item Rassati, G. \& Tout, C.P., 2002 - The Corncrake (\textit{Crex crex}) in Friuli-Venezia Giulia (North-eastern Italy). \textit{Avocetta}, 26 (1): 3-6.
+\end{itemize}

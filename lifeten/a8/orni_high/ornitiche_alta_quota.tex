@@ -1,0 +1,842 @@
+\documentclass[10pt,twoside,openany,x11names,svgnames,italian,a5paper,dvipsnames,table]{memoir}
+\usepackage[italian]{babel}
+\usepackage{lmodern}
+\usepackage{wallpaper}
+\usepackage{tikz}
+\usetikzlibrary{shapes,positioning}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+
+\usepackage[hyphens]{url} % For URL automated linebreaks
+\usepackage{tabularx, booktabs,array}
+
+\usepackage{wrapfig}
+\usepackage{minibox}
+\usepackage{pdfpages}
+\usepackage{subcaption}
+
+\usepackage{lipsum}
+\usepackage[ISBN=978-80-85955-35-4]{ean13isbn}
+\usepackage{graphicx}
+\graphicspath{ {./img/} {./img/chap/} {./img/logo/} {./img/front/} {./img/icon/} {./img/back/} }
+
+% Captions
+\usepackage[labelfont={footnotesize,sf,bf},textfont={footnotesize,sf}]{caption}
+
+% Links
+\input{pantone_colori.tex}
+%%% COLORS
+\newcommand{\chaptercolor}{C13}
+\newcommand{\toprectanglecolor}{C14}
+\newcommand{\pageboxcolor}{B12}
+\newcommand{\backgroundrectanglecolor}{B14}
+\newcommand{\decoratelinecolor}{D7}
+\newcommand{\titlecolor}{F12}
+\newcommand{\backpagecolor}{\chaptercolor}
+
+\usepackage[pdftitle={LIFE+T.E.N. : Azione A8 - Piano di azione per la conservazione delle specie ornitiche di alta quota in Trentino},   pdfauthor={Sezione Zoologia dei Vertebrati, MUSE - Museo delle Scienze},
+     colorlinks,linktocpage=true,linkcolor=\titlecolor,urlcolor=BrickRed,citecolor=OliveGreen,bookmarks]{hyperref}
+
+% Adjust margins around typeblock
+\setlrmarginsandblock{23mm}{18mm}{*}
+\setulmarginsandblock{23mm}{23mm}{*}
+
+% Header and footer heights
+\setheadfoot{\baselineskip}{10mm}
+\setlength\headsep{7mm}
+
+% Apply and enforce layout
+\checkandfixthelayout
+
+% Command to hold chapter illustration image
+\newcommand\chapterillustration{}
+
+
+\definecolor[named]{GreenTea}{HTML}{CAE8A2}
+\definecolor[named]{MilkTea}{HTML}{C5A16F}
+\definecolor{verylightgray}{gray}{0.95}
+\definecolor{grey}{gray}{0.5} % 0-nero; 1-bianco
+
+\renewcommand{\labelitemi}{\textcolor{\backgroundrectanglecolor}{$\bullet$}}
+\newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
+\newcommand{\etal}{\textsl{et al}. }
+\newcommand{\ph}{\emph{Ph}. }
+\newcommand{\ie}{\emph{i}.\emph{e}. }
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newsubfloat{figure} % Allow subfloats in figure environment
+
+\input{pantone_colori.tex}
+%%% COLORS
+\newcommand{\chaptercolor}{C13}
+\newcommand{\toprectanglecolor}{C14}
+\newcommand{\pageboxcolor}{B12}
+\newcommand{\backgroundrectanglecolor}{B14}
+\newcommand{\decoratelinecolor}{D7}
+\newcommand{\titlecolor}{F12}
+\newcommand{\backpagecolor}{\chaptercolor}
+
+
+\newcommand{\tablespecie}[3]{\multicolumn{1}{c}{\parbox[t]{4.1cm}{\begin{minipage}[t][.8cm][t]{\textwidth}#1 \newline \href{#2}{\emph{#3}}\end{minipage}}}}
+
+\nouppercaseheads
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% BEGIN DOCUMENT STYLYING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\bibsection}{%
+\section{\bibname}
+\prebibhook}
+
+% CHAPTER STYLE DEFINITION BEGIN
+\makechapterstyle{chapterstyle}{
+% Vertical space before main text 
+  \setlength\beforechapskip{0pt}
+  \setlength\midchapskip{0pt}
+  \setlength\afterchapskip{70mm}
+
+  \renewcommand*\printchaptername{}
+  \renewcommand*\printchapternum{}
+  %% Re-define how the chapter title is printed
+  \def\printchaptertitle##1{
+    % Background image at top of page
+    \ThisULCornerWallPaper{1}{\chapterillustration}
+    % Draw a semi-transparent rectangle across the top
+    \tikz[overlay,remember picture]
+    \fill[fill=\chaptercolor,opacity=.7]
+      (current page.north west) rectangle 
+      ([yshift=-3cm] current page.north east);
+      % Check if on an odd or even page
+      \strictpagecheck\checkoddpage
+      % On odd pages, "logo" image at lower right
+      % corner; Chapter number printed near spine
+      % edge (near the left); chapter title printed
+      % near outer edge (near the right).
+      \ifoddpage{
+        % Insert picture in lower right corner
+        \ThisLRCornerWallPaper{.25}{fringuello_small_right.png}
+        % Chapter heading style for ODD pages
+        \begin{tikzpicture}[overlay,remember picture]
+          \node[anchor=south west,
+            xshift=10mm,yshift=-30mm,
+            font=\sffamily\bfseries\huge] 
+            at (current page.north west) 
+            {}; %\chaptername\chapternamenum\thechapter
+          \node[fill=\chaptercolor,text=white,
+            font=\Huge\bfseries, 
+            inner ysep=12pt, inner xsep=20pt,
+            rectangle,anchor=east, 
+            xshift=-10mm,yshift=-30mm] 
+            at (current page.north east) {##1};
+        \end{tikzpicture}
+      }
+      % On even pages, "logo" image at lower left
+      % corner; Chapter number printed near outer
+      % edge (near the right); chapter title printed
+      % near spine edge (near the left).
+      \else {
+        % Insert picture in lower left corner
+        \ThisLLCornerWallPaper{.25}{fringuello_small_left.png}
+        % Chapter heading style for EVEN pages
+        \begin{tikzpicture}[overlay,remember picture]
+          \node[anchor=south east,
+            xshift=-10mm,yshift=-30mm,
+            font=\sffamily\bfseries\huge] 
+            at (current page.north east)
+            {}; % \chaptername\chapternamenum\thechapter
+          \node[fill=\chaptercolor,text=white,
+            font=\Huge\bfseries,
+              inner sep=12pt, inner xsep=20pt,
+              rectangle,anchor=west,
+              xshift=10mm,yshift=-30mm] 
+              at ( current page.north west) {##1};
+        \end{tikzpicture}
+      } % END IF
+      \fi
+    } 
+} % END CHAPTER STYLE
+
+
+% CHAPTER STYLE FOR UNNUMBERED CHAPTERS
+\makechapterstyle{chapterstyleunnumbered}{
+  % Vertical Space before main text starts
+  \setlength\beforechapskip{0pt}
+  \setlength\midchapskip{0pt}
+  \setlength\afterchapskip{52mm}
+
+  \renewcommand*\printchaptername{}
+  \renewcommand*\printchapternum{}
+  %% Re-define how the chapter title is printed
+  \def\printchaptertitle##1{
+    % Draw a semi-transparent rectangle across the top
+    \tikz[overlay,remember picture]
+    \fill[fill=\toprectanglecolor,opacity=.7]
+      (current page.north west) rectangle 
+      ([yshift=-3cm] current page.north east);
+    % Check if on an odd or even page
+    \strictpagecheck\checkoddpage
+      \ifoddpage{
+        \begin{tikzpicture}[remember picture, overlay]
+        \node[fill=\chaptercolor,text=white,
+          font=\Huge\bfseries, 
+          inner ysep=12pt, inner xsep=20pt,
+          rectangle,anchor=east, 
+          xshift=-10mm,yshift=-30mm] 
+          at (current page.north east) {##1};
+        \end{tikzpicture}
+      }
+      \else {
+        \begin{tikzpicture}[remember picture, overlay]
+          \node[fill=\chaptercolor,text=white,
+            font=\Huge\bfseries,
+            inner sep=12pt, inner xsep=20pt,
+            rectangle,anchor=west,
+            xshift=10mm,yshift=-30mm] 
+            at ( current page.north west) {##1};
+        \end{tikzpicture}
+      } % END IF
+      \fi
+    } 
+} % END CHAPTER STYLE
+
+
+% Set the uniform width of the colour box
+% displaying the page number in footer
+% to the width of "99"
+\newlength\pagenumwidth
+\settowidth{\pagenumwidth}{99}
+
+% PAGE NUMBER COLOR BOX STYLE
+\tikzset{pagefooter/.style={
+anchor=base,font=\sffamily\bfseries\small,
+text=white,fill=\pageboxcolor,text centered,
+text depth=17mm,text width=\pagenumwidth}}
+
+%%%%%
+%% Re-define running headers on non-chapter odd pages
+%%%%%
+\makeoddhead{headings}
+% Left header is empty but I'm using it as a hook to paint the
+% background rectangles underneath everything else
+{\begin{tikzpicture}[remember picture,overlay]
+\fill[\backgroundrectanglecolor] (current page.north east) 
+  rectangle (current page.south west);
+\fill[white, rounded corners] 
+  ([xshift=-10mm,yshift=-20mm]current page.north east) rectangle  
+  ([xshift=15mm,yshift=17mm]current page.south west);
+\end{tikzpicture}}%
+% Blank centre header
+{}%
+% Display a decorate line and the right mark (chapter title)
+% at right end
+{\begin{tikzpicture}[xshift=-.75\baselineskip,yshift=.25\baselineskip,remember picture, overlay,fill=\decoratelinecolor,draw=\decoratelinecolor]\fill circle(3pt);\draw[semithick](0,0) -- (current page.west |- 0,0);\end{tikzpicture}\textcolor{white}{\sffamily\itshape\small\rightmark}}
+
+%%%%%
+%% Re-define running footers on ODD pages
+%% i.e. display the page number on the right
+%%%%%
+\makeoddfoot{headings}{}{}{\tikz[baseline]\node[pagefooter]{\thepage};}
+\makeoddfoot{plain}{}{}{\tikz[baseline]\node[pagefooter]{\thepage};}
+
+%%%%%
+%% Re-define running headers on non-chapter EVEN pages
+%%%%%
+\makeevenhead{headings}
+% Draw the background rectangles; then the left mark (section
+% title) and the decorate line
+{{\begin{tikzpicture}[remember picture,overlay]
+  \fill[\backgroundrectanglecolor] (current page.north east) rectangle (current page.south west);
+  \fill[white, rounded corners] ([xshift=-15mm,yshift=-20mm]current page.north east) rectangle ([xshift=10mm,yshift=17mm]current page.south west);
+\end{tikzpicture}}%
+\textcolor{white}{\sffamily\itshape\small\leftmark}
+\begin{tikzpicture}[xshift=.5\baselineskip,yshift=.25\baselineskip,remember picture, overlay,fill=\decoratelinecolor,draw=\decoratelinecolor]\fill (0,0) circle (3pt); \draw[semithick](0,0) -- (current page.east |- 0,0 );\end{tikzpicture}}{}{}
+\makeevenfoot{headings}{\tikz[baseline]\node[pagefooter]{\thepage};}{}{}
+\makeevenfoot{plain}{\tikz[baseline]\node[pagefooter]{\thepage};}
+% Empty centre and right headers on even pages
+{}{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% END DOCUMENT STYLYING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setsecnumdepth{chapter}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% DOCUMENTMATTER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\frontmatter
+
+%%%%%%%
+% Cover page
+%%%%%%%
+% No header nor footer on the cover
+\thispagestyle{empty}
+% Bar across the top
+\tikz[remember picture,overlay]%
+\node[fill=\chaptercolor,text=white,font=\LARGE\bfseries,text=Cornsilk,%
+minimum width=\paperwidth,minimum height=5em,anchor=north]%
+at (current page.north){
+\begin{tabular}{c}
+LIFE + T.E.N.: Azione A8\\
+\end{tabular}};
+
+% Cover illustration
+\ThisLLCornerWallPaper{1}{grassland.jpg}
+
+\vspace*{1\baselineskip}
+% Title
+{\bfseries\textcolor{\titlecolor}{\selectfont
+\\
+{\normalsize \emph{Action plans} per la conservazione di specie focali \\[0.05]
+di interesse comunitario} \\[0.3cm]
+{\huge\noindent Specie ornitiche\\[0.1cm]
+di alta quota}}}\\[0.2cm]
+
+
+\vspace*{2\baselineskip}
+
+
+
+% Footer image
+\begin{tikzpicture}[remember picture, overlay]
+  \node[fill=\chaptercolor,font=\LARGE\bfseries,text=Cornsilk,%
+  minimum width=\paperwidth,minimum height=5em,anchor=south]%
+  at (current page.south) {}; 
+  \node[anchor=south,inner sep=0pt] at (current page.south) { \includegraphics[width=\textwidth]{footer.png}};
+\end{tikzpicture}
+
+
+
+\vspace*{6\baselineskip}
+\includepdf[pages={1}]{second_cover_ornitiche_alta_quota.pdf}
+
+\cleartorecto
+
+% Invoke fancy unnumbered chapter style
+% for the table of contents
+
+\chapterstyle{chapterstyleunnumbered}
+\setlength\afterchapskip{10mm}
+\setcounter{tocdepth}{0}
+\tableofcontents*
+
+% Main matter starts here; resets page-numberings to arabic numeral 1
+\mainmatter
+
+% Invoke the chapterstyle chapter style
+\chapterstyle{chapterstyle}
+
+% Public domain image from
+% http://www.public-domain-image.com/objects/computer-chips/slides/six-computers-chips-circuits.html
+\setlength\afterchapskip{10mm}
+\chapter{Che cos'\`e un piano di azione}
+\renewcommand\chapterillustration{}
+\footnotesize
+\vspace{.5cm}
+In generale, l'approccio ecosistemico costituisce la strategia più corretta ed efficace per la conservazione della natura: attraverso la conservazione degli ecosistemi, ovvero degli ambienti naturali e delle relazioni che s’instaurano tra le varie componenti che in essi si rinvengono, si garantisce la conservazione sia delle singole specie che dei processi ecologici e dei fenomeni di interazione tra specie e tra fattori biotici e abiotici che consentono la presenza delle specie stesse.
+Vi sono tuttavia alcune situazioni nelle quali le misure di tutela ambientale possono non essere sufficienti per garantire la sopravvivenza di specie minacciate, che necessitano di misure di conservazione dedicate e spesso specie-specifiche. In questi casi è necessario seguire un approccio specie-specifico, intervenendo direttamente sui taxa fortemente minacciati di estinzione, che richiedono misure urgenti di conservazione. L’approccio specie – specifico prevede misure di intervento delineate in documenti tecnici denominati “Piani d’Azione” \cite{EUCOUNCIL98}.
+
+Un piano d’azione si basa sulle informazioni disponibili relative a biologia, ecologia, distribuzione e abbondanza della specie trattata e in base a queste propone misure d’intervento, delineate a partire dalla definizione delle minacce che mettono a rischio la sopravvivenza della specie. Il piano d’azione si compone poi degli obiettivi volti ad assicurare la conservazione della specie nel lungo periodo e delle corrispondenti azioni necessarie per realizzarli.
+Una corretta strategia di conservazione relativa a una determinata specie deve contemplare la pianificazione degli obiettivi nel breve, medio e lungo periodo, e deve essere flessibile e modificabile nel tempo. Infatti periodiche verifiche circa lo stato di realizzazione ed avanzamento delle azioni, in rapporto al raggiungimento degli obiettivi, possono mettere in luce la necessità di un loro adeguamento, in funzione anche di scenari mutati.
+
+Nell'ambito di questo piano sviluppato nell'Azione A8 del LIFE + T.E.N., così come in alcuni altri sempre realizzati nello stesso LIFE, si è utilizzato un approccio innovativo, a cavallo tra quello ecosistemico e quello specie-specifico, riferito a gruppi di specie che occupano gli stessi ambienti e che risultano sostanzialmente sottoposte alle stesse minacce e pressioni. In questo modo, s’intende massimizzare l'efficacia degli interventi proposti per la conservazione e ottimizzare il relativo rapporto costi/benefici, proponendo indicazioni che mirino alla salvaguardia non di una sola specie, ma di un gruppo di specie con esigenze ecologiche largamente sovrapposte e che spesso necessitano di strategie di conservazione simili. Nel caso degli ambienti d’alta quota si considerano infatti comuni per molte specie i fattori di minaccia in atto a seguito dei cambiamenti ambientali e climatici in corso a scala alpina, che vedono nell’abbandono della montagna e il conseguente ritorno della foresta, il fattore principale che ha determinato la scomparsa o il forte declino di specie un tempo comuni e caratteristiche della fauna alpina. \\
+
+
+
+
+\normalsize
+\setlength\afterchapskip{52mm}
+\chapter{Inquadramento generale}
+\renewcommand\chapterillustration{1.JPG}
+
+\section{Inquadramento dell'habitat e delle specie}
+Gli ambienti d’alta quota rientrano nella fascia dell’orizzonte nivale, compresa tra il limite superiore degli alberi (attorno ai 1800-2200 m s.l.m., a seconda delle condizioni locali) e il limite inferiore delle nevi perenni (2600-3500 m s.l.m., a seconda delle aree, delle esposizioni, etc.). Comprendono quindi, le fasce di vegetazione alpina e nivale, secondo le più frequenti classificazioni utilizzate per la distinzione prevalentemente altimetrica. La definizione dell’ambiente nivale e del clima che lo caratterizza varia però in funzione delle caratteristiche locali. È quindi più semplice inquadrare questo tipo di ambienti sulla base degli effetti generati dalla permanenza prolungata della neve che li caratterizza. 
+
+Nei secoli passati, gli ambienti aperti d’alta quota si estendevano verso quote inferiori, per la costante opera di disboscamento operata dall’uomo e finalizzata alla creazione o all’estensione dei pascoli necessari all’allevamento estivo del bestiame. Il progressivo cambiamento socio-economico avvenuto nella seconda metà del secolo scorso, con il conseguente abbandono della montagna e la  cessazione delle attività agro-silvo-pastorali in molte valli, ha provocato il ben noto e visibile ritorno della vegetazione arboreo-arbustiva, con perdita di habitat vitali per molte specie animali e vegetali.
+
+Anche gli ambienti semi-naturali di origine antropica sono compresi nel presente studio. Le specie che li popolano, infatti, sono spesso le stesse delle praterie naturali, con le quali risultano in continuità e con cui condividono pressioni e minacce. Questi ambienti vengono considerati anche per il ruolo ecologico vitale che svolgono per molte specie, non solo nella fase riproduttiva ma anche in quelle successive di allevamento della prole e svernamento. Un esempio in tal senso è rappresentato dalla coturnice \emph{Alectoris graeca}; nonostante negli ultimi anni la caccia sia stata interdetta, questa specie è scomparsa da molti settori montani in seguito alla riforestazione naturale dei versanti aperti e dei pascoli e dell'abbandono delle coltivazioni cerealicole in quota, ideali habitat di svernamento. 
+Gli ambienti d’alta quota, oltre a essere uno degli elementi più interessanti e caratteristici del paesaggio montano delle Alpi, costituiscono un insieme di habitat di specie ad elevata diversità a seconda dei contesti montani (ad es. alpini e prealpini),   tra i più minacciati tra quelli presenti sul territorio alpino ed europeo.
+
+Le condizioni climatiche ed ecologiche spesso estreme che li caratterizzano limitano fortemente il numero di specie presenti, che mostrano in molti casi specifici adattamenti alle condizioni ambientali selettive presenti alle alte quote. Si tratta di organismi che hanno adottato nel corso della loro evoluzione una serie di ‘accorgimenti’ funzionali alla sopravvivenza in questi difficili contesti. Salendo verso le alte quote quindi diminuisce il numero di specie ma aumenta il livello di specializzazione \cite{Nagy03} \cite{Gonzalez10} \cite{Dirnbock11}.
+
+Queste specie così particolari, insieme al loro peculiare ambiente, oggi sono fortemente minacciate dai cambiamenti ambientali, e climatici in particolare, in atto sia scala sia provinciale che europea e globale \cite{Bellard12} \cite{Chamberlain13}. Gli effetti del riscaldamento climatico sono ben evidenti sulle Alpi, dove il ritiro dei ghiacciai e il progressivo innalzamento del limite della vegetazione arborea, testimoniano l’aumento della temperatura e in generale la variazione dei regimi climatici in atto a scala globale. Questi fenomeni hanno ovvie ripercussioni sulle comunità animali e vegetali degli ambienti d’alta quota \cite{Brambilla14}, ed sono evidenti i segni di sofferenza da parte di diverse specie adattate a vivere con queste condizioni estreme. 
+
+\newpage
+\section{L'avifauna d'alta quota}
+
+Il presente piano d’azione riguarda le principali specie ornitiche degli ambienti d’alta quota presenti in Trentino, che per il loro elevato livello di minaccia rientrano nella lista delle specie dell’Allegato I della Direttiva Uccelli e delle Liste Rosse nazionale e locale \cite{Pedrini05} \cite{Peronace12}. 
+Alcune di esse abitano le aree a quote più elevate, prossime ai ghiacciai e alle nevi perenni: la pernice bianca \emph{Lagopus muta}e fringuello alpino \emph{Montifringilla nivalis} occupano aree comprese tra 1800 e 3000 m s.l.m., rimanendo spesso a quote elevate anche durante l’inverno (soprattutto la pernice bianca). Le aree con praterie alpine (in senso lato) sono abitate da numerosi Passeriformi, tra i quali i più rappresentativi sono lo spioncello \emph{Anthus spinoletta} e il culbianco \emph{Oenanthe oenanthe}; dove le rocce sono abbondanti compaiono spesso il sordone \emph{Prunella collaris}, il codirossone \emph{Monticola saxatilis}, il codirosso spazzacamino \emph{Phoenicurus ochruros}; sulle pareti rocciose nidificano il gracchio alpino \emph{Phyrrhocorax graculus} e il picchio muraiolo \emph{Tichodroma muraria}, ma anche rapaci come l'aquila reale \emph{Aquila chrysaetos} e il gheppio \emph{Falco tinnunculus}, che cacciano prevalentemente nelle aree aperte ad alta quota, frequentate anche dalla coturnice. Gli ambienti d’alta quota più elevati delle Alpi centrali sono frequentati dal gipeto \emph{Gypaetus barbatus}, avvoltoio recentemente ritornato come nidificante sulle Alpi, grazie al progetto di reintroduzione avviato a scala alpina negli anni Ottanta \cite{Genero96} del secolo scorso.  La fascia di contatto o di transizione con i boschi di conifere ospita numerose specie interessanti, tra cui il fagiano di monte \emph{Tetrao tetrix}, il venturone alpino \emph{Carduelis citrinella}, l'organetto \emph{Carduelis flammea}. Nei contesti prealpini con pascoli sommitali nidifica anche l’allodola \emph{Alauda arvensis}, specie in grado di occupare ambienti prativi a quote estremamente diverse. Dove l’erba riesce a crescere maggiormente, oltre a questa specie, nidificano anche la quaglia \emph{Coturnix coturnix}, lo stiaccino \emph{Saxicola rubetra} e lo zigolo giallo \emph{Emberiza citrinella}, mentre alle zone pascolate con presenza di arbusti sono legati l'averla piccola \emph{Lanius collurio} e fanello \emph{Carduelis cannabina}. 
+Molte di queste specie abbandonano completamente gli ambienti ad alta quota dopo la stagione riproduttiva; altre compiono modesti spostamenti altitudinali, mentre alcune rimangono tutto l’anno in questi habitat \cite{Brichetti03} \cite{Brichetti07} \cite{Brichetti08}.
+
+\newpage
+\section{Distribuzione e stato di conservazione in Italia e in Europa}
+Le specie inserite nell’Allegato I della direttiva Uccelli e considerate “specie target” nel presente piano d'azione, in quanto caratterizzanti gli ambienti aperti d’alta quota in Trentino sono le seguenti: pernice bianca, fagiano di monte, coturnice, gipeto, aquila reale. 
+Altre specie tipiche di questi ambienti (ma non inserite nell'Allegato I della Direttiva Uccelli), che potrebbero beneficiare delle misure formulate sulla base delle esigenze ecologiche delle specie target elencate sopra, sono gheppio, allodola, spioncello, sordone, culbianco, codirossone, codirosso spazzacamino, fringuello alpino, gracchio alpino. La fascia dei pascoli a quote inferiori e la zona di contatto con i consorzi forestali ospitano altre specie delle cui esigenze si è tenuto conto nel presente piano d’azione, ovvero averla piccola (Allegato I della Direttiva Uccelli), e quaglia, stiaccino, passera scopaiola \emph{Prunella modularis}, merlo dal collare \emph{Turdus torquatus}, bigiarella \emph{Sylvia curruca}, fanello, venturone alpino, organetto, zigolo giallo.
+
+Segue un elenco delle specie target del Piano d’azione e le altre specie di questi ambienti sopracitate, di maggior interesse conservazionistico a scala provinciale.
+
+
+\section{Biologia ed ecologia generali}
+\renewcommand\chapterillustration{1.JPG}
+
+Le specie target del piano d'azione sono prevalentemente o interamente legate alla presenza di ambienti aperti d’alta quota, almeno per quanto riguarda la loro distribuzione in Trentino. 
+
+
+La \textbf{pernice bianca} rappresenta un tipico esempio di adattamento alle condizioni estreme di questi ambienti; la sua presenza sulle Alpi è legata a epoche passate caratterizzate da climi molto più rigidi durante i quali questo Tetraonide ha espanso il proprio areale a livello continentale, ritirandosi poi verso le estreme latitudini e le quote più elevate con il progressivo affermarsi di condizioni più miti (distribuzione boreo-alpina). Come il fringuello alpino, la pernice bianca risulta legata ad ambienti aperti d’alta quota e con abbondante innevamento, presso i quali rimane anche durante la stagione invernale. Anche il \textbf{sordone} abita ambienti aperti d’alta quota, mostrando una predilezione per pietraie, vallette nivali e sfasciumi, ma frequentando anche praterie con affioramenti rocciosi. D’inverno buona parte degli individui si sposta a quote inferiori.
+
+\begin{wrapfigure}[]{r}{.6\columnwidth}
+\centering
+  \includegraphics[width=.6\columnwidth]{mendi_aquila_reale_2.jpg}
+  \caption*{\textbf{Aquila reale} \emph{Aquila chrysaetos}. In Trentino la popolazione nidificante, stabile e in buono stato di conservazione, è stata stimata in 60 coppie territoriali, distribuite in tutti i gruppi montuosi, con maggiori densità nei settori alpini rispetto a quelli prealpini (\ph Michele Mendi).}
+\end{wrapfigure}L’\textbf{aquila reale} nidifica su pareti rocciose, più raramente su alberi, comunque sempre su versanti ripidi e isolati, e posti a quote inferiori rispetto ai territori estivi di caccia, dove le coppie territoriali sono solite cacciare in aree aperte o semi-aperte a quote elevate (e ricche di prede) soprattutto mammiferi, di medie dimensioni. La sua presenza, favorita dalla protezione diretta sancita da oltre quarant’anni e dalle migliorate condizioni faunistiche generali, può risentire, nel medio periodo, della perdita degli ambienti aperti d’alta quota, soprattutto di quelli d’origine antropica nei contesti prealpini meno elevati \cite{Pedrini01} \cite{Pedrini01b} \cite{Pedrini02}. Diverse sono le esigenze del gipeto, strettamente legato per nidificare alle pareti rocciose in massicci montuosi di maggiori altimetrie e popolati da Ungulati, le cui carcasse sono la principale fonte di cibo della specie.
+
+
+La \textbf{coturnice} è presente sulle Alpi tra i 500 e i 2500 m di quota, con maggior frequenza nella fascia compresa tra i 1500 e i 2000 m, in versanti esposti a sud, con mosaico ambientale composto da ambienti aperti (praterie alpine o ambienti xerofili dei versanti a quote inferiori), affioramenti rocciosi, spesso aree con vegetazione arbustiva bassa \cite{Pedrini05}. Le popolazioni appaiono soggette a fluttuazioni con ciclo di 4-7 anni, più frequenti in ambienti aridi \cite{Cattadori99} \cite{Cattadori03}. Durante la stagione invernale rimane sui versanti montani, eventualmente spostandosi verso quote inferiori dove è comunque legata a prati e pascoli.
+
+
+Lo \textbf{spioncello} è uno dei più comuni abitanti delle praterie alpine e frequenta sia pascoli che praterie naturali d’alta quota. D’inverno si sposta verso quote inferiori e nelle aree del bacino del Mediterraneo e del Nord Africa dove sverna regolarmente.
+
+
+\textbf{Culbianco} e \textbf{codirossone} sono legati alla presenza di ambienti aperti con rocce sparse o affioramenti rocciosi. La presenza del culbianco è condizionata alla disponibilità di siti rocciosi o sassosi per nidificare e di aree con erba bassa o terreno scoperto, ricche di insetti; sulle Alpi è più frequente nella fascia compresa tra i 2000 e i 2500 m di quota, in zone assolate, con erba bassa e rocce o detriti, macereti o praterie rocciose. Il codirossone nidifica preferibilmente in fianchi montuosi ben esposti, con massi e pietre, spesso a considerevole quota (soprattutto oltre i 1200 m e fino a 3000 m). Sono migratori a lungo raggio che trascorrono l’inverno nell’Africa sub sahariana \cite{Brichetti07}.
+
+\vspace*{\fill}
+\begin{center}
+\includegraphics[width=1\columnwidth]{mendini_pernice.jpg}
+\end{center}
+\captionof*{figure}{\textbf{Pernici bianche} \emph{Lagopus muta}. Tetraonide alpino tra i più minacciati dai cambiamenti climatici in atto; ormai estinto nei settori prealpini provinciale dove nidificava fino agli anni Ottanta. Sulle Prealpi viene segnalato in periodo invernale (\ph Mauro Mendini).}
+\vspace*{\fill}
+
+\newpage
+
+%\rowcolors{2}{F12!50!white}{white}
+\small
+\begin{table}[H]
+\centering
+\begin{adjustwidth*}{-.4cm}{-.4cm}
+\scalebox{.8}{
+\begin{tabular}{l|l|l|l|l|l|l|l}
+\toprule
+\hiderowcolors                          
+  \textbf{\textcolor{\titlecolor}{Specie}} &
+  \rotatebox{270}{\textbf{\textcolor{\titlecolor}{\textsc{All. I D.U.}}}} & 
+  \rotatebox{270}{\textbf{\textcolor{\titlecolor}{\textsc{Cat. SPEC}}}} &
+  \rotatebox{270}{\textbf{\textcolor{\titlecolor}{\textsc{Stato EU}}}} &
+  \rotatebox{270}{\textbf{\textcolor{\titlecolor}{\textsc{Stato IT}}}} &
+  \rotatebox{270}{\textbf{\textcolor{\titlecolor}{\textsc{LR IT (2011)}}}} &
+  \rotatebox{270}{\textbf{\textcolor{\titlecolor}{\textsc{LR TN (2005)}}}} & 
+  \rotatebox{270}{\textbf{\textcolor{\titlecolor}{\textsc{Prior. A2}}}} \\[2pt]
+\midrule
+\showrowcolors                          
+  \tablespecie{Pernice bianca}{http://217.199.4.93/webgis/?specie=Lagopus\%20muta}{Lagopus muta} & $\bullet$ & - & in declino  & cattivo & VU & EN & 52.4\\
+  \tablespecie{Fagiano di monte}{http://217.199.4.93/webgis/?specie=Tetrao\%20tetrix}{Tetrao tetrix}  & $\bullet$ & 2 & popolazione ridotta & cattivo & LC & EN & 72.2 \\
+  \tablespecie{Coturnice}{http://217.199.4.93/webgis/?specie=Alectoris\%20graeca}{Alectoris graeca}  & $\bullet$ & 2 & popolazione ridotta & cattivo & VU & EN & 72.2 \\
+  \tablespecie{Gipeto}{http://217.199.4.93/webgis/?specie=Gypaetus\%20barbatus}{Gypaetus barbatus}  & $\bullet$ & 3 & vulnerabile & cattivo & CR & EX & 54\\
+  \tablespecie{Aquila reale}{http://217.199.4.93/webgis/?specie=Aquila\%20chrysaetos}{Aquila chrysaetos}  & $\bullet$ & 3 & rara  & inadeguato  & NT  & VU & 47.6 \\
+  \tablespecie{Spioncello}{http://217.199.4.93/webgis/?specie=Anthus\%20spinoletta}{Anthus spinoletta}  &  & - & sicuro  & inadeguato  & LC  & LC  & - \\
+  \tablespecie{Sordone}{http://217.199.4.93/webgis/?specie=Prunella\%20collaris}{Prunella collaris} &  & - & sicuro  & favorevole  & LC  & LC  & -\\
+  \tablespecie{Culbianco}{http://217.199.4.93/webgis/?specie=Oenanthe\%20oenanthe}{Oenanthe oenanthe} &  & 3 & in declino  & cattivo & NT  & LC & - \\
+  \tablespecie{Codirossone}{http://217.199.4.93/webgis/?specie=Monticola\%20saxatilis}{Monticola saxatilis} &  & 3 & popolazione ridotta & cattivo & VU & VU &  \\
+  \tablespecie{Fringuello alpino}{http://217.199.4.93/webgis/?specie=Montifringilla\%20nivalis}{Montifringilla nivalis}  &  & - & sicuro  & sconosciuto & LC  & LC & -  \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustwidth*}
+\caption{Categorie di minaccia per le specie target. Per il significato delle abbreviazioni utilizzate, si veda la pagina seguente, per dettagli sulla priorità dell'Azione A2 si veda invece \href{http://www.lifeten.tn.it/binary/pat_lifeten/azioni_preparatorie/LifeTEN_Report_A2.1395233849.pdf}{il relativo documento}, per dettagli sulla Direttiva Uccelli, la pagina Web \url{http://www.minambiente.it/pagina/direttiva-uccelli}}
+\label{redlist}
+\end{table} 
+
+
+
+\newpage
+\label{tab:legende}
+
+\begin{table}[H]
+\centering
+\hiderowcolors
+\begin{adjustwidth*}{-.6cm}{-.6cm}
+\scalebox{.75}{
+\begin{tabular}{p{0.05\columnwidth}p{14cm}}
+ \multicolumn{2}{l}{\textbf{\Large Legenda Liste Rosse}} \\
+ \medskip \\
+ \textbf{Sigla} & \textbf{Significato}\\
+ \midrule
+ \showrowcolors
+ \textbf{RE} & Estinta nella regione (\emph{Regional Exctinct}): presente in passato, 
+ con popolazioni naturali che si sono estinte nell’intera regione.\\
+   \textbf{RE?} & Probabilmente estinta nella regione (\emph{Regional Exctinct}?): presente in passato, 
+ con popolazioni naturali la cui estinzione seppur molto probabile non si ritiene sufficientemente accertata. \\
+ \textbf{CR} & In pericolo in modo critico (\emph{Critically Endangered}): 
+ con altissimo rischio di estinzione nell’immediato futuro, per la quale occorrono urgenti interventi di tutela\\
+   \textbf{EN} & In pericolo (\emph{Endangered}): fortemente minacciata di estinzione in un prossimo futuro, 
+ cioè presente con piccole popolazioni o le cui popolazioni sono in significativo regresso in quasi
+ tutta la regione o scomparse da determinate zone. \\
+ \textbf{VU} & Vulnerabile (\emph{Vulnerable}): minacciata di estinzione nel futuro a medio termine,
+ ovvero minacciata in numerose località della regione, con popolazioni piccole o piccolissime
+ o che hanno subito un regresso a livello regionale o sono localmente scomparse. \\
+   \textbf{NT} & Potenzialmente minacciata (\emph{Near Threatened}): non si qualifica per alcuna delle
+ categorie di minaccia sopra elencate, per la quale sono noti tuttavia elementi che inducono a
+ considerarla in uno stato di conservazione non scevro da rischi in regione. \\
+ \textbf{LC} & Non minacciata (\emph{Least Concern}): non inseribile in nessuna delle categorie
+ precedenti in quanto ampiamente diffusa e frequente. \\
+   \textbf{DD} & Carenza di informazioni (\emph{Data Deficient}): le conoscenze sulla presenza 
+ e diffusione nella regione non sono ancora ben note e di conseguenza non sono 
+ manifeste le reali minacce che possono interessare le sue popolazioni. \\
+ \textbf{NE} & Non valutata (\emph{Not Evaluated}): non è stata fatta alcuna valutazione. \\
+\bottomrule
+ \end{tabular}
+}
+\end{adjustwidth*}
+ 
+}
+\end{table}
+      
+
+\begin{table}[H]
+\centering
+\scalebox{.75}{
+\hiderowcolors
+\begin{tabular}{p{0.15\columnwidth}p{12cm}}
+\multicolumn{2}{l}{\textbf{\Large Categorie SPEC} - Species of European Conservation Concern} \\
+\multicolumn{2}{l}{così come indicate da \emph{BirdLife International} \cite{Birdlife04}} \\
+ \medskip \\
+ \textbf{Sigla} & \textbf{Significato}\\  
+  \midrule
+  \showrowcolors
+  SPEC 1 & Specie di rilevanza conservazionistica globale.\\
+  SPEC 2 & Concentrata in Europa con uno \emph{status} conservazionistico sfavorevole. \\
+  SPEC 3 & Non concentrata in Europa, ma con uno \emph{status} conservazionistico sfavorevole \\
+  Ne & Concentrata in Europa, ma con uno \emph{status} conservazionistico favorevole. \\
+  N & Non concentrata in Europa, e con uno \emph{status} conservazionistico favorevole. \\
+  \midrule
+\end{tabular}
+}
+\end{table}
+
+\newpage
+\chapter{Stato delle specie in Trentino}
+\renewcommand\chapterillustration{2.JPG}
+\section{Distribuzione e status di conservazione}
+Il quadro più aggiornato emerge dall’Atlante degli Uccelli nidificanti in Trentino (2005)\footnote{\url{http://217.199.4.93}} che riassume:
+\begin{itemize}\itemsep0pt
+  \item gran parte delle informazioni sui Passeriformi alpini,
+  \item le molte ricerche e censimenti condotte dagli anni Ottanta, dedicate ai rapaci diurni,
+  \item i dati emersi dagli annuali censimenti,
+  \item gli studi sui Galliformi alpini condotti dal Servizio Foreste e nelle aree protette provinciali.
+\end{itemize}
+
+Le specie target del progetto si rinvengono in buona parte dei gruppi montuosi trentini, ad eccezione del gipeto, che risulta ancora di presenza irregolare e non nidificante e relativamente localizzata; le occasionali osservazioni sono più numerose nel periodo tardo invernale e nei settori settentrionali e occidentali, nel Parco dello Stelvio e in aree limitrofe \cite{Pedrini05}.
+Tutte queste specie mostrano uno stato di conservazione sfavorevole a livello nazionale (ad eccezione del sordone \cite{Gustin09} \cite{Gustin10}; apparentemente, la situazione (stando alle liste rosse) sembra più favorevole a livello trentino (vedi Tab. \ref{redlist}), ma questa discrepanza è essenzialmente dovuta al differente periodo in cui sono state redatte le due liste rosse: nell'arco dei sette anni che separano infatti la Lista Rossa provinciale \cite{Pedrini05} da quella nazionale \cite{Peronace12}, lo stato di diverse specie è peggiorato anche a livello trentino.
+
+
+\section{Ecologia in Trentino}
+La \textbf{pernice bianca} in Trentino frequenta praterie alpine generalmente pietrose. Tollera la presenza di pochi arbusti ma non di vegetazione arborea o arbustiva compatta, macereti, conoidi di deiezione, e giunge fino al limite delle nevi perenni; risulta ancora presente e più comune nei settori alpini più interni mentre è rara e presente solo in maniera occasionale nel periodo invernale, in quelli prealpini, dove invece nidificava regolarmente fino agli anni Settanta.
+
+La \textbf{coturnice} occupa una fascia altitudinale più ampia, purché vi siano ambienti aperti con vegetazione erbacea: praterie alpine, pascoli, prati aridi, prati da sfalcio, arbusteti radi, versanti detritici; predilige settori esposti a sud, con buona pendenza e affioramenti rocciosi. Nelle Prealpi si spinge fino a quote medio-basse, soprattutto nei versanti esposti al sole lungo le principali vallate dell’Adige, Sarca, e dove compie pendolarismi stagionali.
+
+L'\textbf{aquila reale} in Trentino nidifica in complessi rocciosi di dimensioni diverse, più raramente in contesti forestali e sugli alberi, comunque sempre in luoghi poco raggiungibili e poco frequentati dall’uomo; i territori di nidificazione posti a quote inferiori agli ambienti di caccia, sono compresi tra 800 ai 1400 metri di quota nelle Prealpi, mentre vanno dai 1200 fino a oltre i 2000 metri di quota in quelli alpini, dove la specie raggiunge le maggiori densità \cite{Pedrini02} \cite{Pedrini05}. Gli ambienti di caccia più frequentati sono le aree aperte in quota: praterie, pascoli, versanti rocciosi o detritici, arbusteti alpini ,\begin{wrapfigure}[19]{r}{.6\columnwidth}
+\centering
+  \includegraphics[width=.6\columnwidth]{mendini_sordone.jpg}
+  \caption*{\textbf{Sordone} \emph{Prunella collaris}. Nidifica alle base di pareti rocciose, presso sfasciumi o macereti, in cavità e a terra; specie confidente, spesso si può lascia osservare con facilità. È presente nelle aree propriamente alpine e nei settori più elevati delle Prealpi (\ph Mauro Mendini).}
+\end{wrapfigure} ambienti perlustrati occasionalmente anche dal gipeto, comparso in Trentino con una certa regolarità negli inverni dei primi anni Novanta nel Brenta meridionale, e poi prevalentemente nei settori del Parco dello Stelvio Trentino, area protetta nazionale che oggi ospita quattro coppie nidificanti. La nidificazione del gipeto in Trentino, non ancora registrata, pare esser fortemente condizionata dalle insufficienti disponibilità alimentari, oltre che dalle limitate disponibilità di siti idonei alla riproduzione. La specie è legata alla mortalità naturale di Ungulati e alla conseguente disponibilità naturale di carcasse, suo alimento principale \cite{Genero96}.
+
+Tra i Passeriformi alpini, il \textbf{sordone} occupa in Trentino prevalentemente ambienti caratterizzati dalla presenza di pareti rocciose, versanti detritici o altri affioramenti rocciosi; si trova quindi in sfasciumi, praterie rade con affioramenti rocciosi o frane, arbusteti con canaloni e conoidi detritici, fino a 3000 m di quota nei settori alpini cristallini e dolomitici, e in minor numero in quelli più bassi prealpini. Negli stessi ambienti nidifica anche il fringuello alpino, che occupa a quote anche rilevanti ambienti in rocciosi di vario tipo (rupi, pendii scoscesi, vallette nivali, conoidi di deiezione, macereti, pietraie, sfasciumi), spesso in prossimità di praterie alpine. Può nidificare anche presso edifici o altri manufatti, quasi sempre comunque oltre i 2000 m di quota.
+
+L’altra specie, lo \textbf{spioncello}, piccolo Passeriforme migratore a corto raggio, nidifica in praterie primarie e secondarie e pascoli sommitali, in tutti i principali gruppi montuosi del Trentino, con maggiori densità nei contesti calcarei e dolomitici, solitamente però nelle porzioni sommitali, dove raggiunge le quote più basse in quelli prealpini \cite{Pedrini05}. Il culbianco condivide con lo spioncello gli ambienti dei pascoli montani. Questo Passeriforme, migratore transahariano, abita praterie con erba bassa e presenza di suolo scoperto, vegetazione rada o affioramenti rocciosi, da xerogramineti alle quote inferiori, ai pascoli montani, dove raggiunge le maggiori densità. Risulta più abbondante in ambiti montuosi caratterizzati da rocce sedimentarie, anche prealpini \cite{Pedrini05}; \begin{wrapfigure}[19]{l}{.6\columnwidth}
+\centering
+  \includegraphics[width=.6\columnwidth]{mendini_pernice_2.jpg}
+  \caption*{\textbf{Pernice bianca} \emph{Lagopus muta}. Tetraonide alpino tra i più minacciati dai cambiamenti climatici in atto. E' ormai estinta come nidificante nei settori prealpini provinciali, dove si riproduceva fino agli anni Ottanta, mentre ora è segnalata solamente
+in periodo invernale (\ph Mauro Mendini).}
+\end{wrapfigure}raramente e in condizioni climatiche particolari può nidificare anche nelle praterie fino ai 1500 metri di quota; solitamente la sua fascia di nidificazione parte dai 2000 metri.
+
+Tra le specie che nidificano in una fascia altitudinale più ampia, il \textbf{codirossone} frequenta versanti ben esposti al sole e praterie pascolate ad erbe basse e ricche  di affioramenti rocciosi, spesso su terreni accidentati. In Trentino lo si trova soprattutto in contesti dolomitici e di rocce sedimentarie. Negli ambienti di margine rientrano alcune delle specie tipiche degli agricoli aperti e coltivati di bassa e media quota, quali l’allodola, l’averla piccola \emph{Lanius collurio} e il fanello \emph{Carduelis cannabina}, che frequentano i pascoli d’altura, e che qui trovano il loro limite altitudinale. Tutte posso trarre vantaggio dalle azioni connesse al mantenimento delle aree aperte d’origine antropica, prevalentemente nei contesti prealpini. Si ricorda infatti che per alcune di queste, ad esempio l’allodola, questi ambienti sono ormai gli ultimi rimasti dove è possibile incontrare popolazioni nidificanti ancora stabili di queste specie \cite{Pedrini05}. 
+I contesti di margine al limite inferiore della vegetazione arborea e arbustiva, sono habitat riproduttivo del \textbf{fagiano di monte}, specie considerata vulnerabile a scala europea e in declino nella maggior parte del territorio; sulle Alpi pare meno minacciata rispetto agli altri Tetraonidi legati agli ambienti esclusivamente aperti e d’alta quota, apparentemente favorita dal naturale aumento degli ambienti ecotonali a seguito della riforestazione naturale. Per nidificare e allevare la prole necessita di radure e di aree semiaperte, boscaglie ad ontano verde, boschi di conifere a bassa densità e mughete. Le attività pastorali in quota contribuiscono al mantenimento delle condizioni ideali del suo habitat.
+
+\begin{center}
+\includegraphics[width=.9\columnwidth]{mendini_coturnice.jpg}
+\end{center}
+\captionsetup{width=0.9\columnwidth}
+\caption*{\textbf{Coturnice} \emph{Alectoris graeca}. Specie sedentaria, nidifica fra i 1000 e i 2100 metri di quota. La popolazione trentina della specie, stimata in alcune migliaia di individui, appare in forte declino a partire dagli anni Settanta, a seguito della perdita di habitat di riproduzione e di svernamento, dovuta ai cambiamenti ambientali in atto (\ph Mauro Mendini).}
+\vspace*{\fill}
+
+ 
+\chapter{Fattori di minaccia}
+\renewcommand\chapterillustration{3.JPG}
+
+Tutte queste specie sono minacciate a livello provinciale dalle variazioni quantitative e qualitative degli habitat d’alta quota.
+
+\begin{wrapfigure}[19]{r}{.6\columnwidth}
+\centering
+  \includegraphics[width=.6\columnwidth]{fagiano_monte_michele_mendi.jpg}
+  \caption*{\textbf{Fagiano di monte} \emph{Tetrao tetrix}. Questa specie si spinge ai limiti superiori della vegetazione arborea, dove le formazioni rade di larice e quelle arbustive a rododendro, ontano e mugo, compongono l’habitat primaverile ed estivo di riproduzione e allevamento della prole (\ph Michele Mendi).}
+\end{wrapfigure}Gli ambienti prativi al margine della vegetazione arborea vengono progressivamente erosi dall’avanzata del bosco, legata sia al riscaldamento climatico, che a fenomeni di abbandono (fortunatamente ridimensionati negli ultimi anni a livello provinciale, ma tuttora non completamente cessati \cite{Pedrini01} \cite{Pedrini02} \cite{Laiolo04} \cite{Chamberlain13}). Un ruolo di primo piano è naturalmente svolto dal cambiamento climatico. Se da un lato ha effetti (e costituisce una minaccia) a scala globale, dall’altro le sue conseguenze possono essere particolarmente drammatiche ed accentuate a livello di ecosistemi montani \cite{Dirnbock11}. I suoi effetti sulle specie di alta quota sono sia diretti che indiretti: 
+\newpage
+\begin{itemize}\itemsep0pt
+  \item temperature al di sopra dei 16$^\circ$ inducono sofferenza nella pernice bianca \cite{Zbinden03}; 
+  \item la precoce scomparsa delle chiazze di neve determina un forte calo nella disponibilità trofica per il fringuello alpino, che si nutre spesso di larve di insetti catturate nelle acque di scioglimento degli accumuli di neve; 
+  \item l’innalzamento del limite della vegetazione arborea e arbustiva determina un passaggio da ambienti di ‘prateria’ a consorzi arbustivi o forestali \cite{Brambilla14};
+  \item le variazioni nella presenza di innevamento al suolo hanno effetti sulla riproduzionee sulla sopravvivenza\cite{Novoa08}; 
+  \item le alterazioni strutturali all’ambiente causate ad esempio dalla realizzazione di piste da sci possono compromettere la presenza stessa delle specie \cite{Chamberlain13}.
+\end{itemize}
+
+Le variazioni nella presenza di innevamento al suolo hanno effetti sulla riproduzione e sulla sopravvivenza \cite{Novoa08}, mentre le alterazioni strutturali all’ambiente causate ad esempio dalla realizzazione di piste da sci possono compromettere la presenza stessa delle specie \cite{Rolando07} \cite{Caprio11}; in particolare, gli sbancamenti spesso realizzati per realizzare e livellare le piste stravolgono l’assetto morfologico e le biocenosi delle aree interessate, con ovvie conseguenze per tutte le specie originariamente presenti. 
+Il disturbo antropico può comunque agire a più livelli, causando l’allontanamento di alcune specie, il deterioramento del loro habitat o il peggioramento delle condizioni fisiche degli individui presenti \cite{Arlettaz07}.
+
+I principali fattori di minaccia per le specie oggetto del presente piano d'azione sono identificabili come segue (nell’elenco delle specie potenzialmente interessate dalla minaccia si è tenuto conto solo delle specie di maggior interesse conservazionistico):
+\begin{itemize}\itemsep0pt
+  \item cambiamento climatico, con conseguente aumento della temperatura, variazione nelle condizioni di innevamento e nel regime di precipitazioni (pernice bianca, fringuello alpino; potenzialmente tutte le specie);
+  \item abbandono dei pascoli e progressiva colonizzazione da parte di vegetazione arborea (pernice bianca, coturnice, gipeto, aquila reale, gheppio, allodola, spioncello, culbianco, codirossone, fringuello alpino, quaglia, stiaccino, merlo dal collare, fanello, venturone alpino, organetto, zigolo giallo);
+  \item assottigliamento della fascia di praterie montane, dovuta all'innalzamento del limite della vegetazione arborea, non compensato da innalzamento della vegetazione erbacea per ragioni topografiche e, secondariamente, legate ai processi del suolo (pernice bianca, coturnice, gipeto, aquila reale, spioncello, sordone, culbianco, fringuello alpino);
+  \item alterazione dell’habitat dovuta a realizzazione di piste da sci, bacini idroelettrici, nuove infrastrutture in genere (pernice bianca, coturnice, fagiano di monte, gipeto, aquila reale, spioncello, sordone, culbianco, codirossone);
+  \item disturbo antropico diretto legato ad attività turistiche e ricreative (pernice bianca, gipeto, aquila reale, fagiano di monte, fringuello alpino). Molte specie risentono negativamente, in modo diretto o indiretto, della forte pressione generata dal massiccio afflusso di turisti in alta montagna, indubbiamente favorito da infrastrutture sempre più efficienti, da temperature sempre più elevate e da un apprezzabile generale riconoscimento della bellezza, della salubrità e dell'importanza degli ambienti alpini. Tra gli organismi maggiormente minacciati dal turismo in quota, una particolare attenzione deve essere dedicata ai Galliformi. Pernice bianca, gallo cedrone \emph{Tetrao urogallus}, fagiano di monte, coturnice sono tutti potenzialmente colpiti dal disturbo arrecato dalla frequentazione turistica in inverno e tarda primavera \cite{Brenot96} \cite{Arlettaz07} \cite{Mollet07} \cite{Thiel07}. In primavera ne risentono soprattutto le specie che abitualmente si riuniscono in arene di canto (come il fagiano di monte). Durante la stagione fredda, l'impatto principale su queste specie è dovuto all'involo (con conseguente elevato dispendio energetico e stress per l'individuo, come ben dimostrato da ricerche condotte sulle Alpi svizzere) degli individui che stanno 'rintanati' nella neve per ridurre il dispendio energetico; il disturbo in questo caso è causato soprattutto da sciatori in fuoripista, scialpinisti o escursionisti con ciaspole, che percorrono aree poco battute. In periodo primaverile-estivo, il transito di escursionisti al di fuori dei sentieri segnalati può disturbare anche le coppie impegnate nella riproduzione; la frequentazione della montagna comporta spesso anche la presenza di rifiuti, che incrementano la presenza di predatori opportunisti (corvidi, volpi), con conseguente aumento della predazione da parte degli stessi su uova e nidiacei. L'arrampicata sportiva può incidere molto negativamente sulla riproduzione delle specie rupicole, come i rapaci \cite{Brambilla04} \cite{Brambilla10}, così come il disturbo indiretto causato dalla frequentazione della montagna, dai fotografi e dagli osservatori su quella dell'aquila reale \cite{Pedrini91};
+  \item impatto contro cavi aerei (pernice bianca e fagiano di monte \cite{Buffet13}; aquila reale e gipeto, oltre ad altre specie protette di habitat forestale);
+  \item eccessivo carico dei pascoli con conseguente impoverimento delle cenosi erbacee delle praterie alpine (coturnice, allodola, spioncello, sordone, culbianco, averla piccola, quaglia, stiaccino, zigolo giallo);
+  \item lavori di sistemazione / messa in sicurezza di versanti, con sbancamenti, cementificazioni, posa di strutture anti-valanghe, etc. (pernice bianca, coturnice, gipeto, aquila reale, spioncello, sordone, culbianco, codirossone, fringuello alpino, fagiano di monte).
+\end{itemize}
+
+\vspace*{\fill}
+\begin{center}
+\includegraphics[width=1\columnwidth]{mendini_codirossone.jpg}
+\end{center}
+\caption*{\textbf{Codirossone} \emph{Monticola saxatilis} (\ph Mauro Mendini).}
+\vspace*{\fill}
+
+\chapter{Strategia di conservazione}
+\renewcommand\chapterillustration{4.JPG}
+
+\section{Obiettivo generale} 
+Mantenere condizioni idonee alla conservazione di popolazioni vitali delle specie target, con migliori prospettive di sopravvivenza a lungo termine e distribuzione meno frammentata possibile, attraverso:
+\begin{itemize}\itemsep0pt
+  \item incremento della resilienza ai cambiamenti climatici;
+  \item mantenimento dei processi alla base delle caratteristiche strutturali dell’habitat (es. pascolo regolamentato);
+  \item riduzione dell’impatto del disturbo antropico sulle specie d’alta quota.
+\end{itemize}
+
+\section{Obiettivi specifici}
+La strategia per la conservazione delle comunità ornitiche e in generale delle biocenosi degli ambienti d’alta quota è in primo luogo legata alla lotta al riscaldamento climatico. Questa strategia, da attuarsi globale, non verrà trattata nel presente testo, dove invece saranno esaminatele possibili azioni necessarie a ridurre l'impatto antropico sugli habitat di specie e popolazioni a rischio.
+
+Gli obiettivi specifici sono quindi:
+\begin{itemize}\itemsep0pt
+  \item ridurre il disturbo arrecato ai Tetraonidi in inverno e in tarda primavera da parte di escursionisti e sciatori fuoripista durante le fasi di svernamento, preriproduttive e di nidificazione;
+  \item ridurre il disturbo arrecato a nidi e coppie in riproduzione durante la stagione primaverile-estiva;
+  \item mantenere le aree a pascolo, contrastando la forestazione naturale a seguito dell’abbandono;
+  \item regolamentare il pascolo (bovino in particolare), favorendo una distribuzione equilibrata dei carichi, che consenta di mantenere cenosi erbacee di pregio;
+  \item indirizzare gli sforzi di ricerca e di monitoraggio:
+  \item indagare le esigenze ecologiche delle specie ancora poco conosciute e in particolare dei fattori ambientali e spaziali che influenzano presenza e abbondanza delle specie di maggior interesse conservazionistico, con particolare attenzione ai possibili effetti del cambiamento climatico e alle conseguenze per la pianificazione di efficaci strategie di conservazione;
+  \item attuare un monitoraggio in grado di tenere sotto controllo l’andamento delle popolazioni delle specie target.
+\end{itemize}
+
+
+\vspace*{\fill}
+\begin{center}
+\includegraphics[width=1\columnwidth]{mendi_gipeto.jpg}
+\end{center}
+\captionsetup{width=1\textwidth}
+\caption*{\textbf{Gipeto} \emph{Gypaetus barbatus}. Esemplare adulto; le osservazioni in Trentino si riferiscono quasi esclusivamente a soggetti immaturi o subadulti, raramente ad individui in età riproduttiva, per lo più osservati nei settori nord occidentali e nel Parco Nazionale dello Stelvio (\ph Michele Mendi).}
+\vspace*{\fill}
+
+\chapter{Azioni di conservazione}
+\renewcommand\chapterillustration{5.JPG}
+
+Come già anticipato, non vengono affrontate in questa sede le misure dirette a ridurre l'impatto antropico in termini di riscaldamento climatico globale, sebbene sia questa la principale minaccia per le specie e gli ambienti d'alta quota.
+
+\subsection{Conservare inalterati gli ambienti d'alta quota con caratteristiche naturali}
+\begin{wrapfigure}[17]{r}{.5\columnwidth}
+\centering
+\vspace{-.4cm}
+  \includegraphics[width=.5\columnwidth]{mendini_culbianco.jpg}
+  \caption*{\textbf{Culbianco} \emph{Oenanthe oenanthe}. Migratore svernante nell’Africa sub sahariana, questo Passeriforme raggiunge i quartieri di nidificazione a fine maggio per ripartire già in agosto. Le maggiori densità si riscontrano nelle praterie nei gruppi montuosi calcarei e dolomitici (\ph Mauro Mendini).}
+\end{wrapfigure}Sebbene possano sembrare ambienti meno soggetti ad alterazione rispetto a quelli di quote inferiori, gli ambienti d’alta quota sono spesso soggetti a forme di disturbo altamente impattanti per le specie che li abitano, quali:
+\begin{itemize}\itemsep0pt
+  \item la realizzazione o l’ampliamento di comprensori sciistici;
+  \item la realizzazione o l’ampliamento di bacini idroelettrici;
+  \item la realizzazione di strutture di protezione da valanghe e slavine ;
+  \item la realizzazione di strutture di mitigazione del rischio frane.
+\end{itemize}
+
+Le alterazioni subite dagli ambienti d'alta quota possono anche accrescere la frammentazione delle popolazioni delle specie che li abitano, agendo così in sinergia con il riscaldamento climatico che anche tende e tenderà sempre più a ridurre le possibilità di scambio di individui e di contatto tra popolazioni di gruppi montuosi diversi.
+
+Prevenire ulteriore sottrazione o alterazione di habitat che presentano ancora caratteristiche di naturalità è quindi il primo passo per la conservazione di questi ambienti e delle cenosi altamente specializzate che li abitano, anche per aumentare la resilienza al riscaldamento climatico.
+
+\subsection{Riduzione dell'impatto del turismo in ambito alpino}
+\textbf{In inverno}: identificare le aree di rifugio invernale per i Tetraonidi, nelle quali, a seconda dei contesti, regolamentare l’accesso e la frequentazione ad itinerari ben delimitati e segnalati, con cartelloni posizionati lungo i percorsi. In certi contesti, mantenere delle piccole isole di habitat non accessibile (da delimitare con cura) all'interno dei comprensori sciistici potrebbe risultare estremamente importante per la conservazione del fagiano di monte.
+
+\textbf{In estate}: sensibilizzare gli escursionisti a mantenersi sui sentieri segnalati, \begin{wrapfigure}[18]{r}{.6\columnwidth}
+\centering
+  \includegraphics[width=.6\columnwidth]{mendini_fringuello_alpino.jpg}
+  \caption*{\textbf{Fringuello alpino} \emph{Montifringilla nivalis}. Nei periodi invernali si raduna in gruppi anche numerosi presso fonti di cibo, divenendo particolarmente confidente anche nei confronti dell'uomo. Può nidificare sia presso pareti rocciose che in cavità artificiali, incluse le cassette nido (\ph Mauro Mendini).}
+\end{wrapfigure}evitando di attraversare aree di prateria, affioramenti rocciosi, ghiaioni, macereti, al di fuori dei percorsi stabiliti, in modo da ridurre al minimo il disturbo arrecato alle coppie impegnate nella nidificazione. Impedire l'accesso alle falesie rocciose utilizzate come siti di nidificazione da rapaci (aquila reale
+\cite{Pedrini91}, gipeto, ma anche localmente a falco pellegrino \emph{Falco peregrinus}, gufo reale \emph{Bubo bubo}) e altre specie (fringuello alpino e picchio muraiolo in particolare).
+\newpage
+\subsection{Riduzione degli altri impatti della presenza umana in alta quota}
+Alla presenza umana in alta quota sono associati anche alcuni impatti indiretti. La proliferazione dei rifiuti legata soprattutto (ma non esclusivamente) alla frequentazione turistica può favorire un aumento di predatori generalisti, quali corvidi, volpi, cani e gatti randagi, che possono influire negativamente sulle specie ornitiche predandone uova e nidiacei. La presenza di cavi sospesi (linee elettriche, funi degli impianti di risalita, teleferiche, etc.) rappresenta una potenziale fonte di mortalità, soprattutto per specie ornitiche di dimensioni medie e grandi (Tetraonidi, rapaci), per le quali l'impatto contro cavi sospesi può avere conseguenze fatali o comunque molto gravi. Ridurre al minimo la presenza di cavi sospesi e/o rendere maggiormente visibili quelli 'irrinunciabili' può contribuire al contenimento degli episodi di impatto.
+
+
+\subsection{Mantenimento della pratica dell'alpeggio e corretta gestione dei pascoli}
+Un elemento basilare per la presenza e la conservazione di molti ambienti aperti alpini è la presenza di bestiame al pascolo.
+
+\begin{wrapfigure}[20]{r}{.6\columnwidth}
+\centering
+  \includegraphics[width=.6\columnwidth]{mendini_merlo_collare.jpg}
+  \caption*{\textbf{Merlo dal collare} \emph{Turdus torquatus}. Fra i Turdidi d’alta quota è una delle specie in maggiore ed evidente calo numerico, conseguente al cambiamento climatico in atto e al progressivo innalzamento del limite della vegetazione; soprattutto sulle Prealpi la sua presenza si è fatta più rara ed è ormai localizzata alle porzioni più elevate (\ph Mauro Mendini).}
+\end{wrapfigure}Molte delle praterie montane oggi presenti sul territorio provinciale e nel resto delle Alpi sono infatti praterie secondarie, originate da disboscamenti e decespugliamenti finalizzati alla creazione di pascoli per il bestiame, e e mantenute tali proprio dall'azione di brucatura svolta dagli animali domestici. I pascoli posseggono elevato valore naturalistico e svolgono pertanto un ruolo importantissimo per la conservazione di molte specie, sia animali che vegetali, oltre a fornire importanti servizi ecosistemici (stabilità dei versanti, sequestro di carbonio, etc.). Il loro mantenimento rappresenta pertanto una priorità a livello gestionale in ambito alpino, vista la diffusa riduzione di prati e pascoli che ha interessato numerose vallate, anche trentine, soprattutto nei decenni scorsi.
+
+Mantenere i pascoli non è comunque sufficiente per garantire la presenza delle comunità biologiche (e l'erogazione dei servizi ecosistemici) ad essi associate; i pascoli devono anche essere gestiti attraverso modalità compatibili con le esigenze ecologiche delle specie selvatiche che li abitano. Il sovraccarico (sovrappascolo) segue un degrado delle condizioni ecologiche dei pascoli, con la scomparsa di specie e tipologie vegetazionali, mentre il sottopascolo comporta (seppur più lentamente rispetto all'abbandono) la progressiva perdita del pascolo stesso, dovuta all’ingresso di vegetazione arboreo-arbustiva, più o meno rapido a seconda dei climi e dei suoli. La condizione ottimale è pertanto rappresentata da uno sfruttamento regolare, non eccessivo e adeguatamente pianificato, in grado di riprodurre un “disturbo ecologico” intermedio, necessario per mantenere gli habitat cui sono associate le specie degli ambienti aperti d'alta quota. Il pascolo bovino non intensivo è idoneo, in quanto favorisce la presenza di aree con erba bassa o rada all'interno dell'ambiente prativo, importanti per molte specie per la cattura delle proprie prede; inoltre, favorisce la presenza di una ricca entomofauna e di un mosaico vegetazionale apprezzato da molte specie. Nel caso di praterie sovrappascolate, è necessario lasciare a riposo il terreno per uno o due anni per consentire alla vegetazione erbacea (spesso in questi casi dominata da una o poche specie, es. \emph{Nardus stricta}) di riprendersi e rioccupare le aree denudate o impoverite. Possono essere necessari anche interventi finalizzati a rimuovere lo strato di cotico spesso e infeltrito, così come un'eventuale semina per permettere il ritorno delle specie scomparse.
+
+In generale, il pascolo deve essere gestito in modo appropriato, a rotazione su diverse porzioni, evitando quando necessario l'acceso del bestiame ai siti riproduttivi delle specie ornitiche. Risulta opportuno mantenere una porzione non pascolata (10-15\% della superficie prativa), per permettere un aumento della disponibilità di invertebrati e il mantenimento di porzioni non disturbate, potenzialmente utilizzabili come siti di nidificazione. Tali aree saranno soggette a pascolamento al termine della stagione riproduttiva.
+Un eccesso di concimazione, sempre più frequente negli ultimi anni, può avere effetti deleteri su tutte le comunità biologiche che popolano il pascolo, con conseguenti banalizzazioni floristiche e della entomofauna e successiva scomparsa di specie ornitiche insettivore/granivore.
+
+\subsection{Avviare un'indagine approfondita sull’avifauna degli ambienti d'alta quota}
+Migliorare le conoscenze sull'ecologia, la distribuzione, l'andamento di popolazione, i fattori che regolano presenza e abbondanza e le principali minacce per le specie degli ambienti d'alta quota, anche (e forse soprattutto) in relazione alle condizioni climatiche e alle loro variazioni previste, è un elemento di fondamentale importanza per sviluppare un'efficace strategia di conservazione di questi ambienti unici e delle loro comunità biologiche altamente specializzate e per questo molto sensibili alle alterazioni.
+
+Alcuni argomenti in particolare riferiti all'avifauna alpino niviale, dovrebbero essere approfonditi per avviare un percorso consapevole di conservazione e promozione degli ambienti naturali d'alta quota, sono le seguenti:
+\begin{itemize}\itemsep0pt
+  \item definizione della vocazionalità e delle misure di gestione ottimali per le fasce di transizione tra ambienti forestali/arbustivi e ambienti aperti alpini, tenendo conto della presenza e delle esigenze delle specie di maggior pregio presenti in tali ambienti (Tetraonidi in particolare);
+  \item quantificazione dei probabili impatti dovuti al riscaldamento globale per:
+    \begin{itemize}\itemsep0pt
+      \item individuare le aree che rimarranno idonee ad ospitare le specie e le comunità più minacciate;
+      \item attuare misure di conservazione su tali aree e promuovere il collegamento tra le stesse 
+      \item facilitare la loro accessibilità da parte delle specie selvatiche particolarmente sensibili al cambiamento climatico;
+    \end{itemize}
+  \item individuazione dettagliata delle aree di rifugio per i Tetraonidi in periodo invernale, attraverso attività di campo dedicata e sviluppo di modelli di idoneità ambientale;
+  \item indagine sugli effetti che le varie forme di disturbo antropico hanno sulla presenza e riproduzione delle specie target. Definire quindi una sorta di 'distanza di sicurezza' da considerare nella programmazione della fruizione turistica della montagna;
+  \item analisi degli impatti, le trasformazioni e le alterazioni generate dall'uomo sugli ambienti di alta quota che si ripercuotono sulle relative comunità ornitiche, per produrre indicazioni utili al perfezionamento delle opere di salvaguardia e messa in sicurezza dei versanti a rischio, riducendo in questo gli impatti. 
+\end{itemize}
+
+\begin{comment}
+\vspace*{\fill}
+\begin{center}
+\includegraphics[width=.9\columnwidth]{mendini_organetto.jpg}
+\end{center}
+\captionof*{figure}{\textbf{Organetto} \emph{Carduelis flammea}. Fringillide nidificante e migratore parziale tipico degli arbusteti e pascoli a larice di alta quota (\ph Mauro Mendini).}
+\vspace*{\fill}
+\end{comment}
+
+\setlength\afterchapskip{10mm}
+\chapter{Bibliografia}
+\renewcommand\chapterillustration{}
+\renewcommand*{\bibname}{}
+\begingroup
+\renewcommand{\addcontentsline}[3]{}% Remove functionality of \addcontentsline
+\renewcommand{\section}[2]{}% Remove functionality of \section
+\begin{thebibliography}{9}
+\footnotesize
+\bibitem{EUCOUNCIL98} Council of Europe, 1998. \emph{Drafting and implementing action plans for threatened species.} Environmental encounters, Council of Europe (Ed), Strasbourg, 39: 1-4.
+\bibitem{Sergio07}Sergio F., Pedrini P. 2007. \emph{Biodiversity gradients in the Alps: the overriding importance of elevation.} Biodiv. Conserv. 16: 3243–3254. 
+\bibitem{Nagy03}Nagy L., Grabherr G., Körner C., Thompson, D.B.A. (Eds.) 2003. \emph{Alpine Biodiversity in Europe.} Ecological Studies 167 XXXI. Springer Verlag, Berlin.
+\bibitem{Gonzalez10}Gonzalez P., Neilson R.P., Lenihen J.M., Drapek, R.J. 2010. \emph{Global patterns in the vulnerability of ecosystems to vegetation shifts due to climate change.} Global Ecol. Biogeogr. 19: 755–768.
+\bibitem{Dirnbock11}Dirnböck T., Essl F., Babitsch W. 2011. \emph{Disproportional risk for habitat loss of highaltitude endemic species under climate change.} Global Change Biol. 17:990–996.
+\bibitem{Bellard12}Bellard C., Bertelsmeier C., Leadley P., Thuiller W., Courchamp F. 2012. \href{http://ourchildrenstrust.org/sites/default/files/2012.01.18-Impacts\%20of\%20climate\%20change\%20on\%20the\%20future\%20of\%20biodiversity\%20(Ecology\%20Letters_Bellard\%20et\%20al.).pdf}{\emph{Impacts of climate change on the future of biodiversity.}} Ecol. Lett. 15: 365–377.
+BirdLife International. 2004. Birds in the European Union: a status assessment. BirdLife International, Wageningen.
+\bibitem{Brambilla14} Brambilla M., Gobbi M. 2014. \emph{A century of chasing the ice: delayed colonisation of ice-free sites by ground beetles along glacier forelands in the Alps.} Ecography 37: 33-42.
+\bibitem{Pedrini05}Pedrini P., Caldonazzi M., Zanghellini S., (eds.) 2005. \emph{Atlante degli Uccelli nidificanti e svernanti in provincia di Trento.} Museo Tridentino di Scienze Naturali, Trento. Studi Trentini di Scienze Naturali, Acta Biologica 80 (2003), 2: 1-674.
+\bibitem{Peronace12}Peronace V., Cecere J.G., Gustin M., Rondinini C. 2012. \emph{Lista Rossa 2011 degli Uccelli nidificanti in Italia.} Avocetta 36: 11–58.
+\bibitem{Genero96}Genero F., Pedrini P., 1996. \emph{La presenza del Gipeto (\emph{Gypaetus barbatus}) sulle Alpi italiane, con particolare riferimento ad alcune aree protette.} Avocetta, 20:46-51. 
+\bibitem{Brichetti03}Brichetti P., Fracasso G. 2003. \emph{Ornitologia Italiana Vol. I - \emph{Gaviidae-Falconidae}.} Alberto Perdisa Editore.
+\bibitem{Brichetti07}Brichetti P., Fracasso G. 2007. \emph{Ornitologia Italiana Vol. IV - \emph{Apodidae-Prunellidae}.} Alberto Perdisa Editore.
+\bibitem{Brichetti08}Brichetti P., Fracasso G. 2008. \emph{Ornitologia Italiana. Vol V - \emph{Turdidae-Cisticolidae}.} Alberto Perdisa Editore.
+\bibitem{Pedrini01}Pedrini P., Sergio F. 2001. \emph{Density, productivity, diet, and human persecution of Golden Eagles (\emph{Aquila chrysaetos}) in the central-eastern Italian Alps.} Journal Raptor Research 35: 40-48.
+\bibitem{Pedrini01b}Pedrini P., Sergio F., 2001. \emph{Golden Eagle Aquila chrysaetos density and productivity in realtion to land abandonment and forest expansion in the Alps.} Bird Study 48: 194-199.
+\bibitem{Pedrini02}Pedrini P., Sergio F., 2002. \emph{Regional conservation priorities for a large predator: Golden eagle in the Alpine range.} Biological Conservation 103: 153-162.
+\bibitem{Cattadori99}Cattadori I.M., Hudson P.J., Merler S., Rizzoli A. 1999. \href{http://onlinelibrary.wiley.com/doi/10.1046/j.1365-2656.1999.00302.x/pdf}{\emph{Synchrony, scale and temporal dynamics of rock partridge (\emph{Alectoris graeca saxatilis}) populations in the Dolomites.}} Journal of Animal Ecology 68: 540-549.
+\bibitem{Cattadori03}Cattadori I.M., Ranci-Ortigosa G., Gatto M., Hudson P.J. 2003. \emph{Is the rock partridge \emph{Alectoris graeca saxatilis} threatened in the Dolomitic Alps?} Animal Conservation 6: 71-81.
+\bibitem{Favaron05}Favaron M., Moriconi L., Scherini G. 2005. \emph{Dinamica di una popolazione di pernice bianca alpina nel settore lombardo del Parco Nazionale dello Stelvio.} Avocetta 29: 182.
+\bibitem{Gehrig07}Gehrig-Fasel J., Guisan A., Zimmermann N.E. 2007. \emph{Tree line shifts in the Swiss Alps: climate change or land abandonment?} J. Veg. Sci. 18:571–582.
+\bibitem{Gustin09}Gustin M., Brambilla M., Celada C. 2009. \href{http://www.uccellidaproteggere.it/content/download/4210/46448/file/valutazione_avifauna_italiana_volumeI.pdf}{\emph{Valutazione dello stato di conservazione dell’avifauna italiana.}} Roma: Ministero dell’Ambiente, della Tutela del Territorio e del Mare \& LIPU/BirdLife Italia.
+\bibitem{Gustin10}Gustin M., Brambilla M., Celada C. 2010. \emph{Stato di conservazione dell’avifauna italiana - le specie nidificanti e svernanti in Italia non inserite nell’Allegato I della Direttiva Uccelli.} Roma: Ministero dell’Ambiente e della Tutela del Territorio e del Mare \& LIPU/BirdLife Italia.
+\bibitem{Zbinden03}Zbinden N., Salvioni M. 2003. \emph{I gallinacei delle montagne ticinesi.} (Avifauna report Sempach, 1424-7976; 3i). Schweizerische Vogelwarte Sempach, Sempach.
+\bibitem{Novoa08}Novoa C., Besnard A., Brenot J. F., Ellison L. N. 2008. \emph{Effect of weather on the reproductive rate of Rock Ptarmigan \emph{Lagopus muta} in the eastern Pyrenees.} Ibis 150: 270-278.
+\bibitem{Rolando07}Rolando A., Caprio E., Rinaldi E., Ellena, I. 2007. \emph{The impact of high-altitude skiruns on alpine grassland bird communities.} J. Appl. Ecol. 44:210–219.
+\bibitem{Caprio11}Caprio E., Chamberlain D.E., Isaia M., Rolando A. 2011. \emph{Landscape changes caused by high altitude ski-spites affect bird species richness and distribution in the Alps.} Biol. Conserv. 144, 2958–2967.
+\bibitem{Arlettaz07} Arlettaz R., Patthey P., Baltic M., Leu T., Schaub M., Palme R., Jenni-Eiermann, S. 2007. \emph{Spreading free-riding snow sports represent a novel serious threat for wildlife}. Proceedings of the Royal Society London B 274: 1219–1224.
+\bibitem{Brenot96}Brenot J. F., Catusse M., Ménoni E. 1996. \emph{Effets de la station de ski de fond du plateau de Beille (Ariège) sur une importante population de Grand Tétras (\emph{Tetrao urogallus}).} Alauda 64 : 249–260.
+\bibitem{Thiel07}Thiel D. 2007. \emph{Behavioural and physiological effects in capercaillie (\emph{Tetrao urogallus}) caused by human disturbance.} Dissertation Universität Zürich und Schweizerische Vogelwarte Sempach.
+\bibitem{Brambilla04} Brambilla M., D. Rubolini, F. Guidali. 2004. \href{http://www.avibirds.com/pdf/s/slechtvalk5.pdf}{\emph{Rock climbing and Raven \emph{Corvus corax} occurrence depress breeding success of cliff-nesting Peregrines \emph{Falco peregrinus}.}} Ardeola 51: 425-430.
+\bibitem{Brambilla10}Brambilla M., Bassi E., Ceci C., Rubolini D. 2010. \emph{Environmental factors affecting patterns of distribution and co-occurrence of two competing raptor species.} Ibis 152: 310-322.
+\bibitem{Buffet13}Buffet N., Dumont-Dayot E. 2013. \href{http://eurekaselect.com/107881/chapter/bird-collisions-with-overhead-ski-cables%3A-a-reducible-source-of-mortalit}{\emph{Bird Collisions with Overhead Ski-Cables: A Reducible Source of Mortality.}} The Impacts of Skiing on Mountain Environments, (Rixen C., Rolando A. Eds.) Betham Book, 2013: 123-136.
+\bibitem{Pedrini91}Pedrini P., 1991. \emph{Ecologia riproduttiva e problemi di conservazione dell’Aquila reale (\emph{Aquila chrysaetos})} in Trentino /(Alpi centro-orientali)}. Atti V Convegno Italiano di Ornitologia. Suppl. Ric. Biol. Selvaggina, 17:365-369.
+
+\end{thebibliography}
+
+\makeatletter
+\renewcommand\@biblabel[1]{\textcolor{\backgroundrectanglecolor}{$\bullet$}}
+\makeatother
+
+\renewcommand*{\bibname}{Bibliografia non citata}
+\textbf{\large Bibliografia non citata}
+\begin{thebibliography}{9}
+\footnotesize
+\bibitem{Baghino06} Baghino L., Lovato G., Gustin M. 2006. \emph{Ecologia e distribuzione del Codirossone, \emph{Monticola saxatilis}, nidificante in un'area del Parco Naturale del Beigua (Liguria, Italia)}. Riv. ital. Orn. 76: 97-106.
+\bibitem{Barni07} Barni E., Freppaz M., Siniscalco C. 2007. \emph{Interactions between vegetation, roots, and soil stability in restored high-altitude ski runs in the Alps.} Art. Antarct. Alp. Res. 39: 25–33.
+\bibitem{Brichetti04}Brichetti P., Fracasso G. 2004. \emph{Ornitologia Italiana Vol. II - \emph{Tetraonidae-scolopacidae}.} Alberto Perdisa Editore.
+\bibitem{Bogliani07}Bogliani G., Agapito Ludovici A., Arduino S., Brambilla M., Casale F., Crovetto G.M., Falco R., Siccardi P., Trivellini G. 2007. \href{http://www.flanet.org/it/95/pubblicazione/aree-prioritarie-la-biodiversit%C3%A0-nella-pianura-padana-lombarda}{\emph{Aree prioritarie per la biodiversità nella Pianura Padana lombarda.}} Fondazione Lombardia per l’Ambiente e Regione Lombardia, Milano.
+\bibitem{Cannone07}Cannone N., Sgorbati S., Guglielmin M. 2007. \emph{Unexpected impacts of climate change on alpine vegetation.} Front. Ecol. Environ. 5, 360–364.
+\bibitem{Chamberlain13}Chamberlain D.E., Negro M., Caprio E., Rolando A. 2013. \emph{Assessing the sensitivity of alpine birds to potential future changes in habitat and climate to inform management strategies.} Biological Conservation 167: 127-135.
+\bibitem{Cramp93}Cramp S., Perrins C.M. 1993. \emph{The Birds of the Western Palearctic.} Oxford University Press, Oxford. Volume VII.
+\bibitem{Cramp80}Cramp S., Simmons K.E.L. 1980. \emph{The Birds of the Western Palearctic.} Oxford University Press, Oxford. Volume II.
+\bibitem{DeFranceschi86} De Franceschi P. 1986. \emph{Caratteristiche ambientali, fluttuazioni, densità e gestione delle popolazioni di tetraonidi sulle Alpi italiane.} Atti Seminario Biologia dei galliformi, Arcavacata di Rende: 35-50.
+\bibitem{DeFranceschi88}De Franceschi P. 1988. \emph{La situazione attuale dei galliformi in Italia. Ricerche recenti o ancora in corso. Problemi di gestione e prospettive per il futuro.} Suppl. Ric. Biol. Selvaggina XIV: 129-168.
+\bibitem{DeFranceschi94}De Franceschi P. 1994. \emph{Black Grouse \emph{Tetrao tetrix} population on Mount Baldo (Verona - Italy)}, 1985-1990. In: Atti del 6$^\circ$ Conv. Ital. Orn. (Torino, 8-11 ottobre 1991), Mus. Reg. Sci. Nat. Torino, pp: 67-77.
+\bibitem{DeFranceschi94b}De Franceschi P. 1994. \emph{Status, geographical distribution and limiting factors of black grouse (\emph{Tetrao tetrix}) in Italy.} Gibier Faune Sauvage 11: 185-206.
+\bibitem{DeFranceschi95}De Franceschi P. 1995. \emph{Strategie di gestione dei tetraonidi sulle Alpi italiane: il fagiano di monte (\emph{Tetrao tetrix})} Suppl. ric. Biol. Selvaggina XXII.
+\bibitem{DeFranceschi97}De Franceschi P. 1997. \emph{Status della Pernice bianca in Friuli-Venezia Giulia.} Natura Alpina 48/2: 21-31.
+\bibitem{DeFranceschi06}De Franceschi P., De Franceschi G. 2006. \emph{Il Gallo cedrone ed altri tetraonidi alpini.} In: Salvati dall'Arca, a cura di Fraissinet M., Petretti F., Alberto Perdisa Editore, pp: 489-503.
+\bibitem{Edwards07}Edwards A.C., Scalenghe R., Freppaz M. 2007. \emph{Changes in the seasonal snow cover of alpine regions and its effects on soil processes: a review.} Quatern. Int. 162–163:172–181.
+\bibitem{Guisan98}Guisan A., Theurillat J.-P., Kienast F. 1998. \emph{Predicting the potential distribution of plant species in an alpine environment.} J. Veg. Sci. 9: 65–74.
+\bibitem{Harsch09}Harsch M.A., Hulme P.E., McGlone M.S., Duncan R.P. 2009. \href{http://www.geooek.uni-bayreuth.de/geooek/bsc/en/lehre/html/85896/Harsch_et_al_2009_treeline_climatechange.pdf}{\emph{Are treelines advancing? A global meta-analysis of treeline response to climate warming.}} Ecol. Lett. 12: 1040–1049.
+\bibitem{Jetz07}Jetz W., Wilcove D.S., Dobson A.P., 2007. \href{http://www.plosbiology.org/article/fetchObject.action?uri=info%3Adoi%2F10.1371%2Fjournal.pbio.0050157&representation=PDF}{\emph{Projected impacts of climate and land-use change on the global diversity of birds.}} PLoS Biol. 6, e157. 
+\bibitem{Laiolo04}Laiolo P., Dondero F., Ciliento E., Rolando A. 2004. \emph{Consequences of pastoral abandonment for the structure and diversity of the alpine avifauna.} J. Appl. Ecol. 41: 294–304
+\bibitem{Mantyka12}Mantyka-Pringle C.S., Martin T.G., Rhodes J.R. 2012. \emph{Interactions between climate and habitat loss effects on biodiversity: a systematic review and meta-analysis.} Global Change Biol. 18:1239–1252.
+\bibitem{Mollet07}Mollet P., R. Arlettaz P. Patthey \& D. Thiel 2007. \emph{Coqs de bruyère : prière de ne pas déranger! Fiche info.} Station ornithologique suisse, Sempach
+\bibitem{Navarro12}Navarro, L.M., Pereira, H.M. 2012. Rewilding abandoned landscapes in Europe. Ecosystems 15: 900–912.
+\bibitem{Parmesan03}Parmesan, C., Yohe, G. 2003. \href{http://stephenschneider.stanford.edu/Publications/PDF_Papers/ParmesanYohe2003.pdf}{\emph{A globally coherent fingerprint of climate change impacts across natural systems.}} Nature 421: 37–42.
+\bibitem{Paulsen00}Paulsen J., Weber U.M., Körner C. 2000. \emph{Tree growth near treeline: abrupt or gradual reduction with altitude?} Arc. Ant. Alp. Res. 32, 14–20.
+\bibitem{Penuelas03}Peñuelas J., Boada M. 2003. \emph{A global change-induced biome shift in the Montseny mountains (NE Spain).} Global Change Biol. 9: 131–140.
+\bibitem{Pompilio03}Pompilio L., Brusa O., Meriggi A. 2003. \emph{Uso dell’habitat e fattori influenzanti la distribuzione e l’abbondanza della Coturnice \emph{Alectoris graeca saxatilis} nelle Alpi Lepontine.} Avocetta 27: 93.
+\bibitem{Rauter02}Rauter C.M., Reyer H.-U., Bollmann K. 2002. \emph{Selection through predation, snowfall and microclimate on nest-site preferences in the Water Pipit \emph{Anthus spinoletta}.} Ibis 144:  433–444.
+\bibitem{Reif12}Reif J., Flousek J. 2012. \emph{The role of species’ ecological traits in climatically driven altitudinal range shifts of central European birds.} Oikos 121: 1053–1060.
+\bibitem{Saporetti81}Saporetti F. 1981. Territory size of the Rock Thrush Monticola saxatilis. Avocetta 5: 147-150.
+\bibitem{Scherrer11}Scherrer D., Schmid S., Körner C. 2011. \emph{Elevational species shifts in a warmer climate are overestimated when based on weather station data.} Int. J. Biometeorol. 55: 645–654.
+\bibitem{Sekercioglu08}Sekercioglu C.H., Schneider S.H., Fay J.P., Loarie S.R. 2008. \emph{Climate change, elevational range shifts and bird extinctions.} Conserv. Biol. 22: 140–150.
+\bibitem{Sergio06}Sergio F., Pedrini P., Rizzolli F., Marchesi L. 2006. \emph{Adaptive range selection by golden eagles in a changing landscape: a multiple modelling approach.} Biological Conservation 133: 32-41.
+\bibitem{Strinella08}Strinella E., Artese C. 2008. \emph{Stima della popolazione autunnale di fringuello alpino \emph{Montifringilla nivalis} nel parco nazionale del Gran Sasso e monti della Laga.} Alula, 15: 201-206.
+\bibitem{Strinella07}Strinella E., Ricci F., Vianale P. 2007. \emph{Uso dell'habitat nel Fringuello alpino \emph{Montifringilla nivalis} in periodo riproduttivo in un'area sub-antropizzata: Campo Imperatore (Gran Sasso - Abruzzo).} Alula 14: 107-114.
+\bibitem{Thiel07b}Thiel D., Ménoni E., Brenot J.F., Jenni L. 2007. \emph{Effects of recreation and hunting on flushing distance of capercaillie.} J. Wildl. Manage. 71: 1784–1792.
+\bibitem{Tocco13}Tocco C., Negro M., Rolando A., Palestrini C. 2013. \emph{Does natural reforestation represent a potential threat to dung beetle diversity in the Alps?} J. Insect Conserv. 17: 207–217.
+\bibitem{Tucker97}Tucker G.M., Evans M.I. 1997. \emph{Habitats for Birds in Europe: a conservation strategy for the wider environment.} Birdlife International, Cambridge.
+\bibitem{Tucker94}Tucker G.M., Heath M.F. 1994. \emph{Birds in Europe: their conservation status.} Cambridge: BirdLife International.
+\bibitem{Viterbi13}Viterbi R., Cerrato C., Bassano B., Bionda R., von Hardenberg A., Provenzale A., Bogliani G. 2013. \emph{Patterns of biodiversity in the northwestern Italian Alps: a multi-taxa approach.} Commun. Ecol. 14: 18–30.
+\bibitem{Birdlife04} BirdLife International, 2004. \emph{Birds in Europe: population estimates, trends and conservation status.} Cambridge, UK: BirdLife International, BirdLife Conservation Series No. 12.
+\end{thebibliography}
+\endgroup
+\cleartoverso
+
+
+
+%%%%%%%%%%%
+% Back cover
+%%%%%%%%%%%
+\normalsize
+% Temporarily enlarge this page to push
+% down the bottom margin
+\enlargethispage{3\baselineskip}
+\thispagestyle{empty}
+\pagecolor{\backpagecolor}
+%\pagecolor[HTML]{0E0407}
+\begin{center}
+\vspace*{\fill}
+
+\begin{figure}[htp]
+\captionsetup{font=normalsize}
+\centering
+\subcaptionbox*{\url{www.lifeten.tn.it}}[.3\linewidth]{\includegraphics[width=.3\columnwidth]{logo_LIFETEN.png}}
+\subcaptionbox*{\url{www.provincia.tn.it}}[.3\linewidth]{\includegraphics[width=.15\columnwidth]{logo_PAT.png}}
+\subcaptionbox*{\url{www.muse.it}}[.3\linewidth]{\includegraphics[width=.3\columnwidth]{logo_MUSE_verde_nospace.png}}
+\end{figure}
+\textbf{\textcolor{LightGoldenrod!50!Gold}{MUSE - Museo delle Scienze}}
+
+\vspace*{\baselineskip}
+
+\textbf{\textcolor{LightGoldenrod}{Sezione di Zoologia dei Vertebrati}}
+\end{center}
+
+\end{document}

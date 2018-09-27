@@ -1,0 +1,1048 @@
+\PassOptionsToPackage{usenames,dvipsnames,table}{xcolor}
+\documentclass[11pt,a4paper,twoside]{memoir}
+\usepackage{paralist}
+
+%%%Keyboard inputs and layout
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+
+%%%Bibliography
+%\usepackage[authoryear]{natbib}
+
+%%%Tables, environments, graphics, lists
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{tikz}
+\usepackage{stfloats}
+\usepackage{enumitem}
+\usepackage{lscape}
+\usepackage{color}
+\usepackage{array}
+\usepackage{rotfloat}
+\usepackage[most]{tcolorbox}
+\graphicspath{ {./img/} {./maps/} }
+
+%%%Utilities
+\usepackage{minitoc}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{pdfpages}
+
+% Captions
+\usepackage[labelfont={footnotesize,sf,bf},textfont={footnotesize,sf}]{caption}
+\setlength{\abovecaptionskip}{15pt plus 3pt minus 2pt} % Set spacing between figure and caption leaving 3 upper and 2 lower points of free adaptation
+
+% Links
+\usepackage[pdftitle={Indagine sull'avifauna nidificante recentemente interessata da lavori di ripristino ambientale},
+     pdfauthor={Sezione Zoologia dei Vertebrati, MUSE - Museo delle Scienze},
+     colorlinks,linktocpage=true,linkcolor=RoyalBlue,urlcolor=BrickRed,citecolor=OliveGreen,bookmarks]{hyperref}
+     
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%  MEMOIR STYLE %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+\makepagestyle{MUSEstyle} 
+\nouppercaseheads
+\setlength{\headwidth}{\dimexpr\textwidth}
+\makerunningwidth{MUSEstyle}{\headwidth}
+\makeevenhead{MUSEstyle}{\slshape\rightmark}{}{\includegraphics[width=0.05\columnwidth]{logo_MUSE_verde_nospace.jpg}} 
+\makeoddhead{MUSEstyle}{\includegraphics[width=0.05\columnwidth]{logo_MUSE_verde_nospace.jpg} }{}{\scshape\leftmark} 
+\makeheadrule{MUSEstyle}{\headwidth}{0.2pt}
+\makefootrule{MUSEstyle}{\headwidth}{\normalrulethickness}{0ex}
+\makeevenfoot{MUSEstyle}{\thepage}{}{} 
+\makeoddfoot{MUSEstyle}{}{}{\thepage} 
+\makeatletter
+\makepsmarks{MUSEstyle}{%
+  \createmark{chapter}{left}{nonumber}{ }{.\ }
+  \createmark{section}{right}{shownumber}{ }{.\ }}
+\makeatother
+\chapterstyle{section}
+%\renewcommand{\thechapter}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%  END MEMOIR STYLE %%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\author{\textsl{Sezione Zoologia dei Vertebrati}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%  GLOSSARY SECTION  %%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[acronym,toc]{glossaries}
+
+\newacronym{utm}{UTM}{\emph{Universal Trasverse Mercator}, particolare proiezione della superficie terrestre su un piano}
+\newacronym[]{utf8}{UTF-8}{\emph{Unicode Transformation Format} - 8 bit, sistema di rappresentazione e codifica dei caratteri. \url{http://www.utf-8.com/}}
+\newacronym[]{gnu}{GNU}{"\emph{GNU's Not Unix}", acronimo ricorsivo indicante un sistema operativo liberamente fruibile basato sul sistema Unix. \url{www.gnu.org}}
+\newacronym[]{gpl2}{GPL v2.0}{\emph{General Public License} Versione 2.0, licenza che garantisce il diritto di condividere e cambiare a piacimento il software con 
+essa marchiato. \url{http://www.gnu.org/licenses/gpl-2.0.html},}
+\newacronym[]{itis}{ITIS}{\emph{Integrated Taxonomic Information Service}, \emph{partnership} tra diverse istituzioni mirata a fornire gratuitamente informazioni 
+tassonomiche precise e consistenti. È gestito dallo \emph{staff} del Museo di Storia Naturale dello Smithsonian. \url{www.itis.gov}}
+\newacronym[]{gbif}{GBIF}{\emph{Global Biodiversity Information Facility}, organizzazione internazionale che si propone di rendere liberamente disponibili dati 
+di rilevamento sulla biodiversità utilizzando servizi informatici \emph{Web}.  \url{https://data.gbif.org}}
+\newacronym[]{biocase}{BioCASE}{\emph{Biological Collection Access SErvices}, \emph{network} europeo di database biologici liberamente accessibile, appoggiato 
+su \emph{standard} Open Data. \url{www.biocase.org},}
+\newacronym[]{cisocoi}{CISO-COI}{\emph{Centro Italiano Studi Ornitologici - Commissione ornitologica italiana}, associazione di ornitologia italiana che cura, 
+tra le altre cose, la redazione della Lista degli Uccelli Italiani. \url{http://ciso-coi.it/}}
+\newacronym[]{iso8601}{ISO-8601}{Standard Internazionale promosso dall'International Organisation for Standardization (ISO) riguaro ai formati di data e ora,
+\emph{“Data elements and interchange formats -- Information interchange -- Representation of dates and times"}, il download a pagamento delle specifiche è 
+disponibile su \url{http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=40874}}
+\newacronym[]{etrs89}{ERTS89}{\emph{Europea Terrestrial Reference System 1989}, sistema di riferimento cartografico europeo. \url{http://etrs89.ensg.ign.fr/}}
+\newacronym[]{gis}{GIS}{\emph{Geographic Information Systems}, sistemi \emph{software} d'informazione cartografica}
+\newacronym[]{gps}{GPS}{\emph{Global Positioning System}, rete di satelliti per il posizionamento gestita dal governo degli Stati Uniti}
+\newacronym[]{foss}{FOSS}{\emph{Free and Open Source Software}, dicitura che identifica un particolare metodo di licenza del \emph{software}, reso gratuito e completamente libero di ogni licenza di \emph{copyright}}
+\newacronym[]{siat}{S.I.A.T.}{\emph{Sistema Informativo Ambientale Territoriale}, sistema informatico della Provincia Autonoma di Trento che ha il compito di raccogliere, memorizzare, aggiornare, elaborare e 
+rappresentare dati attinenti alle entità territoriali-ambientali, integrando le informazioni descrittive di carattere statistico, amministrativo e gestionale con 
+la loro localizzazione geografica, la loro forma geometrica e le loro relazioni spazio-temporali. L'obiettivo principale del S.I.A.T. è di fornire supporto alle 
+attività di gestione e di governo dell’Amministrazione provinciale. \url{http://www.territorio.provincia.tn.it/portal/server.pt/community/s_i_a_t/255/s_i_a_t/18995}} 
+\newglossaryentry{database}
+{
+  name={\emph{database}},
+  description={Archivio di dati in cui le informazioni contenute sono organizzate tramite
+          un particolare modello logico in modo tale da consentire la gestione efficiente degli stessi,
+          e l'interfacciamento con linguaggi di interrogazione e/o \emph{software}},
+  sort=database
+}
+\newglossaryentry{dataset}
+{
+  name={\emph{dataset}},
+  description={Insieme di dati coerenti tra loro, specco contenuti all'interno di un unico \emph{file}, o al più, in un conglomerato di \emph{files} tra loro coerenti.},
+  sort=dataset
+}
+\newglossaryentry{postgresql}
+{
+  name={PostgreSQL},
+  description={Potente sistema \emph{database} relazionale \emph{Open Source}, famoso per la sua comprovata flessibilità, affidabilità e mantenimento dell'integrità
+  dei dati. \url{http://www.postgresql.org/}},
+  sort=postgresql
+}
+\newglossaryentry{postgis}
+{
+  name={PostGIS},
+  description={Estensione spaziale del database PostgreSQL. Ne aggiunge pieno supporto per qualsiasi oggetto geografico, consentendo alle interrogazioni sulle localizzazione
+  di essere eseguite nativamente nel codice PostgreSQL. \url{http://postgis.net/} },
+  sort=postgis
+}
+\newglossaryentry{constraint}
+{
+  name={\emph{constraint}},
+  description={Limiti di inserimento inseriti su ogni campo del database, con il fine di intercettare errori e refusi (\ie specie non inserita con il giusto nome scientifico)},
+  sort=constraints
+}
+\newglossaryentry{query}
+{
+  name={\emph{query}},
+  description={Interrogazioni del database},
+  sort=query
+}
+\newglossaryentry{browser}
+{
+  name={\emph{browser}},
+  description={Programma che consente di usufruire dei servizi di connettività Internet (\ie Firefox, Chrome, Internet Explorer)},
+  sort=browser
+}
+%\newglossaryentry{unix}
+%{
+%  name={Unix},
+%  description={Sistema operativo portabile sviluppato da AT\&T e \emph{Bell Laboratories} negli anni '70},
+%  sort=unix
+%}
+
+\makeglossaries
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%  END OF GLOSSARY SECTION  %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%  REDEFINED COMMANDS  %%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand { \mysize }{ \footnotesize { }}
+\definecolor{grey}{gray}{0.5} % 0-nero; 1-bianco
+\renewcommand{\labelitemi}{\textcolor{grey}{$\times$}}
+\newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
+\newcommand{\etal}{\textsl{et al}. }
+\newcommand{\ie}{\emph{i}.\emph{e}. }
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newsubfloat{figure}    % Allow subfloats in figure environment
+\fboxrule=1.2pt    % Border thickness
+\definecolor{lightgray}{gray}{0.9}
+\definecolor{verylightgray}{gray}{0.95}
+\renewcommand*{\glspostdescription}{}    % Rimuove il punto alla fine della descrizione lunga nel glossario
+\newcommand{\tablespecie}[2]{\parbox[t]{4.5cm}{#1 \newline \emph{#2}}} % Per far apparire il nome comune e il nome della specie nelle tabelle ordinatamente. 
+                                                                       % \tablespecie{nome_comune}{nome_scientifico}
+%%% Background pic
+%\newcommand\BackgroundPic{%
+%\put(0,0){%
+%\parbox[b][\paperheight]{\paperwidth}{%
+%\vfill
+%\flushleft
+%\includegraphics[width=\paperwidth,height=\paperheight,%
+%keepaspectratio]{bar.jpg}%
+%\vfill
+%}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%  END OF REDEFINED COMMANDS  %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\begin{document}
+
+%\setlength{\parindent}{0pt} %Noindent
+\begin{center}
+  \includegraphics[width=.35\columnwidth]{logo_MUSE_verde_nospace.jpg} \\
+\end{center}
+
+\pagestyle{empty}
+ \begin{center}
+\vspace{15pt}
+\HRule \\[0.3cm]
+{\LARGE \bfseries INDAGINE SULL'AVIFAUNA NIDIFICANTE } \\[0.1cm]
+{\LARGE \bfseries RECENTEMENTE INTERESSATA DA LAVORI DI }\\[0.1cm]
+{\LARGE \bfseries RIPRISTINO AMBIENTALE}\\[0.1cm]
+\HRule\\[0.5cm]
+\textbf{Paludi di Sternigo (IT3120034, Laghestel di Piné (IT3120035), Lago d'Idro (IT3120065), Fiavé (IT3120068), Taio di Nomi (IT3120082)} \\
+ \end{center}
+
+
+\vspace{\fill}
+ \begin{figure}[H]
+\centering
+\includegraphics[width=1\columnwidth]{cover.jpg}
+\end{figure}
+\vspace{\fill}
+
+\begin{center}
+  Sezione Zoologia dei Vertebrati \\
+  MuSe - Museo delle Scienze, Trento \\
+  \texttt{Aprile 2014} \\
+\end{center}
+
+\newpage
+\thispagestyle{empty}
+\vspace*{\fill}
+\flushleft{
+\fcolorbox{black}{white}{%
+\begin{tabular}{p{1\columnwidth}}
+\vspace{.02cm}
+\textbf{Coordinamento:} \\
+Paolo Pedrini / MuSe - Museo delle Scienze, \emph{\href{mailto:paolo.pedrini@muse.it}{paolo.pedrini@muse.it}} \\
+Antonella Agostini / Ufficio Rete Natura PAT \emph{\href{mailto:antonella.agostini@provincia.tn.it}{antonella.agostini@provincia.tn.it}} \\
+\vspace{.02cm}
+\textbf{Stesura documento a cura di:} \\
+Alessandro Franzoi / MuSe - Museo delle Scienze, \emph{\href{mailto:alessandro.franzoi@muse.it}{alessandro.franzoi@muse.it}} \\
+Paolo Pedrini \\
+\textbf{Attività di campo:} \\
+Enrico Romanazzi \\
+\textbf{Hanno collaborato:} \\
+Alessandro Franzoi, Alessandro Micheli, Paolo Pedrini \\
+\textbf{Grafica ed impaginazione:} \\
+Aaron Iemma / MuSe, \emph{\href{mailto:aaron.iemma@muse.it}{aaron.iemma@muse.it}} \\
+\end{tabular}
+
+
+}
+In copertina: Gallinella d'acqua \emph{Gallinula chloropus}, Arch. MuSe \\
+}
+
+
+
+\newpage
+\thispagestyle{empty}
+\vspace{4cm}
+\begin{minipage}[r]{\columnwidth}
+\flushright
+\hrule
+
+\vspace{.5cm}
+{\LARGE \bfseries INDAGINE SULL'AVIFAUNA NIDIFICANTE } \\[0.1cm]
+{\LARGE \bfseries RECENTEMENTE INTERESSATA DA LAVORI DI }\\[0.1cm]
+{\LARGE \bfseries RIPRISTINO AMBIENTALE}\\[0.1cm]
+\vspace{.2cm}
+\hrule
+
+\vspace{1cm}
+{Alessandro Franzoi} \\
+{Paolo Pedrini} \\
+\end{minipage}
+
+\vspace{\fill}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=.35\columnwidth]{logo_MUSE_verde_nospace.jpg} 
+\end{figure} 
+\begin{center}
+\textsc{Sezione Zoologia dei Vertebrati}
+\end{center}
+
+
+\cleardoublepage
+\pagestyle{empty}
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\flushleftright
+
+\pagestyle{MUSEstyle}
+\chapter{Introduzione}
+Il presente documento risponde alla richiesta del Servizio Conservazione della Natura e Valorizzazione Ambientale di disporre di un aggiornamento sulle conoscenze dello stato di conservazione dell'avifauna nidificante presente in alcune Riserve Naturali Provinciali (LP 23 maggio 2007 n$^\circ$11, di seguito denominate riserve), e di osservare l'evolversi della comunità ornitica presente in alcune riserve censite nel 2012 e nel 2011 (Idro e Taio di Nomi). 
+
+Le riserve oggetto del monitoraggio sono tutte caratterizzate da ambienti umidi con presenza di lembi di torbiera (in alcune) e fragmiteto allagato, habitat tipici se non esclusivi di alcune specie di interesse comunitario, e di altre minacciate a scala locale. 
+
+Quale taxon utile alla verifica dei cambiamenti in atto, sono stati utilizzati gli Uccelli nidificanti, essendo gruppo di riferimento in quanto comprovati indicatori ecologici e particolarmente sensibili ai cambiamenti in atto. 
+
+Nello specifico sono state oggetto del monitoraggio condotto nella stagione riproduttiva 2013, le seguenti aree protette:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lll}
+\textbf{Nome} & \textbf{Codice} & \textbf{Estensione (ha)} \\
+\toprule
+Paludi di Sternigo & \texttt{IT3120034} &  24.4 \\
+Laghestel di Piné & \texttt{IT3120035} & 90.7 \\
+Lago d'Idro & \texttt{IT3120065} & 14.3 \\
+Fiavé & \texttt{IT3120068} & 137.2 \\
+Taio di Nomi & \texttt{IT3120082} & 5.3 \\
+\end{tabular}
+\end{table}
+
+La finalità dei rilevamenti aveva come obiettivo principale la verifica degli effetti di ripristino ed intervento ambientale realizzati dal Servizio Conservazione della Natura negli anni precedenti, e quale verifica speditiva successiva a quella realizzata nel 2012 e nel 2011.
+
+Per ogni dettaglio di confronto sui dati raccolti nei precedenti anni, si rimanda alle relazioni tecniche consegnate nel gennaio 2013 e 2012 e redatte dalla Sezione di Zoologia dei Vertebrati del Museo delle Scienze. 
+
+\section{Metodi in sintesi}
+Il monitoraggio faunistico si è svolto in periodo tardo primaverile con lo scopo di valutare la presenza e la consistenza delle specie appartenenti all'avifauna nidificante tipiche degli ambienti umidi acquatici e perilacustri.
+
+Le uscite sono state effettuate tra inizio maggio e inizio luglio, periodo di massima esternazione di comportamenti territoriali (vocalizzi e parate) per la maggior parte delle specie di Uccelli, e coincidente con la prima nidificazione dei migratori intrapaleartici precoci, e l'insediamento e nidificazione di quelli più tardivi, migratori transahariani provenienti dall'Africa equatoriale. 
+
+Tutte le riserve oggetto del monitoraggio sono andate incontro nell'inverno 201/11 e 2011/12 a interventi gestionali estesi, in particolare sfalcio nelle zone di fragmiteto (sfalcio a raso totale) e di taglio del cespuglieto perilacustre (frangola, salice), comportando una radicale o profonda modificazione nell'assetto ambientale delle aree.
+Scopo del monitoraggio è stato quindi quello di indagare per il secondo anno consecutivo, e a distanza di due – tre anni dagli ultimi interventi citati, la composizione della comunità nidificante degli Uccelli e le sue modifiche rispetto al passato (anni Novanta).
+
+La modalità di monitoraggio ha previsto un numero di due o tre uscite per riserva (dall'alba alle prime quattro ore successive), mediante rilevamenti standardizzati effettuati al canto lungo sentieri campione, scelti al fine di coprire omogeneamente gli ambienti umidi presenti nelle aree di studio. 
+
+Lungo i transetti (gli stessi degli anni precedenti) sono stati censiti tutte le specie in comportamento territoriale, in alimentazione e in volo. I dati sono stati archiviati con l'ausilio di una mappa della riserva con sovrapposta una griglia di quadrati 40 x 40 metri, fornita dall'Ufficio Biotopi e Rete Natura 2000. Ogni osservazione è stata riportata al quadrato corrispondente; in alcune riserve non è stato possibile censire la totalità dei quadrati della griglia, per l'impraticabilità del territorio. 
+
+Per alcuni taxa (Rallidi e rapaci notturni) è stato utilizzato il richiamo acustico, al fine di massimizzare la contattabilità degli individui durante ulteriori apposite uscite serali. I dati raccolti sono serviti per verificare lo stato di conservazione di alcune aree protette, indagate nel 2011 e 2012, al fine di verificare l'evolversi del loro stato di conservazione e aggiornare le conoscenze per la riserva 'Lago d'Idro' e Taio di Nomi. I dati raccolti in queste area protette sono stati confrontati con quelli di precedenti ricerche condotte dall'Ufficio e/o da indagini, svolte in passato dal Museo o da altri gruppi di ricerca incaricati dal Servizio.
+
+\chapter{Risultati generali in sintesi}
+Durante l'indagine sono state censite 67 specie di Uccelli, tre delle quali inserite nell'Allegato I della direttiva Uccelli, mentre 28 fanno parte della Lista Rossa del Trentino; è stata rilevata come probabile nidificante una nuova specie per la Provincia di Trento, il fistione turco Netta rufina (Tabella 1.1), nidificante nel vicino settore veronese del Lago di Garda, e da qualche anno osservato alle foci del Chiese sul Lago d’Idro.
+
+Sono stati raccolti dati sulle specie nidificanti negli ambienti umidi nei siti oggetto dello studio, ma anche su eventuali presenze di migratori in sosta durante la migrazione prenuziale  e non nidificanti in territorio nazionale, e specie che utilizzano gli ambienti delle riserve per l'alimentazione ma non per la nidificazione.
+Per le tre riserve naturali ricontrollate a distanza di un anno - Fiavè, Sternigo, Laghestèl - si confermano in sostanza le presenze censite nel 2012; con un generale impoverimento rispetto agli anni Ottanta e Novanta, anni in cui i diversi biotopi sono stati istituiti. Alla Torbiera di Fiavé è stato accertato l’insediamento di una nuova specie a scala locale, con la prima nidificazione dell'airone cenerino, e si è riscontrata l'osservazione in tardo periodo riproduttivo di una femmina di cutrettola, specie non contattata l'anno precedente, ma presente in passato con una popolazione significativa (vedi dati biotopo fine anni Ottanta e Novanta). 
+
+Per quanto riguarda le riserve 'Lago d'Idro' e 'Taio di Nomi', i dati raccolti confrontati con i monitoraggi pregressi, hanno evidenziato un sostanziale mantenimento della composizione rispetto all’anno precedentemente monitorato (2011). 
+
+A seguire si specificano i dati raccolti, commentando quelli relativi alle specie di maggior rilievo e tipiche degli ambienti umidi, oggetto dell’intervento. Nella tabella I si riporta l’elenco delle specie osservate.
+
+\rowcolors{1}{white}{lightgray}
+\begin{longtable}{ll|l|l|l|l|l|l}
+\hiderowcolors
+\toprule                                
+\textbf{Specie} & \rotatebox{90}{\textsc{\textbf{Allegato 1}}} & \rotatebox{90}{\textbf{\textsc{Lista rossa }}} & \rotatebox{90}{\textbf{\textsc{Laghestel di Pinè}}} & \rotatebox{90}{\textbf{\textsc{Palù di Sternigo}}} & \rotatebox{90}{\textbf{\textsc{Taio di Nomi}}} & \rotatebox{90}{\textbf{\textsc{Fiavé}}} & \rotatebox{90}{\textbf{\textsc{Lago d'Idro}}} \\
+\midrule     
+\endfirsthead
+\multicolumn{8}{l}{\footnotesize{Continua dalla precedente}} \\
+\toprule                                
+\textbf{Specie} & \rotatebox{90}{\textsc{\textbf{Allegato 1}}} & \rotatebox{90}{\textbf{\textsc{Lista rossa }}} & \rotatebox{90}{\textbf{\textsc{Laghestel di Pinè}}} & \rotatebox{90}{\textbf{\textsc{Palù di Sternigo}}} & \rotatebox{90}{\textbf{\textsc{Taio di Nomi}}} & \rotatebox{90}{\textbf{\textsc{Fiavé}}} & \rotatebox{90}{\textbf{\textsc{Lago d'Idro}}} \\
+\midrule 
+\endhead
+\showrowcolors                      
+  Airone cenerino &   & NT  &   & 1 & 1 & 16  & 8 \\
+  Averla piccola  & $\times$ & VU  &   & 8 &   & 26  & 1 \\
+  Balestruccio  &   &   &   & 1 &   & 10  &   \\
+  Ballerina bianca  &   &   &   & 2 &   & 2 & 4 \\
+  Cannaiola comune  &   & EN  &   & 8 & 5 & 18  & 18  \\
+  Cannaiola verdognola  &   & EN  &   & 4 & 1 & 44  & 11  \\
+  Cannareccione &   & EN  &   &   &   &   & 4 \\
+  Capinera  &   &   & 21  & 10  & 4 & 48  & 13  \\
+  Cardellino  &   &   &   &   & $\times$ & 24  & 3 \\
+  Cesena  &   &   &   & 3 &   &   &   \\
+  Cincia bigia  &   &   &   & 2 &   &   &   \\
+  Cincia dal ciuffo &   &   & $\times$ &   &   &   &   \\
+  Cincia mora &   &   & 7 &   &   &   &   \\
+  Cinciallegra  &   &   & 2 & 7 & $\times$ & 11  & $\times$ \\
+  Cinciarella &   &   & $\times$ &   &   & 1 & $\times$ \\
+  Ciuffolotto &   &   &   & 1 &   &   &   \\
+  Codibugnolo &   &   & 1 &   & 2 & 2 &   \\
+  Codirosso comune  &   & NT  &   & 2 &   &   & 1 \\
+  Colombaccio &   & NT  &   &   & 1 & 2 &   \\
+  Cornacchia grigia &   &   &   & 1 &   &   &   \\
+  Cornacchia nera &   &   &   & 5 &   &   &   \\
+  Crociere  &   &   & $\times$ &   &   &   &   \\
+  Cutrettola  &   & EN  &   &   &   & 1 &   \\
+  Fagiano comune  &   &   &   &   & 1 &   & 1 \\
+  Falco pecchiaiolo & $\times$ & NT  &   &   &   & 2 &   \\
+  Fiorrancino &   &   & 3 &   &   &   &   \\
+  Fistione turco  &   & DD  &   &   &   &   & 7 \\
+  Folaga  &   & NT  & 12  & 11  & 5 &   & 36  \\
+  Fringuello  &   &   & 8 & 9 & 10  & 20  & 2 \\
+  Gallinella d'acqua  &   &   &   &   & 2 & 4 & 9 \\
+  Germano reale &   &   & 17  & 30  & 7 & 7 & 36  \\
+  Ghiandaia &   &   & 1 &   &   & 1 &   \\
+  Lucherino &   &   & 2 &   &   &   &   \\
+  Luì bianco  &   & NT  &   &   &   &   & 1 \\
+  Luì piccolo &   &   & 4 & 2 &   & 14  &   \\
+  Martin pescatore  &   & VU  &   &   & 1 &   & 1 \\
+  Merlo &   &   & 3 & 22  & 4 & 37  & 4 \\
+  Moretta &   & VU  &   & 1 &   &   &   \\
+  Nibbio bruno  &   & VU  &   &   & 1 &   & 1 \\
+  Passera d'Italia  &   &   &   & $\times$ &   & 27  &   \\
+  Passera mattugia  &   & NT  &   & 4 &   & 5 & 1 \\
+  Pettirosso  &   &   & 2 &   &   &   &   \\
+  Picchio muratore  &   &   &   & 1 &   &   &   \\
+  Picchio nero  & $\times$ &   & 1 &   &   &   &   \\
+  Picchio rosso maggiore  &   &   & $\times$ & $\times$ &   & 6 & 2 \\
+  Picchio verde &   & NT  &   & 1 &   & 6 &   \\
+  Pigliamosche  &   & NT  & $\times$ & 5 & 2 &   & 7 \\
+  Piro piro culbianco &   &   &   &   & 1 &   &   \\
+  Piro piro piccolo &   & VU  &   & 2 &   &   &   \\
+  Poiana  &   & NT  & 2 &   &   & 1 &   \\
+  Porciglione &   & VU  & 2 & 2 & 1 &   &   \\
+  Rampichino alpestre &   &   & $\times$ &   &   &   &   \\
+  Rondine &   & VU  &   & 3 &   & 36  &   \\
+  Rondone comune  &   & NT  &   &   &   & 3 &   \\
+  Regolo  &   &   & 4 &   &   &   &   \\
+  Storno  &   & NT  &   & 5 & 2 & 22  & $\times$ \\
+  Scricciolo  &   &   & 2 &   &   &   & 21  \\
+  Svasso maggiore &   & NT  &   & 10  &   &   &   \\
+  Torcicollo  &   & NT  &   & 1 &   & 1 &   \\
+  Tordela &   &   &   &   &   & 1 &   \\
+  Tordo bottaccio &   &   & 2 & 1 & 3 & 5 &   \\
+  Tortora dal collare &   &   &   &   &   &   & 1 \\
+  Tortora selvatica &   & NT  &   &   & 1 &   &   \\
+  Tuffetto  &   & VU  &   &   &   &   & 6 \\
+  Usignolo di fiume &   & NT  &   &   &   &   & 5 \\
+  Verdone &   &   &   & 4 & $\times$ & 19  & 1 \\
+  Verzellino  &   &   &   & 1 & 1 & 4 & 3 \\
+\hiderowcolors
+\bottomrule
+\caption{Risultati di sintesi per ogni area indagata a seconda della specie, con evidenziata l'appartenenza eventuale alla Lista Rossa e all'Allegato 1 della Direttiva Habitat. Una "$\times$" indica una specie presente nel momento dell'osservazione, ma non censita}                             
+\end{longtable}
+
+\newpage
+\section{Paludi di Sternigo - IT3120034}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{sternigo_totale_osservazioni.jpg}
+  \caption{Sintesi delle osservazioni effettuate alle Paludi di Sternigo}
+\end{figure}\vspace*{\fill}
+
+Sono state effettuate tre uscite in periodo tardo primaverile-estivo (fine maggio-inizio luglio), mediante rilevamenti standardizzati effettuati al canto lungo sentieri campione, gli stessi della stagione 2012, ma ripercorrendo solo quelli che attraversano ambienti umidi e prativi. Lungo la percorrenza dei transetti sono stati censiti gli uccelli in comportamento territoriale, alimentazione e volo. I dati sono stati confrontati con quelli raccolti nella stagione precedente (2012). La mappa del biotopo riporta in sintesi i dati di presenza rilevati.
+
+\subsection{Risultati}
+
+I rilevamenti hanno evidenziato una sostanziale stabilità delle presenze rispetto all’anno precedente; l’insediamento della cannaiola verdognola rispecchia la ripresa degli ambienti cespugliati e a canneto, oggetto dello sfalcio nell’inverno 2012. La chiusura delle aree aperte createsi ha invece ridotto le disponibilità ambientali per l’averla piccola, che comunque è presente nelle aree prative interne e circostanti l’area umida.
+
+Le condizioni ambientali primaverili non hanno probabilmente favorito il successo riproduttivo di svasso maggiore e folaga, che comunque sono stabilmente presenti entro e fuori il biotopo.
+
+Vista la valenza del Lago si raccomanda di estendere azioni di conservazione, soprattutto dei pochi lembi di canneto, all’interno del margine lacustre, anche in quei contesti fortemente antropizzati come quelli prossimi all’emissario e all’abitato di Baselga.
+
+\rowcolors{1}{white}{lightgray}
+\begin{table}[H]
+\centering
+\begin{tabular}{llll}
+\toprule                
+\textbf{  Specie  } & \textbf{  23-05-2013  } & \textbf{  12-06-2013  } & \textbf{  08-07-2013  } \\
+\midrule                
+  Airone cenerino & 1 &   &   \\
+  Averla piccola  & 5 & 1 & 2 \\
+  Balestruccio  &   &   & 1 \\
+  Ballerina bianca  &   &   & 2 \\
+  Cannaiola comune  & 3 & 4 & 1 \\
+  Cannaiola verdognola  &   & 1 & 3 \\
+  Capinera  & 3 &   & 7 \\
+  Cesena  & 3 &   &   \\
+  Cincia bigia  & 2 &   &   \\
+  Cinciallegra  &   &   & 7 \\
+  Ciuffolotto & 1 &   &   \\
+  Codirosso comune  & 1 &   & 1 \\
+  Cornacchia grigia &   &   & 1 \\
+  Cornacchia nera & 1 &   & 4 \\
+  Folaga  & 3 & 4 & 4 \\
+  Fringuello  & 4 &   & 5 \\
+  Germano reale & 12  & 4 & 14  \\
+  Luì piccolo & 1 &   & 1 \\
+  Merlo & 12  &   & 10  \\
+  Moretta &   &   & 1 \\
+  Passera d'Italia  & $\times$ & $\times$ & $\times$ \\
+  Passera mattugia  &   & 2 & 2 \\
+  Picchio muratore  &   &   & 1 \\
+  Picchio rosso maggiore  &   & $\times$ &   \\
+  Picchio verde &   &   & 1 \\
+  Pigliamosche  & 1 & 1 & 3 \\
+  Piro piro piccolo &   &   & 2 \\
+  Porciglione & 1 &   & 1 \\
+  Rondine &   &   & 3 \\
+  Storno  &   &   & 5 \\
+  Svasso maggiore & 4 & 3 & 3 \\
+  Torcicollo  & 1 &   &   \\
+  Tordo bottaccio &   &   & 1 \\
+  Verdone & 1 &   & 3 \\
+  Verzellino  & 1 &   &   \\
+\bottomrule               
+\end{tabular}
+\caption{Risultati di sintesi per le giornate di monitoraggio effettuate alle Paludi di Sternigo in termini di numero di esemplari rinvenuti. Una "$\times$" indica una specie presente nel momento dell'osservazione, ma non censita}
+\end{table}
+
+\subsection{Presenza di specie tipiche degli ambienti umidi}
+Di seguito si riportano le principali specie censite nella porzione di riserva prospiciente il lago di Serraia, caratterizzata da vegetazione perilacustre, fragmiteto e prati umidi da sfalcio.
+
+\subsubsection{Germano reale}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{sternigo_germano.jpg}
+  \caption{Sintesi delle osservazioni effettuate alle Paludi di Sternigo per il Germano Reale}
+\end{figure}\vspace*{\fill}
+Specie nidificante, nel biotopo e nel lago. Sono stati osservati numerosi individui durante le tre giornate di monitoraggio. Per la maggior parte dei casi sono stati osservati adulti sia maschi che femmine, anche in abito eclissale, sostare nelle acque e sulle rive della riserva. L’osservazione di 5 giovani germani, testimonia l’avvenuta nidificazione anche all’interno dei confini della riserva, in un numero stimabile in alcune coppie nidificanti. Per questa specie come per altri uccelli acquatici l’area a biotopo mantiene la sua valenza di sito di nidificazione e di rifugio oltre che di alimentazione e/o sosta durante le migrazioni, e ne rappresenta la porzione di maggior pregio. Va comunque ricordato che altre alternative si ritrovano anche esternamente ai confini, e che in quanto tali meritano di essere preservate sia per una diversità biologica delle sponde sia per il loro valore paesaggistico in un contesto di lago altrimenti molto artificializzato.
+
+\subsubsection{Moretta}
+Specie estivante ma non nidificante. Durante le tre uscite di monitoraggio è stato osservato un solo maschio adulto, mentre nel periodo estivo è stata riscontrata la presenza di alcuni individui estivanti ma non nidificanti. Osservazioni che non si discostano da quelle raccolte negli anni precedenti e dell’ultimo decennio del secolo scorso. Non chiarite le ragioni della mancata nidificazione della specie, che ormai da anni sosta ed estiva nella porzione prospiciente il biotopo.
+
+\subsubsection{Airone cenerino}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{sternigo_airone.jpg}
+  \caption{Sintesi delle osservazioni effettuate alle Paludi di Sternigo per l'Airone Cenerino}
+\end{figure}\vspace*{\fill}
+Specie non nidificante, estivante. Un individuo adulto è stato osservato alla fine di maggio. La specie non è nidificante nella riserva, può tuttavia utilizzare lo specchio d'acqua di Serraia e la riserva durante la ricerca trofica. Si ricorda che non lontano, in Alta Valsugana, sono presenti alcune piccole garzaie, dalle quali individui adulti potrebbero provenire, alla ricerca di fonti alimentari.
+
+\subsubsection{Svasso maggiore}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{sternigo_svasso_maggiore.jpg}
+  \caption{Sintesi delle osservazioni effettuate alle Paludi di Sternigo per lo Svasso maggiore}
+\end{figure}\vspace*{\fill}
+Specie nidificante nel biotopo e nel lago. Sono stati osservati diversi adulti in alimentazione nel corso delle tre uscite di monitoraggio. La specie è stata confermata come nidificante all'interno dei confini della riserva, con almeno una coppia presente con un giovane. L'annata piovosa e fredda può aver ritardato o compromesso le prime covate primaverili. Durante il censimento 2012 sono state stimate tre coppie nidificanti nella riserva; per il 2013 è stata accertata la nidificazione di una sola una coppia, ma è possibile che fino al termine del monitoraggio altre non siano state rilevate, in quanto in cova e quindi poco visibili. Come per il germano reale, buona parte della popolazione frequenta anche l’intero lago, dove alcune coppie nidificano nei pochi lembi di canneto ancora esistenti. Anche per questa specie si raccomanda quindi la conservazione dei canneti residui ancora esistenti. 
+
+\subsubsection{Porciglione}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{sternigo_porciglione.jpg}
+  \caption{Sintesi delle osservazioni effettuate alle Paludi di Sternigo per il Porciglione}
+\end{figure}\vspace*{\fill}
+Questo Rallide è presente e probabilmente nidifica nel biotopo. E’ stato osservato e contattato acusticamente con un numero minimo di almeno due, forse tre maschi, territoriali rilevati in periodo riproduttivo, confermando così i valori riscontrati nel 2012, quando erano stati rilevati tre  maschi territoriali.
+
+\subsubsection{Folaga}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{sternigo_folaga.jpg}
+  \caption{Sintesi delle osservazioni effettuate alle Paludi di Sternigo per la Folaga}
+\end{figure}\vspace*{\fill}
+Specie nidificante nel biotopo e nel lago. Sono stati osservati numerosi individui adulti territoriali frequentare le acque e il fragmiteto dell’area protetta. La nidificazione è stata accertata in periodo di cova, ma non sono state censite coppie con giovani al seguito; come per lo svasso maggiore le condizioni meteorologiche avverse del mese di maggio, possono aver compromesso le prime nidiate. Come per germano reale, svasso maggiore, anche per questa specie vale la necessità di tutelare i lembi di vegetazione esterni al biotopo. 
+
+\subsubsection{Averla piccola}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{sternigo_averla.jpg}
+  \caption{Sintesi delle osservazioni effettuate alle Paludi di Sternigo per l'Averla piccola}
+\end{figure}\vspace*{\fill}
+Si conferma la presenza come nidificante certa di questa specie, censita con almeno una-due coppie nei prati umidi della parte settentrionale della riserva. La presenza di almeno 5 individui alla fine di maggio, è forse riferibile ad una fase di sosta da reputarsi in sosta migratoria, o a sconfinamenti di altre coppie territoriali confinanti presenti in zona. Sostanzialmente quindi si conferma il dato del 2012, quando sono state censite almeno due coppie nidificanti.
+
+\subsubsection{Cannaiola comune}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{sternigo_cannaiola_comune.jpg}
+  \caption{Sintesi delle osservazioni effettuate alle Paludi di Sternigo per la Cannaiola comune}
+\end{figure}\vspace*{\fill}
+Specie nidificante nel canneto del biotopo. Sono stati censiti 4 maschi cantori, valore simile a quello del 2012, che conferma la sostanziale idoneità del sito, uno dei più alti per la nostra provincia. Infine si ricorda che altre presenze sono state accertate nei margini di canneto anche oltre il sito protetto. 
+
+\subsubsection{Cannaiola verdognola}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{sternigo_cannaiola_verdognola.jpg}
+  \caption{Sintesi delle osservazioni effettuate alle Paludi di Sternigo per la Cannaiola verdognola}
+\end{figure}\vspace*{\fill}
+Specie accertata come nidificante nel 2013. Questo Acrocefalo non era stato censito nella 2012; nel corso dei monitoraggi sono stati censiti tre maschi cantori all'interno della riserva. E’ probabile che la ricrescita della vegetazione nelle porzioni più asciutte e cespugliate dei prati umidi, abbia favorito il ritorno della specie, penalizzata nel 2012 dallo sfalcio effettuato nell’inverno precedente. 
+
+\newpage
+\section{Laghestel di Pinè - IT3120035}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{laghestel_totale_osservazioni.jpg}
+  \caption{Sintesi delle osservazioni effettuate a Laghestel di Pinè}
+\end{figure}\vspace*{\fill}
+Sono state condotte tre uscite e censimenti serali nel periodo tardo primaverile-estivo (fine maggio-inizio luglio), lungo i soli sentieri campione limitati alla porzione umida della torbiera, col fine di verificare eventuali cambiamenti nella composizione ornitica o nell’insediamento delle specie più strettamente legate agli ambienti umidi. Si ricorda infatti che dopo l’intervento condotto nell’inverno 2011-12, i dati raccolti avevano rilevato un generale crollo delle presenze rispetto agli anni precedenti l’intervento; questo non solo per l’avifauna ma anche per la frequentazione di alcuni Anfibi Anuri quali il rospo comune \emph{Bufo bufo}.
+
+\subsection{Risultati di sintesi}
+Rispetto al 2012 le presenze sembrano essersi complessivamente stabilizzate, con un incremento delle specie tipiche degli ambienti a canneto asciutto. Il numero delle coppie delle diverse specie rimane comunque condizionato dalle dimensioni dell’ambiente umido; dal suo progressivo evolversi verso una formazione a prato umido; dalla perdita di ambienti aperti nelle porzioni prossimi al biotopo, oggi occupati da serre destinate alla coltivazione dei piccoli frutti che ne alterano la complessità ambientale, condizionando a loro volta la presenza di specie più legate agli ambienti prativi, oggi non più presenti o più rare.
+
+Si ricorda che la perdita in ricchezza faunistica si conferma con il progressivo calo delle presenze di rospo comune.
+
+\rowcolors{1}{white}{lightgray}
+\begin{table}[H]
+\centering
+\begin{tabular}{llll}
+\toprule                
+\textbf{  Specie  } & \textbf{  23-05-2013  } & \textbf{  12-06-2013  } & \textbf{  08-07-2013  } \\
+\midrule                
+  Airone cenerino & 1 &   &   \\
+  Averla piccola  & 5 & 1 & 2 \\
+  Balestruccio  &   &   & 1 \\
+  Ballerina bianca  &   &   & 2 \\
+  Cannaiola comune  & 3 & 4 & 1 \\
+  Cannaiola verdognola  &   & 1 & 3 \\
+  Capinera  & 3 &   & 7 \\
+  Cesena  & 3 &   &   \\
+  Cincia bigia  & 2 &   &   \\
+  Cinciallegra  &   &   & 7 \\
+  Ciuffolotto & 1 &   &   \\
+  Codirosso comune  & 1 &   & 1 \\
+  Cornacchia grigia &   &   & 1 \\
+  Cornacchia nera & 1 &   & 4 \\
+  Folaga  & 3 & 4 & 4 \\
+  Fringuello  & 4 &   & 5 \\
+  Germano reale & 12  & 4 & 14  \\
+  Luì piccolo & 1 &   & 1 \\
+  Merlo & 12  &   & 10  \\
+  Moretta &   &   & 1 \\
+  Passera d'Italia  & $\times$ & $\times$ & $\times$ \\
+  Passera mattugia  &   & 2 & 2 \\
+  Picchio muratore  &   &   & 1 \\
+  Picchio rosso maggiore  &   & $\times$ &   \\
+  Picchio verde &   &   & 1 \\
+  Pigliamosche  & 1 & 1 & 3 \\
+  Piro piro piccolo &   &   & 2 \\
+  Porciglione & 1 &   & 1 \\
+  Rondine &   &   & 3 \\
+  Storno  &   &   & 5 \\
+  Svasso maggiore & 4 & 3 & 3 \\
+  Torcicollo  & 1 &   &   \\
+  Tordo bottaccio &   &   & 1 \\
+  Verdone & 1 &   & 3 \\
+  Verzellino  & 1 &   &   \\
+\bottomrule               
+\end{tabular}
+\caption{Risultati di sintesi per le giornate di monitoraggio effettuate a Laghestel di Pinè in termini di numero di esemplari rinvenuti. Una "$\times$" indica una specie presente nel momento dell'osservazione, ma non censita}
+\end{table}
+
+\subsection{Presenza di specie tipiche degli ambienti umidi}
+\subsubsection{Germano reale}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{laghestel_germano.jpg}
+  \caption{Sintesi delle osservazioni effettuate a Laghestel di Pinè per il Germano reale}
+\end{figure}\vspace*{\fill}
+Specie nidificante nel biotopo ma in numero limitato di coppie. 
+Nei monitoraggi 2013 è stata accertata la nidificazione di almeno una coppia di germani reali; è stata infatti osservata una femmina con al seguito 13 anatroccoli. Nel 2012 la specie era stata osservata nella riserva, ma non vi aveva nidificato probabilmente a causa dello sfalcio del canneto, e quindi della mancanza di un’adeguata copertura vegetazionale.
+\subsection{Porciglione}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{laghestel_porciglione.jpg}
+  \caption{Sintesi delle osservazioni effettuate a Laghestel di Pinè per il Porciglione}
+\end{figure}\vspace*{\fill}
+I rilevamenti confermano la sostanziale presenza e probabile nidificazione della specie con un numero di coppie simile a quello riscontrato l’anno precedente. 
+I dati confermano le presenze stimate per il 2012, confermando la presenza della specie nella porzione più umida. Nel 2012 erano stati censiti 5 maschi territoriali; la specie non sembra in declino e si ritiene nidificante con un numero di coppie che si ritiene simile all’anno precedente.
+\subsection{Folaga}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{laghestel_folaga.jpg}
+  \caption{Sintesi delle osservazioni effettuate a Laghestel di Pinè per la Folaga}
+\end{figure}\vspace*{\fill}
+Specie nidificante nello specchio d’acqua libera centrale. 
+Sono infatti state osservate due nidiate a distanza di un mese (12/6 e 8/7, rispettivamente 3 e 4 juv); è probabile che la stessa coppia si sia riprodotta due volte nella stessa stagione. Tuttavia non è da escludere la presenza di due coppie riproduttive nell'area protetta. La presenza di questo Rallide nella riserva rimane costante, attestandosi con un numero di coppie tra 1 e 2, che si ritiene consono alle disponibilità di ambienti umidi ad essa idonei.
+
+\newpage
+\section{Fiavé - IT3120068}
+\vspace*{\fill}
+\begin{figure}[H]
+
+  \centering
+  \includegraphics[width=\columnwidth]{fiave_totale_osservazioni.jpg}
+  \caption{Sintesi delle osservazioni effettuate a Fiavè}
+\end{figure}\vspace*{\fill}
+
+I rilevamenti effettuati in periodo primaverile-estivo (inizio giugno-inizio luglio), lungo gli stessi sentieri campione della stagione 2012, sono stati ripetuti solo ripercorrendo le porzioni occupate dagli ambienti umidi. Nel 2013 l’area non è stata interessata da attività di sfalcio con mezzi meccanizzati. 
+
+\subsection{Risultati in sintesi}
+La Torbiera ha perso la sua ricchezza ornitologica che la caratterizzava al momento della sua istituzione. Fattori che possono aver condizionato il progressivo impoverimento sono: il progressivo interramento delle aree umide; la chiusura degli specchi d’acqua libera; l’intensificazione dell’agricoltura e dello sfalcio dei prati entro e fuori biotopo; l’intervento condotto nel 2011 che ha contribuito a banalizzare l’area con una sensibile perdita di diversità strutturale della vegetazione. Nel 2013 sono stati raccolti alcuni indizi di ripresa con il ritorno di alcune specie e la ricomparsa di altre un tempo però molto più numerose. 
+
+\rowcolors{1}{white}{lightgray}
+\begin{table}[H]
+\centering
+\begin{tabular}{llll}
+\toprule                
+\textbf{  Specie  } & \textbf{  03-06-2013  } & \textbf{  24-06-2013  } & \textbf{  09-07-2013  } \\
+\midrule                
+  Airone cenerino & 6 & 1 & 9 \\
+  Averla piccola  & 8 & 4 & 14  \\
+  Balestruccio  & 4 & 6 &   \\
+  Ballerina bianca  &   &   & 2 \\
+  Cannaiola comune  & 4 & 5 & 9 \\
+  Cannaiola verdognola  & 27  & 3 & 14  \\
+  Capinera  & 19  & 11  & 18  \\
+  Cardellino  &   & 2 & 22  \\
+  Cinciallegra  & 2 & 3 & 6 \\
+  Cinciarella &   &   & 1 \\
+  Codibugnolo & 2 &   &   \\
+  Colombaccio &   & 1 & 1 \\
+  Cutrettola  &   &   & 1 \\
+  Falco pecchiaiolo &   &   & 2 \\
+  Fringuello  & 11  & 1 & 8 \\
+  Gallinella d'acqua  & 2 & 1 & 1 \\
+  Germano reale & 3 &   & 4 \\
+  Ghiandaia & 1 &   &   \\
+  Luì piccolo & 3 & 4 & 7 \\
+  Merlo & 7 & 11  & 19  \\
+  Passera d'Italia  & 2 & 13  & 12  \\
+  Passera mattugia  &   &   & 5 \\
+  Picchio rosso maggiore  & 2 & 2 & 2 \\
+  Picchio verde & 3 & 2 & 1 \\
+  Poiana  &   &   & 1 \\
+  Rondine & 25  & 7 & 4 \\
+  Rondone comune  & 3 &   &   \\
+  Storno  &   & 7 & 15  \\
+  Torcicollo  &   &   & 1 \\
+  Tordela &   &   & 1 \\
+  Tordo bottaccio & 1 & 2 & 2 \\
+  Verdone & 7 & 7 & 5 \\
+  Verzellino  &   & 1 & 3 \\
+\bottomrule               
+\end{tabular}
+\caption{Risultati di sintesi per le giornate di monitoraggio effettuate a Fiavè in termini di numero di esemplari rinvenuti}
+\end{table}
+
+\subsection{Presenza di specie tipiche degli ambienti umidi}
+Di seguito si riportano le principali specie censite nella zona centrale della riserva, occupata dalla torbiera, dagli stagni e dai prati umidi. 
+
+\subsubsection{Germano reale}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{fiave_germano.jpg}
+  \caption{Sintesi delle osservazioni effettuate a Fiavè per il Germano reale}
+\end{figure}\vspace*{\fill}
+Specie presente nel biotopo, nidificante. 
+
+Durante i monitoraggi del 2013 è stata accertata la nidificazione di questo Anatide, comprovata dalla presenza di una femmina con 3 anatroccoli al seguito. 
+La specie risulta meno abbondante rispetto al passato; le altre osservazioni si riferiscono ad alcuni individui adulti osservati nel corso delle uscite. Si conferma il dato del 2012, per il quale le coppie presenti e nidificanti all'interno della riserva sono sensibilmente calate da quelle censite negli anni Ottanta e Novanta, attestandosi sulle 3-5 al massimo.
+
+\subsubsection{Airone cenerino}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{fiave_airone.jpg}
+  \caption{Sintesi delle osservazioni effettuate a Fiavè per l'Airone cenerino}
+\end{figure}\vspace*{\fill}
+Specie accertata per la prima volta come nidificante, in parte estivante. La prima nidificazione è stata accertata con una coppia insediatasi entro l’area protetta. È stato infatti osservato un nido occupato con due grossi giovani ormai prossimi all'involo. Il sito si è rivelato idoneo alla nidificazione della specie, contrariamente alle previsioni del 2012, quando la specie frequentava la riserva solo per ragioni trofiche. Si conferma la forte espansione dell'airone cenerino sul territorio provinciale, anche se probabilmente le grosse garzaie della valle dei laghi stanno subendo una contrazione, favorendo la dispersione di piccole cellule riproduttive sparse nelle piccole zone umide provinciali. È possibile che nei prossimi anni si possa formare una piccola garzaia probabilmente circoscritta alla vegetazione più sviluppata prossima al laghetto centrale.
+
+\subsubsection{Porciglione}
+Le osservazioni raccolte confermano la presenza, ormai ridotta di questo Rallide, un tempo più numeroso e abbondante nel biotopo; i dati raccolti confermano la stima indicata per il 2012, pari a 2-3 coppie.
+
+\subsubsection{Gallinella d'acqua}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{fiave_gallinella.jpg}
+  \caption{Sintesi delle osservazioni effettuate a Fiavè per la Gallinella d'acqua}
+\end{figure}\vspace*{\fill}
+Specie nidificante. Sono stati osservati 4 individui. Il numero di probabili coppie presenti nella riserva rimane in accordo con le stime effettuate nel 2012, pari a due, massimo tre coppie.
+
+\subsubsection{Cutrettola}
+Specie rara, non accertata come nidificante. La cutrettola era una delle presenze di maggior rilievo e caratterizzante l'area negli anni Novanta del secolo corso, assente nel 2012, rimane ormai rara anche se è stata riscontrata la presenza di un individuo in periodo di nidificazione, che fa ritenere possibile la presenza di una coppia. Durante i monitoraggi del 2013 un individuo di questo Motacillide è stato osservato all'interno dell’area umida; il dato raccolto si riferisce ad una femmina avvistata nel centro della torbiera a luglio. 
+Si conferma la diminuzione di molte specie nidificanti negli ambienti acquatici, come anche la mancanza di altre negli ambienti prativi circostanti (qui non trattate); questi ultimi sono fortemente condizionati nella loro qualità ambientale da una coltivazione intensiva dei prati, che avviene con eccesso di concimazioni e taglio precoce dell’erba. Si ricorda quale possibile conseguenza la scomparsa di quaglia, stiaccino, prispolone, allodola.
+
+\subsubsection{Cannaiola verdognola}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{fiave_cannaiola_verdognola.jpg}
+  \caption{Sintesi delle osservazioni effettuate a Fiavè per la Cannaiola verdognola}
+\end{figure}\vspace*{\fill}
+Specie estiva nidificante. 
+
+Si conferma l'Acrocefalo più abbondante presente nella riserva. A inizio giugno sono stati contattati ben 26 maschi in canto, numero che è poi calato nel corso delle altre uscite di monitoraggio. È probabile che una parte degli individui contattati a inizio maggio fosse in parte in sosta migratoria, anche se un individuo è stato osservato già con imbeccata. La stima rimane invariata rispetto a quella del 2012, con un numero minimo di maschi territoriali e di coppie, elevato, e pari a 20. La specie sembra esser stata favorita dalla ripresa del canneto, idoneo nelle porzioni semiasciutte, e dai cespugli radi. 
+
+\subsubsection{Cannaiola comune}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{fiave_cannaiola_comune.jpg}
+  \caption{Sintesi delle osservazioni effettuate a Fiavè per la Cannaiola comune}
+\end{figure}\vspace*{\fill}
+Sono stati censiti un massimo di 9 maschi cantori contemporaneamente, tutti concentrati sul fragmiteto prospiciente gli stagni e i chiari d'acqua. Questo Acrocefalo sembra in leggero aumento rispetto ai valori del 2012, quando erano stati osservati 5 maschi territoriali. Il mancato taglio del fragmiteto in periodo invernale ha probabilmente favorito l'insediarsi di più coppie di cannaiola comune, che hanno trovato maggiore disponibilità di canneto in avanzato stadio di sviluppo, e quindi ambienti idonei alla nidificazione al momento dell’arrivo.
+
+\subsubsection{Cannareccione}
+Specie in sosta, rara. Durante la stagione 2013 non è stato contatto nessuno individuo di questo grande Acrocefalo, confermando la sporadicità dell'osservazione del 2012, quando era stato rilevato un maschio in canto ancora in periodo migratorio. Rispetto al passato questa specie è diminuita sensibilmente.
+
+\subsubsection{Averla piccola}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{fiave_averla.jpg}
+  \caption{Sintesi delle osservazioni effettuate a Fiavè per l'Averla piccola}
+\end{figure}\vspace*{\fill}
+Questo Lanide si conferma presenza abituale e accertata come nidificante nel  biotopo con un numero di coppie stimato pari a 10, restando stabile o in lieve diminuzione rispetto alla stima effettuata nel 2012, pari a un minimo di 13 coppie. Si registra invece un sensibile calo negli ambienti a prato circostanti il biotopo, quale possibile effetto dei cambiamenti recenti nella conduzione dei prati da sfalcio.
+
+\subsubsection{Migliarino di palude}
+Specie non nidificante, presente in periodo migratorio o raro in quello riproduttivo. 
+Nessun individuo è stato osservato durante i monitoraggi del 2013, confermando il trend negativo registrato nel 2012, quando dalle 6-7 coppie censite negli anni ‘90 si era passati a una forse due coppie nidificanti nel 2012, e allo zero nel 2013.
+
+\newpage
+\section{Taio di Nomi - IT3120082}
+
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{taio_totale_osservazioni.jpg}
+  \caption{Sintesi delle osservazioni effettuate a Taio di Nomi}
+\end{figure}\vspace*{\fill}
+Il monitoraggio tardo primaverile-estivo (fine maggio-inizio luglio) è stato effetuato percorrendo i sentieri campione del perimetro settentrionale e occidentale della piccola area umida, ed il canale di alimentazione.  I dati sono stati confrontati con quelli raccolti nella stagione riproduttiva 2011, quando l'area era stata interessata da un rilevante intervento di ripristino al fine di ricreare gli specchi d'acqua libera, utili agli uccelli acquatici migratori in sosta e nidificanti.  
+
+\rowcolors{1}{white}{lightgray}
+\begin{table}[H]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{  Specie  } & \textbf{  27-05-2013  } & \textbf{  03-07-2013  } \\
+\midrule
+  Airone cenerino &   & 1 \\
+  Cannaiola comune  & 2 & 3 \\
+  Cannaiola verdognola  & 1 &   \\
+  Capinera  & 4 &   \\
+  Cardellino  & $\times$ & $\times$ \\
+  Cinciallegra  & $\times$ & $\times$ \\
+  Codibugnolo & 2 &   \\
+  Colombaccio &   & 1 \\
+  Fagiano comune  & 1 &   \\
+  Folaga  & 4 & 1 \\
+  Fringuello  & 10  &   \\
+  Gallinella d'acqua  & 1 & 1 \\
+  Germano reale & 2 & 5 \\
+  Martin pescatore  &   & 1 \\
+  Merlo & 4 &   \\
+  Nibbio bruno  &   & 1 \\
+  Pigliamosche  & 2 &   \\
+  Piro piro culbianco &   & 1 \\
+  Porciglione & 1 &   \\
+  Storno  & 1 & 1 \\
+  Tordo bottaccio & 3 &   \\
+  Tortora selvatica & 1 &   \\
+  Verdone & $\times$ & $\times$ \\
+  Verzellino  & 1 &   \\
+\bottomrule
+\end{tabular}
+\caption{Risultati di sintesi per le giornate di monitoraggio effettuate a Taio in termini di numero di esemplari rinvenuti. Una "$\times$" indica una specie presente nel momento dell'osservazione, ma non censita}
+\end{table}
+
+\subsection{Presenza di specie tipiche degli ambienti umidi}
+Di seguito si riportano le principali specie censite nella riserva di Taio di Nomi.
+
+\subsubsection{Germano reale}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{taio_germano.jpg}
+  \caption{Sintesi delle osservazioni effettuate a Taio di Nomi per il Germano reale}
+\end{figure}\vspace*{\fill}
+Specie probabilmente nidificante nel biotopo. Sono stati osservati alcuni individui adulti all'interno della riserva, ma non è stata accertata la nidificazione, anche se è stata osservata una coppia che potenzialmente può essersi riprodotta. Il canneto in epoca postriproduttiva viene utilizzato durante il periodo di muta. I dati raccolti confermano quelli del 2011, e si ritengono presenti almeno una-due coppie nidificanti, numero che comunque rispecchia la disponibilità dell'area, che risulta fra l’altro disturbata dalla vicinanza con i coltivi che perimetrano l’area e il canale che alimenta la zona umida.
+
+Le limitate dimensioni condizionano la presenza delle specie, che in genere sostano nel periodo migratorio e preriproduttivo, ma spesso dopo poco tendono ad abbandonare l’area per il disturbo e la scarsa idoneità degli stessi.
+
+\subsubsection{Porciglione}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{taio_porciglione.jpg}
+  \caption{Sintesi delle osservazioni effettuate a Taio di Nomi per il Porciglione}
+\end{figure}\vspace*{\fill}
+Specie rara non accertata come nidificante. Durante il monitoraggio 2013 è stato osservato un individuo nella porzione occidentale della riserva. Si tratta di uno dei primi avvistamenti nell'area, che fanno ben sperare nel possibile insediamento della specie, anche se con un numero riconducibile però a non più di una, forse due coppie.
+
+\subsubsection{Gallinella d'acqua}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{taio_gallinella.jpg}
+  \caption{Sintesi delle osservazioni effettuate a Taio di Nomi per la Gallinella d'acqua}
+\end{figure}\vspace*{\fill}
+Specie nidificante nel biotopo. I dati raccolti confermano la stabilità della specie che si attesta suoi valori simili agli anni precedenti, pari a tre-quattro coppie territoriali.
+
+\subsubsection{Folaga}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{taio_folaga.jpg}
+  \caption{Sintesi delle osservazioni effettuate a Taio di Nomi per la Folaga}
+\end{figure}\vspace*{\fill}
+Specie nidificante nell’area. Nel corso del monitoraggio sono stati osservati un massimo di quattro individui adulti all'interno della riserva, ed è stata accertata la presenza come nidificante, nel corso di osservazioni condotte al di fuori dei censimenti standardizzati. Si stima la presenza di almeno tre coppie territoriali, in accordo con il monitoraggio del 2011. Essendo specie fortemente territoriale, la presenza di questa specie, può incidere sulla presenza di altri rallidi. 
+
+\subsubsection{Martin pescatore}
+Specie presente in periodo riproduttivo non accertato come nidificante. E’stato osservato un individuo in probabile in alimentazione proveniente dal vicino fiume Adige.
+
+\subsubsection{Usignolo di fiume}
+Nel corso del monitoraggio del 2013 l'usignolo di fiume non è stato rilevato nella riserva, in linea con le osservazioni del monitoraggio 2011. L'assenza di fasce di vegetazione ripariale impedisce a questa specie di stabilirsi nell'ambiente palustre del Taio, ambiente che potrebbe fungere da possibile occasionale richiamo per le coppie che nidificano, nel tratto di Adige poco distante.
+
+\subsubsection{Cannaiola comune}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{taio_cannaiola_comune.jpg}
+  \caption{Sintesi delle osservazioni effettuate a Taio di Nomi per la Cannaiola comune}
+\end{figure}\vspace*{\fill}
+Specie estiva nidificante. Sono stati censiti un massimo di 3 maschi cantori all’interno della riserva, mantenendo stabile il numero di coppie probabilmente nidificanti. Nel 2011 infatti sono state censite 4 coppie, la stima per il 2013 è comunque limitata a poche coppie in numero minimo pari a tre.
+
+\subsubsection{Cannaiola verdognola}
+\vspace*{\fill}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{taio_cannaiola_verdognola.jpg}
+  \caption{Sintesi delle osservazioni effettuate a Taio di Nomi per la Cannaiola verdognola}
+\end{figure}\vspace*{\fill}
+Specie presente in epoca riproduttiva, ma non nidificante. 
+
+Durante il monitoraggio 2013 è stato censito un solo maschio in canto, probabilmente riferibile a un individuo ancora in migrazione (27/5). Il dato conferma la non idoneità del sito per questa specie, che abbisogna di canneto compenetrato da cespugli, e ambienti umidi non allagati e cespugliati di una certa dimensione.
+
+\subsubsection{Specie in sosta, in alimentazione ed in migrazione}
+La riserva Taio di Nomi, pur di limitate dimensione rappresenta l'ultimo sito idoneo alla sosta dei migratori della zona, essendo  nel mezzo di un fondovalle fortemente antropizzato sia da un punto di vista dell'urbanizzazione che da quello agricolo; si conferma importante per numerose specie che durante i movimenti migratori, trovano rifugio e ristoro nell'habitat della riserva. In particolare è stato osservato un individuo di piro piro culbianco a luglio, probabilmente già in fase di migrazione post-riproduttiva.
+ Numerose sono le specie che possono utilizzare questo ambiente umido come area di sosta durante la migrazione, ma anche come territorio di caccia: è stato osservato un nibbio bruno perlustrare il canneto, probabilmente alla ricerca di qualche Rallide o Anatide da predare.
+
+\newpage
+ \section{Lago d'Idro - IT3120065}
+
+\vspace*{\fill} \begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{idro_totale_osservazioni.jpg}
+  \caption{Sintesi delle osservazioni effettuate al Lago d' Idro}
+\end{figure}\vspace*{\fill}
+
+ I monitoraggi sono stati condotti lungo i sentieri seguiti negli anni precedenti, censendo tutte le specie acquatiche oltre ai Passeriformi. Per gli uccelli acquatici si è considerata anche l’area antistante al biotopo.
+
+ \subsection{Risultati in sintesi}
+
+ L’area ospita una delle popolazioni più significative di svasso maggiore, che nidifica nel canneto allagato e nella prima porzione del canale, e utilizza per l’alimentazione il lago. Rilevante per le piccole dimensioni le presenze di altre specie acquatiche, a conferma di una certa idoneità ambientale che si è creata con innalzamento delle acque del lago, conseguenti alla nuova gestione da parte della Regione Lombardia. Il continuo variare del livello nel corso della stagione, soprattutto in periodi a forte piovosità, ne condiziona il successo riproduttivo per la distruzione dei nidi. Una possibile soluzione va ricercata nel posizionamento di piattaforme galleggianti idonee ad ospitare i nidi di svasso come quelli di folaga.
+
+Il generale disturbo del tratto di canale a monte, conseguente alla coltivazione lungo i confini delle aree limitrofe, incide fortemente sul successo riproduttivo e sulla tranquillità dell’area. In questo caso la realizzazione di una fascia cespugliata lungo le rive garantirebbe maggiore tranquillità. L’acquisto di nuovi appezzamenti potrebbe migliorare le fasce di margine, ad oggi profondamente alterate. 
+
+Infine una nota di rilievo merita la segnalazione del disturbo lungo le passarelle, che sono frequentate anche con cani lasciati liberi dai visitatori, e percorse in bicicletta e utilizzate da un numero rilevante di frequentatori soprattutto nei mesi estivi.
+
+\rowcolors{1}{white}{lightgray}
+\begin{table}[H]
+\centering
+\begin{tabular}{lll}
+\toprule
+    \textbf{  Specie  } & \textbf{  19-06-2013  } & \textbf{  26-06-2013 } \\
+\midrule
+      Airone cenerino & 3 & 5 \\
+      Averla piccola  &   & 1 \\
+      Ballerina bianca  &   & 4 \\
+      Cannaiola comune  & 8 & 10  \\
+      Cannaiola verdognola  & 4 & 7 \\
+      Cannareccione & 4 &   \\
+      Capinera  &   & 13  \\
+      Cardellino  &   & 3 \\
+      Cinciallegra  & $\times$ & $\times$ \\
+      Cinciarella & $\times$ & $\times$ \\
+      Codirosso comune  &   & 1 \\
+      Fagiano comune  & 1 &   \\
+      Fistione turco  & 7 &   \\
+      Folaga  & 15  & 21  \\
+      Fringuello  &   & 2 \\
+      Gallinella d'acqua  & 3 & 6 \\
+      Germano reale & 13  & 23  \\
+      Luì bianco  & 1 &   \\
+      Martin pescatore  &   & 1 \\
+      Merlo &   & 4 \\
+      Nibbio bruno  &   & 1 \\
+      Passera mattugia  & 1 &   \\
+      Picchio rosso maggiore  &   & 2 \\
+      Pigliamosche  & 4 & 3 \\
+      Storno  & $\times$ & $\times$ \\
+      Svasso maggiore & 9 & 12  \\
+      Tortora dal collare &   & 1 \\
+      Tuffetto  & 5 & 1 \\
+      Usignolo di fiume & 2 & 3 \\
+      Verdone &   & 1 \\
+      Verzellino  &   & 3 \\
+\bottomrule
+\end{tabular}
+\caption{Risultati di sintesi per le giornate di monitoraggio effettuate al Lago d'Idro in termini di numero di esemplari rinvenuti. Una "$\times$" indica una specie presente nel momento dell'osservazione, ma non censita}
+\end{table}
+
+\subsection{Presenza di specie tipiche degli ambienti umidi}
+\subsubsection{Germano reale}
+\vspace*{\fill} \begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{idro_germano.jpg}
+  \caption{Sintesi delle osservazioni effettuate al Lago d'Idro per il Germano reale}
+\end{figure}\vspace*{\fill}
+Specie nidificante nel biotopo e nelle aree limitrofe. Sono stati censiti un numero massimo di 23 individui contemporaneamente, e si stima in una decina di coppie la dimensione della popolazione nidificante. La nidificazione è stata accertata, osservando due femmine con rispettivamente 2 e 3 anatroccoli, oltre all'osservazione di un giovane già indipendente. Sono stati osservati contemporaneamente 11 maschi in muta. Si ritiene quindi inalterato il numero di coppie nidificanti pari ad un numero minimo di 5 ed un massimo di 10 coppie, considerando che la specie nidifica già nel mese di marzo, e che, nel periodo di ricerca ha in parte già terminato la nidificazione e alcune coppie possono essersi già trasferite in altre porzioni del lago.
+\subsubsection{Fistione turco}
+Durante il monitoraggio 2013, ben 7 individui immaturi sono stati osservati nella parte di lago prospiciente la riserva. Si tratta dei nuovi nati di una, forse due coppie nidificante da un paio d’anni alla foce del Chiese in territorio bresciano. Si tratta di una nuova acquisizione per la Provincia di Trento, seppur non accertata come nidificante nel biotopo.
+\subsubsection{Tuffetto}
+\vspace*{\fill} \begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{idro_tuffetto.jpg}
+  \caption{Sintesi delle osservazioni effettuate al Lago d'Idro per il Tuffetto}
+\end{figure}\vspace*{\fill}
+Mediante l'ausilio del playback, sono stati contattati un massimo di 5 individui in contemporanea nella riserva, a difesa di altrettanti territori posti prevalentemente lungo il canale del Fossone. Si ritiene che siano presenti nella riserva almeno 3-5 coppie nidificanti, in accordo con il monitoraggio del 2011, quando sono stati censiti 4 territori.
+\subsubsection{Svasso maggiore}
+Durante il monitoraggio sono stati osservati un massimo di 12 individui all'interno della riserva. È stata accertata la riproduzione per almeno 3 coppie entro i confini dell'area  protetta, ma il numero di individui osservati fa supporre un numero maggiore di coppie nidificanti, almeno una decina di coppie. A differenza del 2011, quando nonostante la rilevante presenza nessuna coppia aveva portato a termine la riproduzione, nel 2013 la specie si è riprodotta forse grazie ad una maggiore  stabilità del livello dell'acqua. Il successo riproduttivo è comunque fortemente condizionato dal livello delle acque del lago. 
+\subsubsection{Folaga}
+\vspace*{\fill} \begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{idro_folaga.jpg}
+  \caption{Sintesi delle osservazioni effettuate al Lago d'Idro per la Folaga}
+\end{figure}\vspace*{\fill}
+Questo Rallide risulta ben presente nell'area umida, e con lo svasso maggiore rappresenta la specie acquatica maggiormente visibile. Sono state accertate 7 nidificazioni, osservando in 6 occasioni adulti con giovani al seguito e un adulto in cova sul nido. Nella stagione 2011 erano state stimate una decina di coppie nidificanti, numero che si ritiene equivalente alla popolazione nidificante nell'anno 2013.
+\subsubsection{Porciglione}
+Specie non accertata come nidificante. Anche nel 2013 la presenza di questo Rallide non è stata accertata nella riserva, nonostante le ricerche condotte anche con il playback. L'habitat della riserva non è idoneo a ospitare il porciglione, e probabilmente anche la presenza massiccia di altri Rallidi come la folaga aumenta la competizione interspecifica, non favorendo l'insediamento della specie.
+\subsubsection{Gallinella d'acqua}
+\vspace*{\fill} \begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{idro_gallinella.jpg}
+  \caption{Sintesi delle osservazioni effettuate al Lago d'Idro per la Gallinella d'acqua}
+\end{figure}\vspace*{\fill}
+Sono stati contattati un massimo di 6 individui adulti all'interno della riserva. Si possono stimare 4-6 territori di questo Rallide, in accordo con le stime effettuate nel 2011. La specie rimane stabile.
+\subsubsection{Martin pescatore}
+\vspace*{\fill} \begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{idro_martin_pescatore.jpg}
+  \caption{Sintesi delle osservazioni effettuate al Lago d'Idro per il Martin pescatore}
+\end{figure}\vspace*{\fill}
+Specie non nidificante nel biotopo. Durante il monitoraggio 2013 è stato osservato un individuo femmina in prossimità della foce del Rio Fossone. La specie probabilmente non è nidificante nella riserva per la mancanza di siti idonei alla nidificazione in quanto richiede scarpate di terra idonea allo scavo delle “gallerie nido”. 
+\subsubsection{Usignolo di fiume}
+\vspace*{\fill} \begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{idro_usignolo_di_fiume.jpg}
+  \caption{Sintesi delle osservazioni effettuate al Lago d'Idro per l'Usignolo di fiume}
+\end{figure}\vspace*{\fill}
+Sono stati osservati un massimo di 3 maschi cantori. Si stima quindi la presenza di minimo 3-4 coppie nidificanti nella riserva. Durante il monitoraggio del 2011 erano state stimate 4 coppie territoriali, valore simile che fa ritenere la specie stabile nell'area.
+\subsubsection{Cannaiola verdognola}
+\vspace*{\fill} \begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{idro_cannaiola_verdognola.jpg}
+  \caption{Sintesi delle osservazioni effettuate al Lago d'Idro per la Cannaiola verdognola}
+\end{figure}\vspace*{\fill}
+Sono stati contattati un massimo di 7 maschi in canto. La specie risulta in lieve aumento rispetto al monitoraggio del 2011, quando erano state stimate 4 coppie territoriali. L'aumento può essere dovuto al mancato sfalcio della porzione asciutta di canneto che per questo ha rappresentato nel 2013, un habitat idoneo all’insediamento di alcune coppie nidificanti.
+\subsubsection{Cannaiola comune}
+\vspace*{\fill} \begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{idro_cannaiola_comune.jpg}
+  \caption{Sintesi delle osservazioni effettuate al Lago d'Idro per la Cannaiola comune}
+\end{figure}\vspace*{\fill}
+Sono stati contattati un massimo di 8 maschi in canto, che fanno ritenere stabile la presenza come nidificante di questo Acrocefalo, con un numero di 10 coppie  territoriali.
+\subsubsection{Cannareccione}
+\vspace*{\fill} \begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{idro_cannareccione.jpg}
+  \caption{Sintesi delle osservazioni effettuate al Lago d'Idro per il Cannareccione}
+\end{figure}\vspace*{\fill}
+Sono stati censiti tre  3 maschi cantori  all'interno del fragmiteto prospiciente il lago, e riferibili ad altrettante 3 coppie territoriali, numero inferiore alle 4 censite nel 2011. Questo Acrocefalo, che richiede grandi estensioni di canneto per nidificare, è molto raro in provincia e la riserva Lago d'Idro è uno degli ultimi siti dove questa specie è presente come nidificante.
+
+
+\end{document}

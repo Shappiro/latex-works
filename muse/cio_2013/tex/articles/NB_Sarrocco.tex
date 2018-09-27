@@ -1,0 +1,195 @@
+\setcounter{figure}{0}
+\setcounter{table}{0}
+
+\begin{adjustwidth}{-3.5cm}{0cm}
+\pagestyle{CIOpage}
+\authortoc{\textsc{Sarrocco S.}, \textsc{Capizzi D.}, \textsc{Pizzol I.}, 
+\textsc{Scalisi M.}}
+\chapter*[Il monitoraggio delle specie della Direttiva Uccelli nel
+Lazio]{\textbf{Il monitoraggio delle specie della Direttiva Uccelli
+(2009/147/CE) nel Lazio: stima dei parametri di alcuni
+}\textbf{\textit{taxa}}\textbf{ di interesse conservazionistico}}
+\addcontentsline{toc}{chapter}{Il monitoraggio delle specie della Direttiva Uccelli nel
+Lazio}
+
+\textsc{Stefano Sarrocco}$^{1*}$, \textsc{Dario Capizzi}$^1$, \textsc{Ivana Pizzol}$^{1,2}$, 
+\textsc{Marco Scalisi}$^1$  \\
+
+\index{Sarrocco Stefano} \index{Capizzi Dario} \index{Pizzol Ivana} \index{Scalisi Marco}
+\noindent\color{MUSEBLUE}\rule{27cm}{2pt}
+\vspace{1cm}
+\end{adjustwidth}
+
+
+\marginnote{\raggedright $^1$Agenzia Regionale Parchi, Area Biodiversit\`a e
+Geodiversit\`a \\
+$^2$Universit\`a della Tuscia di Viterbo, DEB \\
+\vspace{.5cm}
+{\emph{\small $^*$Autore per la corrispondenza: \href{mailto:ssarrocco@regione.lazio.it}{s\allowbreak sar\allowbreak roc\allowbreak co@\allowbreak re\allowbreak gio\allowbreak ne.\allowbreak la\allowbreak zio.\allowbreak it}}} \\
+\keywords{Lazio, Monitoraggio, Direttiva Uccelli, Modelli}
+{Latium, monitoring, Birds, modeling}
+%\index{keywords}{Lazio} \index{keywords}{Monitoraggio} \index{keywords}{Modelli} \index{keywords}{Direttiva Uccelli}
+}
+{\small
+\noindent \textsc{\color{MUSEBLUE} Summary} / We modeled the regional (Latium, central Italy) suitability distribution
+of 14 breeding birds of European conservation concern by Maxent
+software. All the AUC values of the ROC curve obtained by Maxent are
+higher than 0,8. Some species showed a wide suitability distribution
+(e.g. honey buzzard, red-backed shrike), others less than 1000
+km\textsuperscript{2} (e.g. rock partridge, white-backed woodpecker).\\
+}
+
+\section*{Introduzione}
+
+Le direttive europee {\textquotedblleft}Habitat{\textquotedblright} e
+{\textquotedblleft}Uccelli{\textquotedblright} prevedono il
+monitoraggio dello stato di conservazione degli habitat e delle specie,
+con l{\textquoteright}obiettivo del loro mantenimento in uno stato
+favorevole. I principali parametri da misurare sono: \textit{range
+}della specie e dell{\textquoteright}habitat, consistenza della
+popolazione e variazioni nel tempo, ampiezza e qualit\`a
+dell{\textquoteright}habitat. La Regione Lazio per rispondere a questi
+obblighi normativi si \`e dotata di una Rete regionale di Monitoraggio
+della Biodiversit\`a, organizzata in un centro regionale (\textit{Focal
+Point}), alcuni centri tematici e una rete capillare di laboratori
+territoriali (presso le aree naturali protette). In questo contributo
+sono presentati i modelli predittivi, ottenuti con
+l{\textquoteright}uso del software \textit{Maxent} (Phillips \textit{et
+al}. 2006), su 14 specie di interesse comunitario nidificanti nel
+Lazio: coturnice \textit{Alectoris graeca}, falco pecchiaiolo
+\textit{Pernis apivorus}, nibbio bruno \textit{Milvus migrans},
+biancone \textit{Circaetus gallicus}, aquila reale \textit{Aquila
+chrysaetos}, succiacapre \textit{Caprimulgus europaeus}, picchio
+dalmatino \textit{Dendrocopos leucotos}, calandra \textit{Melanocorypha
+calandra}, calandrella \textit{Calandrella brachydactyla}, tottavilla
+\textit{Lullula arborea}, calandro \textit{Anthus campestris}, balia
+dal collare \textit{Ficedula albicollis}, averla piccola \textit{Lanius
+collurio} e ortolano \textit{Emberiza hortulana}. Obiettivi
+dell{\textquoteright}uso di questi modelli sono la definizione
+dell{\textquoteright}area di distribuzione potenziale e la stima delle
+consistenze delle popolazioni regionali.
+
+\section*{Area di studio}
+
+L{\textquoteright}area di studio coincide con il territorio della
+Regione Lazio, esteso 17.207 km\textsuperscript{2}. I dati ambientali
+(\textit{environmental data}) utilizzati sono costituiti da 13 strati
+informativi derivanti dall{\textquoteright}uso del suolo (CUS della
+Regione Lazio, 2004), oltre a 9 strati relativi ad aspetti morfologici
+(DTM, pendenze, morfologia), idrografici e demografici (centri abitati
+e densit\`a demografica); tutti gli strati sono stati trasformati in
+distanze minime di ogni punto dalla categoria considerata, ad eccezione
+degli aspetti morfologici che hanno mantenuto il valore originario. 
+
+\section*{Metodi}
+
+I dati di presenza delle specie (\textit{samples}) provengono dal nuovo
+atlante regionale degli uccelli nidificanti (Brunelli \textit{et al}.
+2011), oltre a ulteriori dati raccolti nel 2011-2013 che hanno permesso
+di ottenere le densit\`a di alcune specie lungo percorsi campione
+(\textit{line transect method}: Jarvinen \& Vaisanen 1976). Per un
+confronto sullo stato di conservazione favorevole delle specie
+analizzate si \`e fatto riferimento ai valori di FRV
+(\textit{Favourable Reference Value}) riportati da Gustin \textit{et
+al}. (2009). I modelli sono stati prodotti in un formato \textit{Raster
+ArcGis} con celle quadrate di 100 metri di lato; questi sono stati
+successivamente riclassificati in tre classi di idoneit\`a attraverso
+la modalit\`a del \textit{natural break} (algoritmo di Jenks). Per il
+calcolo dell{\textquoteright}area idonea di ogni specie non sono state
+considerate le celle ricadenti nella classe di idoneit\`a minore. 
+
+\section*{Risultati e discussione}
+
+In tabella 1 sono indicati i valori dell{\textquoteright}area sotto la
+curva ROC (AUC) ottenuti nell{\textquoteright}elaborazione dei modelli
+di idoneit\`a: la soglia di efficienza dei modelli si attesta su valori
+superiori a 0,8 che dimostra una buona capacit\`a dei modelli di
+predire la distribuzione della specie. L{\textquoteright}estensione
+dell{\textquoteright}area a media e alta idoneit\`a evidenzia un gruppo
+di specie a distribuzione ristretta (\textit{Aquila chrysaetos},
+\textit{Ficedula albicollis}, \textit{Alectoris graeca}  e
+\textit{Dendrocopos leucotos}) con valori di idoneit\`a minori di 1000
+km\textsuperscript{2 }(va tenuto presente che le specie a distribuzione
+ristretta assumono valori di AUC maggiori rispetto a quelle a
+distribuzione ampia), un secondo gruppo costituito da specie ad ampia
+distribuzione. Nella tabella sono evidenziate le densit\`a e le
+consistenze di alcune specie, registrate nel corso dei rilievi e
+riprese dalla bibliografia pi\`u recente (Sorace \textit{et al}. 2011,
+cfr. Brunelli \textit{et al}. 2011, Aradis \textit{et al}. 2012),
+confrontate con i valori di FRV o le Indicazioni di Conservazione (Ind.
+Cons.) proposti da Gustin \textit{et al}. (2009). In alcuni casi le
+densit\`a medie regionali sono simili o superiori a quelle soglia
+(\textit{Lanius collurio} e \textit{Dendrocopos leucotos}), in altri
+casi inferiori (\textit{Melanocorypha calandra}, \textit{Calandrella
+brachydactyla} e \textit{Lullula arborea}). Per alcuni valori di FVR la
+soglia \`e riferita all{\textquoteright}intera popolazione peninsulare
+o appenninica, come nel caso della Balia dal collare; per questa
+specie, in questo lavoro, \`e stata effettuata una stima per
+estrapolazione della consistenza della popolazione: considerando la
+sola area ad alta idoneit\`a e la densit\`a minima registrata nella
+regione si ottiene una stima di oltre 1700 coppie, ben oltre il 50\% di
+quella indicata per l{\textquoteright}intera Italia peninsulare.
+
+
+\begin{table}[!h]
+\centering
+%\rowcolors{2}{white!60!MUSEBLUE}{white}
+\newcolumntype{S}{>{\raggedleft\arraybackslash}p{.1\columnwidth}}
+\scalebox{.7}{
+\begin{tabular}{>{\raggedright\arraybackslash}p{.2\columnwidth}SSSSSSSSS}
+\toprule
+\textbf{Specie} & \textbf{N} & \textbf{AUC} & \textbf{Media idoneit\`a [km$^2$]} & \textbf{ Alta idoneit\`a [km$^2$]} & \textbf{ Tot. Area idoneit\`a [km$^2$]} & \textbf{Densit\`a media cp/10 [ha]} & \textbf{ Popol. Lazio coppie} & \textbf{FVR Cp. o cp/10 [ha]} & \textbf{Ind. Cons. cp/10 [ha]} \\
+\toprule
+\textit{Aquila chrysaetos} &  20 & 0,993 & 452,72 & 188,13 & 640,85 & - & 11 & 170$^{*}$ & - \\
+\textit{Lanius collurio} &  546 & 0,805 & 8901,61 & 5735,64 & 14637,25 & 0,65 & - & 0,5 & 0,5 \\
+\textit{Ficedula albicollis} &  44 & 0,99 & 463,62 & 394,74 & 858,36 & 2,46 & 1718,3 & 3000$^{*}$ & 2,5 \\
+\textit{Circaetus gallicus} &  144 & 0,91 & 5421,56 & 2586,8 & 8008,36 & - & 54-82 & - & 1,0 $^{**}$ \\
+\textit{Melanocorypha calandra} &  53 & 0,966 & 1359,69 & 858,02 & 2217,71 & 3,15 & - & 6 & 3,5 \\
+\textit{Calandrella brachydactyla} &  45 & 0,949 & 2502,38 & 1213,15 & 3715,53 & 2,82 & - & 10 & 3,5 \\
+\textit{Anthus campestris} &  172 & 0,931 & 3593,46 & 1462 & 5055,46 & 1,32 & - & 2,5 & 1,5 \\
+\textit{Alectoris graeca} &  38 & 0,991 & 269,93 & 157,48 & 427,41 & 0,16 & 171-342 & - & - \\
+\textit{Dendrocopos leucotos} &  269 & 0,87 & 315,46 & 236,19 & 551,65 & 0,5 & 160-210 & - & 5-6 \\
+\textit{Milvus migrans} &  326 & 0,916 & 4275,44 & 1600,03 & 5875,47 & - & 77-117 & 700$^{*}$ & - \\
+\textit{Emberiza hortulana} &  32 & 0,979 & 2646,45 & 1012,16 & 3658,61 & - & - & - & 8 \\
+\textit{Pernis apivorus} &  24 & 0,995 & 6644,65 & 3951,19 & 10595,84 & 2,00 $^{**}$ & - & - & 0,2 $^{**}$ \\
+\textit{ Caprimulgus europaeus } &  116 & 0,94 & 5353,04 & 1582,33 & 6935,37 & - & - & 5,0 $^{**}$ & - \\
+\textit{ Lullula arborea } &  199 & 0,91 & 4542,39 & 1755,57 & 6297,96 & 0,58 & - & 3 & 1 \\
+\bottomrule
+\hiderowcolors
+\multicolumn{10}{l}{}\\
+\multicolumn{10}{l}{ $^{**}$ =  valori densit\`a espressi in coppia/100km$^2$}\\
+\multicolumn{10}{l}{$^*$ = popolazione Italia peninsulare} \\
+\end{tabular}
+}
+\caption{Numero di dati, valori di AUC, dimensione delle aree a media e alta idoneit\`a, densit\`a media e consistenza della popolazione delle specie analizzate nel Lazio. Sono riportati i valori di FVR e le Indicazioni di Conservazione proposti da Gustin \textit{et al}. (2009)}
+\label{Sarrocco_tab_1}
+\end{table}
+
+\newpage
+\section*{Bibliografia}
+\begin{itemize}\itemsep0pt
+ \item Aradis A., Sarrocco S. \& Brunelli M. 2012 - Analisi dello
+status e della distribuzione dei rapaci diurni nidificanti nel Lazio.
+Quaderni Natura e Biodiversit\`a 2/2012 ISPRA, ARP Lazio, 139 pp.
+
+ \item Brunelli M., Sarrocco S., Corbi F., Sorace A., Boano A., De Felici S.,
+Guerrieri G., Meschini A. \& Roma S. (a cura di), 2011 - Nuovo
+Atlante degli Uccelli Nidificanti nel Lazio. \textit{Edizioni ARP (Agenzia
+Regionale Parchi)}, Roma, 464 pp.
+
+ \item Gustin M., Brambilla M. \& Celada C. (a cura di), 2009 - Valutazione
+dello Stato di Conservazione dell{\textquoteright}avifauna italiana.
+Ministero dell{\textquoteright}Ambiente e della Tutela del Territorio e
+del Mare, Lega Italiana Protezione Uccelli (LIPU), 1153 pp.
+
+ \item Jarvinen O. \& Vaisanen R.A., 1976 - Finnish Line Transect Censuses.
+\textit{Ornis Fennica}, 53: 115-118.
+
+ \item Phillips S. J., Anderson R. P. \& Schapire R. E., 2006 - Maximum entropy
+modeling of species geographic distributions. \textit{Ecological
+Modelling}, Vol 190 (3-4): 231-259.
+
+ \item Sorace A., Properzi S., Guglielmi S., Riga F., Trocchi V. \& Scalisi M.,
+2011 - La Coturnice nel Lazio: status e piano
+d{\textquoteright}azione. \textit{Edizione ARP}, Roma; 80 pp.
+\end{itemize}

@@ -1,0 +1,1787 @@
+\PassOptionsToPackage{usenames,dvipsnames,table}{xcolor}
+\documentclass[11pt,a4paper,twoside]{memoir}
+\usepackage{paralist}
+
+%%%Keyboard inputs and layout
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+
+%%%Bibliography
+%\usepackage[authoryear]{natbib}
+
+%%%Tables, environments, graphics, lists
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{tikz}
+\usepackage{stfloats}
+\usepackage{enumitem}
+\usepackage{lscape}
+\usepackage{color}
+\usepackage{array}
+\usepackage{rotfloat}
+\usepackage[most]{tcolorbox}
+\graphicspath{ {./img/} {./map/} }
+
+%%%Utilities
+\usepackage{minitoc}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{pdfpages}
+
+% Captions
+\usepackage[labelfont={footnotesize,sf,bf},textfont={footnotesize,sf}]{caption}
+\setlength{\abovecaptionskip}{15pt plus 3pt minus 2pt} % Set spacing between figure and caption leaving 3 upper and 2 lower points of free adaptation
+
+% Links
+\usepackage[pdftitle={Migrazione degli anfibi e vie di attraversamento},
+     pdfauthor={Sezione Zoologia dei Vertebrati, MUSE - Museo delle Scienze},
+     colorlinks,linktocpage=true,linkcolor=RoyalBlue,urlcolor=BrickRed,citecolor=OliveGreen,bookmarks]{hyperref}
+     
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%  MEMOIR STYLE %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+\makepagestyle{MUSEstyle} 
+\nouppercaseheads
+\setlength{\headwidth}{\dimexpr\textwidth}
+\makerunningwidth{MUSEstyle}{\headwidth}
+\makeevenhead{MUSEstyle}{\slshape\rightmark}{}{\includegraphics[width=0.05\columnwidth]{logo_MUSE_verde_nospace.jpg}} 
+\makeoddhead{MUSEstyle}{\includegraphics[width=0.05\columnwidth]{logo_MUSE_verde_nospace.jpg} }{}{\scshape\leftmark} 
+\makeheadrule{MUSEstyle}{\headwidth}{0.2pt}
+\makefootrule{MUSEstyle}{\headwidth}{\normalrulethickness}{0ex}
+\makeevenfoot{MUSEstyle}{\thepage}{}{} 
+\makeoddfoot{MUSEstyle}{}{}{\thepage} 
+\makeatletter
+\makepsmarks{MUSEstyle}{%
+  \createmark{chapter}{left}{nonumber}{ }{.\ }
+  \createmark{section}{right}{shownumber}{ }{.\ }}
+\makeatother
+\chapterstyle{section}
+%\renewcommand{\thechapter}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%  END MEMOIR STYLE %%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\author{\textsl{Sezione Zoologia dei Vertebrati}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%  GLOSSARY SECTION  %%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[acronym,toc]{glossaries}
+
+\newacronym{utm}{UTM}{\emph{Universal Trasverse Mercator}, particolare proiezione della superficie terrestre su un piano}
+\newacronym[]{utf8}{UTF-8}{\emph{Unicode Transformation Format} - 8 bit, sistema di rappresentazione e codifica dei caratteri. \url{http://www.utf-8.com/}}
+\newacronym[]{gnu}{GNU}{"\emph{GNU's Not Unix}", acronimo ricorsivo indicante un sistema operativo liberamente fruibile basato sul sistema Unix. \url{www.gnu.org}}
+\newacronym[]{gpl2}{GPL v2.0}{\emph{General Public License} Versione 2.0, licenza che garantisce il diritto di condividere e cambiare a piacimento il software con 
+essa marchiato. \url{http://www.gnu.org/licenses/gpl-2.0.html},}
+\newacronym[]{itis}{ITIS}{\emph{Integrated Taxonomic Information Service}, \emph{partnership} tra diverse istituzioni mirata a fornire gratuitamente informazioni 
+tassonomiche precise e consistenti. È gestito dallo \emph{staff} del Museo di Storia Naturale dello Smithsonian. \url{www.itis.gov}}
+\newacronym[]{gbif}{GBIF}{\emph{Global Biodiversity Information Facility}, organizzazione internazionale che si propone di rendere liberamente disponibili dati 
+di rilevamento sulla biodiversità utilizzando servizi informatici \emph{Web}.  \url{https://data.gbif.org}}
+\newacronym[]{biocase}{BioCASE}{\emph{Biological Collection Access SErvices}, \emph{network} europeo di database biologici liberamente accessibile, appoggiato 
+su \emph{standard} Open Data. \url{www.biocase.org},}
+\newacronym[]{cisocoi}{CISO-COI}{\emph{Centro Italiano Studi Ornitologici - Commissione ornitologica italiana}, associazione di ornitologia italiana che cura, 
+tra le altre cose, la redazione della Lista degli Uccelli Italiani. \url{http://ciso-coi.it/}}
+\newacronym[]{iso8601}{ISO-8601}{Standard Internazionale promosso dall'International Organisation for Standardization (ISO) riguaro ai formati di data e ora,
+\emph{“Data elements and interchange formats -- Information interchange -- Representation of dates and times"}, il download a pagamento delle specifiche è 
+disponibile su \url{http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=40874}}
+\newacronym[]{etrs89}{ERTS89}{\emph{Europea Terrestrial Reference System 1989}, sistema di riferimento cartografico europeo. \url{http://etrs89.ensg.ign.fr/}}
+\newacronym[]{gis}{GIS}{\emph{Geographic Information Systems}, sistemi \emph{software} d'informazione cartografica}
+\newacronym[]{gps}{GPS}{\emph{Global Positioning System}, rete di satelliti per il posizionamento gestita dal governo degli Stati Uniti}
+\newacronym[]{foss}{FOSS}{\emph{Free and Open Source Software}, dicitura che identifica un particolare metodo di licenza del \emph{software}, reso gratuito e completamente libero di ogni licenza di \emph{copyright}}
+\newacronym[]{siat}{S.I.A.T.}{\emph{Sistema Informativo Ambientale Territoriale}, sistema informatico della Provincia Autonoma di Trento che ha il compito di raccogliere, memorizzare, aggiornare, elaborare e 
+rappresentare dati attinenti alle entità territoriali-ambientali, integrando le informazioni descrittive di carattere statistico, amministrativo e gestionale con 
+la loro localizzazione geografica, la loro forma geometrica e le loro relazioni spazio-temporali. L'obiettivo principale del S.I.A.T. è di fornire supporto alle 
+attività di gestione e di governo dell’Amministrazione provinciale. \url{http://www.territorio.provincia.tn.it/portal/server.pt/community/s_i_a_t/255/s_i_a_t/18995}} 
+\newglossaryentry{database}
+{
+  name={\emph{database}},
+  description={Archivio di dati in cui le informazioni contenute sono organizzate tramite
+  				un particolare modello logico in modo tale da consentire la gestione efficiente degli stessi,
+  				e l'interfacciamento con linguaggi di interrogazione e/o \emph{software}},
+  sort=database
+}
+\newglossaryentry{dataset}
+{
+  name={\emph{dataset}},
+  description={Insieme di dati coerenti tra loro, specco contenuti all'interno di un unico \emph{file}, o al più, in un conglomerato di \emph{files} tra loro coerenti.},
+  sort=dataset
+}
+\newglossaryentry{postgresql}
+{
+  name={PostgreSQL},
+  description={Potente sistema \emph{database} relazionale \emph{Open Source}, famoso per la sua comprovata flessibilità, affidabilità e mantenimento dell'integrità
+  dei dati. \url{http://www.postgresql.org/}},
+  sort=postgresql
+}
+\newglossaryentry{postgis}
+{
+  name={PostGIS},
+  description={Estensione spaziale del database PostgreSQL. Ne aggiunge pieno supporto per qualsiasi oggetto geografico, consentendo alle interrogazioni sulle localizzazione
+  di essere eseguite nativamente nel codice PostgreSQL. \url{http://postgis.net/} },
+  sort=postgis
+}
+\newglossaryentry{constraint}
+{
+  name={\emph{constraint}},
+  description={Limiti di inserimento inseriti su ogni campo del database, con il fine di intercettare errori e refusi (\ie specie non inserita con il giusto nome scientifico)},
+  sort=constraints
+}
+\newglossaryentry{query}
+{
+  name={\emph{query}},
+  description={Interrogazioni del database},
+  sort=query
+}
+\newglossaryentry{browser}
+{
+  name={\emph{browser}},
+  description={Programma che consente di usufruire dei servizi di connettività Internet (\ie Firefox, Chrome, Internet Explorer)},
+  sort=browser
+}
+%\newglossaryentry{unix}
+%{
+%  name={Unix},
+%  description={Sistema operativo portabile sviluppato da AT\&T e \emph{Bell Laboratories} negli anni '70},
+%  sort=unix
+%}
+
+\makeglossaries
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%  END OF GLOSSARY SECTION  %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%  REDEFINED COMMANDS  %%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand { \mysize }{ \footnotesize { }}
+\definecolor{grey}{gray}{0.5} % 0-nero; 1-bianco
+\renewcommand{\labelitemi}{\textcolor{grey}{$\bullet$}}
+\newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
+\newcommand{\etal}{\textsl{et al}. }
+\newcommand{\ie}{\emph{i}.\emph{e}. }
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newsubfloat{figure}    % Allow subfloats in figure environment
+\fboxrule=1.2pt    % Border thickness
+\definecolor{lightgray}{gray}{0.9}
+\definecolor{verylightgray}{gray}{0.95}
+\renewcommand*{\glspostdescription}{}    % Rimuove il punto alla fine della descrizione lunga nel glossario
+\newcommand{\tablespecie}[2]{\parbox[b]{4.5cm}{#1 \newline \emph{#2}}} % Per far apparire il nome comune e il nome della specie nelle tabelle ordinatamente. 
+                                                                       % \tablespecie{nome_comune}{nome_scientifico}
+%%% Background pic
+%\newcommand\BackgroundPic{%
+%\put(0,0){%
+%\parbox[b][\paperheight]{\paperwidth}{%
+%\vfill
+%\flushleft
+%\includegraphics[width=\paperwidth,height=\paperheight,%
+%keepaspectratio]{bar.jpg}%
+%\vfill
+%}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%  END OF REDEFINED COMMANDS  %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\begin{document}
+
+%\setlength{\parindent}{0pt} %Noindent
+\begin{center}
+  \includegraphics[width=.35\columnwidth]{logo_MUSE_verde_nospace.jpg}
+\end{center}
+
+\pagestyle{empty}
+ \begin{center}
+\vspace{15pt}
+\HRule \\[0.3cm]
+{\LARGE \bfseries MIGRAZIONE DEGLI ANFIBI: BARRIERE STRADALI } \\[0.1cm]
+{\LARGE \bfseries E VIE DI ATTRAVERSAMENTO} \\[0.1cm]
+{\large \bfseries STATO DI FATTO, PROBLEMATICHE E POSSIBILI SOLUZIONI}\\[0.1cm]
+\HRule\\[0.5cm]
+ \end{center}
+
+
+ \vspace*{\fill}
+\begin{center}
+ \includegraphics[width=\columnwidth]{cover.jpg} \\
+
+\end{center}
+ \vspace*{\fill}
+
+\vspace*{\fill}
+\begin{center}
+  Sezione Zoologia dei Vertebrati \\
+  MuSe - Museo delle Scienze, Trento \\
+  \texttt{Aprile 2014} \\
+\end{center}
+
+\newpage
+\thispagestyle{empty}
+\vspace*{\fill}
+\flushleft{
+\fcolorbox{black}{white}{%
+\begin{tabular}{p{1\columnwidth}}
+\vspace{.02cm}
+\textbf{Coordinamento:} \\
+Paolo Pedrini / MuSe - Museo delle Scienze, \emph{\href{mailto:paolo.pedrini@muse.it}{paolo.pedrini@muse.it}} \\
+Valeria Fin / Servizio Conservazione della Natura e Valorizzazione Ambientale, Ufficio Rete Natura PAT \emph{\href{mailto:valeria.fin@provincia.tn.it}{valeria.fin@provincia.tn.it}} \\
+\vspace{.02cm}
+\textbf{Stesura documento a cura di:} \\
+Enrico Romanazzi / MUSE, \emph{\href{mailto:enricoromanazzi@yahoo.it}{enricoromanazzi@yahoo.it}} \\
+Paolo Pedrini \\
+\textbf{Attività di campo:} \\
+Enrico Romanazzi \\
+\textbf{Hanno collaborato:} \\
+Federica Bertola, Aaron Iemma, Michele Menegon, Fabio Pupin, Franco Rizzolli, Matteo Sartori, Karol Tabarelli de Fatis, Clara Tattoni \\
+\textbf{Grafica ed impaginazione:} \\
+Aaron Iemma / MuSe, \emph{\href{mailto:aaron.iemma@muse.it}{aaron.iemma@muse.it}} \\
+\vspace{.5cm}
+\textbf{In copertina:}
+Maschi (notare la gola bianca) e femmine di \emph{Rana temporaria} - Piet Spaans, \textsc{Wikimedia Commons} 
+\end{tabular}
+}
+}
+
+\textbf{Ringraziamenti} \\
+
+Si ringraziano in modo particolare le persone che hanno aiutato per la segnalazione delle strade e per aver fornito preziose informazioni sulle problematiche delle migrazioni degli anfibi in Trentino: 
+
+\begin{itemize}\itemsep0pt
+  \item Provincia Autonoma di Trento - Servizio Conservazione della Natura e Valorizzazione Ambientale: Antonella Agostini, Raoul Bergamini, Valeria Fin, Piero Flamini, Angelo Rosati, Lucio Sottovia, Maria Fulvia Zonta;
+  \item Custodi Forestali: Alessandro Macchiella, Matteo Merighi, Ivan Morten, Michele Segata;
+  \item Persone che hanno segnalato dati e strade interessate dalle migrazioni (sia precedentemente note che "nuove"): Luca Bronzini, Nicola Campostrini, Andrea Carbonari, Thomas Conci, Maddalena Di Tolla, Mattia Dori, Elena Garollo, Carlo Miorelli, Stefano Noselli, Piergiovanni Partel, Valentina Perina, Francesca Rossi, Uava Sartori.
+\end{itemize}
+
+Un ringraziamento particolare per la collaborazione scientifica va infine al dr. Lars Briggs (Amphi Consult, Danimarca) \\
+
+
+
+\newpage
+\thispagestyle{empty}
+\vspace{4cm}
+\begin{minipage}[r]{\columnwidth}
+\flushright
+\hrule
+
+\vspace{.5cm}
+{\LARGE \bfseries MIGRAZIONE DEGLI ANFIBI: BARRIERE STRADALI } \\[0.1cm]
+{\LARGE \bfseries E VIE DI ATTRAVERSAMENTO} \\[0.1cm]
+{\large \bfseries STATO DI FATTO, PROBLEMATICHE E POSSIBILI SOLUZIONI}\\[0.1cm]
+\vspace{.2cm}
+\hrule
+
+\vspace{1cm}
+{Enrico Romanazzi} \\
+{Paolo Pedrini} \\
+\end{minipage}
+
+\vspace{\fill}
+  
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=.35\columnwidth]{logo_MUSE_verde_nospace.jpg} 
+\end{figure} 
+\begin{center}
+\textsc{Sezione Zoologia dei Vertebrati}
+\end{center}
+
+\cleardoublepage
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\flushleftright
+
+\pagestyle{MUSEstyle}
+\chapter{Premessa}
+\label{chap:premessa}
+
+La presente relazione tecnica è stata realizzata nell’ambito del piano di ricerca previsto nell’Accordo di programma che il MuSe - Museo delle Scienze di Trento ha svolto  per il Servizio Conservazione della Natura e Valorizzazione Ambientale PAT e si inquadra nelle azioni di conservazione degli Anfibi in Trentino, Vertebrati fra i più minacciati a scala locale e continentale.
+
+Scopo specifico del presente documento è quello di indirizzare e pianificare le azioni di conservazione diretta che si possono realizzare attraverso interventi di mitigazione degli impatti derivanti dalle infrastrutture stradali, che ostacolano gli spostamenti durante la fase primaverile che precedono e seguono la riproduzione con effetti negativi sulle singole popolazioni locali.
+
+La ricerca, che prevedeva un’indagine indiretta e rilevamenti sul campo, ha come obiettivi principali:
+\begin{itemize}\itemsep0pt
+  \item l’individuazione dei percorsi principali e della fenologia migratoria verso i siti riproduttivi;
+  \item l’individuazione dei principali punti di attraversamento nei tratti stradali individuati;
+  \item la valutazione dei flussi migratori degli Anfibi e valutazione dell’efficacia delle opere di mitigazione realizzate a cura della Provincia Autonoma di Trento;
+  \item la descrizione e valutazione degli accorgimenti tecnici e delle infrastrutture da realizzare per garantire le salvaguardia degli Anfibi in migrazione;
+  \item la proposta  di materiale didattico-informativo utile alla sensibilizzazione pubblica.
+\end{itemize}
+
+Questo documento quindi rappresenta il quadro conoscitivo sul fenomeno delle migrazioni degli Anfibi in provincia di Trento, partendo dalle conoscenze pregresse e dagli interventi ad oggi realizzati  che sono frutto delle ricerche promosse dall’Ufficio Rete Natura, da musei (atlanti faunistici; Caldonazzi et al. 2001) e dai parchi naturali, e più recentemente dall’indagine condotta nell’ambito del progetto LIFE TEN che ha portato alla realizzazione di una specifica banca dati e di una proposta di Rete ecologica del Trentino (azioni A1 e A3; \url{www.lifeten.tn.it}). 
+
+La relazione comprende quindi la mappatura e schedatura delle zone di migrazione e le infrastrutture stradali presenti, l'analisi dei conteggi effettuati sulle diverse popolazioni migranti, le principali problematiche riscontrate, le esperienze maturate localmente e in altre località italiane ed estere, le normative di protezione e gli strumenti finanziari disponibili per la realizzazione di opere di mitigazione dell'impatto delle infrastrutture antropiche.
+
+
+\chapter{Introduzione e scopo del lavoro}
+\label{chap:intro}
+\section{Lo stato di conservazione degli Anfibi e fattori di minaccia}
+\label{sec:intro_statocons}
+
+Gli Anfibi negli ultimi anni sono oggetto di una crescente attenzione. La comunità scientifica internazionale ha evidenziato come lo status generale di questo gruppo faunistico, considerato tra i più minacciati a livello globale, sia in progressivo peggioramento. Sono state quindi effettuate numerose iniziative di ricerca e conservazione inerenti questi animali: tra queste, una delle più note ha portato alla creazione del cosiddetto D.A.P.T.F. (Declining Amphibian Populations Task Force) della I.U.C.N. (International Union for the Conservation of Nature). In base ai dati raccolti dagli esperti di questa organizzazione attualmente circa un terzo (32\%) delle oltre 6300 specie di Anfibi descritte sono minacciate o estinte e il 42\% di tutte le specie hanno popolazioni in calo, mentre solo l'1\% delle specie mostra popolazioni in crescita.
+
+Tra le principali minacce di cui soffrono questi animali si ricordano: 
+\begin{itemize}\itemsep0pt
+  \item l'introduzione di predatori acquatici nei biotopi riproduttivi; 
+  \item l'alterazione degli habitat naturali e le interferenze delle infrastrutture antropiche; 
+  \item l'inquinamento ambientale (pesticidi, erbicidi, concimi chimici, aumento delle radiazioni UV); 
+  \item le epidemie virali, fungine, batteriche o di altro tipo; 
+  \item il prelievo o l'immissione di esemplari a scopo amatoriale o alimentare.
+\end{itemize}
+
+Anche localmente, in provincia di Trento, molte delle specie di Anfibi presenti attualmente non godono di uno stato di conservazione favorevole e sono per questo inseriti sia nella Lista Rossa erpetologica provinciale elaborata nel 2001 (Caldonazzi et al. 2001) sia nella Lista rossa nazionale pubblicata dall'I.U.C.N. nel 2013 (Rondinini et al., 2013). 
+Molti problemi per la conservazione di questi Vertebrati sono causati dalla scomparsa, modifica e frammentazione delle zone di rifugio e riproduzione; fattore che, sempre in Trentino, ha rappresentato la causa principale di minaccia per molte specie di media e bassa quota, oggi a rischio di estinzione. 
+
+La crescita della popolazione umana e della rete di trasporti ha comportato il relativo interesse per le interazioni tra la fauna selvatica e le infrastrutture di origine antropica. Questo settore di studio ha attratto l'interesse di un numero crescente di ricercatori, come risultato di una nuova disciplina scientifica chiamata "Road ecology" (ossia Ecologia stradale"), il cui scopo principale è lo studio delle interazioni tra gli organismi e l'ambiente connesso alle strade e al traffico stradale.
+\newpage
+\begin{figure}[H]
+\label{fig:volpe_inv}
+\centering
+  \includegraphics[width=.6\columnwidth]{2_Stato_conservazione.jpg}
+\caption{La mortalità stradale può coinvolgere anche animali di media o grande taglia: in questo caso una volpe rossa \emph{Vulpes vulpes} presso la S.P. 240 a Tiarno di Sopra (TN), 17.10.2013}
+\end{figure}
+
+\section{Le strade quali barriere ecologiche}
+\label{sec:intro_stradebarreco}
+Le infrastrutture stradali hanno effetti negativi diretti sulla fauna selvatica, in quanto incrementano la mortalità dovuta alla collisione coi veicoli e modificano il normale comportamento degli animali. Le strade inoltre causano perdita di habitat, ostacolano il movimento, e diventano barriere spesso insormontabili fra le diverse popolazioni; sono inoltre fonte di alterazioni fisiche e chimiche dell'ambiente; soprattutto per la flora possono al contrario essere vie privilegiate di diffusione per specie alloctone, che si insediano e colonizzano ambienti marginali spesso invece poco adatti per altre specie locali. Inoltre, la costruzione di infrastrutture viarie nuove agevola la costruzione di ulteriori insediamenti antropici, più o meno estesi, che comportano ulteriori alterazioni del territorio e conseguenti altri impatti sulla fauna selvatica. Le strade sono quindi vere e proprie barriere che ostacolano gli spostamenti degli esemplari riducendo la connettività tra le popolazioni, diminuendo lo scambio genetico e limitando le dinamiche di popolazione, causando di fatto gravi problemi quali l’incrocio tra consanguinei e la perdita di diversità genetica. L’investimento stradale è inoltre una delle principali fonti antropiche di mortalità diretta e ha effetti particolarmente negativi sulle popolazioni di specie minacciate e in pericolo. 
+
+Molti studi hanno quantificato e valutato l’impatto della mortalità stradale sulle locali popolazioni di Anfibi. Tra i Vertebrati, gli Anfibi presentano caratteristiche fisiologiche, ecologiche ed etologiche che li rendono estremamente vulnerabili alla presenza di strade e altre infrastrutture antropiche. Questi animali si muovono lentamente e hanno una bassa capacità di spostamento se paragonati ad altri Vertebrati come gli Uccelli e i Mammiferi. Molte specie di Anfibi mostrano un ciclo di attività particolarmente complesso, che comprende periodiche migrazioni attraverso diversi ambienti durante i diversi mesi dell’anno. I tassi di mortalità durante le migrazioni, associati agli investimenti stradali, sono spesso in grado di causare effetti negativi importanti a livello di popolazione. In più, la pelle estremamente permeabile li rende sensibili all’inquinamento stradale. 
+
+\newpage
+\begin{figure}[H]
+\label{fig:rana_inv}
+\centering
+  \includegraphics[width=.6\columnwidth]{3_Strade_barriere.jpg}
+\caption{Femmina adulta di Rana agile \emph{Rana dalmatina}, investita assieme al suo carico di uova presso il lago di Santa Colomba (TN), 18.03.2014}
+\end{figure}
+
+\section{Le iniziative per la conservazione degli Anfibi}
+\label{sec:intro_iniziative}
+Ogni anno tra fine febbraio e fine aprile (nelle zone di media-bassa quota) e tra aprile e maggio (a quote più elevate), migliaia di esemplari adulti di rane, rospi, tritoni e salamandre si spostano dai siti di svernamento per raggiungere le zone umide adatte alla riproduzione. Durante questi spostamenti, che possono esser di diversi chilometri, questi animali devono affrontare numerosi ostacoli artificiali creati dall’uomo e pericoli diretti come il traffico stradale, oltre alla naturale presenza di predatori e alle condizioni meteorologiche talvolta avverse. 
+
+L’evidenza del fenomeno e l’elevata mortalità facilmente riscontrabile, ha da sempre colpito la sensibilità di cittadini oltre che di tecnici e ricercatori dedicati alla conservazione degli Anfibi. Sono pertanto numerose le iniziative che si occupano di salvaguardare gli Anfibi durante i loro trasferimenti stagionali; solitamente vi partecipano cittadini e volontari di associazioni ambientaliste e culturali che si impegnano con interventi diretti nel ridurre la mortalità con vere e proprie azioni di “salvataggio” di rane, rospi e altri anfibi impegnati nelle piovose notti primaverili a superare gli ostacoli stradali.
+
+A livello italiano le prime azioni sono cominciate verso la fine degli anni '80, grazie soprattutto alle iniziative svolte dal Centro Studi Arcadia del dr. Vincenzo Ferri, promotore in Lombardia del "Progetto Rospi - Toads Project", e che negli anni ha interessato quasi un centinaio di siti riproduttivi. 
+
+Nel vicino Veneto analoghe iniziative durante gli spostamenti nel periodo riproduttivo si svolgono con regolarità dal 2003, ed in particolare in alcune località della provincia di Treviso, coinvolgendo principalmente volontari che, autorizzati, operano in stretta collaborazione con alcuni Enti locali (Provincia e Amministrazioni comunali). Ad oggi sono circa una ventina le località trevigiane (nelle zone dei laghi di Revine, collina del Montello e fiume Piave), bellunesi e padovane interessate dai “salvataggi” diretti, ai quali spesso si sommano la messa in posa e successiva rimozione e stoccaggio di barriere di protezione. Si tratta anche di veri e propri progetti culturali; spesso infatti queste attività sul campo sono state accompagnate da attività di divulgazione per i cittadini e didattiche per le scuole (lezioni in classe, escursioni e serate pubbliche).
+
+Anche in provincia di Trento dalla fine degli anni '90 simili iniziative sono andate crescendo, quando il fenomeno è stato rilevato grazie alle indagini condotte nel corso dell’Atlante provinciale e ai monitoraggi presso alcuni biotopi e in località particolarmente esposte. Grazie all’impegno dell’allora Ufficio Biotopi e il coinvolgimento del Servizio Foreste e fauna, o di locali Amministrazioni sono state realizzate opere di mitigazione, soprattutto nei pressi di siti riproduttivi ed in alcuni tratti stradali a maggior transito. Invece, iniziative di salvataggio diretto con il coinvolgimento di volontari e di associazioni locali sono in alcuni siti divenute consuetudine nei mesi primaverili (vedi ad es. Levico, Fiavè). 
+
+\newpage
+\begin{figure}[H]
+\label{fig:barriere_fiave}
+\centering
+  \includegraphics[width=.6\columnwidth]{4_Salvataggio_volontario.jpg}
+\caption{Barriere temporanee presso Fiavé (TN), marzo 2014}
+\end{figure}
+
+\chapter{Disamina dell’attuale quadro normativo}
+\label{chap:norme}
+
+\section{Direttiva 92/43/CEE “Habitat”}
+\label{sec:norme_habitat}
+L'Unione europea, allo scopo di promuovere la conservazione della biodiversità e di contribuire all'obiettivo generale di uno sviluppo sostenibile, tenendo conto al tempo stesso delle esigenze economiche, sociali, culturali e regionali delle popolazioni locali, ha adottato la direttiva 92/43/Cee relativa alla "conservazione degli habitat naturali e seminaturali e della flora e della fauna selvatiche", nota anche come "direttiva Habitat".
+
+Questa direttiva viene attuata in Italia con il D.P.R. 8 settembre 1997 n. 357, in seguito modificato ed integrato dal D.P.R. 12 marzo 2003 n. 120. Numerose specie tra gli Anfibi presenti in provincia di Trento sono inserite nell'allegato II della direttiva (allegato B del D.P.R. 357/97 e ss. mm. ii.), che elenca le specie di interesse comunitario la cui conservazione richiede la designazione di Zone Speciali di Conservazione, e nell’allegato IV (allegato D del D.P.R. 357/97 e ss. mm. ii.), che elenca le specie che richiedono una protezione rigorosa su tutto il territorio europeo. Le disposizioni di tali strumenti prevedono il divieto delle attività di cattura, uccisione, disturbo – in particolare durante tutte le fasi del ciclo riproduttivo, detenzione, trasporto e commercio degli esemplari, nonché di deteriorare o disturbare i siti di riproduzione (art. 8).
+
+Il D.P.R. 357/97 e ss. mm. ii. impone inoltre alle Regioni e alle Province autonome di garantire la salvaguardia ed il monitoraggio dello stato di conservazione degli Anfibi di interesse comunitario sulla base di linee guida definite dal Ministero dell'Ambiente e della Tutela del Territorio e del Mare (art. 7).
+
+L’art. 8 prevede l’instaurazione di un sistema di monitoraggio delle catture o uccisioni accidentali delle specie di Anfibi di interesse comunitario (comma 4), e la definizione delle misure necessarie per assicurare che queste non abbiano un significativo impatto negativo sulla loro conservazione (comma 5). L’art. 3 stabilisce che vengano designate Zone Speciali di Conservazione (Z.S.C.) per la conservazione ed il recupero dell’habitat delle specie in Allegato II (B) da integrare nella rete ecologica europea Natura 2000, e che vengano definite le direttive per la gestione delle aree di collegamento ecologico funzionale - aree che, per la loro struttura lineare e continua (come i corsi d'acqua con le relative sponde, o i sistemi tradizionali di delimitazione dei campi) o il loro ruolo di collegamento (come le zone umide e le aree forestali), sono essenziali per la distribuzione geografica e lo scambio genetico di specie selvatiche. Direttiva Habitat e D.P.R. 357/97 dispongono che il Ministero dell’Ambiente e della Tutela del Territorio e del Mare relazioni alla Commissione europea, ogni due anni, sulle deroghe concesse.
+
+A tal fine il Ministero dell’Ambiente e della Tutela del Territorio e del Mare e l' I.S.P.R.A. (Istituto Superiore per la Protezione e Ricerca Ambientale) richiedono ai beneficiari delle deroghe una rendicontazione annuale. Tutti i piani e progetti che potrebbero avere effetti significativi diretti o indiretti sulle Zone Speciali di Conservazione, sui Siti o proposti Siti di Importanza Comunitaria, dovranno essere sottoposti a valutazione di incidenza (Art. 5), e potranno essere proibiti qualora pregiudicassero l’integrità dei siti in causa.
+
+Ai fini dell'implementazione dell'art.10 della Direttiva è stata realizzata una "Guida al mantenimento della connettività del paesaggio di particolare importanza per la flora e la fauna selvatica" che riporta le misure necessarie per le specie e gli habitat a rischio frammentazione, anche rispetto alla presenza delle infrastrutture di trasporto.
+
+\section{Convenzione di Berna}
+\label{sec:norme_berna}
+La Convenzione di Berna, adottata nel 1979 sotto l’egida del Consiglio d’Europa (organizzazione intergovernativa ben distinta dall'Unione Europea e relative istituzioni) e ratificata dall’Italia con L.N. 503 del 5 agosto 1981, è entrata in vigore nel 1982 e coordina l'azione dei Paesi contraenti nell'adozione di standard comuni e di politiche volte ad un utilizzo sostenibile della biodiversità. Le principali finalità di questa Convenzione sono la conservazione della fauna e flora selvatiche, con particolare riferimento alle specie minacciate (comprese quelle migratrici) e la promozione della cooperazione tra diversi Stati. Fino ad oggi questa convenzione è stata adottata da 45 parti contraenti, tra cui l'Unione Europea e altri 6 Stati che non sono membri del Consiglio d'Europa. Includendo diverse specie di Anfibi in Appendice II e III, la Convenzione conferisce loro rispettivamente lo status di “specie di fauna rigorosamente protette” e “specie di fauna protette”. Gli art. 3 e 4 impongono agli Stati firmatari di prendere le misure legislative necessarie alla protezione delle specie e del loro habitat, e l’art. 6 ne proibisce la cattura, la detenzione, l’uccisione, il disturbo intenzionale, il deterioramento dei siti di riposo, il commercio di individui vivi, morti, nonché di parti o prodotti ottenuti dall’animale. L’art. 9 prevede la possibilità di deroga ai divieti di cui all’art. 6 per fini di ricerca ed educazione, per il ripopolamento o la reintroduzione, o per evitare importanti danni, ma solo nell’interesse della protezione della specie, e a condizione che la deroga non sia dannosa per la sopravvivenza della popolazione in oggetto.
+
+Questa Convenzione è stata ratificata dall'Italia lasciando ampia discrezionalità alle singole Regioni e Province Autonome, che in gran parte dei casi non hanno legiferato.
+
+\section{Convenzione di Ramsar}
+\label{sec:norme_ramsar}
+La Convenzione Internazionale relativa alle Zone Umide di Importanza Internazionale, firmata a Ramsar nel 1971 e ratificata dall’Italia con D.P.R. 448/1976, è un trattato internazionale che fornisce le basi per l’azione su scala nazionale e la cooperazione su scala internazionale, per la conservazione e l’uso sostenibile delle aree umide - termine che include aree ad acqua dolce, salmastra o salata fino ai 6 m di profondità – e delle loro risorse. Ciascuna parte contraente designa le aree umide che devono essere incluse nell’elenco delle Zone Umide di Importanza Internazionale, sulla base dell’importanza che le stesse rivestono anche in campo zoologico (art. 2). L’art. 3 prevede che debba essere favorita la conservazione di tali zone umide e della loro flora e fauna (art. 5) anche attraverso opportuni interventi di gestione e progetti di ricerca (art. 4).
+
+\section{Responsabilità sulla fauna selvatica e obbligo di soccorso}
+\label{sec:norme_responsabilita}
+La responsabilità in materia di fauna selvatica, ed in particolare l'individuazione di un soggetto responsabile in caso di incidente stradale con un animale selvatico, è un ambito complesso e in costante discussione, sia in campo scientifico, sia nella giurisprudenza.
+
+Un recente e importante pronunciamento è quello della Cassazione Civile Sezione III (sentenza $n^{\circ}$ 60 del 6 gennaio 2010) che fissa un nuovo orientamento giurisprudenziale, attribuendo la responsabilità per i danni conseguenti agli incidenti stradali con animali selvatici all'ente di cui sono stati concretamente affidati i poteri di gestione della fauna e di amministrazione del territorio (per esempio Regione, Provincia, Comune, Ente Parco). Tale ente deve avere autonomia decisionale per svolgere attività idonee a prevenire e limitare tali danni.
+
+Ai sensi delle recenti "Disposizioni in materia di sicurezza stradale" introdotte dalla Legge 29 luglio 2010, n. 120, in caso di incidente stradale con un animale il conducente ha l'obbligo di fermarsi e assicurare un tempestivo intervento di soccorso.
+
+Con il decreto del Ministro delle Infrastrutture e dei Trasporti n. 217 del 9 ottobre 2012, pubblicato in Gazzetta Ufficiale n. 289 del 12 dicembre 2012, è stata data infatti attuazione alle modifiche al Codice della strada in materia di trasporto e soccorso di animali in stato di necessità. Il Legislatore del 2010, con un ampio intervento su diverse disposizioni del Codice, ha inserito nell’art. 189 il comma 9-bis che fa obbligo agli utenti della strada, in caso di incidente da essi provocato e da cui sia derivato danno a uno o più animali d’affezione, da reddito o protetti (quindi anche tutte le specie di Anfibi, protette da normative regionali, nazionali ed internazionali), di fermarsi per prestare tempestivo soccorso agli animali investiti, punendone l’inosservanza con il pagamento di una sanzione amministrativa da euro 389 a euro 1.559. La norma pone un obbligo di tempestivo soccorso anche a carico degli utenti che non abbiano determinato l’incidente con il loro comportamento, ma che siano comunque coinvolti nello stesso, sanzionando in questo caso la violazione dell’obbligo di soccorso con una sanzione amministrativa pecuniaria da euro 78 ad euro 311. In virtù della previsione di un vero e proprio obbligo giuridico di soccorso a favore degli animali vittime di incidenti stradali, il legislatore ha modificato anche l’art. 177, comma 1, del Codice della strada, consentendo l’utilizzo dei dispositivi acustici di allarme e di segnalazione visiva (luce lampeggiante blu) ai conducenti di autoambulanze veterinarie e dei mezzi di soccorso, per il recupero di animali o di vigilanza zoofila, demandando ad un successivo decreto del Ministro delle Infrastrutture e dei Trasporti la disciplina di dettaglio. In particolare, alla normativa secondaria è stato affidato il compito di disciplinare le condizioni alle quali il trasporto di un animale in gravi condizioni di salute (trauma grave, ferite aperte, emorragie, alterazioni e convulsioni), può essere considerato uno stato di necessità, anche se effettuato da privati, nonché la documentazione da esibire in caso di successivo controllo da parte delle autorità di polizia stradale.
+
+\section{Legge Provinciale sulle foreste e sulla protezione della natura}
+\label{sec:norme_provincia}
+In mancanza di una legge nazionale sulla fauna non omeoterma, diverse Regioni hanno emesso normative sull'erpetofauna. In Trentino, come in altre Regioni e Province italiane, accanto alla protezione di tutte le specie di Anfibi, e in particolare delle uova e delle larve, viene regolamentata soprattutto la raccolta a scopo alimentare degli esemplari adulti di alcuni anuri. Il Decreto del Presidente della Provincia del 26 ottobre 2009, n. 23-25 che costituisce il Regolamento di attuazione del titolo IV, capo II (Tutela della flora, fauna, funghi e tartufi) della legge provinciale 23 maggio 2007 n. 11 (Legge provinciale sulle foreste e sulla protezione della natura) (b.u. 22 dicembre 2009, n. 52, suppl. n. 2) fornisce quindi indicazioni sulle quote di prelievo consentite e sul periodo in cui è possibile effettuare le catture degli adulti delle specie del genere Rana (e quindi anche presumibilmente, in seguito a recenti revisioni tassonomiche, le specie del genere Pelophylax) con esclusione della rana agile (Rana dalmatina), elencata nell'Allegato IV della Direttiva 92/43/CEE. In particolare "è consentita la cattura a scopo alimentare degli esemplari adulti delle specie appartenenti al genere Rana, purché diverse dalla specie rana agile, per una quantità giornaliera non superiore a un chilogrammo per persona, ad esclusione del periodo compreso tra il $1^{\circ}$ marzo e il 30 aprile". 
+
+\section{La Rete Natura 2000, Biotopi e le Riserve Naturali del Trentino}
+\label{sec:norme_rete2000}
+Il sistema delle aree protette del Trentino, oltre che da tre parchi presenti da diversi anni - ossia Parco Nazionale dello Stelvio, Parco Naturale Adamello Brenta e Parco Naturale Paneveggio Pale di San Martino - è costituito da numerose altre aree protette: 73 tra Riserve naturali e biotopi provinciali, 222 riserve locali, 135 Siti di Importanza Comunitaria (SIC), 19 Zone di Protezione Speciale (ZPS) e numerose aree di protezione fluviale. Complessivamente questo sistema copre quasi il 30\% del territorio provinciale, interessando oltre 180 Comuni. 
+
+Molte di queste aree sono interessate da importanti presenze di anfibi, sia in termini di specie rare, sia per l'abbondanza delle popolazioni e per le loro periodiche migrazioni. 
+In particolare, tra le aree tutelate in provincia di Trento, le seguenti sono interessate dalla presenza di migrazioni di anfibi sulle strade, a volte anche con presenze di specie di interesse comunitario, ossia elencati negli allegati II, IV e/o V della direttiva 92/43/Cee:
+
+\begin{description}\itemsep0pt
+  \item[Garniga Terme] biotopi "Valle Scanderlotti (A), Valle Scanderlotti (B)" (Riserve Locali $n^{\circ}$84 e $n^{\circ}$85)
+  \item[Laghi di Lamar] sito Natura 2000 "Laghi e abisso di Lamar" (\texttt{ SIC IT3120087})
+  \item[Lago Costa] sito Natura 2000 "Lago Costa" (\texttt{ SIC IT3120041}), biotopo "Lago Costa" (Riserva Naturale Provinciale $n^{\circ}$23)
+  \item[Lago d'Ampola] siti Natura 2000 "Lago d'Ampola" e "Monti Tremalzo e Tombea" (\texttt{SIC IT3120076} e \texttt{SIC IT3120127}), biotopo "Lago d'Ampola" (Riserva Naturale Provinciale $n^{\circ}$60)
+  \item[Lago di Cei] sito Natura 2000 "Pra dall'Albi - Cei" (\texttt{SIC IT3120081}), biotopo "Pra' dell'Albi" (Riserva Naturale Provinciale $n^{\circ}$65)
+  \item[Lago di Loppio] sito Natura 2000 "Lago di Loppio" (\texttt{SIC IT3120079}), biotopo "Lago di Loppio" (Riserva Naturale Provinciale $n^{\circ}$63)
+  \item[Laghetti di Marco] sito Natura 2000 "Laghetti di Marco" (\texttt{SIC IT3120080}), biotopo "Lavini di Marco" (Riserva Naturale Provinciale $n^{\circ}$64)
+  \item[Lago di Santa Colomba] sito Natura 2000 "Lago di Santa Colomba" (\texttt{SIC IT3120102}), biotopo "Palù dei Preti" (Riserva locale $n^{\circ}$5)
+  \item[Lago di Serraia] sito Natura 2000 "Paludi di Sternigo" (\texttt{SIC IT3120034})
+  \item[Lago di Terlago] sito Natura 2000 "Lago di Terlago" (\texttt{SIC IT3120110})
+  \item[Levico Terme] sito Natura 2000 "Pizé" (\texttt{SIC IT3120043}), biotopi "Pizé, Pozze (A), Pozze (B), Barucchelli" (Riserva Naturale Provinciale $n^{\circ}$25, Riserve Locali $n^{\circ}$92, $n^{\circ}$93 e $n^{\circ}$94)
+  \item[Lomasona] sito Natura 2000 "Torbiera di Lomasona" (\texttt{SIC IT3120069}), biotopo "Lomasona" (Riserva Naturale Provinciale $n^{\circ}$53)
+  \item[Malga Laghetto] sito Natura 2000 "Palù di Monte Rovere" (\texttt{SIC IT3120088}), biotopo "Laghetto" (Riserva locale $n^{\circ}$28)
+  \item[Pradellano] biotopo "Lago di Pradellano" (Riserva locale $n^{\circ}$127)
+  \item[Tenna] sito Natura 2000 "Canneto di Levico" (\texttt{SIC IT3120039}), biotopo "Canneto di Levico" (Riserva Naturale Provinciale $n^{\circ}$21)
+  \item[Toblino] sito Natura 2000 "Lago di Toblino" (\texttt{SIC IT3120055}), biotopo "Lago di Toblino" (Riserva Naturale Provinciale $n^{\circ}$37)
+  \item[Torbiera di Fiavé] sito Natura 2000 "Torbiera di Fiavé" (\texttt{SIC IT3120068}), biotopo "Fiavé" (Riserva Naturale Provinciale $n^{\circ}$52)
+  \item[Villa Welsperg] sito Natura 2000 "Pale di San Martino" (\texttt{SIC IT3120178}), biotopi "Villa Welsperg, Palù Grant" (Riseve Locali $n^{\circ}$201 e $n^{\circ}$203).
+\end{description}
+
+\section{La tutela diretta: le specie protette e quelle della Lista Rossa d’Italia e del Trentino.}
+\label{sec:norme_redlist}
+Nell'ambito territoriale trentino i seguenti Anfibi sono elencati negli allegati II, IV e V della Direttiva 92/43/CEE e rappresentano quindi specie di interesse comunitario soggette a particolare tutela:
+
+\begin{itemize}\itemsep0pt
+  \item Salamandra alpina \emph{Salamandra atra}
+  \item Tritone crestato italiano \emph{Triturus carnifex};
+  \item Ululone dal ventre giallo \emph{Bombina variegata};
+  \item Rospo smeraldino \emph{Bufo viridis};
+  \item Raganella italiana \emph{Hyla intermedia};
+  \item Rana agile \emph{Rana dalmatina};
+  \item Rana verde \emph{Pelophylax synkl. esculentus};
+  \item Rana temporaria \emph{Rana temporaria};
+\end{itemize}
+
+A queste specie si aggiungono altri Anfibi non tutelati dalla direttiva 92/43/CEE ma elencati  nelle Liste Rosse, elaborate dalla scala globale a quella provinciale.
+
+In particolare, tra le specie non considerate di interesse comunitario ma che per la loro relativa rarità sono elencate nella Lista Rossa degli Anfibi e Rettili del Trentino del 2001 e nella Lista Rossa  italiana IUCN del 2013 figurano i seguenti Anfibi:
+
+\begin{itemize}\itemsep0pt
+  \item Tritone alpestre \emph{Ichthyosaura alpestris}
+  \item Rospo comune \emph{Bufo bufo}
+  \item Tritone punteggiato \emph{Lissotriton vulgaris}
+\end{itemize}
+
+Alcune tra queste specie a livello locale appaiono particolarmente minacciate.
+
+In particolare, tra gli Anfibi considerati "in pericolo critico" in Trentino figurano il tritone crestato italiano e il tritone punteggiato, tra le specie "in pericolo" sono elencati l'ululone dal ventre giallo, il rospo smeraldino, la raganella italiana e la rana dalmatina, mentre tra gli Anfibi "vulnerabili" figura la rana verde.
+
+A livello nazionale, il rospo comune è considerato attualmente specie "vulnerabile" e quindi particolarmente meritevole di tutela.
+
+\begin{table}[H]
+\centering
+\label{tab:redlist}
+\rowcolors{1}{white}{lightgray}
+\begin{adjustwidth*}{-1cm}{-1cm}
+  \begin{tabular}{llllllllll}
+  \toprule                                        
+    \textbf{Specie} & \parbox{1cm}{\textbf{Berna App. 2}} & \parbox{1cm}{\textbf{Berna App. 3}} & \parbox{1.4cm}{\textbf{Habitat All. 2}} & \parbox{1.4cm}{\textbf{Habitat All. 4}} & \parbox{1.4cm}{\textbf{Habitat All. 5}} & \parbox{1cm}{\textbf{Red List}} & \parbox{1cm}{\textbf{Red List EU}} & \parbox{1cm}{\textbf{Red List IT}} & \parbox{1cm}{\textbf{Red List TN}} \\
+  \midrule                                        
+      \tablespecie{Salamandra alpina}{Salamandra atra}  & $\bullet$  &   &   & $\bullet$  &   & LC  & LC  & LC  & NT  \\
+      \tablespecie{Salamandra pezzata}{Salamandra salamandra} &   & $\bullet$  &   &   &   & LC  & LC  & LC  & NT  \\
+      \tablespecie{Tritone alpestre}{Ichthyosaura alpestris}  &   & $\bullet$  &   &   &   & LC  & LC  & LC  & NT  \\
+      \tablespecie{Tritone crestato italiano}{Triturus carnifex}  & $\bullet$  &   & $\bullet$  & $\bullet$  &   & LC  & LC  & NT  & CR  \\
+      \tablespecie{Tritone punteggiato}{Lissotriton vulgaris} &   & $\bullet$  &   &   &   & LC  & LC  & NT  & CR  \\
+      \tablespecie{Ululone dal ventre giallo}{Bombina variegata}  & $\bullet$  &   & $\bullet$  & $\bullet$  &   & LC  & LC  & LC  & EN  \\
+      \tablespecie{Rospo comune}{Bufo bufo} &   & $\bullet$  &   &   &   & LC  & LC  & VU  & NT  \\
+      \tablespecie{Rospo smeraldino}{Bufo viridis}  & $\bullet$  &   &   & $\bullet$  &   & LC  & LC  & LC  & EN  \\
+      \tablespecie{Raganella italiana}{Hyla intermedia} &   & $\bullet$  &   & $\bullet$  &   & LC  & LC  & LC  & EN  \\
+      \tablespecie{Rana verde}{Pelophylax synkl. Esculentus}  &   & $\bullet$  &   & $\bullet$  & $\bullet$  & LC  & LC  & LC  & VU  \\
+      \tablespecie{Rana ridibonda}{Pelophylax ridibundus} &   &   &   &   & $\bullet$  & LC  & LC  & NA  & NA  \\
+      \tablespecie{Rana agile}{Rana dalmatina}  & $\bullet$  &   &   & $\bullet$  &   & LC  & LC  & LC  & EN  \\
+      \tablespecie{Rana temporaria}{Rana temporaria}  &   & $\bullet$  &   &   & $\bullet$  & LC  & LC  & LC  & LC  \\
+  \bottomrule                                       
+  \end{tabular}
+\end{adjustwidth*}
+\caption{Gli anfibi della provincia di Trento nella griglia di protezione internazionale (Convenzione di Berna app. 2, 3; Direttiva 92/43/Cee "Habitat" all. II, IV, V; Liste Rosse IUCN Mondiale (2009), Europea (2009), Nazionale (2013); Lista Rossa provincia di Trento (2001). Categorie rischio: NA = non applicabile; LC = minor preoccupazione; NT = quasi minacciata ; VU = vulnerabile; EN = in pericolo; CR = in pericolo critico}
+\end{table}
+
+\chapter{Stato attuale ed analisi dei dati pregressi}
+\label{chapt:statoanal}
+\section{Le iniziative di salvaguardia degli anfibi in migrazione fino ad ora realizzate in Trentino}
+\label{sec:statoanal_iniziative}
+\subsection{Posa delle barriere temporanee di protezione}
+\label{subsec:statoanal_iniziative_barriere}
+Per quanto riguarda la posa delle barriere temporanee, oppure il controllo e la manutenzione di quelle fisse (come quelle installate tutto l'anno al lago di Loppio e ai laghetti di Marco, e parzialmente anche a Tenna) ogni anno a gennaio o febbraio, prima dell’inizio della migrazione degli anfibi, i funzionari dell'Ufficio Conservazione della Natura della Provincia Autonoma di Trento responsabili delle diverse realtà territoriali predispongono le autorizzazioni e l'organizzazione delle diverse squadre di operai per l’installazione delle barriere mobili lungo le strade provinciali e comunali.
+
+La posa delle barriere avviene di solito attorno a fine febbraio per le zone con clima relativamente più mite e con le popolazioni di anfibi più abbondanti (lago di Loppio, laghetti di Marco, Levico Terme, Tenna) e procede in seguito nelle zone più in quota (lago d'Ampola, Torbiera di Fiavé, Pradellano, lago di Santa Colomba).
+A Sarnonico invece la posa delle barriere temporanee avviene su iniziativa della locale Amministrazione e Stazione forestale che coinvolge gli addetti alla gestione e vigilanza ambientale operanti nella zona.
+
+Fino a circa 5 anni fa lungo la strada che porta al Passo della Fricca (San Rocco di Trento, zona Casteller) gli operai del Servizio Foreste e fauna e del locale vivaio forestale provinciale, predisponevano delle barriere plastiche temporanee, in modo da convogliare gli anfibi in migrazione verso alcuni laghetti del vivaio sotto a due tunnel di drenaggio delle acque meteoriche. Da allora queste attività sono sospese soprattutto per mancanza di personale atto a installare e controllare le barriere di protezione, oltre che per un presunto calo delle popolazioni di anfibi in migrazione.
+
+In alcuni siti (fino al 2014 presso Levico Terme e Sarnonico, fino al 2012 Torbiera di Fiavé) l'attività di salvataggio manuale avviene anche tramite il controllo e raccolta degli anfibi caduti in alcuni secchi-trappola collocati in prossimità delle barriere temporanee e costituiti da secchi di materiale plastico, profondi e larghi circa 40 cm, opportunamente forati sul fondo e sui lati (a 15 cm di altezza) con fori di almeno 1 cm di diametro, per evitare l'allagamento del contenitore e la morte per annegamento degli anfibi eventualmente intrappolati. Nel secchio viene disposto uno strato di terriccio, fogliame o sassi per offrire un po’ di rifugio agli animali intrappolati. I secchi costituiscono una valida modalità di controllo e monitoraggio delle loro migrazioni e al contempo consentono agli operatori di lavorare in maggior sicurezza potendo rinviare le operazioni di salvataggio alle prime ore del mattino.
+
+L'installazione dei secchi consente anche una valida alternativa all'utilizzo dei tunnel, specialmente in situazioni dove gli ecodotti possano risultare insufficienti o di dimensioni poco adatte e quindi, forse per questo, non esser utilizzati dagli animali in migrazione (per esempio a Levico Terme).
+
+\subsection{Attività di salvataggio volontario}
+\label{subsec:statoanal_iniziative_volontari}
+Le attività di salvataggio degli anfibi in migrazione nell'ambito territoriale della provincia di Trento nella maggior parte dei casi sono realizzate da piccoli gruppi spontanei di volontari che controllano alcuni tratti stradali a maggiore impatto.
+
+Un esempio importante per durata ed organizzazione, raccolta e analisi dei dati è rappresentato dall’esperienza maturata presso la Torbiera di Fiavé, dove salvataggi organizzati sono stati realizzati con continuità a partire dal 2000 al 2012, dalla locale sezione del WWF in collaborazione con professionisti e l’Ufficio Biotopi della PAT. Per questa località sono disponibili dei report dettagliati realizzati dai responsabili dei salvataggi che fino al 2012, grazie ad una convenzione attiva con la Provincia Autonoma di Trento, hanno operato anche per la valorizzazione e la vigilanza generale del vicino biotopo. Purtroppo dal 2013 per motivi economici le operazioni di salvataggio e conteggio degli anfibi sono state sospese ed ad oggi l’area non è più monitorata come in passato.
+
+Negli ultimi anni si svolgono dei salvataggi soprattutto a Levico Terme, al Lago di Loppio e al Lago di Santa Colomba che coinvolgono cittadini e associati ad associazioni ambientaliste e animaliste come la locale sezione del WWF, la Legambiente e la LAV. A Sarnonico invece da quattro anni i salvataggi degli anfibi, che dalle campagne circostanti si spostano verso i laghetti del locale Golf Club, sono coordinati e condotti  dal custode forestale dell’Amministrazione comunale.
+
+Al 2014 sono qualche decina in totale i volontari coinvolti nelle operazioni di salvataggio e relativa raccolta dati e segnalazione dei problemi inerenti le opere di mitigazione della mortalità realizzate.
+
+\section{Il fenomeno della migrazione degli Anfibi in Trentino: fenologia e modalità di svolgimento}
+\label{sec:statoanal_fenomig}
+\subsection{Considerazioni sui dati a disposizione e origine delle informazioni}
+\label{subsec:statoanal_fenomig_info}
+Grazie ai dati ricavati dalle attività di salvataggio degli anfibi condotte in alcune località del Trentino è stato possibile ricavare alcune indicazioni generali utili a descrivere il fenomeno migratorio a scala locale e valutare le diverse problematiche, fornendo così importanti indicazioni per la conservazione.
+I dati si riferiscono ai conteggi degli animali raccolti dagli operatori 1) durante i controlli alle barriere e che venivano trasportati oltre la sede stradale verso i siti riproduttivi, oppure 2) rinvenuti al momento del controllo dei secchi e prima della loro liberazione oltre la sede stradale.
+
+I dati sono stati recuperati grazie a quanto archiviato in un apposito data base (mailing list "Herping Trentino" a cura del MuSe/K. Tabarelli de Fatis) o a quanto comunicato via internet dai referenti e dai rilevatori sul campo.
+
+I dati dei primi anni messi a disposizione in alcuni casi peccano purtroppo di un diverso grado di precisione che riflette la differente preparazione dei volontari, soprattutto nella determinazione della specie o del sesso; in ogni caso sono stati raccolti dati minimi come il conteggio totale degli esemplari rinvenuti vivi e morti, suddivisi in "rospo comune" e "altre specie". Negli ultimi anni l’acquisita preparazione e meticolosità nella registrazione dei dati di campo e la migliorata organizzazione dei gruppi locali, favorita dal crescente numero di partecipanti e dal miglior coordinamento, unitamente alla collaborazione con i servizi PAT e il Museo di Trento, hanno permesso di disporre di migliori informazioni utili all’obiettivo della presente indagine. 
+
+A tutto questo si aggiungono infine i dati archiviati in alcuni siti (es. \url{www.sosanfibi.it}) e mailing list ("Herping Trentino") o raccolti tramite interviste ai responsabili e ai rilevatori, che hanno permesso di meglio valutare l’entità del fenomeno migratorio a scala locale, come anche 1) l’efficacia dell’ecodotto, 2) i possibili fattori di minaccia e di mal funzionamento delle barriere, 3) le possibili soluzioni per migliorare la funzionalità ecologica delle strutture. Sono state così anche raccolte interessanti informazioni relative ad esempio: direzione di provenienza e numero esemplari in movimento; direzione e intensità del flusso migratorio verso e da i siti riproduttivi ("andata" o "ritorno"); le specie in transito e la fruizione delle infrastrutture anche da altre specie di Vertebrati come, ad esempio, il riccio europeo o la lucertola muraiola; l’effetto  delle condizioni meteo; informazioni sul periodo e orario del transito; valutazioni sull’attività di “salvataggio” (ad es. numero di operatori necessari, rischio). L’attività ai siti ha inoltre permesso il recupero di materiale fotografico realizzato dai volontari che ha aiutato a documentare e riconoscere le specie in migrazione.
+
+\subsection{Sintesi generale}
+\label{subsec:statoanal_fenomig_sintesi}
+I dati riguardanti le migrazioni degli Anfibi nel territorio provinciale sono stati raccolti in maniera continuativa dal 2000 al 2012 (con anche alcuni dati preliminari nel 1996 e 1998) per il sito della Torbiera di Fiavé (Caldonazzi et al., 1999, Martinoli \& Bronzini, 2006). Altri dati meno continui nel tempo sono stati raccolti per  il Lago di Levico, il Lago di Loppio, il Lago di Santa Colomba, il Lago di Terlago, l’Alta Val di Non presso Sarnonico e per alcuni altri siti minori.
+
+I dati raccolti per la Torbiera di Fiavè tra il 1996 e il 2012 permettono di avere un’identità del fenomeno a scala locale, sia annuale (con valori medi di circa 700 esemplari/anno), sia di specie interessate e di andamento delle variazioni interannuali. Per avere un’idea del fenomeno migratorio, certamente non assoluto, si ricorda che sono stati raccolti e conteggiati complessivamente oltre 10.000 anfibi, di cui oltre 9400 sono stati raccolti lungo le strade.
+
+\begin{figure}[H]
+\label{fig:graph}
+\centering
+  \includegraphics[width=.6\columnwidth]{5_Sintesi_generale.jpg}
+\caption{Totale degli anfibi conteggiati presos la Torbiera di Fiavé: anni 1996, 1998, 2000-2008, 2011-2012. Colore Blu: salamandra pezzata, Arancione: tritone alpestre, Giallo: rospo comune, Viola: rana temporaria, Verde chiaro: rana verde, Verde scuro: Totale}
+\end{figure}
+
+Il totale dei conteggi degli anfibi nell'area di Fiavé ha raggiunto un massimo di oltre 1100 esemplari nel 2005, con un conteggio minimo al primo anno sperimentale di raccolta (215 esemplari nel 1996).
+
+In totale nel sito sono stati raccolti esemplari appartenenti ad almeno 7 specie diverse: salamandra pezzata (7 esemplari totali), tritone alpestre (45 esemplari), rospo comune (7228 esemplari), rana verde (324 esemplari), rana temporaria (1880 esemplari), rana dalmatina (6 esemplari), ululone dal ventre giallo (1 esemplare).
+
+
+Per questa località sono disponibili dettagliati report riguardanti anche le tempistiche di migrazione e le problematiche riscontrate, le barriere posate e i secchi trappola utilizzati, e una puntuale serie di proposte gestionali dell'area (Bronzini, 2000; Caliari, 2012; Caliari \& Bronzini, 2005, 2007, 2008; Martinoli \& Bronzini, 2004, 2006).
+Per altri siti, come Levico Terme e i laghi di Loppio, Santa Colomba e Terlago sono disponibili dati raccolti soprattutto negli ultimi quattro anni.
+
+Per Levico Terme i dati riguardano i salvataggi effettuati dal 2012, che hanno permesso di censire le specie, la fenologia e le problematiche delle migrazioni in riferimento alla locale Strada Provinciale detta anche "La Vecchia", dove nel 2014 sono stati raccolti dati per oltre 700 esemplari di rospo comune.
+Per il biotopo Lago di Loppio nella stagione di migrazione 2014 sono stati raccolti dati per oltre 900  esemplari di Anuri (893 esemplari di rospo comune, 21 di rana dalmatina e uno di raganella italiana).
+
+Per altri siti importanti (come Lago di Santa Colomba e Pradellano) le informazioni sono più scarse ma le localizzazioni dei punti focali di attraversamento, le specie coinvolte e le tempistiche sono ormai ben note, grazie alle osservazioni occasionali raccolte dal Servizio (V. Fin) e negli anni da personale del MuSe.
+
+
+\subsubsection{Orari e stagione di migrazione}
+\label{subsubsec:statoanal_fenomig_sintesi_orari}
+Quantificare con esattezza l'inizio e la fine dei fenomeni di migrazione a scopo riproduttivo non è facile. Ogni specie ha un determinato ciclo annuale e particolari siti di svernamento, e l’attività può variare a seconda delle diverse condizioni climatiche annuali. Ci possono essere piccoli o grandi movimenti migratori in concomitanza con piogge intense e temperature relativamente miti già a fine gennaio, con conseguenze mortali se le temperature subiscono improvvisi cali e se gli anfibi non hanno possibilità di trovare rifugio in ambienti sotterranei o acquatici.
+
+Per il Trentino i dati raccolti alla Torbiera di Fiavé permettono di caratterizzare l'inizio e la fine dei principali spostamenti. La data più precoce che segna l’inizio del fenomeno migratorio verso la torbiera è stata il 18 febbraio 2007; la più tardiva il 22 marzo 2004. Per la fine della migrazione la data più precoce nota è il 2 aprile, mentre la tardiva è il 22 aprile; date che concidono con quelle rilevate nel 2003 in due località della provincia di Treviso (laghi di Revine e Panoramica del Montello).
+I movimenti migratori hanno inizio al crepuscolo e proseguono generalmente durante tutta la notte; le fasce orarie a maggior probabilità di investimento sono quelle attorno al tramonto, quando la maggior parte degli anfibi abbandona i rifugi diurni per raggiungere le zone umide o si muove in alimentazione durante il resto dell’anno, e parallelamente maggiore è il traffico veicolare in coincidenza del rientro serale dal lavoro. 
+
+Gli anfibi adulti compiono spostamenti in massa alla fine dell’inverno o all’inizio della primavera (fine febbraio-fine aprile), soprattutto durante le notti piovose. Ulteriori movimenti di una certa consistenza si osservano durante le piogge autunnali nella fase che precede il letargo, ma anche in estate in concomitanza con l’uscita dall’acqua dei piccoli neometamorfosati, che in area prealpina avviene in genere verso la metà di giugno.
+
+
+\chapter{Attraversamenti e barriere / Valutazione delle opere}
+\label{chap:ricercacampo}
+Nel corso dell’autunno 2013 e inizio primavera 2014 sono state effettuate uscite sul campo a partire dal mese di ottobre fino a fine marzo 2014, per un totale di circa 50 sopralluoghi. L’attività è stata finalizzata a valutare la funzionalità ecologica delle barriere ed ad individuare, con osservazioni dirette, i possibili interventi di restauro e ammodernamento delle stesse. Di seguito si elencano le uscite specifiche condotte, anche a fine di cercare di integrare le conoscenze pregresse.
+
+\begin{table}[H]
+\centering
+\label{tab:impegno}
+\rowcolors{1}{white}{lightgray}
+  \begin{tabular}{lp{.4\textwidth}l}
+  \toprule            
+    \textbf{Giorno} & \textbf{Sito} & \textbf{Attività} \\
+  \midrule            
+      10/10/2013  & Ton, Cavedago & Mappatura strada  \\
+      11/10/2013  & Lago di Terlago, Lago di Lagolo, Garniga Terme, Lago di Cei, Lago di Loppio, Avio, Laghetti di Marco  & Mappatura strada  \\
+      15/10/2013  & Pradellano, Tenna & Mappatura strada  \\
+      16/10/2013  & Levico Terme, Santa Colomba, Tenna, Lago Costa  & Mappatura strada  \\
+      17/10/2013  & Lago di Toblino, Torbiera di Fiavé, Lago d'Ampola & Mappatura strada  \\
+      27/01/2014  & San Rocco & Mappatura strada  \\
+      25/02/2014  & Lago di Loppio  & Rilievo anfibi e valutazione opere  \\
+      26/02/2014  & Levico Terme, Tenna, San Rocco  & Rilievo anfibi e valutazione opere  \\
+      02/03/ 2014 & Levico Terme, Tenna & Rilievo anfibi e valutazione opere  \\
+      3/3/2014  & Lago di Loppio  & Rilievo anfibi e valutazione opere  \\
+      12/3/2014 & Lago di Loppio  & Rilievo anfibi e valutazione opere  \\
+      13/03/2014  & Levico Terme  & Rilievo anfibi e valutazione opere  \\
+      14/03/2014  & Lago di Toblino, Lago di Lagolo, Laghi di Lamar & Rilievo anfibi e valutazione opere  \\
+      18/03/2014  & Levico Terme, Lago di Santa Colomba, Tenna, San Rocco & Rilievo anfibi e valutazione opere  \\
+      19/03/2014  & Lago di Terlago, Lago di Lagolo, Garniga Terme, Lago di Cei & Rilievo anfibi e valutazione opere  \\
+      24/03/2014  & Pradellano  & Rilievo anfibi e valutazione opere  \\
+      25/03/2014  & Lago di Loppio  & Rilievo anfibi e valutazione opere  \\
+      26/03/2014  & Torbiera di Fiavé, Lago d'Ampola, laghetti di Marco & Rilievo anfibi e valutazione opere  \\
+      27/03/2014  & Sarnonico, Cavedago & Rilievo anfibi e valutazione opere  \\
+  \bottomrule           
+  \end{tabular}
+\caption{Calendario delle principali attività sul campo 2013-2014}
+\end{table}
+
+Il Lago di Loppio e la strada di Levico Terme sono state monitorate con maggiore intensità essendo località interessate da rilevanti flussi migratori e da opere di mitigazione approntate.
+
+In questi due siti si è provveduto ad effettuare dei conteggi mirati, sia di giorno che di notte e, in via sperimentale, per un periodo limitato (circa 10 giorni) si è anche provveduto all'installazione di alcuni secchi all'uscita degli ecodotti presenti, per valutare il transito "al sicuro" degli anfibi sotto le strade (e la pista ciclabile, nel caso di Loppio).
+
+Ogni giorno, in corrispondenza ad alcuni secchi posizionati in uscita del tunnel, sono stati quindi censiti gli anfibi che presumibilmente avevano utilizzato i tunnel, e in alcuni casi sono stati osservati esemplari che stavano procedendo dentro ai tunnel. Si riportano quindi i risultati di questi rilievi.
+
+     Per Levico Terme invece le evidenze sull'efficacia dei due tunnel presenti sono state inferiori, visto che nella primavera 2014 sono stati trovati pochi esemplari (meno di una decina in totale, Elena Garollo com. pers.) ed essendo stato necessario rimuovere un secchio soggetto ad allagamenti durante gli eventi piovosi. La rimozione di questo secondo secchio di controllo è avvenuta infatti dopo che questo contenitore si era completamente riempito d'acqua in seguito ad una pioggia particolarmente importante, e quindi non risultava idoneo ai conteggi. Sono stati comunque effettuati dei rilievi che hanno permesso di constatare l'utilizzo poco rilevante del tunnel.
+
+La ricerca sul campo si è accompagnata ad una serie di interviste con naturalisti, custodi forestali, professionisti, funzionari, appassionati e volontari che ha permesso di raccogliere una grande quantità di dati sulle zone di migrazione già note.
+
+Al tempo stesso, grazie ai rilievi in campo, sono state segnalate 10 strade precedentemente non note o non segnalate ufficialmente nel database GIS del MUSE (Sezione di Zoologia dei Vertebrati) e PAT (Servizio Conservazione Natura e Valorizzazione Ambientale).
+
+\section{Caratterizzazione delle strade interessate dalle migrazioni}
+\label{subsubsec:statoanal_fenomig_sintesi_strade}
+Le attività di mitigazione degli impatti stradali sulle popolazioni di anfibi in migrazione riproduttiva nella provincia di Trento hanno interessato in totale 25 diverse località, qui di seguito dettagliate in schede nelle quali sono riportati l’entità del fenomeno migratorio, le diverse comunità rilevate, le problematiche e grado di protezione, e i suggerimenti utili a mitigare l’effetto barriera causato dal tratto stradale interessato.
+
+\begin{figure}[H]
+  \centering
+  \label{fig:totale_strade}
+  \includegraphics[width=.95\columnwidth]{TOTAL.png}
+  \caption{Tratti stradali identificati interessati dal fenomeno migratorio (segnati con un codice identificativo arbitrario), con gli ATO di eventuale appartenenza evidenziati}
+\end{figure}
+
+\newpage
+\begin{table}[H]
+\label{tab:caratterizzazione}
+\centering
+\rowcolors{1}{white}{lightgray}
+\begin{tabular}{ll|l|l|l|l|l|l|l|l|l}
+  \toprule                                            
+    \textbf{Località} & \rotatebox{90}{\textbf{\textsc{Salamandra pezzata}}} & \rotatebox{90}{\textsc{\textbf{Tritone alpestre}}} & \rotatebox{90}{\textsc{\textbf{Tritone crestato italiano}}} & \rotatebox{90}{\textsc{\textbf{Tritone punteggiato}}} & \rotatebox{90}{\textsc{\textbf{Rospo comune}}} & \rotatebox{90}{\textsc{\textbf{Ululone dal ventre giallo}}} & \rotatebox{90}{\textsc{\textbf{Raganella italiana}}} & \rotatebox{90}{\textsc{\textbf{Rana dalmatina}}} & \rotatebox{90}{\textsc{\textbf{Rana verde}}} & \rotatebox{90}{\textsc{\textbf{Rana temporaria}}} \\
+  \midrule
+  \hiderowcolors
+  \multicolumn{11}{l}{\textbf{ATO - Fiume Noce}} \\
+  \cmidrule{1-1}
+  \showrowcolors
+      1.Sarnonico  &   &   &   &   & $\bullet$  &   &   &   &   & $\bullet$  \\
+      2.Ton  &   &   &   &   & $\bullet$  &   &   &   &   &   \\  
+      3.Cavedago  &   &   &   &   & $\bullet$  &   &   &   &   &   \\                                                   
+  \hiderowcolors  
+  \multicolumn{11}{l}{\textbf{ATO - Fiume Sarca}} \\
+  \cmidrule{1-1}  
+  \showrowcolors  
+      4.Toblino  & $\bullet$  &   &   &   &   &   &   &   &   &   \\
+      5.Lago di Lagolo &   &   &   &   & $\bullet$  &   &   &   &   &   \\
+      6.Torbiera di Fiavé  & $\bullet$  & $\bullet$  &   &   & $\bullet$  & $\bullet$  &   & $\bullet$  & $\bullet$  & $\bullet$  \\
+      7.Lomasona & $\bullet$  &   &   &   &   &   &   &   &   &   \\
+  \hiderowcolors
+  \multicolumn{11}{l}{\textbf{ATO - Val di Ledro}} \\
+  \cmidrule{1-1}  
+  \showrowcolors  
+      8.Lago d'Ampola &   &   &   &   & $\bullet$  &   &   &   &   & $\bullet$  \\
+  \hiderowcolors
+  \multicolumn{11}{l}{\textbf{ATO - Monte Baldo}} \\
+  \cmidrule{1-1}  
+  \showrowcolors  
+      9.Lago di Loppio  &   & $\bullet$  &   & $\bullet$  & $\bullet$  & $\bullet$  & $\bullet$  & $\bullet$  & $\bullet$  &   \\                                    
+      10.Avio  & $\bullet$  &   &   &   &   &   &   &   &   &   \\
+  \hiderowcolors
+  \multicolumn{11}{l}{\textbf{ATO - Rovereto / Vallagarina}} \\
+  \cmidrule{1-1}  
+  \showrowcolors        
+      11.Laghetti di Marco &   & $\bullet$  & $\bullet$  & $\bullet$  & $\bullet$  &   &   &   &   &   \\
+  \hiderowcolors
+  \multicolumn{11}{l}{\textbf{ATO - Bondone}} \\
+  \cmidrule{1-1}  
+  \showrowcolors  
+      12.Lago di Cei &   &   &   &   & $\bullet$  &   &   &   &   &   \\
+      13.Garniga Terme  &   &   &   &   & $\bullet$  &   &   &   &   &   \\
+      14.Lago di Terlago &   &   &   &   & $\bullet$  &   &   & $\bullet$  &   &   \\
+      15.Laghi di Lamar &   &   &   &   & $\bullet$  &   &   &   &   &   \\
+      16.San Rocco - La Fricca  &   &   &   &   & $\bullet$  &   &   &   &   &   \\
+  \hiderowcolors
+  \multicolumn{11}{l}{\textbf{ATO Val di Cembra}} \\
+  \cmidrule{1-1}  
+  \showrowcolors        
+      17.Lago di Santa Colomba &   &   &   &   & $\bullet$  &   &   & $\bullet$  &   &   \\
+      18.Lago di Serraia - Palude di Sternigo &   &   &   &   & $\bullet$  &   &   &   &   &   \\
+  \hiderowcolors
+  \multicolumn{11}{l}{\textbf{ATO Valsugana}} \\
+  \cmidrule{1-1}  
+  \showrowcolors              
+      19.Lago Costa  &   &   &   &   & $\bullet$  &   &   &   &   &   \\
+      20.Levico Terme & $\bullet$  &   &   &   & $\bullet$  &   &   & $\bullet$  &   & $\bullet$  \\
+      21.Tenna  &   &   &   &   & $\bullet$  &   &   &   &   &   \\
+      22.Malga Laghetto &   &   &   &   & $\bullet$  &   &   &   &   & $\bullet$  \\
+  \hiderowcolors
+  \multicolumn{11}{l}{\textbf{ATO Lagorai}} \\
+  \cmidrule{1-1}  
+  \showrowcolors               
+      23.Musiera  & $\bullet$  &   &   &   &   &   &   &   &   &   \\
+      24.Pradellano &   &   &   &   & $\bullet$  &   &   &   &   & $\bullet$  \\
+      25.Villa Welsperg &   & $\bullet$  &   &   & $\bullet$  &   &   &   &   & $\bullet$  \\
+  \bottomrule
+\end{tabular}
+\caption{Specie rilevate nei vari tratti stradali identificati interessati dal fenomeno migratorio}
+\end{table}
+
+
+Tra le strade elencate alcune assumono particolare rilievo per diversi criteri:
+\begin{itemize}\itemsep0pt
+  \item presenza di specie di Anfibi inserite in normative di tutela europea, nazionale o nelle Liste Rosse mondiale, nazionale e regionale (tutte le strade);
+  \item presenza di popolazioni migranti superiori ai 1.000-2.000 esemplari conteggiati o stimati (lago di Loppio, Levico Terme, Torbiera di Fiavé, lago di Santa Colomba, lago di Terlago, Pradellano, lago di Lagolo);
+  \item buona conoscenza delle rotte migratorie e dei siti riproduttivi e/o svernamento (Avio, lago di Loppio, lago di Santa Colomba, lago di Terlago, Levico Terme, Torbiera di Fiavé, lago di Lagolo, Sarnonico, Villa Welsperg);
+  \item buona disponibilità di dati pregressi (lago di Loppio, Levico Terme, Torbiera di Fiavé, lago di Santa Colomba);
+  \item buona possibilità di intervento in relazione alla tipologia di infrastruttura e sottopassaggi esistenti (laghetti di Marco, lago d'Ampola, lago di Loppio, lago di Santa Colomba, Pradellano, Torbiera di Fiavé, lago di Lagolo, San Rocco-la Fricca, Sarnonico).
+\end{itemize}
+
+Localmente, alcuni tratti stradali spiccano per la presenza delle comunità di anfibi più ricche e delle migrazioni più abbondanti (es. lago di Loppio, Levico Terme, Torbiera di Fiavé), oppure per la presenza di importanti popolazioni di specie di Anfibi di interesse comunitario e inseriti anche nelle Lista Rossa provinciale o nazionale (rospo comune e rana temporaria/rana dalmatina: lago d'Ampola, lago di Santa Colomba, lago di Terlago, Pradellano, Sarnonico) o con importanti popolazioni di un'unica specie (rospo comune o salamandra pezzata: es. Avio, Cavedago, lago di Lagolo, Musiera, Tenna, Toblino). 
+
+La lista delle località interessate dalle migrazioni degli anfibi è sicuramente in difetto e probabilmente altre strade interessate da punti focali di attraversamento da parte degli anfibi non sono note; si dovrà quindi  in futuro procedere con l'aggiornamento dell’elenco delle strade interessate dai fenomeni migratori.
+Seguono le schede di descrizione sintetica dei punti di attraversamento degli anfibi note sul territorio provinciale, ove il nome del punto di attraversamento all'interno di un riquadro rosso (es. \fcolorbox{red}{white}{Cavedago}) indica che la zona è in prossimità di un ATO, mentre un riquadro verde attorno al nome del punto di attraversamento (es. \fcolorbox{green}{white}{Lago di Toblino}) indica che la zona ricade all'interno di un ATO.
+
+%%CARTOGRAFIA GENERALE
+
+%%%%%%%%%%%%%%%%%
+%INIZIO SCHEDE CON CARTOGRAFIE
+%%%%%%%%%%%%%%%%%
+
+\newpage
+\section{Schede - ATO Fiume Noce}
+
+\begin{tcolorbox}[breakable,colback=white,colframe=red,width=10cm]
+\subsection{1.Sarnonico}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_sarnonico}
+\centering
+  \includegraphics[width=1\columnwidth]{sarnonico.png}
+\caption{Particolare della zona di Sarnonico, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: S.P. 24 \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Sarnonico, Provincia Autonoma di Trento.  \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 0,8 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: ambito dell'Alta Val di Non caratterizzato da zone boschive prevalentemente e conifere, coltivi, pascoli, prati a sfalcio frutteti, in cui sono presenti diversi laghetti afferenti ad un impianto sportivo per il golf (Dolomiti Golf Club). Dal 2010 in prossimità del laghetto adiacente alla Strada Provinciale 24 vengono posizionate delle barriete in plastica, fornite dalla PAT. La posa finora è avvenuta prevalentemente ad opera di Ivan Morten,  custode forestale di zona segnalatore del fenomeno migratorio e coadiuvato nell’azione di conservazione da altri colleghi e agenti della locale stazione forestale. Lungo le barriere sono posizionati anche 3 secchi trappola controllati giornalmente. \\
+\textbf{Problematiche}: la posa delle barriere viene effettuata solo nel periodo primaverile e su un piccolo tratto, mentre la zona di migrazione attraverso la strada provinciale è più ampia. E' presente un tunnel di scarico del laghetto, utilizzabile dagli anfibi per attraversare la strada, ma a volte possono esserci intasamenti e problemi a valicare controcorrente questa struttura non realizzata appositamente a scopo faunistico. \\
+\textbf{Sito riproduttivo}: laghetti del Dolomiti Golf Club.  \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 46,413733 11,120372  \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune e rana temporaria \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune e rana temporaria \\
+\textbf{Periodo raccolta dati migrazioni}: 2010 \\
+\textbf{Numero esemplari morti nel tratto} (min-max): 100-200  \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max): 100-300 \\
+\textbf{Stima numerosità della popolazione}: 500-1000 \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: / \\
+\textbf{Interventi proposti}: 1. Studio sull'entità delle popolazioni di anfibi presenti e delle loro migrazioni e in seguito 2. Posa barriere fisse (in metallo o in legno) con controllo-chiusura di eventuali falle, implementazione tunnel con tunnel quadrangolari di dimensioni >50 cm e apertura sul fondo, affiancati dall'organizzazione di turni di salvataggio-sorveglianza e raccolta dati, anche tramite stipula di convenzioni e assicurazioni. Si ritiene necessario anche il monitoraggio dell’effetto degli interventi realizzati. \\
+\textbf{Enti da coinvolgere}: servizi competenti della PAT per tramite dell’Ufficio Rete Natura; da valutare eventuale coinvolgimento del Dolomiti Golf Club. \\
+\textbf{Priorità}: alta (sito che appare interessato da migrazioni abbondanti, da approfondire le conoscenze) \\
+
+\newpage+
+\begin{tcolorbox}[breakable,colback=white,colframe=red,width=10cm]
+\subsection{2.Ton}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_ton}
+\centering
+  \includegraphics[width=1\columnwidth]{ton.png}
+\caption{Particolare della zona di Ton, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: Via Doss \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Ton, Provincia Autonoma di Trento  \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 0,3 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: Castel Thun si trova all'ingresso della Val di Non, un ampio altopiano solcato dal torrente Noce. La strada che porta al castello costeggia una zona panoramica caratterizzata da coltivazioni (soprattutto meleti) e piccoli boschi. Al momento non sono note iniziative di salvaguardia per gli anfibi in migrazione. \\
+\textbf{Problematiche}: mortalità stradale per gli anfibi in migrazione (non nota in tempi recenti).  \\
+\textbf{Sito riproduttivo}: non noto. \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 46,272417 11,091038 \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune \\
+\textbf{Periodo raccolta dati migrazioni}: 2014 \\
+\textbf{Numero esemplari morti nel tratto} (min-max): non è stato possibile raccogliere informazioni nel 2013-2014.  \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max):  non è stato possibile raccogliere informazioni nel 2013-2014.   \\
+\textbf{Stima numerosità della popolazione}: non è stato possibile raccogliere informazioni nel 2013-2014.  \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti). \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: / \\
+\textbf{Enti da coinvolgere}: servizi competenti della PAT per tramite dell’Ufficio Rete Natura. \\
+\textbf{Interventi proposti}: 1. Predisporre una cartellonistica informativa, necessario soprattutto dopo l’apertura del Castello di Thun e il conseguente incremento del traffico veicolare. 2. Studi di approfondimento per valutare la necessità ed eventualmente progettare la realizzazione di sottopassi.  \\
+\textbf{Priorità}: bassa (sito di migrazione che appare secondario e probabilmente non più attivo). \\
+
+\newpage
+\begin{tcolorbox}[breakable,colback=white,colframe=red,width=10cm]
+\subsection{3.Cavedago}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_cavedago}
+\centering
+  \includegraphics[width=1\columnwidth]{cavedago.png}
+\caption{Particolare della zona di Cavedago, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: S.S. 421 \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Cavedago, Provincia Autonoma di Trento \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 1 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: strada statale con traffico di una certa entità, si snoda tra gli abitati di Cavedago e Andalo a poca distanza dall'omonimo lago. Non sono stati effettuati interventi per la mitigazione della mortalità degli anfibi in migrazione riproduttiva. \\
+\textbf{Problematiche}: la mortalità degli anfibi in questo tratto stradale è nota da almeno una ventina d'anni (dati MUSE; G. Volcan com. pers.), ma anche prima quanto meno dagli anni Ottanta (P. Pedrini) e si estende ad alcuni tratti del comune di Andalo nella retta che porta al paese. \\
+\textbf{Sito riproduttivo}: lago d'Andalo \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 46,180737 11,019262 \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune  \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune \\
+\textbf{Periodo raccolta dati migrazioni}: noto fin dagli anni Ottanta, con investimenti stradali accertati ogni anno con regolarità nel periodo primaverile e durante la percorrenza occasionale quanto meno dal 1996. \\
+\textbf{Numero esemplari morti nel tratto} (min-max): la conclusione dei rilevamenti nel mese di marzo, e la permanenza della neve non ha permesso di raccogliere dati quantitativi sull’entità di individui morti, che comunque si aggira attorno ad alcune decine nelle notti di maggior transito (G. Volcan com. pers.). \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max): non sono state effettuate osservazioni. \\
+\textbf{Stima numerosità della popolazione}: non si hanno informazioni, comunque il sito di Andalo risulta uno dei più importanti habitat di riproduzione per il rospo comune (P. Pedrini).  \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: la strada è situata a poca distanza dal territorio tutelato dal Parco Naturale Adamello Brenta. \\
+\textbf{Interventi proposti}: 1. Ricerche su entità delle specie, dell'abbondanza delle popolazioni, della localizzazione e tempistiche degli anfibi in migrazione. 2. In seguito, posa barriere temporanee (associate a secchi-trappola e comunque da controllare) oppure 3. Barriere fisse (in metallo o in legno), realizzazione tunnel quadrangolari di dimensioni >50 cm e apertura sul fondo. Se possibile, organizzazione turni di salvataggio-sorveglianza e raccolta dati, anche tramite stipula di apposite convenzioni e assicurazioni e possibilmente in accordo con il vicino Parco Naturale Adamello Brenta. E' necessario anche il monitoraggio degli interventi di gestione attiva realizzati. In generale, è auspicabile anche l'organizzazione e realizzazione attività didattiche rivolte alla popolazione locale da parte del Parco e delle locali amministrazioni, al fine di un maggiore coinvolgimento e consapevolezza. \\
+\textbf{Enti da coinvolgere}: oltre ai servizi competenti della PAT, l’area va segnalata alla Rete di Riserve del Sarca che potrebbe promuovere azioni di conservazione e di sensibilizzazione a scala locale. \\
+\textbf{Priorità}: media (sito apparentemente secondario rispetto ad altri, prima degli interventi di mitigazione va predisposto uno studio sull'entità del flusso migratorio).
+
+\newpage
+\section{Schede - ATO Fiume Sarca}
+\begin{tcolorbox}[breakable,colback=white,colframe=green,width=10cm]
+\subsection{4.Lago di Toblino}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_toblino}
+\centering
+  \includegraphics[width=1\columnwidth]{toblino.png}
+\caption{Particolare della zona del Lago di Toblino, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: Strada "Madruzziana" - da Toblino verso Ranzo \\
+.\textbf{Ente amministrativo territorialmente competente}: Comune di Calavino, Provincia Autonoma di Trento  \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 0,4 km \\
+Caratteristiche generali dell’area: questa strada si snoda nella Val di Paone, zona interessata dalla presenz di leccete prospicienti il lago di Toblino; l'ambito è caratterizzato da boschi misti con notevole presenza di Leccio alternata al Carpino nero ed altre essenze xerofile. \\
+\textbf{Sito riproduttivo}: roggia di Ranzo \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 46,05937 10,964289 \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: salamandra pezzata \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: salamandra pezzata \\
+\textbf{Periodo raccolta dati migrazioni}: 2014 \\
+\textbf{Numero esemplari morti nel tratto} (min-max): 1-20 (1 esemplare trovato morto il 17.10.2013, 1 esemplare il 14.03.2014). \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max): non è stato possibile raccogliere informazioni nel 2013-2014.  \\ 
+\textbf{Stima numerosità della popolazione}: 200-300 \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: sito Natura 2000 "Lago di Toblino" (\texttt{SIC IT3120055}), biotopo "Lago di Toblino" (Riserva Naturale Provinciale $n^{\circ}$37). \\
+\textbf{Enti da coinvolgere}: servizi competenti della PAT per tramite dell’Ufficio Rete Natura e della Rete di Riserve del Sarca. \\
+\textbf{Interventi proposti}: 1. Predisposizione di cartellonistica che segnali ed inviti a prestare attenzione al transito degli anfibi; 2. Eventuale organizzazione turni di salvataggio-sorveglianza e raccolta dati. In generale, è auspicabile inserire questo sito fra i luoghi ove organizzare visite didattiche per le scolaresche, essendo prossimo al sito di Toblino. \\
+\textbf{Priorità}: alta (presenza importante di specie minacciata e inserita in Lista Rossa). \\
+ 
+\newpage
+\begin{tcolorbox}[breakable,colback=white,colframe=green,width=10cm]
+\subsection{5.Lago di Lagolo}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_lagolo}
+\centering
+  \includegraphics[width=1\columnwidth]{lago_lagolo.png}
+\caption{Particolare della zona del Lago di Lagolo, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: S.P. 85  \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Calavino, Comune di Lasino, Provincia Autonoma di Trento.  \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 1,6 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: bacino situato a 950 metri di quota, il lago risulta molto frequentato soprattutto nel periodo estivo. Negli anni scorsi un gruppo di cittadini aveva chiesto e realizzato una chiusura temporanea al traffico delle strade private sulla sponda orientale del lago (M. Segata com. pers.). Al momento non sono stati realizzati particolari interventi di mitigazione della mortalità degli anfibi da parte della PAT. \\
+\textbf{Problematiche}: ingente mortalità stradale per gli anfibi, soprattutto nelle ore serali e nel periodo primaverile.  \\
+\textbf{Sito riproduttivo}: lago di Lagolo \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 46,040196 11,004512 \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune \\
+\textbf{Periodo raccolta dati migrazioni}: 2014 \\
+\textbf{Numero esemplari morti nel tratto} (min-max): 82 (22/03/2014) - 95 (19/03/2014) \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max): 45 (19.03.2014) \\
+\textbf{Stima numerosità della popolazione}: 200-2000 \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: / \\
+\textbf{Interventi proposti}: 1. Posa sulla S.P. 85 di barriere temporanee in plastica (associate a secchi-trappola da controllare periodicamente). 2. In seguito, posa barriere fisse (in metallo o in legno) e realizzazione tunnel quadrangolari di dimensioni >50 cm e apertura sul fondo, auspicabilmente da integrare con l'organizzazione turni di salvataggio-sorveglianza e raccolta dati, anche tramite stipula di apposite convenzioni e assicurazioni; 3. Monitoraggio periodico del flusso migratorio; 4.  Il sito si presta per ospitare attività didattica itinerante con le scolaresche di valle.  \\
+\textbf{Enti da coinvolgere}: servizi competenti della PAT per tramite dell’Ufficio Rete Natura e Rete di Riserve M. Bondone o Sarca. \\
+\textbf{Priorità}: alta (ingente migrazione e mortalità riscontrate). \\
+
+\newpage
+\begin{tcolorbox}[breakable,colback=white,colframe=green,width=10cm]
+\subsection{6.Torbiera di Fiavè}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_fiave}
+\centering
+  \includegraphics[width=1\columnwidth]{torbiera_fiave.png}
+\caption{Particolare della zona della Torbiera di Fiavè, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: S.S. 421  \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Fiavé, Provincia Autonoma di Trento.  \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 1,7 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: la Torbiera di Fiavé rappresenta un biotopo di estremo interesse naturalistico e storico: sono presenti importanti testimonianze archeologiche ed è notevole anche la presenza delle comunità floro-faunistiche. Nel sito sono presenti 5 tunnel utilizzabili dagli anfibi in migrazione riproduttiva e ogni anno vengono posizionate dagli operai della PAT delle barriere guida temporanee in plastica. Dal 1996, ma in particolare dal 2000, la PAT e volontari locali (WWF Giudicarie Esteriori, Associazione Pro Ecomuseo delle Giudicarie) hanno attivato con continuità delle iniziative di protezione per gli anfibi e in generale di attività di gestione e valorizzazione del biotopo, effettuando anche degli studi sui fenomeni migratori, proseguiti fino al 2012 e in seguito non più attivati per motivi economici. Negli ultimi anni la posa delle barriere è avvenuta ad opera degli operai della PAT, mentre in precedenza era curata dai volontari. \\
+\textbf{Problematiche}: la presenza della strada statale, unitamente a quella di diversi accessi stradali laterali e strutture ricreative e sportive, genera un traffico di notevole flusso, ed è pertanto  ancora notevole la mortalità di anfibi riscontrata attualmente nonostante le opere realizzate. Si sono rilevate e ci sono state segnalate, alcune problematiche riguardanti la gestione delle barriere ed in particolare in merito a: tardiva posa delle barriere mobili; scarsa cura per i dettagli di posa (per esempio negli ultimi anni vi è una generale mancata integrazione con i secchi, aspetto molto importante per questo sito). La mancanza di volontari, venuta meno negli ultimi anni, impedisce di monitorare il fenomeno e garantire il salvataggio manuale degli esemplari e il controllo dei secchi, con il rischio concreto che le barriere installate risultino di ostacolo per gli anfibi che non riescono ad intercettare gli ecodotti. \\
+\textbf{Sito riproduttivo}: torbiera di Fiavé. \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 45,990671 10,83741  \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune, rana temporaria, rana verde, tritone alpestre, rana dalmatina e salamandra pezzata. \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune, rana temporaria, rana verde, tritone alpestre, rana dalmatina e salamandra pezzata \\
+\textbf{Periodo raccolta dati migrazioni}: 2000-2014 \\
+\textbf{Numero esemplari morti nel tratto} (min-max): 40-90 \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max): 351 - 1045  \\
+\textbf{Stima numerosità della popolazione}: 2000-4000 \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: sito Natura 2000 "Torbiera di Fiavé" (\texttt{SIC IT3120068}), biotopo "Fiavé" (Riserva Naturale Provinciale $n^{\circ}$52). \\
+\textbf{Interventi proposti}: 1. Riprogettazione delle strutture; 2. Posa barriere fisse (in metallo o in legno) con controllo-chiusura di eventuali falle, implementazione tunnel con tunnel quadrangolari di dimensioni >50 cm e apertura sul fondo, integrati da almeno 10 secchi-trappola da monitorare costantemente durante la stagione di migrazione, e organizzazione turni di salvataggio-sorveglianza e raccolta dati, anche tramite stipula di apposite convenzioni e assicurazioni. 3. Prevedere l monitoraggio degli interventi di gestione attiva realizzati e della popolazione locale. Il biotopo di Fiavè risulta fra i più idonei ad ospitare attività didattiche; pertanto esso va considerato fra quelli di maggior rilievo per ospitare iniziative itineranti dedicate alle scolaresche locali o altre in visita al sito preistorico e naturalistico, anche alla luce di esperienze passate (1996-2012).  \\
+\textbf{Enti da coinvolgere}: servizi competenti della PAT per tramite e coordinamento dell’Ufficio Rete Natura. \\
+\textbf{Priorità}: alta (sito interessato da migrazioni di numerose specie minacciate e protette, con flussi migratori ben noti). \\
+
+\newpage
+\begin{tcolorbox}[breakable,colback=white,colframe=green,width=10cm]
+\subsection{7.Lomasona}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_lomasona}
+\centering
+  \includegraphics[width=1\columnwidth]{lomasona.png}
+\caption{Particolare della zona di Lomasona, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: S.P. 213 \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Comano Terme, Provincia Autonoma di Trento \\ 
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 1,5 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: zona boschiva caratterizzata da depressioni paludose e ruscelli, piccoli coltivi e pascoli, in parte soggetti a regime di tutela. Non sono state realizzate finora opere di mitigazione della mortalità degli anfibi. \\
+\textbf{Problematiche}: mortalità stradale per gli anfibi, non solo in stagione primaverile, dovuta al traffico automobilistico, anche se di modesta entità; dati pregressi a conferma del fenomeno e dei rischi per le specie in riproduzione (Atlante/MUSE; L. Bronzini com. pers.). \\
+\textbf{Sito riproduttivo}: acque dei ruscelli a lato della strada. \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 45,979966 10,861652 \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: salamandra pezzata. \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: salamandra pezzata. \\
+\textbf{Periodo raccolta dati migrazioni}: 2014 \\ 
+\textbf{Numero esemplari morti nel tratto} (min-max): 5-20  \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max): 1-10  \\
+\textbf{Stima numerosità della popolazione}: 100-200 \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile. \\
+\textbf{Presenza di aree tutelate}: sito Natura 2000 "Torbiera di Lomasona" (SIC IT3120069), biotopo "Lomasona" (Riserva Naturale Provinciale $n^{\circ}$53). \\
+\textbf{Interventi proposti}: 1. Chiusura al traffico della strada nelle ore notturne nella stagione primaverile e autunnale integrata da realizzazione di ricerche finalizzate alla raccolta dei dati sulle specie di anfibi presenti, loro entità, periodi e modalità di migrazione e risoluzione delle problematiche di mortalità stradale. Organizzazione e realizzazione di attività divulgative e didattiche rivolte alla popolazione locale, congiuntamente con l’area del Bleggio e Fiavè. \\
+\textbf{Enti da coinvolgere}: Servizi competenti della PAT per tramite dell’Ufficio Rete Natura. \\
+\textbf{Priorità}: media (sito che appare poco trafficato, anche se la presenza di anfibi sembra abbondante; da approfondire le conoscenze). \\
+
+
+
+\newpage
+\section{Schede - ATO Val di Ledro}
+\begin{tcolorbox}[breakable,colback=white,colframe=green,width=10cm]
+\subsection{8.Lago d'Ampola}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_ampola}
+\centering
+  \includegraphics[width=1\columnwidth]{lago_ampola.png}
+\caption{Particolare della zona del Lago d'Ampola, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: S.S. 240 \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Ledro, Provincia Autonoma di Trento \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 1 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: la strada statale costeggia il lago d'Ampola, biotopo di particolare valore tanto da essere riconosciuto come riserva naturale provinciale. Il traffico stradale, molto sostenuto, causa elevata mortalità degli anfibi soprattutto in concomitanza con la migrazione primaverile. Per questo la PAT negli ultimi anni predispone la posa di barriere plastiche, atte a limitare l'accesso in strada agli anfibi e in alcuni casi a convogliare gli attraversamenti presso alcuni tunnel costruiti per il drenaggio delle acque. \\
+\textbf{Problematiche}: buona parte dei tunnel esistenti (almeno 3 su 7) risultano ostruiti del tutto dai detriti e i rimanenti, viste le piccole dimensioni, solo in alcuni casi possono essere utilizzati dagli anfibi; la posa e la rimozione delle barriere, effettuata ogni anno, se non viene effettuata tempestivamente e prima dei movimenti migratori può causare grandi mortalità; sono state inoltre riscontrati numerosi schiacciamenti dovuti alla presenza di aperture delle barriere ed è da risolvere il problema dei tratti presso gli accessi a fondi privati. \\
+\textbf{Sito riproduttivo}: lago d'Ampola \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 45,871067 10,650212 \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune e rana temporaria \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune e rana temporaria \\
+\textbf{Periodo raccolta dati migrazioni}: 2014 \\
+\textbf{Numero esemplari morti nel tratto} (min-max): 90 morti conteggiati il 26.03.2014 \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max): non è stato possibile raccogliere informazioni dettagliate nel 2013-2014. \\
+\textbf{Stima numerosità della popolazione}: 500-2.000 di rospo comune \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: lago d'Ampola: siti Natura 2000 "Lago d'Ampola" e "Monti Tremalzo e Tombea" (SIC IT3120076 e SIC IT3120127), biotopo "Lago d'Ampola" (Riserva Naturale Provinciale $n^{\circ}$60). \\
+\textbf{Interventi proposti}: nell’ambito delle azioni previste per la nuova Rete di Riserve, la realizzazione dei sottopassi è una delle prime azioni previste nell’inventario delle attività di conservazione. Appare necessario innanzitutto 1. Verifica dell'entità delle popolazioni di anfibi in migrazione; come altri aspetti di maggior dettaglio sono auspicabili per comprendere e meglio definire la lunghezza delle barriere temporanee, a cui vanno associati secchi-trappola da controllare regolarmente. Auspicabilmente, in seguito sarà realizzata 2. Posa barriere fisse (in metallo o in legno) con controllo-chiusura di eventuali falle, pulizia detriti dai tunnel esistenti e loro implementazione con tunnel quadrangolari di dimensioni >50 cm e apertura sul fondo. \\
+\textbf{Enti da coinvolgere}: servizi competenti della PAT, e Rete di Riserve Alpi Ledrensi, rinviando al possibile intervento in fase di progettazione e previsto nel piano delle attività in programma della nuova Rete di Riserve; attività di divulgazione e didattica vanno previste nei prossimi programmi didattici del Museo delle palafitte, sempre nell’ambito della Rete di Riserve Alpi Ledrensi. \\
+\textbf{Priorità}: alta (prima di ogni intervento però è molto importante uno studio sull'entità del flusso migratorio); si ricorda anche l’elevato valore erpetologico dell’area per la presenza di Zootoca vivipara (carniolica), specie di estremo rilievo. Esistono fondi già stanziati per realizzare questo interevento. \\
+\textbf{Priorità}: alta (presenza abbondante di popolazioni di Anfibi in Lista Rossa e soggette a notevole mortalità stradale nonostante gli interventi). \\
+
+\newpage
+\section{Schede - ATO Monte Baldo}
+\begin{tcolorbox}[breakable,colback=white,colframe=green,width=10cm]
+\subsection{9.Lago di Loppio}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_loppio}
+\centering
+  \includegraphics[width=1\columnwidth]{lago_loppio.png}
+\caption{Particolare della zona del Lago di Loppio, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: S.S. 240 tra Loppio e Passo San Giovanni \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Mori, Comune di Nago-Torbole, Provincia Autonoma di Trento. \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 2,5 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: il lago di Loppio rappresenta la più estesa area palustre del Trentino, creatasi dal prosciugamento artificiale dell'invaso lacustre originario. Attualmente il biotopo si presenta come una zona umida di oltre 100 ha, in cui il livello delle acque effettua spesso importanti variazioni durante l'anno. Lungo una sponda del lago, per circa 3 chilometri di lunghezza scorre la S.S. 240, importante arteria di collegamento tra Rovereto e Riva del Garda. Negli ultimi anni e in particolare dal 2000 il lago è interessato da migrazione in massa degli anfibi, e questi fenomeni hanno provocato oltre ad una alta mortalità di esemplari anche problematiche di sicurezza stradale lungo la S.S. 240, per cui la PAT ha predisposto una serie di opere fisse di mitigazione della mortalità stradale (ecodotti sottostradali e sotto la pista ciclabile e barriere permanenti sia per la migrazione di andata che per quella di ritorno). Nel corso del mese di marzo 2014, in seguito ai sopralluoghi effettuati per lo studio delle opere, sono stati segnalati ai funzionari PAT alcuni problemi relativi alla mancanza di raccordi tra i tunnel e le barriere e la mancanza di due tunnel sotto la pista ciclabile: questi problemi sono stati prontamente risolti, grazie anche alla presenza di un concomitante cantiere lungo la pista, tramite la posa di nuovi tratti di barriere guida, la realizzazione di due nuovi tunnel sotto la pista ciclabile e la sostituzione di una griglia di piccole dimensioni. Attualmente è in corso la posa di una barriera fissa sperimentale in legno, con tettuccio spiovente, lungo il tratto di sponda del lago di Loppio, che ha la funzione di convogliare gli anfibi in uscita dalle acque del lago verso gli ecodotti e consentirne così il transito in sicurezza sotto la pista ciclabile e la strada statale. \\
+\textbf{Problematiche}: mortalità anfibi nei tratti scoperti da barriere (soprattutto verso Mori) e in corrispondenza di alcune pareti rocciose, dove non è stato possibile finora installare le barriere; presenza di ecodotti (griglie metalliche) di piccole dimensioni sotto la pista ciclabile, con rischio di intasamento per gli anfibi (soprattutto per femmine adulte, di grandi dimensioni); barriere di plastica danneggiate (presenza di buchi e tagli) o non efficienti (per la posa di materiale); canalette e tunnel ostruiti da detriti; mancanza di adeguate barriere di raccordo con i tunnel; mancanza di ecodotti; temperatura e umidità dei tunnel troppo differenti dall'ambiente circostante (il fondo di cemento risulta in genere relativamente poco umido e difficilmente attraversabile specialmente dai giovani anfibi); carenza di coordinamento tra operazioni di vigilanza, manutenzione delle opere e protezione della fauna tra i diversi Enti che gestiscono la Strada Statale, la pista ciclabile e il biotopo; mancanza di informazione verso abitanti, turisti e addetti alla vigilanza, manutenzione e protezione. \\
+\textbf{Sito riproduttivo}: lago di Loppio \\
+\textbf{Georeferenziazione} (riferita al tratto stradale di maggior flusso): 45.856991,10.923601 (tratto iniziale verso Mori), 45.856991,10.923601 (tratto centrale), 45.87351,10.907019 (tratto finale verso Passo San Giovanni). \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: tritone punteggiato, tritone alpestre, rospo comune, raganella italiana, rana dalmatina, ululone dal ventre giallo. \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: tritone punteggiato, tritone alpestre, rospo comune, raganella italiana, rana dalmatina, ululone dal ventre giallo. \\
+\textbf{Periodo raccolta dati migrazioni}: 2013 \\
+\textbf{Numero esemplari morti nel tratto} (stima): 150-200 di rospo comune \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (stima): 800-1000 \\
+\textbf{Stima numerosità della popolazione}: 20-50.000 adulti \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti), giugno-ottobre (metamorfosati) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: sito Natura 2000 "Lago di Loppio" (SIC IT3120079), biotopo "Lago di Loppio" (Riserva Naturale Provinciale $n^{\circ}$63). \\
+\textbf{Interventi proposti}: 1. Nel sito appare importante la posa di robuste barriere fisse (possibilmente in metallo, calcestruzzo o legno) in sostituzione delle esistenti in plastica morbida, con controllo e chiusura delle eventuali falle e soprattutto la cura nelle entrate ("a imbuto") ai diversi tunnel presenti sia sotto la S.S. 240 che sotto la pista ciclabile. Queste barriere dovrebbero possibilmente avere una sporgenza superiore (tetto) atta a prevenire lo scavalcamento da parte degli anfibi. 2. Appare fondamentale anche l'implementazione dei tunnel sottostradali presenti (soprattutto nel tratto stradale verso Mori, sia presso il rettilineo dopo l'abitato e sia presso la curva stradale in corrispondenza della prima area di sosta) con tunnel quadrangolari di dimensioni >50 cm e apertura sul fondo (tunnel ad "U" rovesciata, che permette di mantenere una umidità e temperatura del suolo idonee agli anfibi, anche di piccole dimensioni). Per quanto riguarda la presenza di una strada privata nei pressi della prima abitazione dall'abitato di Loppio, è importante in accordo con le proprietà la posa canalette di arresto che convoglino gli anfibi alle barriere guida. 3. Nel tratto stradale verso l'abitato di Mori è importante l'implementazione delle barriere guida. 4. Fondamentale sarà anche la realizzazione e installazione di cartelli stradali e pannelli informativi sulla migrazione degli anfibi e sulle opere realizzate. 5. Nel sito sono già attive iniziative spontanee di salvataggio da parte di volontari locali, per le quali risulta fondamentale l'organizzazione regolare di corsi di formazione e turni di salvataggio-sorveglianza-segnalazione di problematiche varie e raccolta dati, anche tramite la stipula di apposite convenzioni e assicurazioni. L'attività di formazione deve essere rivolta anche agli operai addetti alla manutenzione stradale, della pista ciclabile, della Rete delle Riserve, al fine di un maggiore coinvolgimento e consapevolezza. In generale, è auspicabile anche l'organizzazione e realizzazione attività didattiche rivolte alla popolazione locale, alle scuole e ai turisti in coordinamento con Museo Civico di Rovereto, PAT e associazioni locali. \\
+\textbf{Enti da coinvolgere}: servizi competenti della PAT; Rete di Riserve M. Baldo e Museo Civico di Rovereto. \\
+\textbf{Priorità}: alta (sito interessato da copiose migrazioni anche di specie particolarmente minacciate e protette e oggetto di interventi di conservazione molto importanti).
+
+\newpage
+\begin{tcolorbox}[breakable,colback=white,colframe=green,width=10cm]
+\subsection{10.Avio}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_avio}
+\centering
+  \includegraphics[width=1\columnwidth]{avio.png}
+\caption{Particolare della zona di Avio, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+\textbf{Tratto stradale interessato}: S.P. 208 \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Avio, Provincia Autonoma di Trento \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 4 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: la Strada Provinciale 208 costeggia la cosiddetta Valle dei Mulini, dove scorre il torrente Aviana, caratterizzato da acque relativamente fresche e ossigenate. Negli anni sono state numerose le segnalazioni dei problemi di investimento di esemplari adulti di salamandra pezzata in migrazione riproduttiva e da tempo si sta valutando la realizzazione di opere di mitigazione della mortalità degli anfibi, al momento concretizzatesi in un cartello di avvertimento per gli automobilisti. \\
+\textbf{Problematiche}: mortalità stradale degli anfibi in migrazione riproduttiva, molto elevata e di difficile risoluzione. \\
+\textbf{Sito riproduttivo}: torrente Aviana \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 45,741846 10,919325 \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: salamandra pezzata \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: salamandra pezzata \\
+\textbf{Periodo raccolta dati migrazioni}: 2014 \\
+\textbf{Numero esemplari morti nel tratto} (min-max): 14 esemplari adulti trovati morti il 21.03.2014 (T. Conci com. pers.). \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max): non è stato possibile raccogliere informazioni nel 2013-2014. \\ 
+\textbf{Stima numerosità della popolazione}: 200-500 di salamandra pezzata \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: nessuna \\
+\textbf{Interventi proposti}: 1. Studio di approfondimento del flusso migratorio (specie, numero di esemplari, successo riproduttivo, tratti stradali interessati). 2. Eventuale successiva chiusura-limitazione al traffico della strada nelle ore notturne nella stagione primaverile e autunnale. 3. Eventuale posa di barriere temporanee e relativo controllo (tramite secchi-trappola o salvataggio notturno con volontari). In seguito, 4. Eventuale posa di barriere fisse (in metallo o in legno), realizzazione tunnel quadrangolari di dimensioni >50 cm e apertura sul fondo. 5. Promuovere attività di divulgazione e salvataggio. \\
+\textbf{Enti da coinvolgere}: oltre ai servizi competenti della PAT, l’intervento va suggerito alla Rete di Riserve del Baldo che potrebbe promuovere azioni di conservazione e di sensibilizzazione a scala locale. \\
+\textbf{\textbf{Priorità}}: alta (presenza di popolazione abbondante di un anfibio in Lista Rossa). \\
+
+\newpage
+\section{Schede - ATO Rovereto / Vallagarina}
+\begin{tcolorbox}[breakable,colback=white,colframe=green,width=10cm]
+\subsection{11.Laghetti di Marco}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_marco}
+\centering
+  \includegraphics[width=1\columnwidth]{laghetti_marco.png}
+\caption{Particolare della zona dei Laghetti di Marco, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: S.S.12 \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Rovereto, Provincia Autonoma di Trento \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 0,5 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: i laghetti di Marco sono una delle poche zone umide di fondovalle, collocate in un ambito di grande interesse naturale noto come Riserva Naturale dei Lavini di Marco. La PAT ha realizzato un ecodotto per anfibi assieme alla predisposizione di barriere guida permanenti in plastica morbida e anche un tunnel faunistico di grandi dimensioni per gli Ungulati. La presenza nel sito dell’unica popolazione nota a livello provinciale di tritone crestato italiano merita da sola una gestione accurata degli habitat presenti e una particolare attenzione verso le opere di connessione ecologica e la loro gestione. \\
+\textbf{Problematiche}: nei pressi del tunnel faunistico di grandi dimensioni le barriere fisse in plastica non essendo montate correttamente, non convogliano gli anfibi verso il tunnel ma al di sopra di esso e quindi il tunnel risulta poco efficace per la piccola fauna. Il problema può essere facilmente risolto montando le barriere in maniera da indirizzare gli anfibi e gli altri piccoli animali in una sorta di "doppio imbuto" costituito dall'entrata e dall'uscita del tunnel faunistico. Mancano ricerche di dettaglio sull’entità delle popolazioni presenti. \\
+\textbf{Sito riproduttivo}: laghetto "grande" e laghetto "piccolo" \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 45,855075 11,018315 \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: tritone punteggiato, tritone alpestre, tritone crestato italiano e rospo comune. \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: tritone punteggiato, tritone alpestre, tritone crestato italiano e rospo comune. \\
+\textbf{Periodo raccolta dati migrazioni}: 2014 \\
+\textbf{Numero esemplari morti nel tratto} (min-max): mancano informazioni. \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max): mancano informazioni. \\
+\textbf{Stima numerosità della popolazione}: mancano informazioni. \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti). \\
+\textbf{Periodo massimo impatto}: marzo-aprile. \\
+\textbf{Presenza di aree tutelate}: sito Natura 2000 "Laghetti di Marco" (SIC \texttt{IT3120080}), biotopo "Lavini di Marco" (Riserva Naturale Provinciale $n^{\circ}$64).
+\textbf{Interventi proposti}: 1. Studio mirato sulle popolazioni di anfibi presenti (con particolare riguardo per il tritone crestato italiano) ed entità dei loro fenomeni migratori, anche tramite dotazione delle barriere plastiche con secchi-trappola da controllare regolarmente durante la stagione migratoria; allo stesso tempo è fondamentale la sistemazione delle barriere fisse presso tunnel faunistico di grande dimensione. 2. In seguito allo studio posare possibilmente barriere fisse (in metallo o in legno) con controllo-chiusura di eventuali falle. 3. In caso, è auspicabile l’implementazione dei tunnel esistenti (soprattutto nel tratto stradale verso Mori), con tunnel quadrangolari di dimensioni >50 cm e apertura sul fondo. \\
+\textbf{Enti da coinvolgere}: oltre ai servizi competenti della PAT, l’intervento va suggerito al Comune di Rovereto e al Museo Civico della città che potrebbero promuovere azioni di conservazione e di sensibilizzazione a scala locale. \\
+\textbf{Priorità}: alta (unica stazione provinciale nota con tritone crestato italiano; prima di ogni intervento però è molto importante uno studio sull'entità del flusso migratorio). \\
+
+\newpage
+\section{Schede - ATO Bondone}
+\begin{tcolorbox}[breakable,colback=white,colframe=green,width=10cm]
+\subsection{12.Lago di Cei}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_cei}
+\centering
+  \includegraphics[width=1\columnwidth]{lago_cei.png}
+\caption{Particolare della zona del Lago di Cei, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: S.P. 20 \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Villa Lagarina, Provincia Autonoma di Trento \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 0,6 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: il biotopo "Pra dell'Albi" comprende il lago di Cei e le zone circostanti, caratterizzati da presenze floro-faunistiche di notevole interesse. Al momento non sono state predisposte dalla PAT opere di mitigazione della mortalità stradale degli anfibi in migrazione riproduttiva.  
+\textbf{Problematiche}: la mortalità stradale degli anfibi risulta intensa soprattutto nei fine settimana, in quanto i locali pubblici presenti possono comportare un certo traffico stradale. \\
+\textbf{Sito riproduttivo}: lago di Cei \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 45,949896 11,020442 \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune \\
+\textbf{Periodo raccolta dati migrazioni}: 2014 \\
+\textbf{Numero esemplari morti nel tratto} (min-max): 20 esemplari morti il 20.03.2014 \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max): 40 esemplari salvati il 20.03.2014 \\
+\textbf{Stima numerosità della popolazione}: 200-1000 \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: lago di Cei: sito Natura 2000 "Pra dall'Albi - Cei" (SIC IT3120081), biotopo "Pra' dell'Albi" (Riserva Naturale Provinciale $n^{\circ}$65).
+\textbf{Interventi proposti}: 1. Studio sull'entità delle popolazioni di anfibi in migrazione, anche tramite posa barriere temporanee (a cui saranno associati secchi-trappola da controllare periodicamente, anche tramite volontari). 2. In seguito, auspicabilmente, realizzazione opere fisse (tunnel e barriere in metallo o in legno) con idonei "imbuti" atti a convogliare gli anfibi verso i tunnel, possibilmente quadrangolari di dimensioni >50 cm e apertura sul fondo. \\
+\textbf{Enti da coinvolgere}: servizi competenti della PAT; in futuro l’area dovrebbe rientrare nella competenza della Rete di Riserve del M. Bondone, a seguito del suo ampliamento; così anche, vista la rilevante frequentazione dell’area, alla RdR spetterebbe l’attività di divulgazione e didattica. \\
+\textbf{Priorità}: media (sito potenzialmente molto interessante, ma per il quale sono necessari ulteriori indagini di dettaglio). \\
+
+\newpage
+\begin{tcolorbox}[breakable,colback=white,colframe=green,width=10cm]
+\subsection{13.Garniga Terme}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_garniga_terme}
+\centering
+  \includegraphics[width=1\columnwidth]{garniga_terme.png}
+\caption{Particolare della zona di Garniga Terme, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: S.P. 25 \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Garniga Terme, Provincia Autonoma di Trento.  \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 0,6 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: nel parco urbano di Garniga è presente un laghetto dove si riproduce una  popolazione di rospo comune. Al momento non sono stati effettuati interventi volti a mitigare la mortalità degli animali in migrazione attraverso le strade del paese. \\
+\textbf{Problematiche}: mortalità degli anfibi in migrazione verso il laghetto, gestione dello stesso invaso (presenza di ittiofauna e anatidi a scopo ornamentale). \\
+\textbf{Sito riproduttivo}: laghetto pubblico nel centro abitato. \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 46,00124 11,085986 \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune. \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune. \\
+\textbf{Periodo raccolta dati migrazioni}: 2012. \\
+\textbf{Numero esemplari morti nel tratto} (min-max): 10-50 \\
+Nume.ro esemplari raccolti vivi nel tratto (min-max): 10-50 \\
+\textbf{Stima numerosità della popolazione}: 100-200 \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: biotopi "Valle Scanderlotti (A), Valle Scanderlotti (B)" (Riserve Locali $n^{\circ}$84 e $n^{\circ}$85). \\
+\textbf{Interventi proposti}: 1. Valutazione del flusso migratorio (specie, numero di esemplari, successo riproduttivo, tratti stradali interessati) 2. In caso, successiva posa di barriere temporanee. 3. In seguito, eventuale posa di barriere fisse (in metallo o in legno), realizzazione tunnel quadrangolari di dimensioni >50 cm e apertura sul fondo, organizzazione turni di salvataggio-sorveglianza e raccolta dati, anche con eventuali stipule di convenzioni e assicurazioni. E' necessario anche il monitoraggio degli interventi di gestione attiva realizzati. La problematica della migrazione dei rospi nel sito è stata discussa nel Piano di gestione della Rete di Riserve Monte Bondone-Soprasasso. \\
+\textbf{Enti da coinvolgere}: servizi competenti della PAT per tramite dell’Ufficio Rete Natura e della futura Rete di Riserve del M. Bondone; Amministrazione locale. servizi competenti della PAT. \\
+\textbf{Priorità}: bassa (sito che appare secondario, da valutare in termini di abbondanza di migrazione). \\
+
+\newpage
+\begin{tcolorbox}[breakable,colback=white,colframe=green,width=10cm]
+\subsection{14.Lago di Terlago}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_terlago}
+\centering
+  \includegraphics[width=1\columnwidth]{terlago.png}
+\caption{Particolare della zona del Lago di Terlago, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: via Al Lago (strada comunale). \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Terlago, Provincia Autonoma di Trento. \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 1 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: zona umida caratterizzata da acque soggette a notevoli variazioni di livello; al centro del lago è presente un ponte su cui passa una strada comunale che collega l'abitato di Terlago con una pizzeria e con le strade circostanti. Nel sito il traffico automobilistico serale e notturno si deve soprattutto al transito verso la locale pizzeria. Al fine di mitigare la mortalità degli anfibi in migrazione sono stati realizzati dalla PAT 3 ecodotti di 40 cm di diametro, collegati ad alcune barriere in plastica montate e smontate ogni anno. \\
+\textbf{Problematiche}: la zona è caratterizzata da venti di grande intensità e quindi a volte le barriere in plastica possono essere danneggiate (distacco dei teli dai paletti a cui sono fissati tramite graffette metalliche). Per gli anfibi in migrazione di ritorno dal lago la presenza di un muro di contenimento in cemento e roccia lungo il tratto stradale verso Cadine risulta un ostacolo difficilmente valicabile e quindi molti esemplari sono costretti a transitare all'interno della carreggiata, venendo spesso schiacciati. \\
+\textbf{Sito riproduttivo}: lago di Terlago e zona perilacustre. \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 46.091932,11.059003 (verso Cadine), 
+
+46.096857,11.057566 (tratto centrale), 46.095481,11.056021 (tratto verso Terlago). \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune, rana dalmatina. \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune, rana dalmatina.  \\
+\textbf{Periodo raccolta dati migrazioni}: 2012-2014. \\
+\textbf{Numero esemplari morti nel tratto} (stima): 100-300  \\ 
+\textbf{Stima numerosità della popolazione}: 500-2.000 \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: sito Natura 2000 "Lago di Terlago" ( \texttt{SIC IT3120110}) \\
+\textbf{Enti da coinvolgere}: servizi competenti della PAT; Rete di Riserve del Monte Bondone \\
+\textbf{Interventi proposti}:  la problematica della migrazione dei rospi nel sito è stata ampiamente discussa nel Piano di gestione della Rete di Riserve Monte Bondone. Si consiglia in particolare: 1. Implementazione delle barriere temporanee e posa secchi-trappola da controllare periodicamente. 2. In seguito, eventuale posa barriere fisse su entrambi i lati della strada (in metallo o in legno) con controllo-chiusura di eventuali falle, implementazione tunnel (soprattutto nel tratto stradale verso Cadine), con tunnel quadrangolari di dimensioni >50 cm e apertura sul fondo. In caso sia impossibile provvedere all'installazione di barriere fisse, è auspicabile la sostituzione delle barriere temporanee con barriere di tipologia più robusta. Nel sito è importante realizzare una serie di aperture (tipo"scalette") nel muro di contenimento-terrazzamento verso Cadine. 3. Questi interventi vanno affiancati dalla realizzazione di cartelli e pannelli informativi e soprattutto organizzazione di turni di salvataggio-sorveglianza e raccolta dati, monitoraggio degli interventi di gestione attiva, raccolta dati migrazioni anfibi. Il sito appare idoneo per realizzare attività didattiche, vista la presenza di strutture recettive e traffico stradale relativamente ridotto rispetto ad altre zone di migrazione. \\
+\textbf{Priorità}: alta (sito interessato da presenze abbondanti di specie minacciate e protette) \\
+
+\newpage
+\begin{tcolorbox}[breakable,colback=white,colframe=green,width=10cm]
+\subsection{15.Laghi di Lamar}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_lamar}
+\centering
+  \includegraphics[width=1\columnwidth]{lamar.png}
+\caption{Particolare della zona dei Laghi di Lamar, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: strada dei Laghi di Lamar. \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Terlago, Provincia Autonoma di Trento \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 1,5 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: il lago Santo e il lago di Lamar sono due invasi naturali nella zona della Valle dei Laghi, frequentati da numerosi turisti soprattutto durante la stagione estiva, e situati in un ambito boschivo alternato a zone con prati e pascoli e poche abitazioni. Al momento non sono note iniziative di salvaguardia per gli anfibi in migrazione. \\
+\textbf{Problematiche}: mortalità stradale per gli anfibi, soprattutto durante la migrazione riproduttiva; fortunatamente la via maggiormente interessata dal transito di anfibi nel periodo primaverile è soggetta a ridotto traffico automobilistico. \\
+\textbf{Sito riproduttivo}: lago Santo, lago di Lamar \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 46,123582 11,058462 \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune \\
+\textbf{Periodo raccolta dati migrazioni}: 2012 \\
+\textbf{Numero esemplari morti nel tratto} (min-max): 10-50 \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max): 10-50 \\
+\textbf{Stima numerosità della popolazione}: 200-500 \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: sito Natura 2000 "Laghi e abisso di Lamar" (\texttt{SIC IT3120087}). \\
+\textbf{Interventi proposti}: 1. Posa di adeguata segnaletica stradale nel periodi di migrazione; 2. Approfondire le conoscenze sull’entità del fenomeno migratorio.
+\textbf{Enti da coinvolgere}: servizi competenti della PAT per tramite dell’Ufficio Rete Natura; in futuro l’area dovrebbe rientrare nella competenza della Rete di Riserve del M. Bondone. \\
+\textbf{Priorità}: bassa (fenomeno migratorio legato a strade non trafficate nella stagione riproduttiva). \\
+
+\newpage
+\begin{tcolorbox}[breakable,colback=white,colframe=red,width=10cm]
+\subsection{16.San Rocco - Fricca}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_rocco_fricca}
+\centering
+  \includegraphics[width=1\columnwidth]{rocco_fricca.png}
+\caption{Particolare della zona del Passo della Fricca e di San Rocco, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: Via Pianizza \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Trento, Provincia Autonoma di Trento  \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 2 km. \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: strada caratterizzata da traffico intenso, tra la città Trento e l'Altopiano della Vigolana, in un ambito territoriale adibito a coltivazioni (soprattutto vigneti), prati a sfalcio, abitazioni sparse e zone boschive. In epoca recente (fino a 4-5 anni fa) gli operai del locale vivaio forestale posavano delle barriere plastiche nel tratto maggiormente interessato dalla migrazione degli anfibi, convogliandoli in due tunnel di drenaggio sottostradali. \\
+\textbf{Problematiche}: da diversi anni le barriere temporanee non vengono più posate, sia per la mancanza di forze e tempo da parte del locale vivaio, sia per il calo della popolazione di anfibi riscontrato dagli stessi operai. Anche nel 2014 sono stati rilevati anfibi in transito, e per questo la PAT potrebbe mettere in opera alcune strutture per mitigare la mortalità.  \\
+\textbf{Sito riproduttivo}: laghetti del vivaio forestale in zona Casteller, Lago delle Cannelle, Lago Turchino \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 46,022401 11,145262 \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune \\
+\textbf{Periodo raccolta dati migrazioni}: 2012 \\
+\textbf{Numero esemplari morti nel tratto} (min-max): 20-50  \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max): 50-150 \\
+\textbf{Stima numerosità della popolazione}: 200-300 \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: / \\
+\textbf{Interventi proposti}: 1. Studio sull'entità delle popolazioni di anfibi presenti e sulle loro migrazioni con posa barriere temporanee (associate a secchi-trappola da controllare periodicamente) e in seguito 2. Posa barriere fisse (in metallo o in legno) con controllo-chiusura di eventuali falle, valutazione efficacia dei due tunnel di drenaggio presenti ed eventuale utilizzo ed eventuale implementazione tunnel con tunnel quadrangolari di dimensioni >50 cm e apertura sul fondo. Promuovere e sostenere attività di volontariato per salvataggio-sorveglianza e raccolta dati. Vista l’importanza del sito si ritiene necessario prevedere il monitoraggio degli interventi di gestione attiva realizzati. \\
+\textbf{Enti da coinvolgere}: servizi competenti della PAT per tramite dell’Ufficio Rete Natura; ACT Trento. \\
+\textbf{Priorità}: media (sito da studiare più dettagliatamente, ma che appare in calo come intensità di migrazione, da valutare eventuali opere gestionali). \\
+
+\newpage
+\section{Schede - ATO Val di Cembra}
+\begin{tcolorbox}[breakable,colback=white,colframe=green,width=10cm]
+\subsection{17.Lago di Santa Colomba}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_colomba}
+\centering
+  \includegraphics[width=1\columnwidth]{lago_santa_colomba.png}
+\caption{Particolare della zona del Lago di Santa Colomba, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: S.P. 225 \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Civezzano, Comune di Albiano, Provincia Autonoma di Trento. \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 1km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: il lago di Santa Colomba è un piccolo lago alpino posto sulle pendici del monte Calisio, situato in una zona boschiva meta di escursionisti e turisti. Il lago viene utilizzato anche per attività di pesca sportiva. A cura della PAT sono stati realizzati quattro ecodotti sottostradali atti a mitigare la mortalità degli anfibi causata dal traffico stradale; questi tunnel sono integrati dalla posa annuale di barriere guida costituite da teli plastici sorretti da paletti di legno o metallo e interrati alla base. \\
+\textbf{Problematiche}: i tunnel presenti sono utilizzati dagli anfibi in migrazione riproduttiva ma le barriere sono montate e smontate ogni anno, perdendo di efficacia nelle fasi di uscita dall'acqua degli adulti e dei metamorfosati; le stesse barriere sono montate parallelamente alle strade e risultano poco efficaci per convogliare gli anfibi verso i tunnel. Nel sito sono presenti popolazioni abbondanti di rana dalmatina, anfibio di interesse comunitario e presente nella Lista Rossa provinciale, minacciate dalle attività di immissione di ittiofauna nel lago legate a gare di pesca sportiva. \\
+\textbf{Sito riproduttivo}: lago di Santa Colomba, e zone umide circonstanti. \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 46.121232,11.179016 (inizio tratto migrazione da Civezzano), 46.125136,11.179617 (parte centrale), 46.129055,11.180143 (fine tratto migrazione principale verso Albiano) \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune e rana dalmatina \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune e rana dalmatina \\
+\textbf{Periodo raccolta dati migrazioni}: 2012-2014 \\
+\textbf{Numero esemplari morti nel tratto} (stima): 100-200 in prevalenza rospo comune \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (stima): 200-500 in prevalenza rospo comune \\
+\textbf{Stima numerosità della popolazione}: 1.000-3.000 esemplari di rospo comune \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: Lago di Santa Colomba: sito Natura 2000 "Lago di Santa Colomba" (SIC IT3120102), biotopo "Palù dei Preti" (Riserva locale $n^{\circ}$5). \\
+\textbf{Interventi proposti}: 1. Implementazione delle attuali barriere temporanee in plastica, da dotare di secchi-trappola da controllare periodicamente. 2. In seguito, eventuale posa barriere guida fisse (in metallo o in legno) con controllo-chiusura di eventuali falle e implementazione tunnel (soprattutto nel tratto stradale verso Albiano), con tunnel quadrangolari di dimensioni >50 cm e apertura sul fondo; è molto importante la posa di barriere in entrambi i lati della strada, con andamento non parallelo e formazione di "imbuti" verso i tunnel. 3. L’immissione di trota va limitata in quanto rappresenta un fattore di forte impatto alla riproduzione. 4. Nel sito sono già attive iniziative spontanee di salvataggio da parte di volontari locali, che andrebbero coordinate anche mediante l'organizzazione regolare di corsi di formazione e mediante il coinvolgimento delle associazioni culturali ed ambientaliste di riferimento. 5. Appare importante anche il monitoraggio degli interventi di gestione attiva. 6. Realizzazione e installazione di cartelli stradali e pannelli informativi sulla migrazione degli anfibi e sulle opere realizzate. Il sito appare idoneo per realizzare attività didattiche, vista la presenza di strutture recettive e traffico stradale relativamente ridotto rispetto ad altre zone di migrazione. \\
+\textbf{Enti da coinvolgere}: servizi competenti della PAT; ecomuseo dell’Argentario. \\
+\textbf{Priorità}: alta (sito interessato da presenze importanti di specie minacciate e protette). \\
+
+\newpage
+\begin{tcolorbox}[breakable,colback=white,colframe=red,width=10cm]
+\subsection{18.Lago di Serraia - Palude di Sternigo}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_serraia}
+\centering
+  \includegraphics[width=1\columnwidth]{serraia_sternigo.png}
+\caption{Particolare della zona del Lago di Serraia e della Palude di Sternigo, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: via del Lido \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Baselga di Piné, Provincia Autonoma di Trento.  \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 1,5 km  \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: il lago di Serraia è il principale lago naturale dell'Altopiano di Piné, situato ad una quota ci circa 970 metri. Il lago è interessato da un'intensa attività turistica, soprattutto estiva e invernale. Al momento non sono state attivate iniziative di salvaguardia per gli anfibi in migrazione riproduttiva. \\
+\textbf{Problematiche}: mortalità stradale per gli anfibi in migrazione riproduttiva; fortunatamente la via maggiormente interessata dal transito di anfibi è utilizzata soprattutto da pedoni e ciclisti e non è soggetta a traffico automobilistico o comunque motorizzato (F. Rizzolli com. pers.). \\
+\textbf{Sito riproduttivo}: lago della Serraia. \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 46,138586 11,26165  \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune  \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune  \\
+\textbf{Periodo raccolta dati migrazioni}: 2012 \\
+\textbf{Numero esemplari morti nel tratto} (min-max): 20-100  \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max): non sono attivi salvataggi \\
+\textbf{Stima numerosità della popolazione}: 200-1000 \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: sito Natura 2000 "Paludi di Sternigo" (\texttt{SIC IT3120034}) \\
+\textbf{Enti da coinvolgere}: servizi competenti della PAT per tramite dell’Ufficio Rete Natura, Amministrazioni locali. \\
+\textbf{Interventi proposti}: 1. Posizionamento di adeguata segnaletica che inviti a moderare la velocità e/o a prestare attenzione nel periodo di maggior flusso migratorio. 2. La vicinanza con il SIC e l’area a lago rende il sito idoneo ad attività didattica con le locali scuole dell’Altopiano. \\
+
+\newpage
+\section{Schede - ATO Valsugana}
+\begin{tcolorbox}[breakable,colback=white,colframe=green,width=10cm]
+\subsection{19.Lago Costa}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_lago_costa}
+\centering
+  \includegraphics[width=1\columnwidth]{lago_costa.png}
+\caption{Particolare della zona del Lago Costa, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: via lago della Costa. \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Pergine Valsugana, Provincia Autonoma di Trento. \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 0,3 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: il Biotopo "Lago Costa" è situato nel bacino idrografico del torrente Fersina. Consiste in un laghetto di circa un ettaro di superficie, con lunghezza di 160 m e larghezza di 100 m. La modesta estensione dello specchio d'acqua, unitamente alla ridotta profondità dell'invaso (al massimo due metri) rendono questa zona umida più simile ad una palude che ad un vero e proprio lago. Nonostante la sua limitata estensione il Biotopo presenta un notevole interesse ecologico per gli anfibi essendo, con il Lago Pudro, una delle poche aree umide adatte alla loro riproduzione. \\
+\textbf{Problematiche}: mortalità degli anfibi lungo la strada che costeggia il lago. \\
+\textbf{Sito riproduttivo}: lago Costa \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 46,075488 11,237873 \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune \\
+\textbf{Periodo raccolta dati migrazioni}: 2014 \\
+\textbf{Numero esemplari morti nel tratto} (min-max): non è stato possibile raccogliere informazioni dettagliate nel 2014.  \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max): non è stato possibile raccogliere informazioni dettagliate nel 2014.   \\
+\textbf{Stima numerosità della popolazione}: non è stato possibile raccogliere informazioni dettagliate nel 2014; per gli anni precedenti non esistono stime. \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: sito Natura 2000 "Lago Costa" (SIC IT3120041), biotopo "Lago Costa" (Riserva Naturale Provinciale $n^{\circ}$23) \\
+\textbf{Interventi proposti}: 1. Verifica effettiva entità della migrazione tramite ricerca mirata, anche tramite posa di barriere temporanee (da controllare con secchi-trappola o personale anche volontario) e, in caso, in seguito 2. Posa di barriere fisse (in metallo o in legno) ed eventuale predisposizione di tunnel quadrangolari di dimensioni >50 cm e apertura sul fondo. 3. Monitoraggio degli interventi di gestione attiva. \\
+\textbf{Enti da coinvolgere}: oltre ai servizi competenti della PAT, l’intervento va suggerito al Comune di Pergine che potrebbe promuovere azioni di conservazione e di sensibilizzazione a scala locale. \\
+\textbf{Priorità}: media \\
+
+
+
+\newpage
+\begin{tcolorbox}[breakable,colback=white,colframe=green,width=10cm]
+\subsection{20.Levico Terme}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_levico}
+\centering
+  \includegraphics[width=1\columnwidth]{levico_terme.png}
+\caption{Particolare della zona di Levico Terme, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: S.P. 228 tra Levico Terme e Pergine Valsugana. \\
+\textbf{Ente amministrativo territorialmente competente}: Levico Terme, Provincia Autonoma di Trento. \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 2,5 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: strada provinciale di collegamento tra gli abitati di Levico Terme e Pergine Valsugana, si snoda sulla sponda in sinistra orografica del Lago di Levico, in un ambito boschivo misto a latifoglie. Sono stati realizzati dalla PAT due ecodotti sottostradali per gli anfibi in migrazione, in corrispondenza di due piazzole di sosta. Ai tunnel sono associati due tratti di barriere temporanee di plastica, montate e smontate ogni anno da parte degli operai provinciali, in genere integrate da secchi di plastica per la raccolta manuale degli esemplari da parte dei volontari. \\
+\textbf{Problematiche}: i due tunnel presenti risultano poco frequentati dagli anfibi e le loro dimensioni, in rapporto anche alla larghezza del manto stradale da attraversare e alla tipologia di barriere installate, appaiono troppo piccole. La migrazione di ritorno risulta difficoltosa per la presenza di scarpate e muri in cemento difficilmente valicabili. In corrispondenza dei tunnel in un caso è stata installata una rampa di accesso che consente la risalita solo su un lato. In genere vi è una carenza di coordinamento tra operazioni di vigilanza, manutenzione delle opere e protezione della fauna tra i diversi Enti che gestiscono la strada provinciale e gli ambiti territoriali circostanti; mancanza di informazione verso abitanti, turisti e addetti alla vigilanza, manutenzione e protezione. \\
+\textbf{Sito riproduttivo}: lago di Levico e area umida a monte e prossima all’area del lago. \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 46,018229, 11,277612 \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune, rana temporaria, rana dalmatina e salamandra pezzata. \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune, rana temporaria, rana dalmatinae salamandra pezzata. \\
+\textbf{Periodo raccolta dati migrazioni}: 2010-2014 \\
+\textbf{Numero esemplari morti nel tratto} (stima): 100-300 \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (stima): 500-2000 \\
+\textbf{Stima numerosità della popolazione}: 5.000-10.000 esemplari \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: sito Natura 2000 "Pizé" (\texttt{SIC IT3120043}), biotopi "Pizé, Pozze (A), Pozze (B), Barucchelli"Riserva Naturale Provinciale $n^{\circ}$25, Riserve Locali $n^{\circ}$92, $n^{\circ}$93 e $n^{\circ}$94. \\
+\textbf{Enti da coinvolgere}: servizi competenti della PAT, tramite Ufficio Biotopi e Rete Natura \\
+\textbf{Interventi proposti}: 1. Nel sito appare importante la posa di barriere fisse (possibilmente in metallo, calcestruzzo o legno) in sostituzione delle temporanee, con controllo e chiusura delle eventuali falle e soprattutto la cura nelle entrate ("a imbuto") ai diversi tunnel presenti. Le barriere avranno possibilmente una sporgenza superiore (tetto) atta a prevenire lo scavalcamento da parte degli anfibi. 2. Appare fondamentale anche l'implementazione dei tunnel sottostradali presenti con tunnel quadrangolari di dimensioni >50 cm e apertura sul fondo (tunnel ad "U" rovesciata) che permette di mantenere una umidità e temperatura del suolo idonee agli anfibi anche di piccole dimensioni. In mancanza di nuovi tunnel e barriere fisse, è importante predisporre almeno 3 secchi (profondi e larghi almeno 40 cm, con fori di drenaggio con diametro di almeno 1 cm sul fondo e a 15 cm dal fondo) presso le barriere installate (due alle estremità e uno al centro) da controllare e svuotare regolarmente. 3. Per la fase di ritorno è importante che la rampa di accesso in cemento costruita attualmente presso l'imboccatura di un tunnel sia estesa anche al lato mancante. 4. Si ritiene importante l’installazione di cartelli stradali e pannelli informativi sulla migrazione degli anfibi e sulle opere realizzate. 5. Nel sito sono già attive iniziative spontanee di salvataggio da parte di volontari locali, per le quali risulta fondamentale l'organizzazione regolare di corsi di formazione e turni di salvataggio-sorveglianza e raccolta dati, anche tramite la stipula di apposite convenzioni e assicurazioni. In generale, è auspicabile anche l'organizzazione e realizzazione di attività di formazione e didattiche. \\
+\textbf{Priorità}: alta (sito interessato da presenze importanti di specie minacciate e protette). \\
+
+\newpage
+\begin{tcolorbox}[breakable,colback=white,colframe=green,width=10cm]
+\subsection{21.Tenna}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_tenna}
+\centering
+  \includegraphics[width=1\columnwidth]{tenna.png}
+\caption{Particolare della zona di Tenna, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: S.P. 16 \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Tenna, Provincia Autonoma di Trento \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 1,5 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: strada di collegamento tra l'abitato di Tenna e Levico Terme, si snoda lungo la sponda occidentale del lago di Tenna. A cura della PAT sono stati realizzati 8 ecodotti sottostradali; gli anfibi vengono convogliati verso i tunnel tramite barriere plastiche posizionate prima di ogni stagione di migrazione e successivamente rimosse \\
+\textbf{Problematiche}: nel sito la presenza della strada provinciale a ridosso di un versante scosceso rende problematica l'installazione di tunnel di grandi dimensioni e la realizzazione di barriere guida con tratti "ad imbuto" verso gli ecodotti. La presenza di ripide scarpate, canalette di cemento per il drenaggio delle acque e muri di contenimento in cemento rende molto difficoltosa la migrazione di ritorno degli anfibi, unitamente alla mancanza di imbocchi verso i tunnel sul lato di ritorno. La mancanza di condizioni climatiche idonee (basse temperature e innevamento) non ha consentito nel 2014 l'effettuazione di un monitoraggio accurato delle opere, nonostante i ripetuti sopralluoghi effettuati  \\
+\textbf{Sito riproduttivo}: lago di Tenna \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 46,00776 11,278247  \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune \\
+\textbf{Periodo raccolta dati migrazioni}: 2014 \\
+\textbf{Numero esemplari morti nel tratto} (stima): non è stato possibile raccogliere informazioni nel 2013-2014. \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max): non è stato possibile raccogliere informazioni nel 2013-2014. \\
+\textbf{Stima numerosità della popolazione}: non è stato possibile raccogliere informazioni nel 2013-2014. \\   
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti). \\
+\textbf{Periodo massimo impatto}: marzo-aprile. \\
+\textbf{Presenza di aree tutelate}: sito Natura 2000 "Canneto di Levico" ( \texttt{SIC IT3120039}), biotopo "Canneto di Levico" (Riserva Naturale Provinciale $n^{\circ}$21). \\
+\textbf{Enti da coinvolgere}: servizi competenti della PAT tramite Ufficio Biotopi Rete Natura. \\
+\textbf{Interventi proposti}: 1. Studio per definire dimensione della popolazione dei popolamenti presenti di anfibi e delle loro migrazioni. 2 In seguito, andrà valutata l'eventuale posa di barriere fisse (in metallo o in legno) con controllo-chiusura di eventuali falle, controllo e realizzazione barriere per il ritorno. 3. Promuovere e sostenere l’attività di volontariato già in essere. 4) Monitorare nel tempo gli interventi di gestione attiva realizzati. In generale, il sito può rientrare fra quelli idonei all’organizzazione e realizzazione di attività di formazione e didattiche. \\
+\textbf{Priorità}: media (sito per cui sono necessari approfondimenti per comprendere meglio l'entità dei flussi migratori). \\
+
+\newpage
+\begin{tcolorbox}[breakable,colback=white,colframe=red,width=10cm]
+\subsection{22.Malga Laghetto}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_laghetto}
+\centering
+  \includegraphics[width=1\columnwidth]{malga_laghetto.png}
+\caption{Particolare della zona di Malga Laghetto, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: S.P. 9 \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Lavarone, Provincia Autonoma di Trento  \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 2,5 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: il biotopo di Malga Laghetto è un piccolo specchio d'acqua, relitto di un antico bacino lacustre, che si trova in un'ampia depressione prativa e pascoliva contornata da una fitta foresta di abete bianco, lungo la strada che collega Lavarone a Luserna. Al momento sono note alcune sporadiche attività di salvataggio effettuate da volontari locali. \\
+\textbf{Problematiche}: mortalità degli anfibi in migrazione riproduttiva dovuta al traffico stradale confermata in tempi recenti (T. Conci) e in passato nell’ambito dei rilevamento dedicati alla perimentrazione dei biotopi provinciali (MTSN anni Ottanta). \\
+\textbf{Sito riproduttivo}: laghetto di Malga Laghetto \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 45,96104 11,297504 \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune e rana temporaria \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune e rana temporaria \\
+\textbf{Periodo raccolta dati migrazioni}: 2014 \\
+\textbf{Numero esemplari morti nel tratto} (min-max): 100-150 \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max): 100-200 \\
+\textbf{Stima numerosità della popolazione}: 500-1000 \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: sito Natura 2000 "Palù di Monte Rovere" (\texttt{SIC IT3120088}), biotopo "Laghetto" (Riserva locale $n^{\circ}$28). \\
+\textbf{Interventi proposti}: 1. Valutazione del flusso migratorio (specie, numero di esemplari, successo riproduttivo, tratti stradali interessati) ed in caso 2. Successiva eventuale posa di barriere temporanee dotate di secchi-trappola da controllare regolarmente. 3. In seguito, eventuale posa di barriere fisse (in metallo o in legno), realizzazione tunnel quadrangolari di dimensioni >50 cm e apertura sul fondo, con auspicabile organizzazione turni di salvataggio-sorveglianza e raccolta dati, anche con eventuali stipule di convenzioni e assicurazioni. E' necessario anche il monitoraggio degli interventi di gestione attiva realizzati. In generale, è auspicabile anche l'organizzazione e realizzazione di attività didattiche. Il sito appare idoneo per realizzare attività didattiche, vista la presenza di strutture recettive e traffico stradale relativamente ridotto rispetto ad altre zone di migrazione. \\
+\textbf{Enti da coinvolgere}: servizi competenti della PAT per tramite dell’Ufficio Rete Natura. \\
+\textbf{Priorità}: media (poche informazioni disponibili, da approfondire). \\
+
+\newpage
+\section{Schede - ATO Lagorai}
+\begin{tcolorbox}[breakable,colback=white,colframe=green,width=10cm]
+\subsection{23.Musiera}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_musiera}
+\centering
+  \includegraphics[width=1\columnwidth]{musiera.png}
+\caption{Particolare della zona di Tenna, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: S.P. 31  \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Telve, Provincia Autonoma di Trento  \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 4,5 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: la Strada Provinciale 31, che da Telve porta al Passo Manghen, risulta interessata da un discreto passaggio di salamandre pezzate in corrispondenza alle serate di pioggia durante tutta la stagione. Per ora non sono state attivate iniziative di conservazione ma sono attivi alcuni volontari locali (K. Tabarelli de Fatis, M. Dori com pers.). \\
+\textbf{Problematiche}: mortalità degli anfibi a causa dell'investimento stradale. \\
+\textbf{Sito riproduttivo}: da valutare nel dettaglio. \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 46,094112 11,498562 \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: salamandra pezzata \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: salamandra pezzata \\
+\textbf{Periodo raccolta dati migrazioni}: 2012 \\
+\textbf{Numero esemplari morti nel tratto} (min-max): 15-20 \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max): 15-20 \\
+\textbf{Stima numerosità della popolazione}: 100-200 \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile. \\
+\textbf{Presenza di aree tutelate}: sito Natura 2000 "Val Campelle" (\texttt{SIC IT3120142}). \\
+\textbf{Interventi proposti}: 1. Disposizione di adeguata segnaletica stradale di attenzione agli automobilisti in transito, ; 2. prevedere ulteriori  indagini sul fenomeno e l’impatto del transito veicolare. \\
+\textbf{Enti da coinvolgere}: servizi competenti della PAT per tramite dell’Ufficio Rete Natura. \\
+\textbf{Priorità}: alta (sito che appare interessato da presenze abbondanti di anfibi). \\
+
+\newpage
+\begin{tcolorbox}[breakable,colback=white,colframe=red,width=10cm]
+\subsection{24.Pradellano}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_pradellano}
+\centering
+  \includegraphics[width=1\columnwidth]{pradellano.png}
+\caption{Particolare della zona di Pradellano, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: S.P. 78  \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Pieve Tesino, Provincia Autonoma di Trento. \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 1,2 km. \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: la strada provinciale costeggia il lago di Pradellano, bacino che funge da richiamo per una numerosa popolazione di anfibi (soprattutto rospo comune e rana temporaria). Sul \textbf{Tratto stradale interessato} sono stati posizionati 8 tunnel sottostradali e ogni anno vengono posizionate delle apposite barriere guida, costituite da teli di plastica e paletti di legno o metallo. \\
+\textbf{Problematiche}: alla base del rettilineo stradale, dove la carreggiata è sopraelevata, specialmente nel periodo di migrazione possono formarsi alcune pozze effimere, che attirano gli anfibi. Da valutare l'effettivo utilizzo dei tunnel da parte degli anfibi, dal momento che nella stagione di migrazione 2014 non è stato possibile effettuare dei sopralluoghi a causa del persistente innevamento. \\
+\textbf{Sito riproduttivo}: lago di Pradellano \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 46,07268 11,590424 (verso Pieve), 46,076766 11,584781 (verso Pradellano). \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune e rana temporaria \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune e rana temporaria \\
+\textbf{Periodo raccolta dati migrazioni}: 2013-2014 \\
+\textbf{Numero esemplari morti nel tratto} (stima): 200-400 \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (stima): / \\
+\textbf{Stima numerosità della popolazione}: 1.000-2.000 \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: biotopo "Lago di Pradellano" (Riserva locale $n^{\circ}$127) \\
+\textbf{Enti da coinvolgere}: servizi competenti della PAT, tramite Ufficio Biotopie e Rete Natura \\
+\textbf{Interventi proposti}: 1. E' necessario uno studio mirato sull'entità degli anfibi e delle locali caratteristiche delle loro migrazioni riproduttive 2. In seguito, eventuale posa barriere fisse (in metallo o in legno) con controllo-chiusura di eventuali falle, implementazione tunnel, con tunnel quadrangolari di dimensioni >50 cm e apertura sul fondo; posa barriere in entrambi i lati della strada, con andamento non parallelo e formazione di "imbuti" verso i tunnel. 3. Fondamentale sarà anche la realizzazione e installazione di cartelli stradali e pannelli informativi sulla migrazione degli anfibi e sulle opere realizzate. 4. Nel sito sono già attive iniziative spontanee di salvataggio da parte di volontari locali, che andrebbe coordinate e coinvolte, anche tramite azioni di formazione. Il sito si presta per attività didattica con le scuole locali. \\
+\textbf{Priorità}: alta (sito interessato da presenze importanti di specie minacciate e protette) \\
+
+
+\newpage
+\begin{tcolorbox}[breakable,colback=white,colframe=green,width=10cm]
+\subsection{25.Villa Welsperg}
+\end{tcolorbox}
+
+\begin{figure}[H]
+\label{fig:map_welsperg}
+\centering
+  \includegraphics[width=1\columnwidth]{welsperg.png}
+\caption{Particolare della zona di Villa Welsperg, con evidenziate eventuali riserve vicine, punti di attraversamento intenso, tratto stradale controllato ed eventuali facilitazioni alla migrazione}
+\end{figure}
+
+\textbf{Tratto stradale interessato}: località Castelpietra  \\
+\textbf{Ente amministrativo territorialmente competente}: Comune di Tonadico, Provincia Autonoma di Trento, Parco Naturale Paneveggio – Pale di San Martino  \\
+\textbf{Lunghezza del tratto interessato dalle migrazioni}: 0,9 km \\
+\textbf{Caratteristiche generali dell’area e interventi realizzati}: l'edificio di Villa Welsperg è stata edificata nel 1853 e dal 1996 è sede dell'Ente Parco del Parco Naturale Paneveggio-Pale di San Martino. Sono presenti due sottopassaggi faunistici costituiti da tunnel in calcestruzzo polimerico, integrati dalla posa di barriere di plastica nel periodo di migrazione primaverile, realizzati dal Parco. I due tunnel sono stati realizzati di fronte alle due raccolte d'acqua esistenti, e al fine di prevenirne l'allagamento, sono stati realizzati degli appositi tunnel di drenaggio. Gli anfibi sono convogliati presso i tunnel tramite degli inviti in cemento e ciottoli \\
+\textbf{Problematiche}: su indicazione del Parco (P. Partel com.pers.) l’ecodotto sembra ben funzionare anche grazie alla cura del personale del Parco che provvede alla posa e gestione nel periodo di funzionamento. Unica elemento da segnalare l’abbondante presenza di ittiofauna a scopo alieutico (con salmerino di fonte in riproduzione) che può incidere sul successo riproduttivo, e sulla funzione ecologica del laghetto \\
+\textbf{Sito riproduttivo}: laghetto Welsperg e stagno di costruzione più recente presso la Villa \\
+\textbf{Georeferenziazione} (riferita al tratto di maggior flusso): 46,192955 11,866466 \\
+\textbf{Specie di anfibi interessati dall’impatto stradale}: rospo comune, rana temporaria e tritone alpestre) \\
+\textbf{Specie di interesse comunitario o in Lista Rossa}: rospo comune, rana temporaria e tritone alpestre \\
+\textbf{Periodo raccolta dati migrazioni}: 2014 \\
+\textbf{Numero esemplari morti nel tratto} (min-max): 0-20  \\
+\textbf{Numero esemplari raccolti vivi nel tratto} (min-max): 0, la migrazione avviene in autonomia grazie alle opere realizzate  \\
+\textbf{Stima numerosità della popolazione}: 1200-3000 adulti \\
+\textbf{Periodo di migrazione e di impatto sugli anfibi}: marzo-aprile (adulti) \\
+\textbf{Periodo massimo impatto}: marzo-aprile \\
+\textbf{Presenza di aree tutelate}: sito Natura 2000 "Pale di San Martino" (\texttt{SIC IT3120178}), biotopi "Villa Welsperg, Palù Grant" (Riseve Locali $n^{\circ}$201 e $n^{\circ}$203); il sito è sede del Parco Naturale Paneveggio Pale di San Martino \\
+\textbf{Interventi proposti}: al momento le problematiche di mortalità degli anfibi appaiono risolte con la posa delle barriere temporanee e la concomitante presenza dei tunnel sottostradali. Si suggerisce la posa di barriere fisse (in metallo o in legno) che ne ridurrebbe la gestione ordinaria; vista l’idoneità del sito si raccomanda il proseguimento del monitoraggio degli interventi di gestione attiva e del flusso migratorio; 2. La vicinanza con il centro del Parco facilità la conduzione di attività didattica e quindi ben si presta alla divulgazione sulle tematiche dedicate alla biologia e conservazione degli anfibi \\
+\textbf{Enti da coinvolgere}: Parco Naturale Paneveggio e Pale di San Martino, servizi competenti della PAT per tramite dell’Ufficio Rete Natura \\
+\textbf{Priorità}: bassa essendo il sito già interessato da efficaci interventi di conservazione \\
+
+
+\chapter{Azioni proposte}
+\label{chap:actions}
+\section{Interventi sulle infrastrutture viarie}
+\label{sec:actions_infra}
+Per le nuove strade da progettare sono necessari studi approfonditi che considerino tutte le componenti dell’ecosistema. Per quanto riguarda le specie faunistiche si deve in particolare tenere conto delle specie di piccole dimensioni, spesso incapaci di grandi spostamenti, tra cui gli Anfibi. È quindi importante individuare i siti riproduttivi e di rifugio, le zone di svernamento e quelle di residenza estiva.
+In fase di progettazione di nuove infrastrutture si dovrà operare in modo che queste risultino il più possibile “isolate” dal resto del territorio (per impedire l’ingresso in carreggiata da parte della fauna) e “permeabili”, ossia capaci di favorire il passaggio della fauna sopra o sotto, mediante la realizzazione di sottopassi o ponti.
+Nel caso di infrastrutture già esistenti, risulta ovviamente più difficile intervenire generalmente sia per ragioni tecniche che economiche. In questo caso ci possono essere due strategie di intervento: la temporanea chiusura della strada al traffico, oppure la realizzazione di opere atte a impedire l’ingresso degli animali sulla carreggiata e contemporaneamente garantirne il libero passaggio o la riproduzione.
+La prima strategia è attuabile solo nel caso siano presenti strade alternative su cui deviare il traffico, generalmente di piccole dimensioni. La chiusura al traffico viene attuata tramite un’ordinanza da parte dell’autorità competente e riguarda la chiusura della strada per i non residenti durante i giorni di migrazione (in genere tra fine febbraio e fine marzo aprile a seconda dei casi) negli orari serali e notturni (tra le 18-19 e 6 del mattino). Per i residenti viene ovviamente mantenuto libero il passaggio, ma allo stesso tempo è importante predisporre una adeguata campagna di sensibilizzazione. Questa strategia risulta efficace per la salvaguardia degli adulti durante la stagione riproduttiva, ma non è di nessun aiuto per il restante periodo dell’anno e soprattutto per la fase di uscita in massa dei piccoli neometamorfosati dai siti riproduttivi, per i quali risulta in genere imprevedibile stabilirne i movimenti.
+Questa strategia può essere sostituita più realisticamente, anche se con meno efficacia, da una campagna di educazione verso gli automobilisti, da attuare tramite opportuna segnaletica e auspicabilmente anche tramite personale di vigilanza e volontari in strada nelle ore e nei giorni di maggior intensità migratoria. 
+La seconda strategia consiste nella modifica di alcune caratteristiche dell’infrastruttura e comprende sia opere atte a impedire l’ingresso in carreggiata sia opere che garantiscano la riproduzione per la popolazione.
+Per impedire l’ingresso della fauna nella sede stradale si possono usare barriere o pareti-guida di tipo temporaneo (note anche come barriere “mobili” o anche “di emergenza”) oppure permanente (dette anche barriere “fisse”). Queste strutture, se associate a sottopassaggi o ponti faunistici risultano indispensabili per convogliare in sicurezza gli animali al di là delle strade e garantirne così il libero movimento.
+
+\section{Le barriere temporanee}
+\label{sec:actions_barrtemp}
+Questo tipo di barriere, può risultare utile per tamponare l'emergenza dei fenomeni migratori che riguardano gli anfibi, in quanto si tratta di strutture relativamente economiche e facilmente installabili. In Trentino si utilizza in genere allo scopo una barriera di materiale plastico di 40 cm di altezza, di colore verde opaco, sostenuta da paletti metallici fissati con fascette di plastica o filo di ferro e interrata per 20-30 cm oppure ricoperta di terra, sassi e tronchi.
+Questa tipologia di barriere presenta alcuni svantaggi rispetto a quelle di tipo fisso:
+\begin{itemize}\itemsep0pt
+  \item devono essere posizionate e rimosse ogni stagione e questo comporta spese e impiego di operai, nonché consumo di materiale (soprattutto filo di ferro, fascette di plastica e altro materiale per legare i paletti alle reti) e necessità di stoccare il materiale durante il restante periodo dell'anno;
+  \item l'impiego di questo tipo di barriera comporta spesso l'impegno di persone volontarie in orario notturno in strade spesso trafficate e poco illuminate. L'esito dei salvataggi necessita dell’aiuto di volontari, che si possono trovare in condizionispesso proibitive e di scarsa sicurezza, per un arco temporale che può superare in alcune annate anche le 50-60 notti di lavoro;
+  \item la relativa fragilità e asportabilità di queste strutture consente il danneggiamento da parte di malintenzionati, come accaduto per esempio alla Torbiera di Fiavé;
+  \item le barriere possono essere oltrepassate dagli anfibi e altri piccoli animali, che possono arrampicarsi sfruttando le maglie delle reti oppure possono attraversarle sfruttando irregolarità del terreno o piccoli passaggi che si formano normalmente a livello del terreno;
+  \item la loro vicinanza alla sede stradale, pur essendo segnalata a norma di legge, può risultare pericolosa in caso di urto fortuito soprattutto per chi viaggia in bicicletta.
+\end{itemize}
+
+\begin{figure}[H]
+\label{fig:barr_temp}
+\centering
+  \includegraphics[width=.6\columnwidth]{7_Barriere_temporanee.jpg}
+\caption{Barriere temporanee in plastica trasparente presso Polcenigo (PN)}
+\end{figure}
+
+
+\section{Le barriere fisse}
+In commercio esistono barriere alte 40-50 cm costituite da materiale inerte (cemento, calcestruzzo polimerico o metallo) oppure da materiale plastico (plastica morbida di grosso spessore, plastica riciclata, tubi corrugati, plexiglass, canalette di drenaggio poste verticalmente) o con superfici lisce e con bordo superiore incurvato o comunque aggettante sul lato campagna in modo da impedirne lo scavalcamento da parte degli anfibi. In alcuni casi particolari si possono installare anche barriere fisse in legno, costituite da tavole strettamente aderenti e dotate anche di una tettoia atta a impedire lo scavalcamento da parte degli anfibi: queste ultime sono state installate a cura della PAT nel corso della primavera 2014 (febbraio-marzo) presso il lago di Loppio, sulla sponda del lago a ridosso della pista ciclabile.
+
+Si elencano di seguito numerosi vantaggi dovuti all'impiego di barriere fisse rispetto a quelle temporanee:
+\begin{itemize}\itemsep0pt
+  \item rappresentano una soluzione definitiva al problema, perlomeno nei punti focali di attraversamento;
+  \item rimanendo in loco tutto l'anno consentono la salvaguardia degli anfibi (compresi gli esemplari adulti in uscita dall'acqua dopo la deposizione e soprattutto anche la migrazione dei neometamorfosati) e di numerosi altri gruppi di animali di piccola e media taglia, come rettili, micromammiferi ed invertebrati terricoli;
+  \item sono robuste, e assai difficilmente possono essere danneggiate o rimosse;
+  \item presentano una superficie liscia che non può essere scavalcata dagli anfibi e dagli altri piccoli animali;
+  \item sono molto robuste, e possono sostenere il peso di eventuali autoveicoli in parcheggio e dei mezzi adibiti allo sfalcio del ciglio stradale;
+  \item come manutenzione necessitano solo di uno sfalcio periodico;
+  \item essendo composte da moduli possono essere facilmente rimpiazzabili in caso di rotture o incidenti;
+  \item non espongono ciclisti e veicoli a nessun tipo di pericolo;
+  \item sono facilmente installabili e non espongono i volontari a rischiosi interventi di salvataggio sulla sede stradale.
+\end{itemize}
+
+\begin{figure}[H]
+\label{fig:barr_fix}
+\centering
+  \includegraphics[width=.6\columnwidth]{8_Barriere_fisse.jpg}
+\caption{Barriere fisse costituite da teli di plastica opaca installati tutto l'anno presso il lago di Loppio (TN)}
+\end{figure}
+
+\subsection{Confronto fra vari tipi di barriere fisse}
+Tra i vari materiali utilizzati, il metallo possiede una lunga durata e stabilità nel tempo, bassi costi di manutenzione, flessibilità (i fogli possono essere accorciati o adattati a qualsiasi substrato e angolazione) e non presenta, se installato correttamente, nessuna fessura tra i vari elementi.
+
+Questo materiale presenta una doppia funzione di ostacolo: la parete verticale e un bordo superiore aggettante verso il lato esterno della strada. I fogli hanno un bordo alla base di 5 cm che impedisce sia l’erosione del suolo sottostante sia lo scavo da parte degli animali. Inoltre, il peso di questo materiale è relativamente basso sia per il trasporto che per l’installazione e il materiale risulta resistente sia all’acqua che al ghiaccio che all’insolazione. Infine questo materiale è completamente riciclabile. 
+
+Il calcestruzzo polimerico è un altro materiale competitivo in quanto resistente alle soluzioni saline antigelo, agli idrocarburi, agli olii e a molti altri agenti chimici. Le barriere costruite con questo tipo di materiale possono sopportare il peso di un’automobile fino al loro bordo più esterno e il peso del terreno fino ad una pendenza di $40^{\circ}$ nel caso di installazione ai piedi di una scarpata. Le barriere risultano altamente adattabili a diverse situazioni anche tramite particolari sistemi modulari personalizzati. Questo materiale tuttavia in caso di incidenti stradali o manutenzioni pesanti delle strade può subire rotture difficilmente suturabili e quindi può comportare alti costi di manutenzione sul lungo periodo. Inoltre questo materiale può presentare fessure specialmente in corrispondenza dell’innesto con i tunnel. La lunghezza degli elementi in questo caso è di un metro e risulta quindi molto adattabile a varie superfici ma necessariamente anche molti punti di sutura tra i moduli. Manca inoltre la doppia protezione contro lo scavalcamento.
+Il cemento risulta un elemento relativamente poco costoso ma anche pesante e di difficile installazione rispetto al metallo in particolar modo su terreni scoscesi e lontani dalle infrastrutture di trasporto. E’ inoltre fortemente igroscopico e questo può essere problematico soprattutto per i piccoli metamorfosati, che possono disidratarsi e morire su queste superfici specialmente nelle giornate più assolate. Può essere tuttavia una soluzione molto efficace localmente in quanto esistono delle ditte produttrici che possono produrre dei sistemi modulari adattati alle caratteristiche delle strade.
+
+\begin{figure}[H]
+\label{fig:barr_fixmetal}
+\centering
+  \includegraphics[width=.6\columnwidth]{9_Barriere_fisse.jpg}
+\caption{Barriere fisse in metallo installate in Germania}
+\end{figure}
+
+La plastica riciclata risulta un materiale leggero per quanto riguarda il trasporto e la posa, ma risulta di durata bassa e costi relativamente alti in quanto è soggetta a danneggiamenti da parte dei mezzi adibiti allo sfalcio dell’erba e da parte degli agenti atmosferici (gelo, acqua, sole).
+
+Il legno può sicuramente risultare efficace come soluzione economica e di relativa lunga durata, però abbisogna di costante manutenzione e sostituzione nel tempo atta a prevenire la formazione di pericolose falle attraverso le quali potrebbero passare gli anfibi e gli altri piccoli animali.
+
+\section{I sottopassaggi faunistici}
+Alle barriere fisse, che devono essere posate su entrambi i lati delle strade interessate dai fenomeni migratori, devono essere associati dei sottopassaggi o tunnel, utilizzando a tal fine tutti i manufatti eventualmente già esistenti (tunnel, ponti) in genere adibiti al drenaggio delle acque meteoriche, che possano essere direttamente usati dagli anfibi oppure opportunamente modificati tramite scalette, rampe e altri elementi.
+
+Più spesso si deve procedere con la costruzione ex novo di sottopassi faunistici mediante scavo e successiva posa al di sotto del manto stradale.
+
+I tunnel sono generalmente costruiti in calcestruzzo o altro materiale carrabile. L’efficacia dei tunnel è garantita solo se le barriere vengono posizionate allo stesso livello dell’ingresso degli stessi sottopassi, o a un piano inferiore ad essi, possibilmente disposte a “V” con l’apice rivolto verso l'entrata e l'uscita dei tubi, permettendo agli esemplari di convergere verso il punto di passaggio.
+
+\begin{figure}[H]
+\label{fig:sottopass}
+\centering
+  \includegraphics[width=.6\columnwidth]{10_Sottopassaggi_faunistici.jpg}
+\caption{Particolare di un ecodotto presso Pradellano (TN)}
+\end{figure}
+
+I tunnel devono avere una apertura minima di 40-50 cm di lato, e altezza minima di 50 cm (ottimali in entrambe le direzioni almeno 80-100 cm), possono essere aperti sul lato superiore tramite griglie di aerazione, oppure sul lato inferiore, a diretto contatto con il suolo: l'apertura in entrambi i casi ha la funzione di garantire una certa umidità interna, favorevole al transito degli anfibi. I piccoli tunnel (50 x 50 cm) possono risultare l’unica soluzione fattibile in caso di substrati rocciosi o presenza di ulteriori opere sottostradali come cavi o tubi si servizio. La sezione quadrangolare è preferibile rispetto a quella circolare poiché garantisce una maggiore superficie utile all'attraversamento da parte della fauna. Questi sottopassaggi possono essere associati a funzioni di drenaggio delle acque piovane e quindi possono essere installati anche con questa motivazione aggiuntiva che riguarda la sicurezza stradale. Importante in ogni caso è che vi sia una pendenza di circa l’1\% in modo da evitare ristagni d’acqua o allagamenti. La distanza tra questi elementi può andare dai 50 ai 200 metri in base alle conoscenze disponibili.
+
+\begin{figure}[H]
+\label{fig:sottopass2}
+\centering
+  \includegraphics[width=.6\columnwidth]{11_Sottopassaggi_faunistici.jpg}
+\caption{Interno di un ecodotto realizzato a Levico Terme}
+\end{figure}
+
+\section{Interventi complementari}
+La posa di barriere, sottopassi e ponti faunistici deve essere possibilmente accompagnata da altri interventi strutturali in modo da aumentare l'efficacia delle iniziative di salvaguardia finalizzate alla conservazione degli anfibi sul lungo termine.
+
+In particolare sono auspicabili:
+
+\begin{description}\itemsep0pt
+  \item[la posa di segnaletica stradale verticale] per informare la popolazione delle iniziative di conservazione in atto e mitigare il problema della sicurezza stradale per pedoni, ciclisti ed automobilisti in particolare nei tratti stradali più interessati dai fenomeni migratori: è molto importante, per garantire l'efficacia di questi cartelli, che la loro presenza sia visibile solo durante la stagione riproduttiva degli anfibi, a seconda della specie coinvolta, al fine di stimolare l'attenzione dei conducenti dei mezzi a motore durante i momenti più critici dell’anno. In tal senso è utile l’esperienza in Svizzera, dove appositi cartelli metallici indicanti il pericolo di trovare anfibi sulla sede stradale in determinati orari sono presenti tutto l’anno ma ruotati e visibili dalla strada solo nel periodo delle migrazioni riproduttive degli anfibi, che in Trentino è generalmente tra fine febbraio e fine aprile. Attualmente risulta a norma di legge solo il segnale stradale “Attenzione animali selvatici vaganti”, ai sensi del DPR 16 dicembre 1992, n. 495 “Regolamento di esecuzione e di attuazione del nuovo Codice della Strada”. Altri simboli non sono ammessi, per cui può essere utile ricorrere a pannelli integrativi (per esempio con scritte come “presenza di anfibi sulla carreggiata” e gli orari di transito – generalmente dalle 18 alle 6) o segnali luminosi intermittenti;
+  \begin{figure}[H]
+    \label{fig:comple}
+    \centering
+      \includegraphics[width=.6\textwidth]{12_Interventi_complementari.jpg}
+    \caption{Segnaletica verticale in Svizzera. Il cartello viene ruotato verso la sede stradale solo nel periodo di migrazione primaverile}
+  \end{figure}
+  \item[recupero e/o gestione di zone umide] ubicate in zone strategicamente importanti per i fenomeni migratori: per esempio, presso il lago di Santa Colomba la zona umida utilizzata dagli anfibi a scopo riproduttivo è attualmente ripopolata con ittiofauna per effettuare gare di pesca sportiva: i pesci introdotti artificialmente possono annullare il successo riproduttivo delle popolazioni di anfibi presenti, causandone l’estinzione locale come dimostrato in numerosi casi specialmente in ambito alpino. Per queste specie è auspicabile al più presto la pianificazione e realizzazione di un intervento di eradicazione al fine di garantire il successo riproduttivo per la fauna autoctona presente;
+  \item[realizzazione di siti riproduttivi alternativi]: questo intervento è particolarmente auspicabile al fine di “deviare” i flussi migratori degli anfibi il più possibile lontano dalle strade maggiormente trafficate.
+\end{description}
+
+\chapter{Attenzione dei media e iniziative di sensibilizzazione}
+La divulgazione tramite giornali locali e azioni di sensibilizzazione attraverso i media permette di far comprendere le tematiche.  L’interesse verso le campagne annuali di mitigazione dell’impatto stradale sulla piccola fauna in generale, e sugli anfibi in particolare, ha permesso di raggiungere in questi anni importanti risultati in varie località italiane e in tutto il mondo per quanto riguarda il numero di località interessate annualmente dagli interventi, il numero di partecipanti, la sensibilizzazione e la mobilitazione generale e, soprattutto, il numero degli anfibi salvati.
+
+In Trentino sono stati scritti diversi articoli sulla stampa locale soprattutto riguardanti gli anfibi e la loro migrazione al lago di Loppio, ma negli ultimi anni sono stati dedicati numerosi articoli anche alle salamandre di Avio (strada per l'Altopiano di Brentonico, dove vengono schiacciati da tempo numerosi esemplari adulti) e alle attività dei volontari presso la "Vecchia" di Levico Terme.
+
+Nell'ambito della Torbiera di Fiavé, le iniziative curate nel corso degli anni da parte dei volontari impegnati nel salvataggio e conteggio degli anfibi comprendevano anche attività didattiche realizzate nel locale biotopo.
+
+\newpage
+\vspace*{\fill}
+  \begin{figure}[H]
+    \label{fig:sottopass2}
+    \centering
+      \includegraphics[width=.5\columnwidth]{14_Attenzione_media.jpg}
+    \caption{Articolo dedicato alla chiusura temporanea al fine di tutelare gli anfibi in migrazione presso la S.P. "La Vecchia" di Levico Terme, 25.03.2010}
+  \end{figure}
+\vspace*{\fill}
+  \begin{figure}[H]
+    \label{fig:sottopass2}
+    \centering
+      \includegraphics[width=.6\columnwidth]{15_Attenzione_media.jpg}
+    \caption{Articolo divulgativo sui salvataggi degli anfibi in Trentino apparso sulla rivista "Wild" nel 2014}
+  \end{figure}
+\vspace*{\fill}
+\chapter{Proposte per attività didattiche}
+Le migrazioni degli anfibi si possono prestare anche per attività didattiche come dimostrano le iniziative in tal senso sviluppate in numerosi Paesi del mondo e anche in Italia.
+Le attività di salvataggio, in particolare lungo alcune strade relativamente poco trafficate, così come le osservazioni degli adulti in riproduzione o le fasi successive del ciclo biologico (ovature, larve e loro sviluppo) possono coinvolgere il pubblico e in particolare le scuole e la popolazione che abita in prossimità dei siti di migrazione e dei biotopi riproduttivi.
+Queste attività hanno la duplice funzione di educare il cittadino al rispetto di una componente della biodiversità e dell'ambiente e al contempo possono anche giovare alla conservazione attiva di specie sempre più minacciate, sia attraverso la partecipazione a progetti di conservazione sia mettendo in atto comportamenti virtuosi.
+Nel confinante territorio delle regioni del Veneto e Lombardia, in particolare, e anche in provincia di Bolzano, i volontari impegnati nelle attività di salvataggio degli anfibi attraverso le strade si sono occupati anche di diversi progetti di divulgazione e didattica che possono essere applicati con successo anche nella realtà trentina.
+E' possibile perciò distinguere alcune attività principali:
+
+\begin{itemize}\itemsep0pt
+  \item esposizione di una mostra itinerante;
+  \item attività didattiche con le scuole;
+  \item attività didattiche con il pubblico;
+  \item formazione dei tecnici addetti al monitoraggio, pianificazione e gestione;
+  \item formazione dei volontari e degli addetti alla conservazione e vigilanza.
+\end{itemize}
+
+\section{Mostra itinerante}
+Si propone la realizzazione di una mostra inerente le specie di anfibi della provincia di Trento, comprendente le caratteristiche generali e specifiche, curiosità e le principali problematiche di conservazione, con un focus su alcuni dei luoghi più importanti per la migrazione in Trentino (per esempio lago di Loppio, Levico Terme, lago di Santa Colomba, Torbiera di Fiavé).
+
+In particolare, la mostra potrà essere esposta nelle scuole di diverso grado (dalle primarie agli Istituti superiori) e anche in altri luoghi pubblici come Musei, biblioteche, sedi di Associazioni ed Enti pubblici.
+
+\section{Attività didattiche con le scuole}
+E' auspicabile la realizzazione di attività didattiche in aula, riguardanti gli anfibi, le loro caratteristiche e problematiche, da svilupparsi attraverso presentazioni multimediali alternate a momenti di gioco o approfondimento riguardanti gli anfibi (es. visione di documentari, oppure realizzazioni di manufatti in carta, disegni, e altre attività manuali e/o artistiche).
+
+Le attività potranno comprendere anche l'inserimento di dati di presenza degli anfibi partecipando ai progetti di ricerca collettiva in corso (per esempio \url{www.ornitho.it} oppure \url{www.alpensamander.eu}).
+
+A questa attività in classe sarà auspicabilmente seguita anche una escursione sui luoghi di migrazione, da effettuarsi possibilmente su strade poco trafficate, in ogni caso coinvolgendo nell'organizzazione anche gli Enti pubblici competenti la sicurezza e la vigilanza (Comuni, PAT, Forze dell'Ordine).
+Gli studenti potranno partecipare alle attività di salvataggio coadiuvando il lavoro di volontari locali o auspicabilmente operatori didattici opportunamente formati, anche in collaborazione con il MUSE, Museo Civico di Rovereto e Associazioni locali.
+A questa attività di salvataggio seguirà possibilmente anche una terza fase, ossia l'osservazione del risultato dei salvataggi e delle opere di mitigazione presenti (tunnel e sottopassi): gli studenti potranno essere accompagnati anche di giorno, 1-2 mesi dopo i giorni di migrazione, ad osservare le larve degli anfibi e i biotopi riproduttivi.
+
+\section{Attività didattiche con il pubblico}
+Il pubblico può essere coinvolto e sensibilizzato sia per mezzo di incontri mirati (per esempio serate informative o realizzazioni di cicli di incontri, sia diurni che serali, su tematiche naturalistiche) oppure tramite l'organizzazione di escursioni in collaborazione con gli operatori didattici (es. MUSE oppure guida naturalistiche o accompagnatori del territorio) anche possibilmente in collaborazione con volontari e associazioni locali e l'autorizzazione e coinvolgimento della PAT e Forze dell'ordine.
+
+\section{Formazione dei tecnici addetti al monitoraggio, pianificazione e gestione}
+Si ritiene importante provvedere ad un costante aggiornamento dei tecnici addetti al monitoraggio ambientale, alla pianificazione, realizzazione e gestione sia delle aree tutelate sia delle principali zone di migrazione e riproduzione per gli anfibi e soprattutto della viabilità stradale già presente o da realizzare. In tal senso, è molto positiva l'esperienza concretizzata anche nel corso di questo studio e che ha portato alla realizzazione di un seminario tecnico a cura del personale del MUSE e PAT e realizzata dal dr. Lars Briggs (della Società danese Amphi Consult) il 18/11/2013 presso la sede della PAT - Servizio Conservazione della Natura e Valorizzazione Ambientale, al quale hanno partecipato tecnici addetti alla conservazione della natura e viabilità stradale, nonché personale del MUSE e delle aree protette del Trentino. L'incontro è proseguito il giorno successivo tramite un sopralluogo effettuato dallo stesso Lars Briggs con tecnici della PAT e MUSE presso il lago di Loppio, Levico Terme e Tenna.
+
+\section{Formazione dei volontari e addetti alla vigilanza-gestione}
+Si ritiene importante organizzare corsi di formazione rivolti al pubblico generico, a studenti universitari (come caso di studio ed esempio di attività gestionale) come alle Associazioni e loro volontari che si occupano di salvataggio degli anfibi; l'iniziativa può estendersi anche agli operatori addetti alla vigilanza ambientale e faunistica, al personale delle aree protette nonché alle squadre addette alla realizzazione e manutenzione degli ecodotti (tunnel e barriere guida) e agli operai addetti alla manutenzione stradale. 
+Per questi corsi si prevede il coinvolgimento di erpetologi esperti in stretta collaborazione con il MUSE, PAT e altri Enti pubblici competenti il territorio e la rete stradale.
+Da valutare la possibile formazione di personale volontario che sia autorizzato e assicurato alle operazioni di salvataggio e raccolta dati anche tramite stipula di adeguate assicurazioni e convenzioni con gli Enti preposti la gestione territoriale, la conservazione della natura e le attività di ricerca e monitoraggio.
+
+\section{Raccolta dati e segnalazioni problematiche}
+I volontari, gli operatori e il personale addetto alla gestione, manutenzione e vigilanza, ma tutta la cittadinanza saranno auspicabilmente coinvolti anche nella raccolta dati riguardanti sia la presenza di anfibi che di problematiche inerenti le migrazioni e la attività riproduttive. In tal senso, sarà fondamentale la realizzazione e distribuzione di materiale didattico (es. guide di riconoscimento) e pagine web dedicate, nonché la predisposizione di apposite schede per le segnalazioni di strade e situazioni problematiche per gli anfibi da distribuire soprattutto tra il personale addetto alla vigilanza e gestione territoriale.
+
+
+\chapter{Bibliografia}
+\pagestyle{empty}
+\begin{itemize}\itemsep0pt
+\item AA. VV., 2007 - \emph{Salvaguardia dell'erpetofauna nel territorio di Alpe-Adria – Un contributo della Regione Friuli Venezia Giulia a favore della biodiversità}. Direzione centrale risorse agricole, naturali, forestali e di montagna – Ufficio studi faunistici: 176 pp.
+\item Arnold E.N., Burton J. A., 1985 - \emph{Guida dei Rettili e degli anfibi d’Europa}. Franco Muzzio e c. editore, Padova: 241 pp.
+\item Battisti C., 2004 - \emph{Frammentazione ambientale, connettività, reti ecologiche. Un contributo teorico e metodologico con particolare riferimento alla fauna selvatica}. Provincia di Roma, Assessorato alle Politiche agricole, ambientali e Protezione Civile, pp. 248
+\item Biasioli M., Genovese S., Monti A., 2011 - \emph{Gestione e conservazione della fauna minore. Esperienze e tecniche di gestione per le specie d'interesse conservazionistico e dei loro habitat}. Parco del Lura, 334 pp.
+\item Bonardi A., Manenti R., Ferri V., Fiacchini D., Macchi S., Romanazzi E., Soccini C., Bottoni L., Padoa-Schioppa E., Ficetola G.F., 2011 - \emph{Usefulness of volunteer data to measure the large scale decline of ‘common’ toad populations}. Biological Conservation 144: 2328-2334
+\item Bonardi A., Manenti R., Corbetta A., Ferri V., Fiacchini D., Giovine G., Macchi S., Romanazzi E., Soccini C., Bottoni L., Padoa-Schioppa E., Ficetola G.F., 2011 - \emph{Volontari e ricerca: l'andamento demografico del rospo comune italiano a partire dai dati dei salvataggi}. Atti 4$^\circ$ Convegno Nazionale Salvaguardia Anfibi, Idro (BS), Pianura 27: 33-34
+\item Bonato L., Fracasso G., Pollo R., Richard J., Semenzato M. (red.), 2007 - \emph{Atlante degli anfibi e dei Rettili del Veneto}. Associazione Faunisti Veneti, Nuovadimensione Ed., 240 pagg.
+\item Brambilla M., Tattoni C. \& Pedrini P., 2012 - \emph{Costruire la base di conoscenze biologiche propedeutica alla realizzazione della rete ecologica trentina}. Relazione tecnica della Sezione Zoologia dei Vertebrati del Museo delle Scienze di Trento, 44 pp.
+\item Bronzini L., 2000 - \emph{Biotopo di interesse provinciale FIAVÈ: attività di gestione anno 2000}. Ecomuseo della Judicaria dalle Dolomiti al Garda, Servizio Parchi P.A.T. (documento interno)
+\item Caldonazzi M., Pedrini P., Zanghellini S., 2002 - \emph{Atlante degli Anfibi e dei Rettili della provincia di Trento}. 1987-1996 con aggiornamenti al 2001. Museo Tridentino di Scienze Naturali, Trento.
+\item Colino-Rabanal V.J., , Lizana M., 2012 -\emph{ Herpetofauna and roads: a review}. Basic and Applied Herpetology 26: 5-31
+\item Caldonazzi M., Zanghellini S., Ferrari C., Flamini P., 1999 - \emph{Prima esperienza trentina sull'utilizzo di barriere per la salvaguardia degli anfibi nei loro spostamenti riproduttivi}. Natura Alpina 50: 33-41
+\item Caliari R., 2012 - \emph{Censimento e posa in opera di barriere per la tutela degli anfibi} - 2012. (documento interno PAT)
+\item Caliari R., Bronzini L., 2005 - \emph{Biotopo di interesse provinciale FIAVÈ: attività di gestione anno 2005}. Ecomuseo della Judicaria dalle Dolomiti al Garda, Servizio Parchi P.A.T. (documento interno PAT)
+\item Caliari R., Bronzini L., 2007 - \emph{Biotopo di interesse provinciale FIAVÈ: attività di gestione anno 2007}. Ecomuseo della Judicaria dalle Dolomiti al Garda, Servizio Parchi P.A.T. (documento interno PAT)
+\item Caliari R., Bronzini L., 2008 - \emph{Biotopo di interesse provinciale FIAVÈ: attività di gestione anno 2008}. Ecomuseo della Judicaria dalle Dolomiti al Garda, Servizio Parchi P.A.T. (documento interno PAT)
+\item Dinetti M., 2000 - \emph{Infrastrutture ecologiche: manuale pratico per progettare e costruire le infrastrutture urbane ed extraurbane nel rispetto della conservazione della biodiversità}. Il Verde Editoriale, Milano: 214 pp.
+\item Dinetti M., 2012 - \emph{Progettazione ecologica delle infrstrutture di trasporto}. Felici Editore, 148 pp.
+\item Gruppo Nisoria, Mus. Nat. Arch. Vicenza, 2000 - \emph{Atlante degli anfibi e dei Rettili della provincia di Vicenza}. Mus.Nat. Vic., Padovan Ed., Vicenza: 202 pp.
+\item Giovine G., Corbetta A., 2003 - \emph{SOS \emph{Bufo bufo}: il salvataggio anfibi in Val Cavallina}. Regione Lombardia, Comunità Montana Val Cavallina, Museo della Val Cavallina, 79 pp.
+\item KARCH, Dip. Costruzioni Canton Argovia, 1996 - \emph{Anfibi e sistemi di condutture delle acque reflue. Raccomandazioni e proposte di intervento applicabili a sistemi di drenaggio stradale, bacini pluviali e impianti di pompaggio}. Aarau/Baden, 20 pp.
+\item Lanza B., 1983 - \emph{Guide per il riconoscimento delle specie animali delle acque interne italiane}. 27. Anfibi, Rettili (Amphibia, Reptilia). CNR, Roma, AQ/1/205: 1-196
+\item Lapini L., 2005 - \emph{Si fa presto a dire rana. Guida al riconoscimento degli anfibi anuri nel Friuli Venezia Giulia}. Provincia di Pordenone, Comando di Vigilanza Ittico-Venatoria. Comune di Udine, Museo Friulano di Storia Naturale, Udine: 48 pp.
+\item Maddalena T., Fossati A., 2003 - \emph{Strategia cantonale per lo studio e la protezione degli Anfibi e dei Rettili: principi e indirizzi}. Dipartimento del Territorio, Ufficio Protezione della Natura, Muiseo cantonale di Storia Naturale, Bellinzona (CH), 30 pp.
+\item Malcevschi S., Bisogni G. L., Gariboldi A., 1996 - \emph{Reti ecologiche ed interventi di miglioramento ambientale}. Il Verde Editoriale, Milano: 103 pp.
+\item Martínez-Freiría F., Brito J.C., 2012 - \emph{Quantification of road mortality for amphibians and reptiles in Hoces del Alto Ebro y Rudrón Natural Park in 2005}. Basic and Applied Herpetology 26: 33-41
+\item Martinoli G., Bronzini L., 2004 - \emph{Biotopo di interesse provinciale FIAVÈ: attività di gestione anno 2004}. Ecomuseo della Judicaria dalle Dolomiti al Garda, Servizio Parchi P.A.T. (documento interno PAT)
+\item Martinoli G., Bronzini L., 2006 - \emph{Tornate e moltiplicatevi\dots la migrazione primaverile degli anfibi nel Biotopo di Fiavé e gli sforzi di conservazione per garantirle un futuro}. Natura Alpina 2: 48-54
+\item Mazzotti S. (ed.), 2007 - "Herp-Help". \emph{Status e strategie di conservazione degli Anfibi e dei Rettili del Parco Regionale del Delta del Po}. Quaderni della Stazione di Ecologia del Civico Museo di Storia Naturale di Ferrara, 7, 144 pp.
+\item Menin M., Battista V., De Stefano A., 2003 - \emph{Progetto Salvataggio \emph{Bufo bufo} in provincia di Treviso}. Associazioni L.A.C. Sezione del Veneto e U.N.A. Sezione di Treviso: 8 pp.
+\item Menin M, Romanazzi E., De Stefano A., 2009 - \emph{Progetto Salvataggio Anfibi 2003-2009}. Enpa Sezione di Treviso, 20 pp.
+\item Pomini F., 1936 - \emph{Osservazioni sistematiche ed ecologiche sugli anfibi del Veneto}. Arch. Zool. It., Torino, 23: 241-272
+\item Regione del Veneto, 1985 - \emph{Carta delle vocazioni faunistiche del Veneto. Dipartimento della Caccia e Dipartimento dell’Informazione della Giunta Regionale del Veneto}. 505 pp.
+\item Romanazzi E., inedito. - \emph{Piano di Azione per gli Anfibi del Montello}. Tesi finale del Master di II$^\circ$ livello in Conservazione della Biodiversità Animale: Aree protette e reti ecologiche (direttore del corso prof. Luigi Boitani), Università degli Studi di Roma “La Sapienza”,  111 pp.
+\item Romanazzi E., 2011 - \emph{Interventi di conservazione attiva per gli Anfibi in provincia di Treviso tra il 2003 e il 2011: primi risultati, problematiche e prospettive future}. Atti 4$^\circ$ Convegno Nazionale Salvaguardia Anfibi, Idro (BS), Pianura, 27: 73-75
+\item Romanazzi E., Bonato L., 2011 - \emph{Anfibi sul Montello: distribuzione dei siti riproduttivi in un territorio carsico prealpino}. In: Bon M., Mezzavilla F., Scarton F., Atti 6$^\circ$ Convegno Faunisti Veneti, Boll. Mus. civ. St. Nat. Venezia: 88-95
+\item Rondinini, C., Battistoni, A., Peronace, V., Teofili, C., 2013 - \emph{Lista Rossa IUCN dei Vertebrati Italiani}. Comitato Italiano IUCN e Ministero dell’Ambiente e della Tutela del Territorio e del Mare, Roma
+\item Scala R., Fracasso G., 2005 - \emph{Primi dati sulla distribuzione degli anfibi nelle pozze d'Alpeggio del Monte Baldo veronese}. Natura Vicentina, 7 (2003): 141-144
+\item Scalera R., 2003 - \emph{Anfibi e rettili italiani: elementi di tutela e conservazione}. Collana verde, 104. Corpo Forestale dello Stato. Ministero delle Politiche Agricole e Forestali, Roma: 232 pp. 
+\item Scoccianti C., 2001 - \emph{\emph{Amphibia}: aspetti di ecologia della conservazione}. WWF Italia, Sezione Toscana – Editore Guido Persichino Grafica, Firenze,  430 pp.
+\item Tinarelli R., Marchesi F., 2000 - \emph{Le zone umide d’acqua dolce: conservazione, ripristino e gestione}. Il Divulgatore 23 (11). Calderini Edagricole, Bologna
+\end{itemize}
+
+
+\end{document}

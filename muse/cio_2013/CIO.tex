@@ -1,0 +1,769 @@
+\RequirePackage{atbegshi}
+\AtBeginShipoutInit
+\documentclass[10pt,twoside,openright,x11names,svgnames,italian,a4paper,dvipsnames,table]{memoir}
+% add "showtrims" to class options to show the trimming lines
+
+\usepackage{fontspec}
+\setmainfont{Arial}
+
+\setstocksize{303mm}{215mm}
+\settrimmedsize{297mm}{210mm}{*}
+\settrims{3mm}{3mm}
+% Apply and enforce layout
+\setlrmarginsandblock{5cm}{2cm}{*} % Left and right margin
+\setulmarginsandblock{2cm}{3cm}{*}  % Upper and lower margin
+\setlength{\footskip}{2cm}
+
+%\setlength{\marginparsep}{1cm}
+\checkandfixthelayout
+\setlength{\marginparwidth}{3.5cm}
+
+\usepackage[italian,english]{babel}
+\usepackage{lmodern}
+\usepackage{wallpaper}
+\usepackage{tikz}
+\usepackage{pagecolor}
+\usetikzlibrary{shapes,positioning}
+\usepackage[latin1]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+\usepackage{amsmath}
+
+\usepackage{eso-pic}
+
+\newcommand\BackgroundFrontPic{%
+\AddToShipoutPictureBG*{\includegraphics[width=\stockwidth, height=\paperheigth, keepaspectratio]{COVER_complete.png}}
+}
+
+\newcommand\BackgroundRetroPic{%
+\AddToShipoutPictureBG*{\includegraphics[width=\stockwidth, height=\paperheigth, keepaspectratio]{RETRO_complete.png}}
+}
+
+\newcommand{\mc}[1]{\multicolumn{1}{c}{#1}} % handy shortcut macro
+
+\setlength\parindent{0pt}
+
+\usepackage{imakeidx}
+\usepackage{enumitem}
+\usepackage{titletoc}
+
+\usepackage{textcomp}	
+
+\usepackage[hyphens]{url} % For URL automated linebreaks
+\usepackage{booktabs, longtable}
+\usepackage{grffile}
+
+\usepackage{xcolor}
+
+\usepackage{titlesec}
+
+\usepackage{amsmath}
+
+\usepackage{afterpage}
+\usepackage{lipsum}% for auto generating text
+
+\usepackage{rotating}
+\usepackage{minibox}
+\usepackage{pdfpages}
+\usepackage{subcaption}
+
+\usepackage{changepage}
+
+
+\usepackage{lipsum}
+\usepackage[ISBN=978-88-531-0041-2]{ean13isbn}
+\usepackage{graphicx}
+\graphicspath{ {./img/} {./img/chap/} {./img/logo/} {./img/front/} {./img/icon/} {./img/back/} {./img/articles/} }
+
+% Captions
+\usepackage[labelfont={footnotesize,sf,bf},textfont={footnotesize,sf}]{caption}
+
+\input{pantone_colori.tex}
+%%% COLORS
+\usepackage{etoolbox}
+\patchcmd{\chapter}{plain}{empty}{}{}
+
+\newcommand{\chaptercolor}{G10}
+\newcommand{\toprectanglecolor}{F10}
+\newcommand{\pageboxcolor}{G9}
+\newcommand{\backgroundrectanglecolor}{G8!80!white}
+\newcommand{\decoratelinecolor}{G8}
+\newcommand{\titlecolor}{G8}
+\newcommand{\backpagecolor}{\chaptercolor}
+
+
+% Links
+\usepackage[pdftitle={Atti del Convegno Italiano di Ornitologia - Trento, 11-15 Settembre},
+     pdfauthor={Sezione Zoologia dei Vertebrati, MUSE - Museo delle Scienze},
+     colorlinks,linktocpage=true,linkcolor=\titlecolor,urlcolor=BrickRed,citecolor=MUSEBLUE,bookmarks]{hyperref}
+
+
+
+
+
+% Command to hold chapter illustration image
+\newcommand\chapterillustration{}
+
+\usepackage{xcolor}
+
+\newcommand\textlcsc[1]{\textsc{\MakeUppercase{#1}}}
+
+\usepackage{dcolumn}
+\newcolumntype{d}[1]{D{,}{.}{#1}}
+
+\makeatletter
+\newcommand{\fonttitle}{\chaptitlefont}
+\makechapterstyle{CIO}{%
+\def\chapterheadstart{\vspace*{\beforechapskip}}
+\def\printchaptername{}
+\def\printchapternum{}
+\def\printchapternonum{}
+\def\printchaptertitle##1{\raggedright \space \fonttitle \HUGE ##1}
+\def\afterchaptertitle{\par\nobreak\vskip \afterchapskip}
+\setlength\beforechapskip{0pt}%
+%\setlength\afterchapskip{10pt}% 
+}
+\makeatother
+
+\makeatletter
+\renewcommand\chaptermark[1]{%
+  \markboth{\MakeUppercase{#1}}{}
+}
+\makeatother
+
+\titleclass{\part}{top} % make part like a chapter
+\titleformat{\part}
+[display]
+{\raggedleft\normalfont\Huge\bfseries}
+% "Part n", left blank
+{}
+{0pt}
+{\color{MUSEBLUE}\huge\MakeUppercase}
+%
+\titlespacing*{\part}{0pt}{0pt}{20pt}
+
+% Removed bfseries from TOC chapters
+%\titleformat{\chapter}{\LARGE}{\thechapter.\ }{0em}{}
+
+
+\makepagestyle{CIOpage}
+\makeevenhead{CIOpage}{}{}{}
+\makeoddhead{CIOpage}{}{}{}
+\makeevenfoot{CIOpage}{\textbf{\thepage}\space / \space\textcolor{MUSEBLUE}{\textlcsc{Convegno italiano di ornitologia}}\space / Atti del convegno}{}{}
+\makeoddfoot{CIOpage}{\vspace{\fill}Trento, 11-15 Settembre 2013 /\textcolor{MUSEBLUE}{\textlcsc{ Convegno italiano di ornitologia}} / \textbf{\thepage}}{}{}
+
+\aliaspagestyle{chapter}{CIOpage}
+\assignpagestyle{\part}{empty}
+
+\setsecheadstyle{\color{MUSEBLUE}\scshape\large}
+%\setsecnumdepth{part}
+\setcounter{tocdepth}{0}
+
+\newcommand{\keywords}[2]{\vspace{.2cm}\noindent \raggedright \textsc{\color{MUSEBLUE}Parole chiave}\\ #1 \\ \vspace{.2cm} \textsc{\color{MUSEBLUE}Keywords}\\ #2}
+
+\usepackage{marginnote}
+\reversemarginpar
+
+\makeindex[title=,columns=2,options=-s CIOstyle.ist]
+
+\renewcommand*{\marginfont}{\footnotesize}
+
+\renewcommand*\copyright{{%
+  \usefont{EU1}{lmr}{m}{n}\textcopyright}}
+
+\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+
+
+% Declaring "\authortoc" command to insert something (authors) before chapter name in TOC
+\newcommand{\chaptertocindent}{\leftskip3em}
+\makeatletter
+\DeclareRobustCommand\authortoctext[1]{%
+{\addvspace{10pt}\nopagebreak\chaptertocindent\relax
+\rightskip \@tocrmarg\relax
+\noindent\scshape\footnotesize#1\par\addvspace{-10pt}}}
+\makeatother
+\newcommand\authortoc[1]{%
+  \gdef\chapterauthor{#1}%
+  \addtocontents{toc}{\authortoctext{#1}}}
+
+% Modify TOC appearance for chapters
+\makeatletter
+\def\l@chapter#1#2{\pagebreak[3]
+   \vskip 1.0em plus 1pt  % space above chapter line
+   \@tempdima 1.5em       % width of box holding chapter number
+   \begingroup
+     \parindent \z@ \rightskip \@pnumwidth
+     \parfillskip -\@pnumwidth
+     %\bfseries            % Boldface removed
+     \leavevmode          % TeX command to enter horizontal mode.
+     \chaptertocindent
+     #1\dotfill \hbox to\@pnumwidth{\hss\normalfont\large\bfseries #2}\par
+   \endgroup}
+\makeatother
+
+
+% For \male and \female symbols
+\usepackage{wasysym}
+
+\begin{document}
+\pagestyle{empty}
+
+\makeatletter
+\renewcommand{\thetable}{\@arabic\c@table}
+\@addtoreset{table}{chapter}
+\renewcommand{\thefigure}{\@arabic\c@figure}
+\@addtoreset{figure}{chapter}
+\makeatother
+
+\BackgroundFrontPic
+\clearpage\null\newpage
+\vspace*{\fill}
+{
+\normalsize
+\raggedright
+\textbf{\color{MUSEBLUE}A cura di} \\
+Paolo Pedrini, Francesca Rossi, Giuseppe Bogliani, Lorenzo Serra e Anna Sustersic\\
+\vspace{.5cm}
+\textbf{\color{MUSEBLUE}Disegni} \\
+Osvaldo Negra - MUSE - Museo delle Scienze di Trento \\
+{\footnotesize
+Re di Quaglie \emph{Crex crex}\\
+Fraticello \emph{Sternula albifrons}\\
+Nitticora \emph{Nycticorax nycticorax}\\
+Pollo sultano \emph{Porphyrio porphyrio}\\
+Logo - Pernice bianca \emph{Lagopus muta}\\
+}
+\vspace{.3cm}
+\textbf{\color{MUSEBLUE}Grafica e impaginazione} \\
+Aaron Iemma - MUSE - Museo delle Scienze di Trento\\
+\vspace{.3cm}
+\textbf{\color{MUSEBLUE}Foto di copertina} \\
+Maurizio Bedin \\
+{\footnotesize
+Pernice bianca \emph{Lagopus muta}\\
+}
+\vspace{.3cm}
+\textbf{\color{MUSEBLUE}Enti promotori ed organizzatori} \\
+Centro italiano Studi Ornitologici \\
+MUSE - Museo delle Scienze, Trento \\
+Universit\`a degli Studi di Trento\\
+
+\vspace{.3cm}
+\textbf{\color{MUSEBLUE}Comitato Scientifico} \\
+Daniela Campobello (segretario) - Universit\`a degli Studi di Palermo \\
+Giuseppe Bogliani - Universit\`a degli Studi di Pavia \\
+Claudio Carere - Universit\`a degli Studi della Tuscia, Viterbo \\
+Dan Chamberlain - Universit\`a degli Studi di Torino \\
+Marco Ciolli - Universit\`a degli Studi di Trento \\
+Giacomo dell'Omo - Ornis Italica, Roma \\
+Matteo Griggio - Konrad Lorentz Institute of Ethology, Vienna \\
+Paolo Pedrini - MUSE - Museo delle Scienze, Trento \\
+Fabrizio Sergio - Stazione Biologica di Do\~nana - CSIC, Siviglia, Spagna \\
+Lorenzo Serra - ISPRA, Ozzano dell{\textquoteright}Emilia (BO) \\
+Cecilia Soldatini - Universit\`a C\`a Foscari, Venezia \\
+\vspace{.3cm}
+\textbf{\color{MUSEBLUE}Comitato organizzatore} \\
+Paolo Pedrini (coordinatore) - MUSE - Museo delle Scienze, Trento \\
+Marco Ciolli - Universit\`a degli Studi di Trento \\
+Samuela Caliari - MUSE - Museo delle Scienze, Trento \\
+Daniela Campobello - Universit\`a degli Studi di Palermo \\
+Elisa Maria Casati - MUSE - Museo delle Scienze, Trento \\
+Sonia Caset - Universit\`a degli Studi di Trento \\
+Francesca Chist\'e - Universit\`a degli Studi di Trento \\
+Aaron Iemma - MUSE - Museo delle Scienze, Trento \\
+Osvaldo Negra - MUSE - Museo delle Scienze, Trento \\
+Francesca Rossi - MUSE - Museo delle Scienze, Trento \\
+Cecilia Soldatini - Universit\`a Ca' Foscari, Venezia \\
+Karol Tabarelli de Fatis - MUSE - Museo delle Scienze, Trento \\
+Elisa Tessaro - MUSE - Museo delle Scienze, Trento \\
+\vspace{.3cm}
+\textbf{\color{MUSEBLUE}Stampato da} \\
+Publistampa Arti Grafiche s.n.c. di Casagrande Silvio \& C. - 38057 Pergine Valsugana (TN), Via Dolomiti 36\\
+\vspace{.2cm}
+{\footnotesize
+\textbf{\color{MUSEBLUE}Citazione consigliata} \\
+Pedrini P., Rossi F., Bogliani G., Serra L. \& Sustersic A. (a cura di) 2015. \emph{XVII Convegno Italiano di Ornitologia: Atti del convegno di Trento}. Ed. MUSE, 176 pp. \\
+}
+\vspace{.7cm}
+ISBN 978-88-531-0041-2 \\
+\copyright  2015 MUSE - Museo delle Scienze, Trento \\
+}
+
+\newpage
+\begin{adjustwidth}{-1cm}{-1cm}
+{
+\raggedright
+\vspace*{4cm}
+{\fontsize{1.5cm}{2em}\selectfont \color{MUSEBLUE!70!black} \textsc{XVII \\Convegno Italiano di Ornitologia}} \\[.2cm]
+{\large Trento, 11 - 15 Settembre 2013} \\[.5cm]
+{\HUGE \textbf{Atti del convegno}} \\[1cm]
+}
+\begin{center}
+\begin{figure}[!h]
+\includegraphics[width=.7\columnwidth]{logo.png}
+\end{figure}
+\end{center}
+\vspace{7.5cm}
+a cura di: Paolo Pedrini, Francesca Rossi, Giuseppe Bogliani, Lorenzo Serra e Anna Sustersic \\
+\noindent\color{MUSEBLUE}\rule{27cm}{2pt}
+\vspace*{\fill}
+\end{adjustwidth}
+
+\cleardoublepage
+\pagestyle{CIOpage}
+\pagenumbering{roman}
+\begin{KeepFromToc}
+	\tableofcontents
+	%\listoftables
+	%\listoffigures
+\end{KeepFromToc}
+
+\part{Introduzione}
+\pagenumbering{arabic}
+
+\chapterstyle{CIO}
+{\large\itshape
+Il biennale Convegno Italiano di Ornitologia che il CISO organizza in varie sedi d{\textquoteright}Italia, grazie alla collaborazione di Associazioni, enti e istituti di ricerca, rappresenta il momento scientifico nazionale pi\`u significativo per gli ornitologi italiani. L{\textquoteright}edizione svoltasi a Trento, tra l{\textquoteright}11 e il 13 settembre 2013, ha confermato la crescita dell{\textquoteright}ornitologia italiana, una tendenza gi\`a rilevata nelle precedenti edizioni. L{\textquoteright}incontro ha dato modo di apprezzare l{\textquoteright}intenso lavoro svolto negli ultimi anni e i diversi livelli di approfondimento degli studi in corso, dando vita a momenti di confronto e aggiornamento nelle diverse sessioni, workshop e tavole rotonde, previste nel ricco programma.
+
+
+In questo volume edito da MUSE, sono stati raccolti 48 dei 165 lavori presentati in forma di comunicazioni (60) e poster (105), curati da oltre 400 autori. Gli abstract di tutti i lavori sono disponibili on line sul sito del CISO.
+
+
+La ridotta frazione dei contributi qui pubblicati, rispetto alla grande quantit\`a di quelli proposti, \`e chiaro segno che in futuro i brevi contenuti del libro degli Atti lasceranno posto a lavori scientifici pi\`u completi, destinati alle riviste di settore nazionali e internazionali, o alla stessa Avocetta. Consapevoli di questo, siamo quindi oltremodo grati a tutti coloro che hanno risposto all{\textquoteright}invito, permettendo di tener fede all{\textquoteright}impegno assunto dagli organizzatori di pubblicare gli Atti, ora disponibili anche in \emph{.pdf} scaricabile dal sito del CISO. Per questo ringraziamo anche i referee che hanno lavorato in forma anonima e si sono fatti carico di valutare i lavori pervenuti e quanti hanno contribuito ai molti aspetti organizzativi, e in particolare a Aaron Iemma che ne ha curato la grafica e l{\textquoteright}impaginato, per la collaborazione nell{\textquoteright}aiuto redazione Giacomo Assandri, Mattia Brambilla, Alessandro Franzoi.
+
+
+Un ringraziamento conclusivo va anche ai Colleghi del Comitato organizzatore e del Comitato scientifico, alla Segreteria del Convegno dell{\textquoteright}Universit\`a e a quanti altri hanno lavorato alla fase organizzativa dell{\textquoteright}evento e dei contenuti scientifici, cos\`i come ai curatori che hanno proposto, strutturato e condotto le tavole rotonde, le sessioni orali e i simposi a tema, che ricordiamo riproponendo il programma a seguire.
+}
+
+\vspace*{\fill}
+\begin{figure}[!h]
+\centering
+\includegraphics[width=.7\columnwidth]{logo.png}
+\end{figure}
+
+\part{Programma}
+\chapterstyle{CIO}
+\pagestyle{CIOpage}
+\addtocounter{figure}{1}
+\addtocounter{table}{1}
+\begin{center}
+\vspace*{\fill}
+\includegraphics[width=.8\columnwidth]{osv_5.png}
+\vspace*{\fill}
+\end{center}
+\newpagecolor{white}\afterpage{\restorepagecolor}
+
+\newpage
+{
+\setlength{\parindent}{0cm}
+\textcolor{MUSEBLUE}{\textsc{\LARGE Mercoled\`i, 11 Settembre 2013}} \\
+\vspace{.5cm}\\
+\textbf{MUSE} \\
+18:30 - 21:30 Benvenuto e registrazione \\
+\vspace{.5cm}\\
+\textcolor{MUSEBLUE}{\textsc{\LARGE Gioved\`i, 12 Settembre 2013}} \\
+\vspace{.5cm}\\
+\textbf{Universit\`a degli Studi di Trento - Dipartimento di Lettere e Filosofia} \\
+08:00 - Apertura e registrazione \\
+09:00 - Saluti di benvenuto \\ 
+\vspace{.5cm} \\
+{\bfseries \Large Effetti del cambiamento climatico}\\
+{\bfseries Moderatori:} N. Saino, L. Serra\\
+{\color{MUSEBLUE}{\hrule}}
+\begin{description}[leftmargin=1cm,labelindent=1cm]\itemsep0pt
+	\item[09:30 - M. Morganti] \emph{Uccelli migratori transahariani svernanti a nord del Sahara: un
+adattamento al cambiamento climatico?} 
+	\item[09:50 - A. Montemaggiori] \emph{Modelling the response of European breeding birds to climate
+change: combining expert-base and statistical approach} 
+	\item[10:10 - M. Sar\`a] \emph{Effetti del clima sul successo riproduttivo del grillaio \emph{Falco naumanni}} 
+	\item[10:30 - G. Masoero] \emph{Trend della popolazione di topino \emph{Riparia riparia} nel Parco del Po e
+della Collina Torinese}
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm}
+{\bfseries \Large Ecologia e dinamiche di popolazione} \\
+{\bfseries Moderatori:} R. Ambrosini, M. Sar\`a\\
+{\color{MUSEBLUE}{\hrule}}
+\begin{description}[leftmargin=1cm,labelindent=1cm]\itemsep0pt
+	\item[11:20 - B. Sicurella] \emph{Livestock farming and hayfields may buffer barn swallow \emph{Hirundo
+rustica} population decline}
+	\item[11:40 - S. Tenan] \emph{Modelli gerarchici Bayesiani in ornitologia}
+	\item[12:00 - P. Trotti] \emph{Ecologia e produttivit\`a del gufo reale \emph{Bubo bubo} in due aree di
+studio della Lombardia}
+	\item[12:20 - D. De Rosa] \emph{Distribuzione dei Picidi nel Parco Nazionale del Cilento e Vallo di
+Diano}
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm}
+{\bfseries \Large \raggedright Specie e popolazioni problematiche: conoscenza e gestione dei \\conflitti} \\
+{\bfseries Moderatori:} C. Carere, A. Montemaggiori\\
+{\color{MUSEBLUE}{\hrule}}
+\begin{description}[leftmargin=1cm,labelindent=1cm]\itemsep0pt
+	\item[11:20 - P. Sposimo] \emph{Gli uccelli alloctoni in Italia: analisi degli impatti e proposte gestionali}
+	\item[11:40 - S. Calandri] \emph{Il problema dei colombi \emph{Columba livia} urbani affrontato con un
+esperimento di riduzione della risorsa acqua}
+	\item[12:00 - C. Carere] \emph{The use of the distress call to relocate starlings \emph{Sturnus vulgaris}
+from urban roosts: effectiveness and limitations}
+\end{description}
+\newpage
+{\bfseries 14:00 - 14:50}
+\begin{description}[leftmargin=1cm,labelindent=1cm,style=unboxed]\itemsep0pt
+	\item[Sessione plenaria - From conservation biology to ecosystem engineering: bridging the great divide
+between research and action - Rapha\:el Arlettaz]
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm} 
+{\bfseries \Large \raggedright Biologia riproduttiva} \\
+{\bfseries Moderatori:} D. Campobello, M. Griggio\\
+{\color{MUSEBLUE}{\hrule}}
+\begin{description}[leftmargin=1cm,labelindent=1cm]\itemsep0pt
+	\item[14:55 - N. Saino] \emph{Phenological variation in timing of molt and breeding in relation to
+clock polymorphism in the barn swallow \emph{Hirundo rustica}}
+	\item[15:15 - D. Nespoli] \emph{Somiglianza morfologica versus playback: una nuova specie di
+sterpazzolina?}
+	\item[15:35 - R. Di Maggio] \emph{Effects of microclimate on nest site selection and breeding success
+of lesser kestrel \emph{Falco naumanni} in the Gela Plain (Sicily)}
+	\item[15:55 - E. Bassi] \emph{Analisi del successo riproduttivo dell{\textquoteright}aquila reale \emph{Aquila
+chrysaetos} nel Parco Nazionale dello Stelvio in relazione al ritorno
+del gipeto \emph{Gypaetus barbatus} sulle Alpi}
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm}
+{\bfseries \Large \raggedright Ecologia alpina - cambiamenti ad alta quota} \\
+{\bfseries Moderatori:} D. E. Chamberlain, P. Pedrini\\
+{\color{MUSEBLUE}{\hrule}}
+\begin{description}[leftmargin=1cm,labelindent=1cm]\itemsep0pt
+	\item[14:55 - A. Rolando] \emph{Skiing and bird diversity in the Alps}
+	\item[15:15 - S. Imperio] \emph{Climate change and human disturbance effects on the population
+dynamics of Alpine grouses: new insight from the western Italian Alps}
+	\item[15:35 - T. Sitzia] \emph{Altitudinal and habitat selection of capercaillie \emph{Tetrao urogallus}: an
+assessment of change after ten years in the Scanuppia Reserve (Central Alps, Northern Italy)}
+	\item[15:55 - D. E. Chamberlain] \emph{Addressing the challenges of surveying birds at high altitude}
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm}
+{\bfseries \Large \raggedright Comportamento e fisiologia} \\
+{\bfseries Moderatori:} E. Caprio, L. Fusani\\
+{\color{MUSEBLUE}{\hrule}}
+\begin{description}[leftmargin=1cm,labelindent=1cm]\itemsep0pt
+	\item[16:45 - D. Baldan] \emph{Effects of temporal shortage of food on social network and
+leadership in house sparrow \emph{Passer domesticus} flocks}
+	\item[17:05 - J. G. Cecere] \emph{Berte mannare: l{\textquoteright}effetto della luna sul comportamento della berta maggiore \emph{Calonectris diomedea}}
+	\item[17:25 - D. Campobello] \emph{Nest attendance of conspecifics and heterospecifics as social
+phenotypes affecting breeding lesser kestrels \emph{Falco naumanni}}
+	\item[17:45 - A. Gagliardi] \emph{Dinamica di insediamento del cormorano \emph{Phalacrocorax carbo} nelle
+garzaie e possibili effetti di competizione}
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\newpage
+{\bfseries \Large \raggedright Marine strategy e uccelli} \\
+{\bfseries Moderatori:} N. Baccetti, M. Zenatello\\
+{\color{MUSEBLUE}{\hrule}}
+\begin{description}[leftmargin=1cm,labelindent=1cm]\itemsep0pt
+	\item[16:45 - M. Zenatello] \emph{Spunta la luna dal monte? Strategie di foraggiamento delle berte
+minori \emph{Puffinus yelkouan} dell{\textquoteright}isola di Tavolara}
+	\item[17:05 - S. Sponza] \emph{Caratteristiche spaziali e temporali della migrazione del marangone
+dal ciuffo \emph{Phalacrocorax aristotelis desmarestii} nell{\textquoteright}Adriatico}
+settentrionale
+	\item[17:25 B. Massa] \emph{Nocturnal activity of shearwaters at the colony: a study with radar}
+	\item[17:45 - P. Aragno] \emph{Monitoraggio mensile di uccelli marini attraverso il Santuario
+Pelagos: una collaborazione ISPRA-COT-CorsicaFerries}
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm} 
+{\bfseries 18:05 - 19:00}
+\begin{description}[leftmargin=1cm,labelindent=1cm,style=unboxed]\itemsep0pt
+	\item[\bfseries  \raggedright Sessione Poster con promozione Avocetta - Journal of Ornithology]
+	\item[\bfseries  \raggedright Tavola rotonda - Piano di Azione Nazionale per il marangone minore \emph{Phalacrocorax  pygmeus} - S. Volponi, M. Costa]
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm}
+\textcolor{MUSEBLUE}{\textsc{\LARGE Venerd\`i, 13 Settembre 2013}}
+\vspace{.5cm}\\
+\textbf{Universit\`a degli Studi di Trento - Dipartimento di Lettere e Filosofia} \\ 
+08:30 - Apertura e registrazione \\
+09:10 - 09:30 Annunci\\
+\vspace{.5cm}\\
+{\bfseries \Large \raggedright Conservazione e gestione della biodiversit\`a: agricoltura, attivit\`a produttive e aree protette (I)} \\
+{\bfseries Moderatori:} G. Bogliani, J. G. Cecere\\
+{\color{MUSEBLUE}{\hrule}}
+\begin{description}[leftmargin=1cm,labelindent=1cm]\itemsep0pt
+	\item[09:30 - E. Cardarelli] \emph{Cambiamenti colturali delle risaie italiane e disponibilit\`a trofica per
+gli Ardeidi}
+	\item[09:50 - V. Longoni] \emph{Un esperimento di recupero del valore naturalistico delle risaie: il
+progetto CORINAT}
+	\item[10:10 - G. Assandri] \emph{Selezione dell{\textquoteright}habitat nel ciclo annuale in una popolazione spagnola
+di capinere Sylvia atricapilla: l{\textquoteright}importanza della coltivazione non intensiva degli uliveti}
+	\item[10:30 - P. Pedrini] \emph{Andamento demografico del re di quaglie \emph{Crex crex} nell{\textquoteright}Italia nord orientale}
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm}
+{\bfseries \Large \raggedright Conservazione e gestione della biodiversit\`a: agricoltura, attivit\`a produttive e aree protette (II)} \\
+{\bfseries Moderatori:} M. Brambilla, M. Fasola\\
+{\color{MUSEBLUE}{\hrule}}
+\begin{description}[leftmargin=1cm,labelindent=1cm]\itemsep0pt
+	\item[11:20 - S. Alemanno] \emph{La coturnice appenninica \emph{Alectoris graeca} nel Parco Nazionale dei
+Monti Sibillini}
+	\item[11:40 - G.Tellini Florenzano] \emph{Pi\`u grandi, pi\`u vecchie: come rispondono le specie forestali diffuse alla trasformazione delle foreste italiane}
+	\item[12:00 - S. G. Fasano] \emph{Importanza conservazionistica della Rete Natura 2000 in Liguria}
+	\item[12:20 - G. Calvi] \emph{Monitoraggio degli uccelli comuni nidificanti e politiche di conservazione degli agro ecosistemi}
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm}
+{\bfseries 11:20 - 12:40}
+\begin{description}[leftmargin=1cm,labelindent=1cm,style=unboxed]\itemsep0pt
+	\item[\bfseries  \raggedright Tavola rotonda - Conservazione delle collezioni museali - F. Barbagli, F. Foschi, B. Massa]
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm}
+{\bfseries 14:00 - 14:50}
+\begin{description}[leftmargin=1cm,labelindent=1cm,style=unboxed]\itemsep0pt
+	\item[\bfseries  \raggedright Sessione plenaria - Will tropical avian frugivores fare better inside or outside protected areas? - Stuart Madsen]
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm}
+{\bfseries \Large \raggedright Migrazione}\\
+{\bfseries Moderatori:} D. Rubolini, U. Mellone\\
+{\color{MUSEBLUE}{\hrule}}
+\begin{description}[leftmargin=1cm,labelindent=1cm]\itemsep0pt
+	\item[14:55 - R. Ambrosini] \emph{Modelling bird migration by means of ring recoveries}
+	\item[15:15 - M. Panuccio] \emph{Priorit\`a di monitoraggio e conservazione per i rapaci migratori in
+Italia}
+	\item[15:35 - S. Lupi] \emph{Le condizioni fisiologiche influenzano la decisione di stopover
+durante la migrazione nel codirosso spazzacamino \emph{Phoenicurus ochruros}, nel pettirosso \emph{Erithacus rubecula} e nel saltimpalo \emph{Saxicola torquata}}
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm}
+{\bfseries \Large \raggedright Genetica di conservazione: casi studio e prospettive}\\
+{\bfseries Moderatori:} H. Hauffe, C. Vernesi\\
+{\color{MUSEBLUE}{\hrule}}
+\begin{description}[leftmargin=1cm,labelindent=1cm]\itemsep0pt
+	\item[14:55 - E. Randi] \emph{Le indagini molecolari in aiuto all{\textquoteright}ornitologia: l{\textquoteright}esempio del complesso \emph{Sylvia cantillans}}
+	\item[15:15 - B. Crestanello] \emph{Il contributo della genetica della conservazione alla conoscenza e alla
+gestione di alcune specie di Galliformi alpini: pernice bianca \emph{Lagopus muta}, fagiano di monte \emph{Tetrao tetrix} e gallo cedrone \emph{Tetrao urogallus}}
+	\item[15:35 - A. Galimberti] \emph{La dieta vegetale dei Passeriformi in migrazione: dispersori di
+biodiversit\`a o di specie aliene? Un approccio molecolare}
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm}
+{\bfseries \Large \raggedright GIS e modelli ecologici}\\
+{\bfseries Moderatori:} M. Ciolli, S. Imperio\\
+{\color{MUSEBLUE}{\hrule}}\
+\begin{description}[leftmargin=1cm,labelindent=1cm]\itemsep0pt
+	\item[16:25 - M. Brambilla] \emph{I modelli di distribuzione per la conservazione di specie ornitiche:
+oltre la semplice individuazione di aree idonee}
+	\item[16:45 - C. Tattoni] \emph{L{\textquoteright}approccio metodologico alla Rete Ecologica del Trentino attraverso
+l{\textquoteright}utilizzo dell{\textquoteright}avifauna come modello biologico}
+	\item[17:05 - L. Nelli] \emph{Census methods of alpine galliforms: an experimental comparison}
+	\item[17:25 - G. Londi] \emph{Studio dell'ecologia e monitoraggio delle popolazioni di \emph{Picus canus}, \emph{Dryocopus martius}, e \emph{Picoides tridactylus} nelle Alpi Carniche}
+\end{description}
+\vspace{1cm}
+{\bfseries \Large \raggedright Canti, penne e uova: selezione sessuale in corso!}\\
+{\bfseries Moderatori:} M. Griggio, G. Malacarne\\
+{\color{MUSEBLUE}{\hrule}}
+\begin{description}[leftmargin=1cm,labelindent=1cm]\itemsep0pt
+	\item[16:25 - G. Malacarne] \emph{Selezione sessuale: sviluppi recenti}
+	\item[16:45 - H. Hoi] \emph{Females produce more colourful eggs when males sing faster}
+	\item[17:05 - S. Pirrello] \emph{Le femmine di storno \emph{Sturnus vulgaris} scelgono i maschi che sono
+cresciuti in migliori condizioni ambientali}
+	\item[17:25 - M. Griggio] \emph{Sexual selection, multiple traits and pair-bond behaviour in bearded
+reedlings \emph{Panurus biarmicus}}
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm}
+{\bfseries 17:45 - 19:00}
+\begin{description}[leftmargin=1cm,labelindent=1cm,style=unboxed]\itemsep0pt
+	\item[\bfseries  \raggedright Sessione poster]
+	\item[Assemblea CISO]
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{.5cm}\\
+20:30 - Cena sociale - serata con eventi e visita al MUSE - Museo delle Scienze \\
+\vspace{.5cm}
+
+\noindent\textcolor{MUSEBLUE}{\textsc{\LARGE Sabato, 14 Settembre 2013}} \\
+\vspace{.2cm}
+
+{\bfseries Universit\`a degli Studi di Trento - Dipartimento di Lettere e Filosofia}\\
+08:30 Apertura e registrazione \\
+09:10 - 09:30 Annunci \\
+\vspace{.2cm}
+
+{\bfseries 9:30 - 10:20}
+\begin{description}[leftmargin=1cm,labelindent=1cm,style=unboxed]\itemsep0pt
+	\item[Sessione plenaria - Tales of the unexpected: new insights from satellite tracking common cuckoos
+\emph{Cuculus canorus} - Chris Hewson]
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm}
+{\bfseries \Large \raggedright Movimenti e tecnologie}\\
+{\bfseries Moderatori:} D. Giunchi, M. Panuccio\\
+{\color{MUSEBLUE}{\hrule}}
+\begin{description}[leftmargin=1cm,labelindent=1cm]
+	\item[10:55 - U. Mellone] \emph{Tra Europa e Africa: i movimenti di falco della Regina \emph{Falco eleonorae},
+grillaio \emph{Falco naumanni} e biancone \emph{Circaetus gallicus} rivelati dalla telemetria satellitare}
+	\item[11:15 - B. Massa] \emph{Winter movements of Scopoli{\textquoteright}s shearwaters \emph{Calonectris diomedea} breeding in Linosa island}
+	\item[11:35 - M. Santini] \emph{L{\textquoteright}uso del radar per lo studio del comportamento negli uccelli}
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\newpage
+{\bfseries 10:55 - 11:55}
+\begin{description}[leftmargin=1cm,labelindent=1cm,style=unboxed]\itemsep0pt
+	\item[Tavola rotonda - Costituzione del "Comitato nazionale per la conservazione del fratino \emph{Charadrius alexandrinus} - A. Sartori, L. Serra, R. Tinarelli]
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm}
+{\bfseries 12:00 - 13:20}
+\begin{description}[leftmargin=1cm,labelindent=1cm,style=unboxed]\itemsep0pt
+	\item[Tavola rotonda - La conservazione degli uccelli a scala nazionale: elementi di conoscenza, criticit\`a, prospettive future - C. Celada, M. Gustin]
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm}
+{\bfseries \Large \raggedright Conservazione e monitoraggio dell{\textquoteright}avifauna urbana, pianificazione del territorio e barriere infrastrutturali}\\
+{\bfseries Moderatori:} M. Dinetti, M. Fraissinet\\
+{\color{MUSEBLUE}{\hrule}}
+\begin{description}[leftmargin=1cm,labelindent=1cm]
+	\item[12:00 - M. Dinetti] \emph{Avifauna urbana, pianificazione del territorio e barriere
+infrastrutturali}
+	\item[12:20 - C. Perticarari] \emph{Fattori che condizionano la nidificazione di alcune specie in vecchi
+edifici: il caso dell{\textquoteright}Abbadia di Fiastra (MC)}
+	\item[12:40 - M. Bon] \emph{Dall{\textquoteright}Atlante ornitologico all{\textquoteright}Atlante della Laguna: l'utilizzo dei dati
+faunistici per la pianificazione territoriale nel Comune di Venezia}
+	\item[13:00 - M. Fraissinet] \emph{Evoluzione della comunit\`a ornitica nidificante in un parco urbano di
+impianto recente}
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm}
+{\bfseries 14:40 - 16:00}
+\begin{description}[leftmargin=1cm,labelindent=1cm,style=unboxed]\itemsep0pt
+	\item[Tavola rotonda - Atlante degli Uccelli nidificanti e svernanti - R. Lardelli, L. Serra]
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{1cm}
+{\bfseries \Large \raggedright Tecnologie per l'ornitologia: dalla cattura, all'applicazione di strumenti, all'analisi dei dati}\\
+{\bfseries Moderatori:} G. Dell'Omo, U. Mellone\\
+{\color{MUSEBLUE}{\hrule}}
+\begin{description}[leftmargin=1cm,labelindent=1cm]\itemsep0pt
+	\item[14:40 - J. G. Cecere] \emph{Cattura di uccelli a scopo scientifico: normativa e iter autorizzativo}
+	\item[15:00 - C. Catoni] \emph{Cattura e applicazione di strumenti per lo studio degli uccelli}
+	\item[15:20 - G. Dell'Omo] \emph{Ornithology and technology}
+	\item[15:40 U. Mellone] \emph{Monitoraggio dei movimenti a livello individuale}
+\end{description}
+{\color{MUSEBLUE}{\hrule height 2pt}}
+\vspace{.5cm}
+
+16:00 - 16:30 Premiazione Poster \\
+16:30 - 17:00 Chiusura Convegno \\
+
+\part{Contributi}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+{\hspace*{\fill} \emph{In ordine alfabetico secondo il primo Autore}}
+\begin{center}
+\vspace*{\fill}
+\includegraphics[width=.95\columnwidth]{osv_3.png}
+\vspace*{\fill}
+\end{center}
+\newpagecolor{white}\afterpage{\restorepagecolor}
+\pagestyle{CIOpage}
+
+\input{tex/articles/C_Alemanno.tex}
+\input{tex/articles/C_Aluigi.tex}
+\input{tex/articles/C_Balestrieri.tex}
+\input{tex/articles/C_Bassi.tex}
+\input{tex/articles/C_Becciu.tex}
+\input{tex/articles/C_Calandri.tex}
+\input{tex/articles/C_Di_Maggio.tex}
+\input{tex/articles/C_Diana.tex}
+\input{tex/articles/C_Gagliardi.tex}
+\input{tex/articles/C_Masoero.tex}
+\input{tex/articles/C_Pedrini.tex}
+\input{tex/articles/C_Termine.tex}
+\input{tex/articles/C_Trotti.tex}
+\input{tex/articles/C_Verza.tex}
+
+\addtocontents{toc}{\protect\newpage}
+\part{Note brevi}
+{\hspace*{\fill} \emph{In ordine alfabetico secondo il primo Autore}}\\
+\begin{center}
+\vspace*{\fill}
+\includegraphics[width=.95\columnwidth]{osv_1.png}
+\vspace*{\fill}
+\end{center}
+\newpagecolor{white}\afterpage{\restorepagecolor}
+
+
+\input{tex/articles/NB_Aluigi.tex}
+\input{tex/articles/NB_Angelini.tex}
+\input{tex/articles/NB_Assandri.tex}
+\input{tex/articles/NB_Baroni.tex}
+\input{tex/articles/NB_Basile.tex}
+\input{tex/articles/NB_Basile2.tex}
+\input{tex/articles/NB_Bedini.tex}
+\input{tex/articles/NB_Biondi.tex}
+\input{tex/articles/NB_Brunelli.tex}
+\input{tex/articles/NB_Campioni.tex}
+\input{tex/articles/NB_Comparato.tex}
+\input{tex/articles/NB_DeGiacomo.tex}
+\input{tex/articles/NB_Florit.tex}
+\input{tex/articles/NB_Fusari.tex}
+\input{tex/articles/NB_Giacchini.tex}
+\input{tex/articles/NB_Laddaga.tex}
+\input{tex/articles/NB_LaMantia.tex}
+\input{tex/articles/NB_Liuzzi.tex}
+\input{tex/articles/NB_Massa.tex}
+\input{tex/articles/NB_Massari.tex}
+\input{tex/articles/NB_Mezzavilla.tex}
+\input{tex/articles/NB_Morganti.tex}
+\input{tex/articles/NB_Morganti2.tex}
+\input{tex/articles/NB_Morici.tex}
+\input{tex/articles/NB_Nissardi.tex}
+\input{tex/articles/NB_Partel.tex}
+\input{tex/articles/NB_Rassati.tex}
+\input{tex/articles/NB_Sartirana.tex}
+\input{tex/articles/NB_Sarrocco.tex}
+\input{tex/articles/NB_Sighele.tex}
+\input{tex/articles/NB_Sorace.tex}
+\input{tex/articles/NB_Trotta.tex}
+\input{tex/articles/NB_Trotta2.tex}
+%\input{tex/articles/NB_Velat.tex}
+
+
+\newpage\null
+\pagestyle{empty}
+\part{Indice analitico degli autori}
+\pagestyle{empty}
+\begin{center}
+\vspace*{\fill}
+\includegraphics[width=.8\columnwidth]{osv_2.png}
+\vspace*{\fill}
+\end{center}
+%\begin{center}
+%\vspace*{\fill}
+%\includegraphics[width=1\columnwidth]{osv_5.png}
+%\vspace*{\fill}
+%\end{center}
+\pagestyle{empty}
+\newpagecolor{white}\afterpage{\restorepagecolor}
+\pagestyle{empty}
+\printindex
+\pagestyle{empty}
+%\part{Indice delle parole chiave}
+%\begin{center}
+%\vspace*{\fill}
+%\includegraphics[width=1\columnwidth]{osv_5.png}
+%\vspace*{\fill}
+%\end{center}
+%\newpagecolor{white}\afterpage{\restorepagecolor}
+%\pagestyle{CIOpage}
+%\printindex[keywords]
+
+\newpage
+\pagestyle{empty}
+\clearpage\null\newpage
+\null\newpage
+\null\newpage
+\BackgroundRetroPic
+\null\newpage
+\end{document}

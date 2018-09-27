@@ -1,0 +1,791 @@
+\documentclass[10pt,twoside,openany,x11names,svgnames,italian,a5paper,dvipsnames,table]{memoir}
+\usepackage[italian]{babel}
+\usepackage{lmodern}
+\usepackage{wallpaper}
+\usepackage{tikz}
+\usetikzlibrary{shapes,positioning}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+
+\usepackage[hyphens]{url} % For URL automated linebreaks
+\usepackage{tabularx, booktabs}
+\usepackage{grffile}
+
+\usepackage{wrapfig}
+\usepackage{minibox}
+\usepackage{pdfpages}
+\usepackage{subcaption}
+
+\usepackage{lipsum}
+\usepackage[ISBN=978-80-85955-35-4]{ean13isbn}
+\usepackage{graphicx}
+\graphicspath{ {./img/} {./img/chap/} {./img/logo/} {./img/front/} {./img/icon/} {./img/back/} }
+
+% Captions
+\usepackage[labelfont={footnotesize,sf,bf},textfont={footnotesize,sf}]{caption}
+\input{pantone_colori.tex}
+
+%%% COLORS
+\newcommand{\chaptercolor}{G10}
+\newcommand{\toprectanglecolor}{F10}
+\newcommand{\pageboxcolor}{G9}
+\newcommand{\backgroundrectanglecolor}{G8!80!white}
+\newcommand{\decoratelinecolor}{G8}
+\newcommand{\titlecolor}{G8}
+\newcommand{\backpagecolor}{\chaptercolor}
+
+% Links
+\usepackage[pdftitle={LIFE+T.E.N. : Azione A8 - Piano di azione per la conservazione delle specie ornitiche forestali in Trentino},
+     pdfauthor={Sezione Zoologia dei Vertebrati, MUSE - Museo delle Scienze},
+     colorlinks,linktocpage=true,linkcolor=\titlecolor,urlcolor=BrickRed,citecolor=OliveGreen,bookmarks]{hyperref}
+
+% Adjust margins around typeblock
+\setlrmarginsandblock{23mm}{18mm}{*}
+\setulmarginsandblock{23mm}{23mm}{*}
+
+% Header and footer heights
+\setheadfoot{\baselineskip}{10mm}
+\setlength\headsep{7mm}
+
+% Apply and enforce layout
+\checkandfixthelayout
+
+% Command to hold chapter illustration image
+\newcommand\chapterillustration{}
+
+\usepackage{xcolor}
+\definecolor[named]{GreenTea}{HTML}{CAE8A2}
+\definecolor[named]{MilkTea}{HTML}{C5A16F}
+\definecolor{verylightgray}{gray}{0.95}
+\definecolor{grey}{gray}{0.5} % 0-nero; 1-bianco
+
+\renewcommand{\labelitemi}{\textcolor{\backgroundrectanglecolor}{$\bullet$}}
+\newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
+\newcommand{\etal}{\textsl{et al}. }
+\newcommand{\ph}{\emph{Ph}. }
+\newcommand{\ie}{\emph{i}.\emph{e}. }
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newsubfloat{figure} % Allow subfloats in figure environment
+
+
+
+
+\newcommand{\tablespecie}[3]{\multicolumn{1}{c}{\parbox[t]{4.1cm}{\begin{minipage}[t][.8cm][t]{\textwidth}#1 \newline \href{#2}{\emph{#3}}\end{minipage}}}}
+
+\nouppercaseheads
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% BEGIN DOCUMENT STYLYING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\bibsection}{%
+\section{\bibname}
+\prebibhook}
+
+% CHAPTER STYLE DEFINITION BEGIN
+\makechapterstyle{chapterstyle}{
+% Vertical space before main text 
+  \setlength\beforechapskip{0pt}
+  \setlength\midchapskip{0pt}
+  \setlength\afterchapskip{70mm}
+
+  \renewcommand*\printchaptername{}
+  \renewcommand*\printchapternum{}
+  %% Re-define how the chapter title is printed
+  \def\printchaptertitle##1{
+    % Background image at top of page
+    \ThisULCornerWallPaper{1}{\chapterillustration}
+    % Draw a semi-transparent rectangle across the top
+    \tikz[overlay,remember picture]
+    \fill[fill=\chaptercolor,opacity=.7]
+      (current page.north west) rectangle 
+      ([yshift=-3cm] current page.north east);
+      % Check if on an odd or even page
+      \strictpagecheck\checkoddpage
+      % On odd pages, "logo" image at lower right
+      % corner; Chapter number printed near spine
+      % edge (near the left); chapter title printed
+      % near outer edge (near the right).
+      \ifoddpage{
+        % Insert picture in lower right corner
+        \ThisLRCornerWallPaper{.25}{cedro_small_right.png}
+        % Chapter heading style for ODD pages
+        \begin{tikzpicture}[overlay,remember picture]
+          \node[anchor=south west,
+            xshift=10mm,yshift=-30mm,
+            font=\sffamily\bfseries\huge] 
+            at (current page.north west) 
+            {}; %\chaptername\chapternamenum\thechapter
+          \node[fill=\chaptercolor,text=white,
+            font=\huge\bfseries, 
+            inner ysep=12pt, inner xsep=20pt,
+            rectangle,anchor=east, 
+            xshift=-10mm,yshift=-30mm] 
+            at (current page.north east) {##1};
+        \end{tikzpicture}
+      }
+      % On even pages, "logo" image at lower left
+      % corner; Chapter number printed near outer
+      % edge (near the right); chapter title printed
+      % near spine edge (near the left).
+      \else {
+        % Insert picture in lower left corner
+        \ThisLLCornerWallPaper{.25}{cedro_small_left.png}
+        % Chapter heading style for EVEN pages
+        \begin{tikzpicture}[overlay,remember picture]
+          \node[anchor=south east,
+            xshift=-10mm,yshift=-30mm,
+            font=\sffamily\bfseries\huge] 
+            at (current page.north east)
+            {}; % \chaptername\chapternamenum\thechapter
+          \node[fill=\chaptercolor,text=white,
+            font=\huge\bfseries,
+              inner sep=12pt, inner xsep=20pt,
+              rectangle,anchor=west,
+              xshift=10mm,yshift=-30mm] 
+              at ( current page.north west) {##1};
+        \end{tikzpicture}
+      } % END IF
+      \fi
+    } 
+} % END CHAPTER STYLE
+
+
+% CHAPTER STYLE FOR UNNUMBERED CHAPTERS
+\makechapterstyle{chapterstyleunnumbered}{
+  % Vertical Space before main text starts
+  \setlength\beforechapskip{0pt}
+  \setlength\midchapskip{0pt}
+  \setlength\afterchapskip{52mm}
+
+  \renewcommand*\printchaptername{}
+  \renewcommand*\printchapternum{}
+  %% Re-define how the chapter title is printed
+  \def\printchaptertitle##1{
+    % Draw a semi-transparent rectangle across the top
+    \tikz[overlay,remember picture]
+    \fill[fill=\toprectanglecolor,opacity=.7]
+      (current page.north west) rectangle 
+      ([yshift=-3cm] current page.north east);
+    % Check if on an odd or even page
+    \strictpagecheck\checkoddpage
+      \ifoddpage{
+        \begin{tikzpicture}[remember picture, overlay]
+        \node[fill=\chaptercolor,text=white,
+          font=\huge\bfseries, 
+          inner ysep=12pt, inner xsep=20pt,
+          rectangle,anchor=east, 
+          xshift=-10mm,yshift=-30mm] 
+          at (current page.north east) {##1};
+        \end{tikzpicture}
+      }
+      \else {
+        \begin{tikzpicture}[remember picture, overlay]
+          \node[fill=\chaptercolor,text=white,
+            font=\huge\bfseries,
+            inner sep=12pt, inner xsep=20pt,
+            rectangle,anchor=west,
+            xshift=10mm,yshift=-30mm] 
+            at ( current page.north west) {##1};
+        \end{tikzpicture}
+      } % END IF
+      \fi
+    } 
+} % END CHAPTER STYLE
+
+
+% Set the uniform width of the colour box
+% displaying the page number in footer
+% to the width of "99"
+\newlength\pagenumwidth
+\settowidth{\pagenumwidth}{99}
+
+% PAGE NUMBER COLOR BOX STYLE
+\tikzset{pagefooter/.style={
+anchor=base,font=\sffamily\bfseries\small,
+text=white,fill=\pageboxcolor,text centered,
+text depth=17mm,text width=\pagenumwidth}}
+
+%%%%%
+%% Re-define running headers on non-chapter odd pages
+%%%%%
+\makeoddhead{headings}
+% Left header is empty but I'm using it as a hook to paint the
+% background rectangles underneath everything else
+{\begin{tikzpicture}[remember picture,overlay]
+\fill[\backgroundrectanglecolor] (current page.north east) 
+  rectangle (current page.south west);
+\fill[white, rounded corners] 
+  ([xshift=-10mm,yshift=-20mm]current page.north east) rectangle  
+  ([xshift=15mm,yshift=17mm]current page.south west);
+\end{tikzpicture}}%
+% Blank centre header
+{}%
+% Display a decorate line and the right mark (chapter title)
+% at right end
+{\begin{tikzpicture}[xshift=-.75\baselineskip,yshift=.25\baselineskip,remember picture, overlay,fill=\decoratelinecolor,draw=\decoratelinecolor]\fill circle(3pt);\draw[semithick](0,0) -- (current page.west |- 0,0);\end{tikzpicture}\textcolor{white}{\sffamily\itshape\small\rightmark}}
+
+%%%%%
+%% Re-define running footers on ODD pages
+%% i.e. display the page number on the right
+%%%%%
+\makeoddfoot{headings}{}{}{\tikz[baseline]\node[pagefooter]{\thepage};}
+\makeoddfoot{plain}{}{}{\tikz[baseline]\node[pagefooter]{\thepage};}
+
+%%%%%
+%% Re-define running headers on non-chapter EVEN pages
+%%%%%
+\makeevenhead{headings}
+% Draw the background rectangles; then the left mark (section
+% title) and the decorate line
+{{\begin{tikzpicture}[remember picture,overlay]
+  \fill[\backgroundrectanglecolor] (current page.north east) rectangle (current page.south west);
+  \fill[white, rounded corners] ([xshift=-15mm,yshift=-20mm]current page.north east) rectangle ([xshift=10mm,yshift=17mm]current page.south west);
+\end{tikzpicture}}%
+\textcolor{white}{\sffamily\itshape\small\leftmark}
+\begin{tikzpicture}[xshift=.5\baselineskip,yshift=.25\baselineskip,remember picture, overlay,fill=\decoratelinecolor,draw=\decoratelinecolor]\fill (0,0) circle (3pt); \draw[semithick](0,0) -- (current page.east |- 0,0 );\end{tikzpicture}}{}{}
+\makeevenfoot{headings}{\tikz[baseline]\node[pagefooter]{\thepage};}{}{}
+\makeevenfoot{plain}{\tikz[baseline]\node[pagefooter]{\thepage};}
+% Empty centre and right headers on even pages
+{}{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% END DOCUMENT STYLYING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setsecnumdepth{chapter}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% DOCUMENTMATTER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\frontmatter
+
+%%%%%%%
+% Cover page
+%%%%%%%
+% No header nor footer on the cover
+\thispagestyle{empty}
+% Bar across the top
+\tikz[remember picture,overlay]%
+\node[fill=\chaptercolor,text=white,font=\LARGE\bfseries,text=Cornsilk,%
+minimum width=\paperwidth,minimum height=5em,anchor=north]%
+at (current page.north){
+\begin{tabular}{c}
+LIFE + T.E.N.: Azione A8\\
+\end{tabular}};
+
+% Cover illustration
+\ThisLLCornerWallPaper{1}{grassland.jpg}
+
+\vspace*{1\baselineskip}
+% Title
+{\bfseries\textcolor{\titlecolor}{\selectfont
+\\
+{\normalsize \emph{Action plans} per la conservazione di specie focali \\[0.05cm]
+di interesse comunitario} \\[0.3cm]
+{\huge\noindent Specie ornitiche\\[0.1cm]
+degli ambienti forestali}}} \\[.2cm]
+\vspace*{2\baselineskip}
+
+
+
+% Footer image
+\begin{tikzpicture}[remember picture, overlay]
+  \node[fill=\chaptercolor,font=\LARGE\bfseries,text=Cornsilk,%
+  minimum width=\paperwidth,minimum height=5em,anchor=south]%
+  at (current page.south) {}; 
+  \node[anchor=south,inner sep=0pt] at (current page.south) { \includegraphics[width=\textwidth]{footer.png}};
+\end{tikzpicture}
+
+
+
+\vspace*{6\baselineskip}
+\includepdf[pages={1}]{second_cover_ornitiche_forestali.pdf}
+
+\cleartorecto
+
+% Invoke fancy unnumbered chapter style
+% for the table of contents
+
+\chapterstyle{chapterstyleunnumbered}
+\setlength\afterchapskip{10mm}
+\setcounter{tocdepth}{0}
+\tableofcontents*
+
+% Main matter starts here; resets page-numberings to arabic numeral 1
+\mainmatter
+
+% Invoke the chapterstyle chapter style
+\chapterstyle{chapterstyle}
+
+
+
+% Public domain image from
+% http://www.public-domain-image.com/objects/computer-chips/slides/six-computers-chips-circuits.html
+\setlength\afterchapskip{10mm}
+\chapter{Che cos'\`e un piano di azione}
+\renewcommand\chapterillustration{}
+\footnotesize
+In generale, l'approccio ecosistemico costituisce la strategia più corretta ed efficace per la conservazione della natura: attraverso la conservazione degli ecosistemi, ovvero degli ambienti naturali e delle relazioni che s’instaurano tra le varie componenti che in essi si rinvengono, si garantisce la conservazione sia delle singole specie che dei processi ecologici e dei fenomeni di interazione tra specie e tra fattori biotici e abiotici che consentono la presenza delle specie stesse.
+Vi sono tuttavia alcune situazioni nelle quali le misure di tutela ambientale possono non essere sufficienti per garantire la sopravvivenza di specie minacciate, che necessitano di misure di conservazione dedicate e spesso specie-specifiche. In questi casi è necessario seguire un approccio specie-specifico, intervenendo direttamente sui taxa fortemente minacciati di estinzione, che richiedono misure urgenti di conservazione. L’approccio specie – specifico prevede misure di intervento delineate in documenti tecnici denominati “Piani d’Azione” \cite{EUCOUNCIL98}. 
+
+Un piano d’azione si basa sulle informazioni disponibili relative a biologia, ecologia, distribuzione e abbondanza della specie trattata e in base a queste propone misure d’intervento, delineate a partire dalla definizione delle minacce che mettono a rischio la sopravvivenza della specie. Il piano d’azione si compone poi degli obiettivi volti ad assicurare la conservazione della specie nel lungo periodo e delle corrispondenti azioni necessarie per realizzarli.
+
+Una corretta strategia di conservazione relativa a una determinata specie deve contemplare la pianificazione degli obiettivi nel breve, medio e lungo periodo, e deve essere flessibile e modificabile nel tempo. Infatti periodiche verifiche circa lo stato di realizzazione ed avanzamento delle azioni, in rapporto al raggiungimento degli obiettivi, possono mettere in luce la necessità di un loro adeguamento, in funzione anche di scenari mutati.Nell'ambito di questo piano sviluppato nell'Azione A8 del LIFE + T.E.N., così come in alcuni altri sempre realizzati nello stesso LIFE, si è utilizzato un approccio innovativo, a cavallo tra quello ecosistemico e quello specie-specifico, riferito a gruppi di specie che occupano gli stessi ambienti e che risultano sostanzialmente sottoposte alle stesse minacce e pressioni. In questo modo, s’intende massimizzare l'efficacia degli interventi proposti per la conservazione e ottimizzare il relativo rapporto costi/benefici, proponendo indicazioni che mirino alla salvaguardia non di una sola specie, ma di un gruppo di specie con esigenze ecologiche largamente sovrapposte e che spesso necessitano di strategie di conservazione simili.\\
+
+
+ \normalsize
+\setlength\afterchapskip{52mm}
+\chapter{Inquadramento generale}
+\renewcommand\chapterillustration{1.JPG}
+
+\section{Inquadramento dell'habitat e delle specie}
+Gli ambienti forestali costituiscono l’ecosistema più diffuso in provincia di Trento e ospitano migliaia di specie faunistiche e floristiche. L’utilizzo di tali ambienti da parte dell’uomo è molto antico e spesso vi è stata una potente azione di disboscamento, per permettere il recupero di materie prime, di spazi da destinare al pascolo e all’agricoltura e, soprattutto in epoca più recente, agli insediamenti. L’antropizzazione della montagna alpina e il conseguente depauperamento dell’ambiente forestale è avvenuta in un lungo periodo, in modi e tempi diversi, a seconda dell’orografia del territorio. Le antiche pratiche agro-silvo-pastorali, riaffermatesi con le nuove occupazioni delle Alpi nel Medioevo, hanno progressivamente inciso sulla copertura forestale, fortemente ridotta fino al Secondo Dopoguerra. 
+
+Il mantenimento delle foreste, come ambiente prezioso per le economie locali montane, ha comunque permesso la presenza e la sopravvivenza di una flora e fauna esclusive. Alcune specie, come gli Ungulati, hanno subito la caccia dell’uomo, avendo un ruolo importante quale contributo all’alimentazione delle popolazioni alpine; altre, in quanto specie emblematiche, sono state cacciate per il loro valore come trofeo (vedi i Tetraonidi); altre ancora sono state considerate nocive al bosco (picidi) o alle attività umane (rapaci diurni). Solo una generale conservazione dell’ambiente forestale, ormai diffusa a scala alpina per ragioni produttive e idrogeologiche (più recentemente, anche naturalistiche), e la tutela di gran parte delle specie forestali, ne hanno garantito il ritorno o evitato, in alcuni casi particolari, l’estinzione.
+
+Attualmente, le foreste del Trentino sono gestite in modo da soddisfare molteplici esigenze  antropiche: dal legname da opera, alla legna da ardere, da materie prime di altissima qualità (ad esempio il legno di risonanza), alla protezione da rischi idrogeologici e all'utilizzo ricreativo.
+
+Esse coprono circa il 60\% della superficie della provincia di Trento e, pur in presenza di molteplici tipologie forestali, si possono suddividere schematicamente in due categorie: le fustaie, che prevalgono nettamente con il 78\% di superficie e gli altri boschi di bassa ‘statura’ (cedui, ontanete di ontano verde, mughete e alcuni boschi di neo-formazione originatisi per abbandono di prati e pascoli) che ricoprono il rimanente 22\%. Al contrario, nel territorio nazionale il rapporto fustaia/ceduo è invertito, con la netta prevalenza dei cedui (60\%) sulle fustaie. Il ceduo costituisce un tipo di governo del bosco che tende, per unità di superficie, a massimizzare il numero di fusti (polloni) che di conseguenza hanno diametri ridotti. Nel governo a fustaia, pur con molte eccezioni, si verifica l’opposto.
+
+Ed è questa situazione di partenza dei boschi del Trentino, costituiti da una netta prevalenza delle fustaie, che ne fa ambienti altamente idonei a ospitare specie ornitiche particolarmente esigenti per quanto concerne la selezione d’habitat, quali i picidi, i rapaci diurni e notturni e i Galliformi. Va sottolineato come due specie di civette di interesse comunitario (inserite nell'Allegato I della Direttiva Uccelli), la civetta nana \emph{Glaucidium passerinum} e la civetta capogrosso \emph{Aegolius funereus}, dipendano totalmente dai picidi per la riproduzione, essendo nidificanti secondari esclusivi (o quasi) di cavità-nido realizzate dai picchi \cite{Cramp98}.
+
+Questo piano d'azione è diretto essenzialmente a tre specie di picidi di interesse comunitario (in quanto inserite nell’Allegato I della Direttiva Uccelli), il picchio nero \emph{Dryocopus martius}, il picchio cenerino \emph{Picus canus} e il picchio tridattilo \emph{Picoides tridactylus}, ai due Strigidi nidificanti con regolarità nelle loro cavità, la civetta nana e la civetta capogrosso, e al gallo cedrone \emph{Tetrao urogallus}, che condivide l’ambiente forestale con il francolino di monte \emph{Bonasa bonasia} e le specie appena citate. Indirettamente, interessa anche il fagiano di monte \emph{Tetrao tetrix}, specie legata agli ambienti forestali alto montani ai margini superiori del bosco, e di particolare interesse sul territorio provinciale. Per questo Tetraonide nell’ambito del LIFE + T.E.N. è stato redatto uno specifico documento dedicato al recupero degli habitat e contenente indirizzi per la conservazione. Tale documento è disponibile nel sito \url{www.lifeten.tn.it} \cite{Rotelli14}. Trattandosi poi di specie legate alle alte quote (le popolazioni alpine nidificanti fino agli anni Settanta anche alle medie altitudini sono oggi estinte), viene ripreso brevemente nel piano d’azione dedicato all’avifauna d’alta quota.
+
+Per il loro ruolo ecologico i picidi rivestono notevole importanza per gli ecosistemi forestali \cite{Mikusinski01} \cite{Gorman04}; in particolare è la loro abitudine a realizzare profonde cavità all’interno degli alberi a consentire successivamente la riproduzione e il riparo ad una grande varietà di altre specie animali, alcune delle quali definite di “interesse comunitario”. Tra queste, oltre alla civetta capogrosso e alla civetta nana, che costituiscono gli esempi più noti in questo senso, ve ne sono altre che utilizzano le cavità meno regolarmente, ma che sono ugualmente riconosciute come efficaci bio-indicatori \cite{Sergio05}, quali l’allocco \emph{Strix aluco}\cite{Marchesi06} e l’assiolo \emph{Otus scops} \cite{Marchesi05}.
+
+Inoltre, tali cavità forniscono possibilità di ricovero e riproduzione a molte altre specie, tra cui diversi uccelli, in particolar modo insettivori, che hanno un ruolo chiave negli ecosistemi forestali (ad esempio, le cince). Ma non è solo l’avifauna nidificante a trarne vantaggio; vi sono anche molte altre specie arboricole di piccoli e medi Mammiferi (Gliridi, Chirotteri e Mustelidi) come anche molti invertebrati, tra cui Imenotteri, inclusa l’ape domestica. Una frazione delle cavità-nido, valutabile attorno al 10\%, accumulando l’acqua piovana può fungere da riserva idrica utile nei mesi estivi a soddisfare le esigenze di molte specie; soprattutto nelle faggete calcicole, dove tale carenza è particolarmente sentita per la mancanza d’acqua di superficie.
+
+Altre specie ornitiche potrebbero beneficiare delle misure di conservazione a favore delle specie target; sono assiolo, allocco, colombella \emph{Columba oenas} (non nidificante in Trentino), picchio rosso maggiore \emph{Dendrocopos major}, picchio verde \emph{Picus viridis}, picchio muratore \emph{Sitta europaea}, cinciarella \emph{Cyanistes caeruleus}, cincia mora \emph{Periparus ater}, cincia bigia \emph{Poecile palustris}, cincia alpestre \emph{Poecile montanus}, cinciallegra \emph{Parus major}, cincia dal ciuffo \emph{Lophophanes cristatus}, rampichino comune \emph{Certhia brachydactyla}, rampichino alpestre \emph{Certhia familiaris}, pigliamosche \emph{Muscicapa striata}.
+
+
+
+\section{Distribuzione e status di conservazione in Italia e in Europa}
+Tutte le specie target del presente piano d'azione mostrano una corologia eurosibirica, eurosibirica-boreoalpina o oloartica-boreoalpina \cite{Boano89}. In Italia, ad eccezione del picchio nero, le specie qui trattate sono esclusive della regione alpina e hanno una distribuzione più continua nelle Alpi orientali, quando non esclusiva di questa porzione della catena alpina. 
+Tra queste il gallo cedrone, considerato estinto nei settori occidentali e raro in quelli centrali, ritrova in Trentino e nelle restanti Alpi centrorientali il suo areale principale. In apparente espansione verso occidente è invece il picchio cenerino, mentre il picchio tridattilo raggiunge nella porzione italiana delle Alpi, il margine meridionale del suo areale. La civetta nana tende ad esser più comune nelle Alpi centrali e orientali rispetto a quelle occidentali, dove è estremamente rara come nidificante \cite{Brichetti04} \cite{Pedrini05}. La specie più stabile, insieme al picchio nero, favorita dal buono stato di conservazione di questo picide, è la civetta capogrosso, rapace notturno uniformemente diffuso negli ambienti a fustaie di conifere e latifoglie, fino alle quote più basse. 
+
+Le specie target del presente piano d'azione sono tutte inserite nell'Allegato I della Direttiva Uccelli. 
+
+Alcune di queste mostrano uno stato di conservazione sfavorevole a livello europeo/italiano e sono potenzialmente sensibili a forti pressioni ecologiche anche in provincia di Trento; tra tutte, il gallo cedrone è probabilmente il più minacciato e in declino sulle Alpi, anche a scala provinciale, mentre per il più piccolo dei Tetraonidi, il francolino di monte, le conoscenze sullo stato di conservazione ed esigenze ecologiche sono ancora alquanto lacunose.
+
+
+\newpage
+%\rowcolors{2}{G8!70!white}{white}
+\begin{table}[H]
+\centering
+\label{tab:redlist}
+\begin{adjustwidth*}{-0.6cm}{-0.6cm}
+\scalebox{.8}{
+\begin{tabular}{l|l|l|l|l|l|l|l}
+\hiderowcolors
+\toprule                          
+  \textbf{\textsc{\textcolor{G8}{Specie}}} &
+  \rotatebox{270}{\textbf{\textsc{\textcolor{G8}{All. I D.U.}}}} & 
+  \rotatebox{270}{\textbf{\textsc{\textcolor{G8}{Cat. SPEC}}}} & 
+  \rotatebox{270}{\textbf{\textsc{\textcolor{G8}{Stato EU}}}} & 
+  \rotatebox{270}{\textbf{\textsc{\textcolor{G8}{Stato IT}}}} & 
+  \rotatebox{270}{\textbf{\textsc{\textcolor{G8}{LR IT (2011)}}}} & 
+  \rotatebox{270}{\textbf{\textsc{\textcolor{G8}{LR TN (2005)}}}} &
+  \rotatebox{270}{\textbf{\textsc{\textcolor{G8}{Prior. A2}}}} \\
+\midrule
+\showrowcolors                          
+\tablespecie{Gallo cedrone}{http://217.199.4.93/webgis/?specie=Tetrao\%20urogallus}{Tetrao urogallus}  & $\bullet$ & - & in declino  & cattivo & VU  & VU & 57.9 \\
+\tablespecie{Civetta nana}{http://217.199.4.93/webgis/?specie=Glaucidium\%20passerinum}{Glaucidium passerinum}  & $\bullet$& - & sicuro  & inadeguato  & NT  & VU & 50 \\
+\tablespecie{Civetta capogrosso}{http://217.199.4.93/webgis/?specie=Aegolius\%20funereus}{Aegolius funereus}  & $\bullet$& - & sicuro  & favorevole  & LC  & NT & 42.1\\
+\tablespecie{Picchio tridattilo}{http://217.199.4.93/webgis/?specie=Picoides\%20tridactylus}{Picoides tridactylus} & $\bullet$& 3 & popolazione ridotta & inadeguato  & NT  & NT & 59.5 \\
+\tablespecie{Picchio nero}{http://217.199.4.93/webgis/?specie=Dryocopus\%20martius}{Dryocopus martius}  & $\bullet$& - & sicuro  & inadeguato  & LC  & LC & 43.7\\
+\tablespecie{Picchio cenerino}{http://217.199.4.93/webgis/?specie=Picus\%20canus}{Picus canus}  & $\bullet$& 3 & popolazione ridotta & favorevole  & LC  & NT & 45.2  \\
+
+\bottomrule
+\end{tabular}
+}
+\end{adjustwidth*}
+\caption{Categorie di minaccia per le specie target. Per il significato delle abbreviazioni utilizzate, si veda la pagina seguente, per dettagli sulla priorità dell'Azione A2 si veda invece \href{http://www.lifeten.tn.it/binary/pat_lifeten/azioni_preparatorie/LifeTEN_Report_A2.1395233849.pdf}{il relativo documento}, per dettagli sulla Direttiva Uccelli, la pagina Web \url{http://www.minambiente.it/pagina/direttiva-uccelli}}
+\end{table} 
+
+\newpage
+\label{tab:legende}
+
+\begin{table}[H]
+\centering
+\hiderowcolors
+\begin{adjustwidth*}{-.6cm}{-.6cm}
+\scalebox{.75}{
+\begin{tabular}{p{0.05\columnwidth}p{14cm}}
+ \multicolumn{2}{l}{\textbf{\Large Legenda Liste Rosse}} \\
+ \medskip \\
+ \textbf{Sigla} & \textbf{Significato}\\
+ \midrule
+ \showrowcolors
+ \textbf{RE} & Estinta nella regione (\emph{Regional Exctinct}): presente in passato, 
+ con popolazioni naturali che si sono estinte nell’intera regione\\
+   \textbf{RE?} & Probabilmente estinta nella regione (\emph{Regional Exctinct}?): presente in passato, 
+ con popolazioni naturali la cui estinzione seppur molto probabile non si ritiene sufficientemente accertata \\
+ \textbf{CR} & In pericolo in modo critico (\emph{Critically Endangered}): 
+ con altissimo rischio di estinzione nell’immediato futuro, per la quale occorrono urgenti interventi di tutela\\
+   \textbf{EN} & In pericolo (\emph{Endangered}): fortemente minacciata di estinzione in un prossimo futuro, 
+ cioè presente con piccole popolazioni o le cui popolazioni sono in significativo regresso in quasi
+ tutta la regione o scomparse da determinate zone \\
+ \textbf{VU} & Vulnerabile (\emph{Vulnerable}): minacciata di estinzione nel futuro a medio termine,
+ ovvero minacciata in numerose località della regione, con popolazioni piccole o piccolissime
+ o che hanno subito un regresso a livello regionale o sono localmente scomparse \\
+   \textbf{NT} & Potenzialmente minacciata (\emph{Near Threatened}): non si qualifica per alcuna delle
+ categorie di minaccia sopra elencate, per la quale sono noti tuttavia elementi che inducono a
+ considerarla in uno stato di conservazione non scevro da rischi in regione \\
+ \textbf{LC} & Non minacciata (\emph{Least Concern}): non inseribile in nessuna delle categorie
+ precedenti in quanto ampiamente diffusa e frequente \\
+   \textbf{DD} & Carenza di informazioni (\emph{Data Deficient}): le conoscenze sulla presenza 
+ e diffusione nella regione non sono ancora ben note e di conseguenza non sono 
+ manifeste le reali minacce che possono interessare le sue popolazioni \\
+ \textbf{NE} & Non valutata (\emph{Not Evaluated}): non è stata fatta alcuna valutazione \\
+\bottomrule
+ \end{tabular}
+}
+\end{adjustwidth*}
+}
+\end{table}
+      
+
+\begin{table}[H]
+\centering
+\scalebox{.75}{
+\hiderowcolors
+\begin{tabular}{p{0.15\columnwidth}p{12cm}}
+\multicolumn{2}{l}{\textbf{\Large Categorie SPEC} - Species of European Conservation Concern} \\
+\multicolumn{2}{l}{così come indicate da \emph{BirdLife International} \cite{Birdlife04}} \\
+
+ \medskip \\
+ \textbf{Sigla} & \textbf{Significato}\\  
+  \midrule
+  \showrowcolors
+  SPEC 1 & Specie di rilevanza conservazionistica globale\\
+  SPEC 2 & Concentrata in Europa con uno \emph{status} conservazionistico sfavorevole \\
+  SPEC 3 & Non concentrata in Europa, ma con uno \emph{status} conservazionistico sfavorevole \\
+  Ne & Concentrata in Europa, ma con uno \emph{status} conservazionistico favorevole \\
+  N & Non concentrata in Europa, e con uno \emph{status} conservazionistico favorevole \\
+  \midrule
+\end{tabular}
+}
+\end{table}
+
+
+\section{Biologia ed ecologia generali}
+
+Tutte le specie sono prevalentemente o inscindibilmente legate alla presenza di ambienti forestali gestiti a fustaia \cite{Brichetti04} \cite{Pedrini05} \cite{Angeli07}. In alcuni casi, il picchio cenerino può essere ritrovato anche in ambienti coltivati o forestali, differenti da quelli assimilabili ad una fustaia, ad esempio nei castagneti di produzione o nell’ambito di qualche singolo elemento arboreo (castagno, quercia) inserito all’interno di un bosco ceduo. A parte queste sporadiche eccezioni, le specie target del presente piano d’azione sono legate in modo esclusivo alle fustaie, siano esse classificate come di produzione o di protezione. In generale, esse dipendono dalle fustaie per la nidificazione, dato che solo all’interno di esse possono trovare quegli elementi arborei che per dimensione (diametro dei tronchi e altezza) e caratteristiche generali (distanza tra l’albero del nido e quelli vicini, tipologia della corteccia, altezza dell’inserzione dei primi rami verdi, ecc.) sono idonei a ospitare cavità-nido scavate dai picchi, oppure presentano una struttura tale da permettere l’insediamento del gallo cedrone. Nei contesti forestali localizzati al di sopra dei 1000 metri di quota e dove sono disponibili un certo numero di cavità, è possibile l’insediamento delle due civette.
+
+All’interno delle fustaie si svolge la maggior parte delle funzioni vitali delle specie qui considerate. In particolare, picidi e rapaci notturni sono di abitudini forestali anche in relazione alla loro alimentazione.  I primi sono insettivori specializzati: le tre specie qui considerate si nutrono soprattutto di formiche (di varie specie) e insetti xilofagi che catturano prevalentemente o esclusivamente in ambienti forestali; le civette cacciano prevalentemente vertebrati di bosco, quali piccoli mammiferi e uccelli (Passeriformi).
+
+La presenza di foreste sufficientemente diversificate sotto il profilo ecotonale, della struttura, della composizione specifica e ricche di necromassa a differenti stadi di decomposizione (legno morto rappresentato da elementi arborei ancora radicati, oppure già al suolo più o meno decomposti) rappresenta l’elemento cruciale in grado di condizionare l’abbondanza dei picchi e, di riflesso, anche degli Strigidi oggetto del presente piano d’azione.
+
+Il gallo cedrone sembra essere legato a boschi tendenzialmente coetaneiformi, con una copertura arborea che permetta l’ingresso della luce necessaria allo sviluppo di un ricco sottobosco (in particolare di ericacee) e della rinnovazione. 
+
+Come arene di canto, oltre alla fondamentale morfologia del territorio, vengono selezionati boschi maturi in cui la densità dei fusti e delle chiome, per piede d’albero o per gruppi, favorisca l'importante fase del corteggiamento preriproduttivo: 
+\begin{itemize}\itemsep0pt
+  \item corridoi di diffusione del canto emesso dal maschio in pianta;
+  \item presenza di piante con portamento e ramosità idonee a posizioni di canto;
+  \item aperture idonee all’interazione dei maschi e delle femmine a terra, ma non troppo grandi per non facilitare la predazione e, specialmente per le femmine, provviste di gruppi di rinnovazione o cespugli;
+  \item corridoi di fuga.
+\end{itemize}
+Ancor più rilevante è la fase di cova e allevamento della prole, in cui appare meno condizionante la copertura arborea, mentre è fondamentale lo sviluppo della vegetazione suffruticosa ed erbacea per garantire fonti di cibo (insetti in particolare) e protezione dai predatori.
+\vspace*{\fill}
+\begin{center}
+\includegraphics[width=1\columnwidth]{gallo_cedrone_michele_mendi.jpg}
+\end{center}
+\captionof*{figure}{\textbf{Gallo cedrone} \emph{Tetrao urogallus}. La presenza di questa specie, sedentaria e poco mobile, è strettamente legata alle disponibilità alimentari, fatte di bacche e gemme e che ritrova in boschi disetanei con piccole radure e un ricco sottobosco (\ph Michele Mendi).}
+\vspace*{\fill}
+
+ 
+\chapter{Stato delle specie in Trentino}
+\renewcommand\chapterillustration{2.JPG}
+\section{Distribuzione e status di conservazione}
+Il quadro più aggiornato emerge dall’Atlante degli Uccelli nidificanti in Trentino \cite{Pedrini05}, che riassume gran parte delle informazioni sulle specie oggetto del piano, grazie alle molte ricerche e ai censimenti condotti dagli anni Ottanta sia nelle aree protette che nell’ambito del progetto BIODIVERSITA’ (Fondo Unico per la Ricerca PAT, 2001-2005), con particolare riguardo ai rapaci notturni alpini e ai picidi. I dati sui Galliformi alpini si riferiscono agli annuali censimenti condotti dal Servizio Foreste e fauna e nelle aree protette provinciali. Dati recenti riportati nel WebGIS LIFE+T.E.N. \footnote{\url{http://217.199.4.93}}, sono accessibili anche tramite \url{ornitho.it}, la nuova piattaforma ornitologica italiana, grazie alla quale si sta realizzando il nuovo Atlante italiano degli Uccelli nidificanti.
+In Trentino la \textbf{civetta capogrosso} e il \textbf{picchio nero} sono ampiamente distribuite e diffuse come nidificanti in tutti i gruppi montuosi dalle medie alle alte quote. Diversamente la \textbf{civetta nana} e il \textbf{picchio cenerino} pur nidificanti in quasi tutti i gruppi montuosi, mancano però da alcuni settori meridionali della provincia; il picchio tridattilo è invece presente in modo assai localizzato, essendo nidificante solamente nella porzione nord-orientale del Trentino (Valli dell’Avisio e Primiero) e in Val di Sole. 
+
+Risulta difficile analizzare la presenza storica di queste specie nel territorio provinciale, data la totale assenza di informazioni, riconducibile al loro scarso interesse alimentare o venatorio. Tuttavia è facile ipotizzare che tali animali fossero molto più comuni di adesso prima dell’insediamento massiccio dell’uomo, grazie all’integrità e alla grande variabilità strutturale e specifica che contraddistingueva le foreste vergini alpine. Successivamente, con il progressivo sfruttamento delle foreste, l’uomo ha ridotto in modo sensibile l’estensione e la naturalità degli habitat, operando inoltre dei grandi mutamenti nella composizione specifica volti, direttamente o indirettamente, a ottimizzare il pascolo  anche nelle foreste. A tal fine sono stati favoriti  il larice e il pino silvestre a scapito delle altre conifere e i bovini-ovini-caprini hanno selezionato ulteriormente la vegetazione limitando l'abete bianco e le latifoglie. Nelle aree montane maggiormente interessate da una selvicoltura storicamente commerciale, è stata invece la gestione forestale a modificare profondamente la composizione in favore dell’abete rosso. Ciò è avvenuto, anche dopo gli anni Cinquanta del secolo scorso, con il rimboschimento di prati e pascoli abbandonati. 
+\begin{wrapfigure}{l}{.6\columnwidth}
+\centering
+  \includegraphics[width=.6\columnwidth]{mendini_cedrone.jpg}
+  \caption*{Maschio e femmina di \textbf{gallo cedrone} \emph{Tetrao urogallus} in periodo invernale. Specie poligama, ad evidente dimorfismo sessuale, come ben evidenzia l’immagine  che ritrae un maschio e una femmina, quest’ultima riconoscibile per il piumaggio mimetico, utile difesa passiva durante la delicata fase della cova (\ph Mauro Mendini).}
+\end{wrapfigure}
+Il \textbf{gallo cedrone} è tuttora presente in tutte le vallate trentine, più stabilmente nella fascia della pecceta altimontana/subalpina, mentre risulta in evidente diminuzione nei lariceti secondari, nelle pinete, faggete ed abetine. Se è vero che le peccete altimontane-subalpine a mirtillo nero risultano simili agli ambienti tipici nordeuropei e dovrebbero corrispondere al suo habitat di elezione, l’occupazione in passato anche di tipologie forestali completamente diverse e a quote molto inferiori, va messo in relazione non tanto alla specie arborea dominante, quanto alla continuità dello strato arbustivo-suffruticoso, costituito da mirtillo nero, mirtillo rosso e da superfici erbate-pascolate. A differenza delle altre specie target, il gallo cedrone, come del resto gli altri galliformi alpini, è stato favorito dalle intense ed estese modificazioni apportate dall’uomo \cite{Angeli07} alla foresta (densità ridotta, acidità e povertà dei terreni con sviluppo delle ericacee, bassissima consistenza dei predatori, etc). Tale lettura delle modificazioni degli habitat va comunque direttamente correlata alle situazioni locali e non può essere paragonata alle modificazioni antropiche proprie, ad esempio, del Centro Europa. Qui l’eliminazione delle torbiere in bosco (habitat di elezione del gallo cedrone) è stata in parte compensata dalla creazione su grandi superfici di peccete artificiali a mirtillo nero, che per secoli si sono dimostrate ottimali per la specie.
+Tra gli anni Cinquanta e Ottanta si è verificato un rapido incremento delle superfici forestali, riconducibile in larga parte all’abbandono di pratiche colturali e di pastorizia, integrato da una forte azione di rimboschimento artificiale. L’applicazione in Trentino dei criteri della selvicoltura naturalistica \footnote{Approccio basato, in linea generale, sul principio della multifunzionalità, secondo il quale gli interventi su un determinato soprassuolo devono tendere a produrre un equilibrio tra le funzioni che la foresta è in grado di svolgere, assicurando in primo luogo la funzionalità bioecologica, che costituisce la premessa per lo svolgimento delle altre funzioni.} ha poi, negli ultimi decenni, ulteriormente migliorato alcuni aspetti strutturali importanti per le prime cinque specie oggetto del presente piano d’azione, aumentando la biomassa, la necromassa, la tipologia a fustaia rispetto al ceduo, il diametro e l’altezza degli alberi, le fustaie irregolari-multiplane rispetto a quelle coetanee. Tali pratiche gestionali stanno anche assecondando la naturale espansione delle latifoglie, tra cui il faggio (diffuso nel 50\% dei boschi), la specie arborea, con l’abete bianco, più importante per la nidificazione dei picidi nel territorio provinciale e rilevante anche per civetta nana e civetta capogrosso. 
+
+Come però evidenziato dalla precedente analisi storica, l’abbandono della montagna e il recupero del bosco hanno ridotto l’idoneità degli habitat per il gallo cedrone, specialmente alle quote inferiori, probabilmente esterne alla sua originaria e naturale distribuzione. In linea di massima si può peraltro presumere che il processo di riduzione degli habitat sia terminato e che le attuali modalità selvicolturali possano stabilizzarne e auspicabilmente invertirne il \emph{trend}. 
+
+
+\section{Ecologia in Trentino}
+Il \textbf{gallo cedrone} è associato ad una moderata copertura forestale, non solo per gli spazi necessari per le arene, ma anche per l’idoneità trofica dello strato erbaceo-arbustivo (specialmente mirtillo nero), che risulta fondamentale per la specie in tutto il suo areale, sia in generale che per quanto riguarda le aree di allevamento della prole. L’eccessiva densità dei soprassuoli è probabilmente limitante anche per le difficoltà di involo, incidendo negativamente sulla velocità di fuga dai predatori; d’altro canto, una densità troppo 
+\begin{wrapfigure}{r}{.5\columnwidth}
+\centering
+  \includegraphics[width=.5\columnwidth]{frapporti_francolino.jpg}
+  \caption*{\textbf{Francolino di monte} \emph{Bonasia bonasia}. La specie è segnalata in calo in tutto l’arco alpino; specie stanziale occupa le porzioni più umide dei versanti nelle vallecole laterali occupate da boschi misti con piccole radure idonee all’alimentazione. Sono auspicabili ricerche per meglio comprendere il suo stato di conservazione (\ph Carlo Frapporti).}
+\end{wrapfigure}bassa favorisce la predazione da rapaci e necessita di uno strato arbustivo più importante. Si può quindi ritenere che, in ambiente alpino, la preferenza per arene di canto di cigli di terrazzo e bordi di canalone sia dovuta alla scelta di morfologie che favoriscono non solo la diffusione del canto ma anche l’involo \cite{Angeli07}. Nel caso di formazioni coetanee estese e omogenee, l’habitat ottimale per il gallo cedrone si limita alle fasi di prerinnovazione, di rinnovazione e alle strutture maturo/stramature; elemento determinante per la continuità dell’habitat diventa quindi la contenuta dimensione delle singole tessere del mosaico. In questo senso, la sostituzione del taglio a raso con tagli successivi per gruppi, margini e fessure, porta a una maggior compenetrazione dei diversi stadi strutturali in un mosaico che complessivamente assume il carattere di multiplanarità. Diradamenti 
+per gruppi, possibilmente precoci, permettono anche di anticipare lo sviluppo di habitat idonei nelle fasi giovanili. Nel caso invece di formazioni multiplane, spesso derivanti dall’ingresso della rinnovazione con ripetute e successive ondate, nelle aree un tempo pascolate, l’idoneità per questo tetraonide è duratura nel tempo e nello spazio solo se viene ripristinata da frequenti interventi gestionali che garantiscano la creazione di nuove aperture, in sostituzione di quelle via via occupate dalla rinnovazione. Le attuali modalità selvicolturali prevedono interventi più incisivi che in passato (dal taglio saltuario per pedali al saltuario a gruppi e fessure) con obiettivi strutturali di multiplanarità per superfici a diversa ampiezza anziché di vera e propria disetaneità.
+
+Oltre alle caratteristiche dei soprassuoli, risulta fondamentale anche la presenza di ecotoni con vegetazione erbaceo/arbustiva. Negli ultimi anni in provincia di Trento sono state investite molte risorse per recuperare una parte di questi ambienti che in \begin{wrapfigure}{l}{.5\columnwidth}
+\centering
+  \includegraphics[width=.5\columnwidth]{mendini_civetta_nana.jpg}
+  \caption*{La civetta nana \emph{Glaucidium passerinum} è il più piccolo Strigiforme europeo, parzialmente è un abile e temuto predatore di uccelli e piccoli mammiferi, che caccia anche all’alba e occasionalmente in pieno giorno. Il canto territoriale, un verso flautato e ritmato, caratterizza l’alba e a tramonto sia in primavera che della tarda estate e autunno (\ph Mauro Mendini).}
+\end{wrapfigure}passato costellavano le montagne. Va però tenuto presente che il successo e il mantenimento nel tempo di tali ripristini ambientali e del loro positivo effetto sull’idoneità faunistica, dipende dall’applicazione di un corretto pascolo bovino. 
+
+Gli ambienti forestali sono habitat ideale per il più piccolo dei galliformi alpini, il \textbf{francolino di monte}; specie oggi protetta, a seguito del precario stato di conservazione raggiunto negli anni Ottanta. Legato agli ambienti di bosco ricchi di piante baccifere, per il suo elusivo comportamento è oggi probabilmente sottostimato, anche se sembra diminuire laddove la progressiva evoluzione naturale della vegetazione porta alla chiusura del sottobosco con conseguente perdita degli ambienti necessari per l’alimentazione, la nidificazione e l’allevamento della prole. Specie monogama, nidifica dalle medie quote al limite della vegetazione arborea.
+
+La \textbf{civetta nana} in Trentino mostra preferenze per fustaie di conifere collocate sopra i 1000 metri di quota, prossime a radure, pascoli e praterie secondarie, ambienti ecotonali caratterizzati da una maggior ricchezza specifica e abbondanza in Passeriformi, principali prede della specie \cite{Marchesi03}; per nidificare è strettamente legata alla presenza di nidi di picidi di medie dimensioni. In inverno può compiere erratismi altitudinali verso le quote più basse, fino ai 600-700 metri di quota.
+
+La \textbf{civetta capogrosso} si rinviene tra i 1000 e i 1900 m., localmente anche a quote inferiori. L’habitat di nidificazione si ritrova in varie tipologie forestali gestite a fustaia, in particolar modo peccete e abetine, ma anche boschi di latifoglie come le faggete. In Trentino è distribuita in tutti i gruppi montuosi, sia alpini che prealpini; compie erratismi altitudinali e spostamenti migratori nel periodo postriproduttivo e invernale \cite{Pedrini05}. Si nutre di varie specie di piccoli mammiferi e, in misura minore, di uccelli \cite{Cramp98}.
+\begin{wrapfigure}[24]{l}{.4\columnwidth}
+\centering
+  \includegraphics[width=.4\columnwidth]{mendi_picchio_tridattilo.jpg}
+  \caption*{Il \textbf{picchio tridattilo} \emph{Picoides tridactylus} nidifica nelle peccete e negli altri boschi di conifere di alta quota, soprattutto nelle porzioni montuose più interne; elusivo e poco vocifero, la sua presenza è spesso segnalata dalle caratteristiche tracce di scavo a spirale, “disegnate” sulla corteccia dei tronchi degli alberi (\ph Michele Mendi).}
+\end{wrapfigure}
+
+Il \textbf{picchio nero} nidifica e in tutte le vallate e complessi montuosi provinciali, ove vi siano fustaie mature; s’insedia nelle faggete, nelle abetine, nelle pinete, nelle peccete, nei lariceti e, più raramente, nelle ontanete, dal fondovalle fino quasi al limite della vegetazione arborea. La nidificazione avviene in cavità di grandi dimensioni, scavate da entrambi i componenti della coppia; esclusivamente insettivoro, la sua dieta si basa su formiche di varie specie e insetti xilofagi \cite{Cramp98}.
+
+Il \textbf{picchio tridattilo} è spiccatamente insettivoro e, a esclusione di alcune aree dove si osservano specializzazioni alimentari differenti, si nutre in massima parte di coleotteri Scolitidi (larve, pupe e adulti), soprattutto dei generi \emph{Ips} e \emph{Polygraphus}. In Trentino è molto raro e localizzato in alcune aree orientali, soprattutto nel gruppo montuoso di Cima d’Asta e Catena del Lagorai, e Dolomiti \newpage orientali \cite{Pedrini05}.
+
+\begin{wrapfigure}{r}{.4\columnwidth}
+\centering
+\vspace{-.5cm}
+  \includegraphics[width=.4\columnwidth]{mendini_picchio_cenerino.jpg}
+  \caption*{Il \textbf{picchio cenerino} \emph{Picus canus} nidifica nei boschi montani e di versante, in alberi vecchi, prediligendo aree con margini di radure e aperture; alle basse quote si insedia nei boschi ripariali lungo i corsi d’acqua e presso aree umide e laghi, fino al fondovalle (\ph Mauro Mendini).}
+\end{wrapfigure}Recenti osservazioni in Val di Cembra, nel Gruppo di Brenta e in Val di Sole, farebbero tuttavia ipotizzare un ampliamento della diffusione di questa specie (L. Marchesi oss. pers.), coerentemente con quanto si sta osservando in Lombardia (E. Bassi \& M. Brambilla; \url{ornitho.it}.).
+
+Il \textbf{picchio cenerino}, in provincia di Trento, è diffuso in modo uniforme nei gruppi alpini più settentrionali, mentre è presente con minor regolarità nei gruppi più meridionali; localizzato alle basse quote si rinviene nei boschi di latifoglie di fondovalle lungo corsi d’acqua e aree umide \cite{Pedrini05}. Questo picchio si nutre prevalentemente di formiche, che vengono ricercate sia all’interno della porzione inferiore dei tronchi, sia nei loro acervi (formicai realizzati dalle formiche del gruppo \emph{Rufa}). Il nido viene scavato in tronchi, talvolta a poca distanza dal suolo e/o in alberi che crescono “a picco” su versanti molto ripidi o addirittura rocciosi, talvolta anche in contesti agricoli \cite{Cramp98}.
+
+
+
+ 
+\chapter{Fattori di minaccia} 
+\renewcommand\chapterillustration{3.JPG}
+\section*{}
+
+Ad eccezione del gallo cedrone e del francolino di monte, tutte le altre specie (picidi e conseguentemente gli Strigiformi) qui considerate sono probabilmente più diffuse rispetto agli anni Cinquanta e ancor più rispetto al secolo precedente, quando il bosco era limitato e circoscritto dal forte sfruttamento. Negli ultimi decenni queste specie sono state favorite dal generale aumento della superficie forestale dovuto all’abbandono della montagna e dalla conseguente rapida ripresa naturale del bosco. A questo si aggiunge la maggiore disponibilità delle formazioni arboree ad alto fusto, e  l’accresciuta disponibilità di necromassa al suolo e in piedi, conseguenza di uno sfruttamento più limitato per le minori richieste di legna da ardere ad uso familiare. Per questo e per altre ragioni legate ai passati criteri e modalità di intervento forestale, qualsiasi pianta secca veniva tagliata e asportata prima che completasse il ciclo di decomposizione, causando così un generale impoverimento dell’ecosistema forestale e un’indiretto impoverimento delle disponibilità alimentari per i picidi e altre specie insettivore. 
+
+E’ sostanzialmente a partire dagli anni Settanta che grazie ad una selvicoltura più attenta si è assistito al progressivo miglioramento della condizione ecologiche delle foreste in Trentino. In particolare l’applicazione dei criteri di selvicoltura naturalistica, hanno contribuito a migliorare la qualità dei boschi, sia dal punto di vista della ricchezza specifica, sia per quanto riguarda la variabilità strutturale ed ecotonale, di un rilevante aumento della dimensione degli alberi, di una maggior diffusione del faggio e del progressivo rispetto dei tronchi con cavità o con funzione biologica. 
+
+Nonostante le maggiori disponibilità ambientali rispetto al passato e la protezione accordata a tutte le specie, rimangono alcuni fattori che possono incidere, quantomeno a scala locale, sulla consistenza e successo riproduttivo. 
+
+\begin{itemize}\itemsep0pt
+  \item Taglio degli alberi che ospitano cavità-nido scavate dal picchio nero e da altri picidi , con distruzione dei siti ed eventuale perdita delle covate o dei nidiacei, se avvengono nel periodo riproduttivo delle specie; tali interventi incidono sulla disponibilità di siti per i rapaci notturni nidificanti in cavità, e in particolare picchio nero per civetta capogrosso (ma anche in minor misura, allocco e assiolo). Si ricorda che la perdita di tali cavità può incidere anche sulle disponibilità per alcuni passeriformi forestali come per altre specie quali chirotteri e altri piccoli e medi mammiferi arboricoli.
+  \item Interventi di esbosco per motivazioni idrauliche, che si verificano con periodicità lungo gli alvei dei fiumi, con conseguente rimozione di elementi arborei sovente ospitanti siti riproduttivi di picchio cenerino e, più raramente, di picchio nero. Questi interventi mantengono la struttura arborea ad uno stadio giovanile, con diametri dei tronchi dimensionalmente troppo scarsi e poco idonei quindi all’insediamento dei picidi ed altre specie insettivore, alle medie e basse quote.
+  \item Le operazioni di esbosco nelle immediate vicinanze di siti di nidificazione con riproduzioni in corso possono causare il potenziale abbandono della cavità o influire sul successo riproduttivo; tali attività possono incidere sul successo riproduttivo dei tetraonidi forestali come di altre specie che nidificano sulla chioma degli alberi, quali rapaci diurni (astore \emph{Accipiter gentilis}, sparviere \emph{Accipiter nisus}, e più raramente aquila reale \emph{Aquila chrysaetos} nei contesti montani idonei e biancone \emph{Circaetus gallicus} in quelli a pineta prealpini).
+  \item Chiusura delle radure residue all’interno del bosco e incremento eccessivo della densità arborea e della copertura forestale, con conseguente degrado dell’habitat del gallo cedrone, in assenza di adeguate forme di gestione; tale fattore può incidere anche sulla presenza e nidificazione del francolino di monte.
+  \item Frammentazione e riduzione degli habitat, sono fortunatamente meno impattanti in Trentino che in altri contesti alpini.
+  \item Sono causa di mortalità i  cavi sospesi di linee elettriche e di impianti sciistici in aree forestali, soprattutto fra le popolazioni  di gallo cedrone, come in quota, per altri Tetraonidi.
+  \item Disturbo antropico degli ambienti forestali, ad esempio durante le fasi riproduttive per la raccolta di cicerbita alpina e funghi in particolare; per quanto riguarda la raccolta di funghi, i periodi utili risultano spesso sfasati rispetto al momento più delicato per la specie, mentre la nuova moda della raccolta di cicerbita alpina avviene proprio nei periodi e nelle aree di cova del gallo cedrone.
+  \item Disturbo antropico diretto legato ad attività turistiche e ricreative sul gallo cedrone e in quota nella fascia arbustiva, per il fagiano di monte. Durante la stagione invernale, il disturbo è causato soprattutto da sciatori in fuoripista, scialpinisti o escursionisti con ciaspole \cite{Arlettaz07} \cite{Brenot96} \cite{Mollet07} \cite{Thiel07}. In periodo primaverile-estivo, il transito di escursionisti al di fuori dei sentieri segnalati può arrecare disturbo alla riproduzione; il disturbo alle arene di canto è un fenomeno ancora rilevante in alcune arene di canto per il gallo cedrone.
+  \item Meno impattante il disturbo sulle altre specie, rilevato solo localmente e prevalentemente per il disturbo ai nidi da parte di fotografi naturalisti in siti di facile accesso.
+  \item Cambiamento climatico, con conseguente aumento della temperatura, variazione nelle condizioni di innevamento e nel regime di precipitazioni, modifiche nella composizione specifica delle foreste, con innalzamento del limite delle latifoglie e contestuale spostamento delle conifere, modifiche nella fertilità e acidità di terreni e humus; infine cambiamenti strutturali della foresta che comunque possono essere accelerati dall’abbandono della montagna.
+\end{itemize}
+
+ 
+\chapter{Strategia di conservazione}
+\renewcommand\chapterillustration{4.JPG}
+\section{Obiettivo generale} 
+
+Mantenere e, ove necessario e possibile, migliorare gli ambienti idonei alla conservazione di popolazioni vitali o all'aumento delle popolazioni delle specie target, con migliori prospettive di sopravvivenza a lungo termine e distribuzione meno frammentata, attraverso:
+\begin{itemize}
+  \item il mantenimento di condizioni riproduttive idonee alle specie degli ambienti forestali, prevenendo, per quanto possibile, il taglio degli alberi con cavità-nido realizzate da picidi; 
+  \item il miglioramento della struttura delle foreste e l’aumento della necromassa in tutte le sue componenti essenziali;
+  \item la riduzione del disturbo antropico negli ambienti forestali soprattutto nel periodo riproduttivo per le specie target e a distribuzione circoscritta (in primo luogo per gallo cedrone);
+  \item proseguire nel miglioramento della struttura forestale finalizzata a creare un fine mosaico di tipi strutturali che permetta la continuità dell’habitat tra le aree in rinnovazione e quelle mature, anche anticipando i diradamenti nelle formazioni giovanili, secondo le esigenze ecologiche del gallo cedrone e creando possibili ambienti di caccia per le civette; 
+  \item il mantenimento e, ove possibile, miglioramento della connessione ecologica tra le aree forestali, mitigandone la frammentazione e rendendo le cenosi forestali più resilienti agli effetti del cambiamento climatico.
+\end{itemize}
+
+\section{Obiettivi specifici}
+Le azioni del presente piano si possono distinguere per tipologia e necessità ecologica, fra quelle più mirate ai Piciformi e alle specie ad essi legate (Strigiformi) e quelle favorevoli ai Tetraonidi forestali, ben sapendo che entrambe vanno considerate nel contesto complessivo delle azioni di conservazione degli ambienti forestali.
+
+La strategia per la conservazione, non soltanto delle specie target ma dell’intera comunità biologica che dipende dalle cavità scavate dai picchi, deve quindi considerare, da un lato, la salvaguardia puntuale dei siti di nidificazione dei picidi, al fine di evitarne il taglio durante le pratiche di gestione forestale e, dall’altro, garantire la presenza di una sufficiente quantità di necromassa (in tutte le sue componenti) all’interno delle foreste, con particolare riferimento a quelle di produzione. La conservazione e gli interventi di mantenimento della struttura e composizione forestale e del sottobosco idonea agli ambienti di corteggiamento, nidificazione, cova e allevamento, rappresenta la strategia generale necessaria per favorire la permanenza del gallo cedrone, e conseguentemente del francolino di monte.
+
+In sintesi gli obiettivi sono indicativamente:
+\begin{itemize}\itemsep0pt
+  \item nell’ambito delle operazioni selvicolturali favorire la conservazione e il mantenimento delle cavità nido su albero, garantendo la conservazione di un certo numero di piante occupate;
+  \item nei boschi di produzione a fustaia, localizzare e destinare all’evoluzione naturali porzioni di particelle   per garantire la conservazione e l’incremento della  necromassa; 
+  \item nei boschi di produzione a fustaia, favorire e garantire il mantenimento degli ambienti semiaperti come radure quali habitat riproduzione e di allevamento della nidiata dei tetraonidi forestali;
+  \item proseguire nelle azioni di conservazione o ripristinare gli habitat idonei alle diverse fasi del ciclo vitale del gallo cedrone (arene di canto, aree di covata e di nidificazione);
+  \item sensibilizzare gli operatori e i tecnici che a vario titolo sono impegnati nell’attuale gestione forestale (funzionari, agenti e custodi forestali, ma anche i proprietari e le ditte impegnate nelle utilizzazioni) sull’importanza degli alberi con cavità-nido scavate dai picidi e sulla necessità di rilasciare necromassa;
+  \item ridurre la frammentazione dell’habitat forestale ove siano presenti importanti interruzioni della sua continuità;
+  \item sensibilizzare il personale delle ditte impegnate nelle utilizzazioni sull’importanza di rispettare gli acervi di formica \emph{Rufa};
+  \item indagare le esigenze ecologiche delle specie ancora poco conosciute e in particolare dei fattori ambientali e spaziali che influenzano presenza e abbondanza delle specie di maggior interesse conservazionistico;
+  \item attuare un monitoraggio per documentare  l’evoluzione dello stato di conservazione e l’andamento delle popolazioni delle specie target, con particolare riferimento al gallo cedrone e al francolino di monte, quest’ultima, specie meno indagata.
+\end{itemize}
+
+\vspace*{\fill}
+\begin{center}
+  \includegraphics[width=.7\columnwidth]{mendini_picchio_nero.jpg}
+  \captionsetup{width=.7\columnwidth}
+  \caption*{Il \textbf{picchio nero} \emph{Dryocopus martius}, il più grande tra tutti i picidi europei, si è insediato nelle foreste alpine col progressivo sviluppo ed espansione dei boschi a fustaie; fra tutte le specie forestali del presente piano è quella maggiormente favorita dalla selvicoltura praticata in Trentino (\ph Michele Mendi).}
+\end{center}
+\vspace*{\fill}
+
+ 
+\chapter{Azioni di conservazione}
+\renewcommand\chapterillustration{5.JPG}
+
+
+\section{Conservazione dei boschi gestiti a fustaia}
+Sebbene possa sembrare superfluo ribadire la necessità di conservare il contenuto biologico delle fustaie esistenti, visto che in provincia di Trento la piena applicazione dei criteri di selvicoltura naturalistica va proprio in questa direzione, per quanto riguarda le specie target si verificano ancora casi di perdita dei siti riproduttivi, proprio nell’ambito delle azioni di gestione forestale. In altre parole l’applicazione di questi principi gestionali, più che condivisibili, non è sufficiente per tutelare alcuni aspetti “cruciali” dell’ecologia forestale, quali appunto gli alberi con cavità-nido realizzate dai picchi. Se un tempo il taglio degli alberi “con il picchio” veniva condotta per eliminare piante indebolite nel tronco e quindi per evitarne lo schianto con conseguente danno agli altri alberi circostanti, oggi vengono spesso lasciate “in piedi” proprio per favorire la disponibilità di siti idonei alle specie. Il taglio di una pianta con le cavità nido dei picchi è per lo più accidentale ed è determinato dal fatto che il loro rilevamento dal basso non è sempre facile ad un occhio attento. Per questo, se identificate, le piante con cavità andrebbero sempre marcate per evitare il loro taglio durante le operazioni selvicolturali, e garantire così la loro conservazione nel tempo.
+
+Infatti, è stato verificato che in alcuni casi le cavità-nido realizzate dai picidi possono consentire in modo ininterrotto la riproduzione per più di quarant’anni di seguito \cite{Marchesi08}. 
+
+Per il loro elevato interesse naturalistico, diversi di questi habitat forestali sono stati classificati di “interesse comunitario” secondo la Direttiva Habitat 92/43/CEE (Allegato I; con * sono indicati gli habitat prioritari), di cui i seguenti sono habitat ottimali anche per le tutte specie target: cinque tipologie di faggeti (9110, 9130, 9140, 9150, 91K0), tre tipologie di querceti (9160, 9170, 91L0), le foreste di versanti, ghiaioni e valloni (9180*), le torbiere boscose (91D0*), le foreste alluvionali (91E0*), le foreste di \emph{Castanea sativa} (9260), le foreste acidofile montane e alpine di \emph{Picea} (9410) e le foreste di \emph{Larix decidua} e/o \emph{Pinus cembra} (9420). La gestione di questi boschi deve tener conto anche delle esigenze legate alla gestione dei siti Natura 2000 entro cui spesso ricadono.
+Praticamente tutti i boschi che contengono elementi arborei con diametro a 1,30 m di altezza (DBH) superiore a 25 cm circa possono potenzialmente ospitare i siti riproduttivi di almeno una delle cinque specie target (picchio cenerino), di almeno due specie se localizzati sopra i 1000 m di quota (picchio cenerino e civetta nana), mentre è sufficiente un DBH di circa 30 cm per includere tutte e cinque le specie target \cite{Marchesi08}. 
+
+Sulla base di queste indicazioni, la conservazione delle  specie target è attuabile attraverso la realizzazione delle seguenti azioni concrete:
+\begin{itemize}\itemsep0pt
+  \item tutela degli alberi con cavità scavate da picidi. La marcatura degli alberi al fine di segnalare (ed evitare tagli involontari) a tutti i soggetti coinvolti nella gestione forestale la presenza dei nidi di tali animali ha preso avvio nel 2007 in forma sperimentale nel Distretto di Cles, coinvolgendo poi nei quattro anni successivi tutti i Distretti forestali della provincia di Trento, concentrando le ricerche in differenti aree (foreste demaniali, SIC Rete Natura 2000, ecc.) indicate in dettaglio dal Servizio Foreste e fauna \cite{Marchesi08} \cite{Zorer09}. Ad oggi sono stati marcati secondo tale procedura circa 1500 alberi, soprattutto faggi e abeti bianchi, ma molti altri sono stati rilasciati durante le fasi di martellata e spesso marcati con raschietto/accetta/colore. La marcatura degli elementi arborei dovrebbe poi essere attuata anche lungo gli alvei fluviali, al fine di permettere l’esistenza duratura di alcuni alberi con cavità, oggi periodicamente eliminati nell’ambito della gestione degli alvei. In generale, la marcatura di tali alberi potrebbe rappresentare una misura concreta per la conservazione di picidi e Strigidi in aree particolarmente importanti per queste specie e per altre particolarmente a rischio;
+  \item individuazione delle “Aree ad Elevato Valore Ecologico” (AEVE). Particolare valore andrebbe attribuito alle sezioni forestali ospitanti un numero maggiore di cinque alberi con cavità (di cui almeno uno scavato da picchio nero), per una gestione con criteri spiccatamente naturalistici. Aree o particelle con queste caratteristiche, infatti, possono consentire la nidificazione contemporanea delle specie target anche in contesti territoriali molto ridotti;
+  \item individuazione di particelle forestali da lasciare a completa evoluzione naturale; 
+  \item stabilire una quota di necromassa ancora radicata da rilasciare nel bosco; attualmente esistono delle indicazioni in tal senso quantificabili in circa tre elementi arborei per ettaro all’interno dei SIC e delle ZPS; estendere tale indicazione almeno alle aree identificate come AEVE;
+  \item effettuare periodici corsi di formazione rivolti a tutto il personale coinvolto nella gestione forestale, al fine di incrementare la sensibilizzazione sull’importanza degli alberi con cavità- nido di picidi e sul ruolo della necromassa;
+  \item per il gallo cedrone, esperienze maturate in Val di Sole suggeriscono come il trattamento a buche/fessure nella foresta altimontana a quote relativamente elevate, anticipato da diradamenti a gruppi, anziché da prelievi andanti, dovrebbe evitare l’ingresso esclusivo della \emph{Calamagrostis} e accelerarne la sostituzione con elementi di pre-rinnovazione (\emph{Lonicera sp.}, \emph{Rubus sp.}, etc). Molto importante la creazione di qualche buca in ambienti meno fertili e quindi più lenti nello sviluppo della vegetazione, vista la preferenza della specie per tali siti nelle fasi di nidificazione e allevamento. Durante le operazioni vanno salvaguardati, in modo crescente con la loro rarità, i larici, gli abeti isolati con chioma fino a terra e le piante ramose o pluricormiche, in  particolare sorbi, aceri e faggi. Salvaguardare le arene non è sufficiente a mantenere il cedrone, ed è invece prioritario conservare o ricreare un habitat complessivamente idoneo alla specie nelle diverse fasi del suo ciclo vitale;
+  \item ridurre il disturbo arrecato ai Tetraonidi e alle aree di canto in periodo riproduttivo, confermando gli attuali divieti di utilizzazione per gli assegni uso commercio dal 1$^\circ$ marzo al 15 luglio;
+  \item ridurre il disturbo antropico, in particolare nei confronti del gallo cedrone, incentivando il transito lungo percorsi e sentieri segnalati (sia in estate che in inverno), scoraggiando il passaggio al di fuori di questi e vietando la raccolta di funghi e Cicerbita nelle aree e nei periodi più critici;  
+  \item sensibilizzare custodi forestali, operai e ditte di utilizzazione relativamente ai periodi e alle attività interferenti con la cova/allevamento del gallo cedrone. Vista la preferenza del gallo cedrone per siti di cova sulle scarpate stradali, valutare la possibilità di chiudere completamente al transito nel medesimo periodo alcune arterie di tipo A interferenti con aree di cova;
+  \item promuovere la gestione forestale delle aree abbandonate, anche private e alle quote più elevate;
+  \item anche al di fuori delle aree protette, salvaguardare le aree umide e torbiere, vietandone la bonifica o la loro trasformazioni in pozze bevaie o raccolte d’acqua artificiale;
+  \item provvedere alla segnalazione dei cavi sugli impianti sciistici che attraversano aree forestali ad alto fusto e a vegetazione arborea/arbustiva in quota (cfr. Piano d’Azione Avifauna d’alta quota);
+  \item mantenere o ripristinare la connessione ecologica tra le principali foreste trentine e le confinanti aree boscate esterne al territorio provinciale, anche attraverso interventi di riqualificazione, ripristino o deframmentazione di barriere antropiche.
+  \item valutare nel tempo gli effetti delle azioni elencate qui sopra, attraverso l’effettuazione di monitoraggi in aree campione, rivolti principalmente al rilevamento dei tassi di sopravvivenza degli alberi con cavità e della quantità di rilascio della necromassa, oltre che di altri aspetti ecologici relativi alle specie target (distribuzione, densità, etc.).
+ \end{itemize}
+
+\newpage
+\section[Proseguire nelle indagini e nei monitoraggi]{Proseguire nelle indagini e nei monitoraggi relativi all’avifauna degli ambienti forestali}
+\begin{wrapfigure}[24]{r}{.5\columnwidth}
+\centering
+\captionsetup{width=.5\columnwidth}
+  \includegraphics[width=.5\columnwidth]{mendini_civetta_capogrosso.jpg}
+  \caption*{\textbf{Civetta capogrosso} \emph{Aegolius funereus}. Tra tutti i rapaci notturni è la più comune nelle foreste alpine, dove nidifica quasi esclusivamente nei nidi di picchio nero; occasionalmente può occupare vecchie cavità naturali e ancor più raramente edifici o ruderi in alta quota (\ph Mauro Mendini).}
+\vspace{15pt}
+\end{wrapfigure}
+Migliorare le conoscenze sull'ecologia, la distribuzione, l'andamento di popolazione, sui fattori che regolano presenza e abbondanza e sulle principali minacce per le specie degli ambienti forestali, è di rilievo sia per quelle in cattivo stato di conservazione (in primis gallo cedrone), sia per altre che rivestono un ruolo di indicatori della qualità della foresta (picidi, rapaci diurni e notturni). Queste informazioni sono di rilevante interesse per indirizzare le azioni di coltivazione del bosco e così rispondere ai diversi cambiamenti in atto, anche climatici e assicurare, attraverso un'efficace strategia di conservazione delle foreste, la conservazione degli habitat riproduttivi dell’avifauna alpina che nidifica nelle foreste trentine, ambienti unici per la loro estensione ed elevato grado di naturalità.
+Alcuni temi di ricerca meritevoli di approfondimento per avviare un percorso consapevole di conservazione e promozione degli ambienti forestali riguardano:
+\begin{itemize}
+  \item la definizione della vocazionalità e delle misure di gestione ottimali per la conservazione delle specie di maggior pregio quantomeno per quelle poco studiate quali il francolino di monte, al fine di indirizzare gli interventi forestali secondo le esigenze ecologiche di questa specie nelle aree ad essa più idonee;
+  \item proseguire nell’acquisizione di conoscenze sugli impatti dell’attività forestale e antropiche, per valutare gli effetti delle azioni specifiche di miglioramento ambientale degli habitat di tutte le specie target, soprattutto in periodo riproduttivo;
+  \item approfondimento degli aspetti riguardanti l’ecologia dei Tetraonidi in epoca successiva alla cova e alla riproduzione;
+  \item approfondire le conoscenze sul francolino di monte, sinora poco indagato;
+  \item periodico monitoraggio delle disponibilità di piante utilizzate dai picchi;
+  \item approfondire le conoscenze su ecologia ed esigenze di specie indicatrici e dal ruolo ecologico importante, quali i rapaci notturni.
+\end{itemize}
+
+Le modalità per il monitoraggio delle specie forestali qui trattate sono descritte all'interno delle linee guida per il monitoraggio prodotte nell’ambito dell'\href{http://www.lifeten.tn.it/actions/preliminary_actions/pagina5.html}{Azione A5} del progetto LIFE+T.E.N., sviluppate in collaborazione con il Servizio Foreste e fauna e da attuare con in coinvolgimento di Aree protette e Reti di riserve, a cui si rimanda per gli approfondimenti del caso. 
+
+
+
+
+ 
+\setlength\afterchapskip{10mm}
+\chapter{Bibliografia}
+\renewcommand\chapterillustration{}
+\renewcommand*{\bibname}{}
+\begingroup
+\renewcommand{\addcontentsline}[3]{}% Remove functionality of \addcontentsline
+\renewcommand{\section}[2]{}% Remove functionality of \section
+\begin{thebibliography}{99}
+\footnotesize
+\bibitem{EUCOUNCIL98} Council of Europe, 1998. \emph{Drafting and implementing action plans for threatened species.} Environmental encounters, Council of Europe (Ed), Strasbourg, 39: 1-4.
+\bibitem{Rotelli14} Rotelli L. (a cura di), 2014. \href{http://tinyurl.com/palyg5s}{\emph{I miglioramenti ambientali degli ambienti riproduttivi del Fagiano di monte (\emph{Tetrao tetrix}) sulle Alpi}}. Progetto LIFE+T.E.N. - Provincia Autonoma di Trento.
+\bibitem{Cramp98}Cramp S. 1998. \emph{The Complete Birds of the Western Palearctic}. Oxford University Press.
+\bibitem{Mikusinski01}Mikusinski G., Gromadzki M., Chylarecki P., 2001 - \emph{Woodpeckers as indicators of forest bird diversity}. Conserv. Biol.. 15, 1: 208-215.
+\bibitem{Gorman04}Gorman G. 2004. \emph{Woodpeckers of Europe. A study of the European \emph{Picidae}}. Coleman ed., 192 pp.
+\bibitem{Sergio05}Sergio F., Newton I., Marchesi L. 2005. \emph{Top predators and biodiversity}. Nature, 436: 192.
+\bibitem{Marchesi06}Marchesi L., Sergio F., Pedrini P. 2006. \emph{Implications of temporal changes in forest dynamics on density, nest-site selection, diet and productivity of Tawny Owls \emph{Strix aluco} in the Alps}. Bird Study, 53: 310-318.
+\bibitem{Marchesi05}Marchesi L., Sergio F. 2005. \emph{Distribution, density, diet and productivity of the Scops Owl \emph{Otus scops} in the Italian Alps}. Ibis, 147(1): 176-187.
+\bibitem{Marchesi08}Marchesi L., Zanin M., Zorer P. 2008. \href{http://www2.muse.it/pubblicazioni/8/59a/MUSEO_nat_02.pdf}{\emph{Lunga vita ai tronchi col buco! I picchi e la biodiversità forestale: i primi 580 alberi tutelati in Trentino}}. Natura alpina 59, 1: 15-26.
+\bibitem{Pedrini05}Pedrini P., Caldonazzi M., Zanghellini S. (eds.) 2005. \emph{Atlante degli Uccelli nidificanti e svernanti in provincia di Trento}. Museo Tridentino di Scienze Naturali, Trento. Studi Trentini di Scienze Naturali, Acta Biologica 80(2003), 2: 1-674.
+\bibitem{Brichetti04}Brichetti P., Fracasso G. 2004. \emph{Ornitologia Italiana Vol. II – \emph{Tetraonidae-scolopacidae}}. Alberto Perdisa Editore.
+\bibitem{Angeli07}Angeli F., Pedrotti L. 2007. \emph{Selvicoltura e gallo cedrone. Analisi di un’area campione}. Sherwood 133:1-9.
+\bibitem{Arlettaz07}Arlettaz R., Patthey P., Baltic M., Leu T., Schaub M., Palme R., Jenni-Eiermann S. 2007. \href{http://rspb.royalsocietypublishing.org/content/274/1614/1219.full.pdf}{\emph{Spreading free-riding snow sports represent a novel serious threat for wildlife}}. Proceedings of the Royal Society London B 274: 1219–1224.
+\bibitem{Artuso88}Artuso I., De Franceschi P. F. 1988. \emph{Il gallo cedrone (\emph{Tetrao urogallus} L.) in alcuni ambienti forestali dell’Alto Adige. Osservazioni sugli habitat preferenziali nel periodo della riproduzione e dello sviluppo.} Boll. Mus. Civ. Sc. Nat. Verona, 14 (1987): 381-396.
+\bibitem{Boano89}Boano G., Brichetti P. 1989. \emph{Proposta di una classificazione corologica degli uccelli italiani. I. Non Passeriformi.} Riv. Ital. Orn., 59 (3-4): 141-158. 
+\bibitem{Brenot96}Brenot J. F., Catusse M., Ménoni E. 1996. \emph{Effets de la station de ski de fond du plateau de Beille (Ariège) sur une importante population de Grand Tétras (\emph{Tetrao urogallus})}. Alauda 64: 249–260.
+\bibitem{Gustin09}Gustin M., Brambilla M., Celada C. 2009. \href{http://www.uccellidaproteggere.it/content/download/4210/46448/file/valutazione_avifauna_italiana_volumeI.pdf}{\emph{Valutazione dello stato di conservazione dell’avifauna italiana}}. Roma: Ministero dell’Ambiente, della Tutela del Territorio e del Mare \& LIPU/BirdLife Italia.
+\bibitem{Storch97}Storch I. 1997. \emph{The importance of scale in habitat conservation for an endangered species: the capercaillie in Central Europe}. In: Wildlife and Landscape Ecology: Effects of Pattern and Scale (Bissonette JA ed). Springer Verlag, New York: 310-330.
+\end{thebibliography}
+
+\makeatletter
+\renewcommand\@biblabel[1]{\textcolor{\backgroundrectanglecolor}{$\bullet$}}
+\makeatother
+
+\textbf{\large Bibliografia non citata}
+\begin{thebibliography}{9}
+\footnotesize
+\bibitem{Bernasconi01}Bernasconi A., Perrenoud A., Schneider O. 2001. \emph{Grand Tétras et Gelinotte de bois: protection dans la planification forestiere regionale}. L’environnement pratique. Office fédéral de l’environnement, des forêts et du paysage, Berne, 2e édition révisée: 21 p.
+\bibitem{Bollmann05}Bollmann K., Weibel P., Graf R.F. 2005. \emph{An analysis of central Alpine capercaillie spring habitat at the forest stand scale}. Forest Ecology and Management 215 (1-3): 307-318.
+\bibitem{Borgo01}Borgo A., Clementi T., Mattedi S., Tosi V. 2001. \emph{Esigenze ecologiche del gallo cedrone \emph{Tetrao urogallus} nel periodo estivo e invernale nel parco naturale del Monte Corno, Alto Adige}. Modelli di valutazione dell'idoneità ambientale. Avocetta 25: 178.
+\bibitem{Borgo01b}Borgo A., Clementi T., Mattedi S., Tosi V. 2001. \emph{Fattori di idoneità ambientale per l'allevamento di covate di Gallo cedrone \emph{Tetrao urogallus} nel parco naturale del Monte Corno, Alto Adige}. Avocetta 25: 179.
+\bibitem{Cescatti96}Cescatti A. 1996. \emph{Aspetti strutturali e problematiche gestionali delle arene di canto del gallo cedrone (\emph{Tetrao urogallus} L.)}. Report Centro di Ecologia Alpina, 4: 1-60.
+\bibitem{DeFranceschi06}De Franceschi P., De Franceschi G. 2006. \emph{Il gallo cedrone ed altri tetraonidi alpini}. In: Salvati dall'Arca, a cura di Fraissinet M., Petretti F. Alberto Perdisa Editore, pp 489-503.
+\bibitem{DeFranceschi96}De Franceschi P.F. 1996. \emph{I tetraonidi della foresta di Tarvisio}.
+\bibitem{DeFranceschi91}De Franceschi P.F., Bottazzo M. 1991. \emph{Capercaillie \emph{Tetrao urogallus} and forest management in the Tarvisio Forest (Eastern Alps, Italy) in 1982-88}. Ornis Scandinavica 22: 192-196.
+
+\bibitem{Graf05}Graf R.F. 2005. \emph{Analysis of capercaillie habitat at the landscape scale using aerial photographs and GIS}. PhD thesis n. 15999, Swiss Federal Institute of Technology, Zürich.
+
+\bibitem{Leclerq88}Leclercq B. 1988. \emph{Le grand coq de bruyere - ou Grand Tetras}. Editions Sang de la terre. Mattedi 2001. 
+ 
+\bibitem{Marchesi03}Marchesi L., Pedrini P., Sergio F. 2003. \emph{Densità di sei specie di rapaci notturni nel Parco Naturale Adamello-Brenta (Alpi Centrali, TN)}. Avocetta 27 (Numero speciale): 165.
+
+
+
+\bibitem{Mollet07}Mollet, P., R. Arlettaz, P. Patthey, Thiel D. 2007. \emph{Coqs de bruyère : prière de ne pas déranger! Fiche info}. Station ornithologique suisse, Sempach.
+
+\bibitem{Peronace12}Peronace V., Cecere J.G., Gustin M., Rondinini C. 2012. \href{http://ciso-coi.it/wp-content/uploads/2012/10/redlist-2011.pdf}{\emph{Lista Rossa 2011 degli Uccelli nidificanti in Italia}}. Avocetta 36: 11–58.
+\bibitem{Rolstad89}Rolstad J. 1989. \emph{Habitat and range use of Capercaillie \emph{Tetrao urogallus} L. in Soutcentral Scandinavian boreal forests}. Dr. agric. Thesis from Varaldskogen Field station. Department of nature conservation, Agricultural University of Norway.
+\bibitem{Schatt81}Schatt J. 1981. \emph{La régression des populations de Grand Tétras dans le massif di Jura géographique}. Influence de la sylviculture sur le biotope. Rev.forest.Franç. 33: 339-353.
+\bibitem{Sergio03}Sergio F., Marchesi L., Pedrini P. 2003. \href{http://onlinelibrary.wiley.com/doi/10.1046/j.1365-2656.2003.00693.x/pdf}{\emph{Spatial refugia and the coexistence of a diurnal raptor with its intraguild owl predator}}. Journal of Animal Ecology 72: 232-245.
+\bibitem{Sergio04}Sergio F., Marchesi L., Pedrini P. 2004. \emph{Integrating individual habitat choices and regional distribution of a biodiversity indicator and top predator}. Journal of Biogeography 31: 619-628.
+
+\bibitem{Storch93}Storch I., 1993. \emph{Habitat requirements of Capercaillie}. In: Proceedings International Grouse Symposium (Jenkins D ed), World Pheasant Association, Reading and Istituto Nazionale per la Fauna Selvatica, Ozzano Emilia, 6: 151-154.
+
+\bibitem{Thiel07}Thiel D. 2007. \emph{Behavioural and physiological effects in capercaillie (\emph{Tetrao urogallus}) caused by human disturbance}. Dissertation Universität Zürich und Schweizerische Vogelwarte Sempach.
+\bibitem{Thiel07b}Thiel D., Ménoni E., Brenot J. F., Jenni L. 2007. \emph{Effects of recreation and hunting on flushing distance of capercaillie}. J. Wildl. Manage. 71 : 1784–1792.
+\bibitem{Tosi05}Tosi W., Wauters L. (a cura di), 2005. \emph{Il gallo cedrone (\emph{Tetrao urogallus}) in Lombardia: biologia e conservazione}. Parco Nazionale dello Stelvio, Parco delle Orobie Valtellinesi, Comunità Montana Parco Alto Garda Bresciano, Sondrio: 128 pp.
+\bibitem{Tosi02}Tosi G., Martinoli A., Preatoni D., Cerabolini B., Vigorita V. 2002. \emph{Monitoraggio e conservazione della fauna forestale (Galliformi e Mammiferi)}. Regione Lombardia: Direzione Generale Agricoltura; Università degli Studi dell’Insubria: dipartimento di biologia strutturale e funzionale; Istituto Oikos: 561 pp.
+\bibitem{Tucker97}Tucker G.M., Evans M.I. 1997. \emph{Habitats for Birds in Europe: A Conservation Strategy for the Wider Environment}. Cambridge: BirdLife International.
+\bibitem{Tucker94}Tucker G.M., Heath M.F. 1994. \href{https://www.uam.es/personal_pdi/ciencias/jonate/Investigacion/CLI/CLI-1.pdf}{\emph{Birds in Europe: their conservation status}}. Cambridge: BirdLife International.
+\bibitem{Zorer09}Zorer P., Zanin M., Marchesi L. 2009. \emph{Protezione degli alberi con cavità - nido. Azioni di conservazione della biodiversità in Trentino}. Sherwood 158: 7-13.
+\bibitem{Zovi93}Zovi D., Favero P., Farronato I. 1993. \emph{Rapporto fra popolamenti forestali e fauna selvatica: l'esempio del gallo cedrone \emph{Tetrao urogallus} e del Picchio nero \emph{Dryocopus martius} nei boschi dell’altopiano di Asiago}. Atti I Conv. Faun. Veneti Montebelluna (Tv), 3-4 aprile 1993: 93-103.
+\bibitem{Birdlife04} BirdLife International, 2004. \emph{Birds in Europe: population estimates, trends and conservation status.} Cambridge, UK: BirdLife International, BirdLife Conservation Series No. 12.
+
+
+
+
+
+
+\end{thebibliography}
+\cleartoverso
+
+
+
+%%%%%%%%%%%
+% Back cover
+%%%%%%%%%%%
+\normalsize
+% Temporarily enlarge this page to push
+% down the bottom margin
+\enlargethispage{3\baselineskip}
+\thispagestyle{empty}
+\pagecolor{\backpagecolor}
+%\pagecolor[HTML]{0E0407}
+
+\begin{center}
+\vspace*{\fill}
+
+\begin{figure}[htp]
+\captionsetup{font=small}
+\centering
+\subcaptionbox*{\url{www.lifeten.tn.it}}[.2\linewidth]{\includegraphics[width=.25\columnwidth]{logo_LIFETEN.png}}
+\subcaptionbox*{\url{www.provincia.tn.it}}[.2\linewidth]{\includegraphics[width=.1\columnwidth]{logo_PAT.png}}
+\subcaptionbox*{\url{www.muse.it}}[.2\linewidth]{\includegraphics[width=.25\columnwidth]{logo_MUSE_verde_nospace.png}}
+\subcaptionbox*{\url{www.foreste.provincia.tn.it}}[.2\linewidth]{\includegraphics[width=.1\columnwidth]{sff.png}}
+\end{figure}
+
+\textbf{\textcolor{LightGoldenrod!50!Gold}{MUSE - Museo delle Scienze}}
+
+\vspace*{\baselineskip}
+
+\textbf{\textcolor{LightGoldenrod}{Sezione di Zoologia dei Vertebrati}}
+\end{center}
+
+\end{document}

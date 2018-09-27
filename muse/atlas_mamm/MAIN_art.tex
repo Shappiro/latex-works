@@ -1,0 +1,414 @@
+% add "showtrims" to class options to show the trimming lines
+% add draft for preview without images
+\documentclass[10pt,twoside,openany,x11names,svgnames,italian,a4paper,dvipsnames,table]{memoir}
+\usepackage{amssymb}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{wrapfig}
+\usepackage{tikz}
+\newcommand{\tikzcircle}[2][red,fill=red]{\tikz[baseline=-0.5ex]\draw[#1,radius=#2] (0,0) circle ;}%
+\usepackage{ifxetex}
+\usepackage{ragged2e}
+
+\setstocksize{303mm}{215mm}
+\settrimmedsize{297mm}{210mm}{*}
+\settrims{3mm}{3mm}
+
+% Apply and enforce layout
+\setlrmarginsandblock{1.5cm}{1.5cm}{*} % Left and right margin
+\setulmarginsandblock{2cm}{3cm}{*}  % Upper and lower margin
+\setlength{\footskip}{2cm}
+\setlength{\columnsep}{1cm}
+
+\usepackage{paracol}
+\usepackage{multicol}
+
+\raggedcolumns 
+\noindent
+\linespread{1.1}
+
+\newenvironment{Figure}
+  {\par\medskip\noindent\minipage{\linewidth}}
+  {\endminipage\par\medskip}
+
+\checkandfixthelayout
+\setlength{\marginparwidth}{3.5cm}
+\usepackage{lmodern}
+\usepackage{wallpaper}
+\usepackage{tikz}
+\usepackage{pagecolor}
+\usetikzlibrary{shapes,positioning}
+
+\usepackage{enumitem}
+\usepackage{amsmath}
+
+\usepackage{eso-pic}
+
+\newcommand\BackgroundFrontPic{%
+%\AddToShipoutPictureBG*{\includegraphics[width=\stockwidth, height=\paperheigth, keepaspectratio]{COVER_complete.png}}
+}
+
+\newcommand\BackgroundRetroPic{%
+%\AddToShipoutPictureBG*{\includegraphics[width=\stockwidth, height=\paperheigth, keepaspectratio]{RETRO_complete.png}}
+}
+
+\newcommand{\mc}[1]{\multicolumn{1}{c}{#1}} % handy shortcut macro
+
+\setlength\parindent{0pt}
+
+\usepackage{imakeidx}
+\usepackage{enumitem}
+\usepackage{titletoc}
+
+\usepackage{textcomp} 
+
+\usepackage[hyphens]{url} % For URL automated linebreaks
+\usepackage{booktabs, longtable}
+\usepackage{grffile}
+
+\usepackage{xcolor}
+
+\usepackage{titlesec}
+
+\usepackage{amsmath}
+
+\usepackage{afterpage}
+\usepackage{lipsum}% for auto generating text
+
+\usepackage{rotating}
+\usepackage{minibox}
+\usepackage{pdfpages}
+\usepackage{subcaption}
+
+\usepackage{changepage}
+
+\usepackage{lastpage} % to get number of last page (e.g., total number of pages)
+
+
+\usepackage{lipsum}
+\usepackage[ISBN=]{ean13isbn}
+\usepackage{graphicx}
+\graphicspath{ {./img/} {./img/chap/} {./img/logo/} }
+
+% Captions
+\usepackage[labelfont={footnotesize,sf,bf},textfont={footnotesize,it,color=white!40!black},aboveskip=1pt,belowskip=14pt]{caption}
+
+\input{pantone_colori.tex}
+%%% COLORS
+\usepackage{etoolbox}
+\patchcmd{\chapter}{plain}{empty}{}{}
+
+% Links
+\usepackage[pdftitle={Atlante dei Mammiferi del Trentino - 2016},
+     pdfauthor={Sezione Zoologia dei Vertebrati, MUSE - Museo delle Scienze},
+     colorlinks,linktocpage=true,linkcolor=MUSE,urlcolor=BrickRed,citecolor=MUSE,bookmarks]{hyperref}
+
+\usepackage{flushend}
+% Command to hold chapter illustration image
+\newcommand\chapterillustration{}
+
+\usepackage{xcolor}
+
+\newcommand\textlcsc[1]{\textsc{\MakeUppercase{#1}}}
+
+\usepackage{dcolumn}
+\newcolumntype{d}[1]{D{,}{.}{#1}}
+
+\makeatletter
+\newcommand{\fonttitle}{\chaptitlefont}
+
+\makechapterstyle{ATLAS}{%
+  \def\chapterheadstart{\vspace*{\beforechapskip}}
+  \def\printchaptername{}
+  \def\printchapternum{}
+  \def\printchapternonum{}
+  \def\printchaptertitle##1{\normalfont{\raggedright \space \huge ##1}}
+  \def\afterchaptertitle{\par\nobreak\vskip \afterchapskip}
+  \setlength\beforechapskip{0pt}%
+  \setlength\afterchapskip{5pt}% 
+}
+\makeatother
+
+\makeatletter
+\renewcommand\chaptermark[1]{%
+  \markboth{\MakeUppercase{#1}}{}
+}
+\makeatother
+
+\titleclass{\part}{top} % make part like a chapter
+\titleformat{\part}
+[display]
+{\raggedleft\normalfont\Huge\bfseries}
+% "Part n", left blank
+{}
+{0pt}
+{\color{MUSE}\huge\MakeUppercase}
+%
+\titlespacing*{\part}{0pt}{0pt}{20pt}
+
+% Removed bfseries from TOC chapters
+%\titleformat{\chapter}{\LARGE}{\thechapter.\ }{0em}{}
+
+%Declaration of  \nouppercase
+\newcommand\nouppercase[1]{{%
+      \let\uppercase\relax
+      \let\MakeUppercase\relax
+      \expandafter\let\csname MakeUppercase \endcsname\relax
+      #1}}%
+%
+
+\makepagestyle{ATLASpage}
+\makeevenhead{ATLASpage}{}{}{}
+\makeoddhead{ATLASpage}{}{}{}
+
+\makeevenfoot{ATLASpage}{\small\thepage\space \textbackslash \space\textcolor{MUSE}{\textsc{\nouppercase{\leftmark}}}}{}{}
+\makeoddfoot{ATLASpage}{}{}{\small\vspace{\fill} \textcolor{MUSE}{\textsc{Atlante dei Mammiferi del Trentino}} / \thepage}
+\aliaspagestyle{chapter}{ATLASpage}
+\assignpagestyle{\part}{empty}
+\setsecheadstyle{\color{MUSE}\scshape\Large}
+%\setsecnumdepth{part}
+\setcounter{tocdepth}{0}
+
+
+\let\oldafterchaptertitle\afterchaptertitle% Store \afterchaptertitle
+\newcommand{\afterchapterparagraph}[1]{%
+  \renewcommand{\afterchaptertitle}{% Update \afterchaptertitle
+    \oldafterchaptertitle% Old \afterchaptertitle
+    \normalfont\normalsize\justifying #1% Set after-chapter paragraph
+    \global\let\afterchaptertitle\oldafterchaptertitle}}% Restore \afterchaptertitle
+
+
+\usepackage{marginnote}
+\reversemarginpar
+
+%\makeindex[title=,columns=2,options=-s CIOstyle.ist]
+
+\renewcommand*{\marginfont}{\footnotesize}
+
+\DeclareTextCommandDefault{\textcopyright}{\textcircled{c}}
+\DeclareTextCommandDefault{\textregistered}{\textcircled{%
+      \check@mathfonts\fontsize\sf@size\z@\math@fontsfalse\selectfont R}}
+
+\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+
+
+% Declaring "\authortoc" command to insert something (authors) before chapter name in TOC
+\newcommand{\chaptertocindent}{\leftskip3em}
+\makeatletter
+\DeclareRobustCommand\authortoctext[1]{%
+{\addvspace{10pt}\nopagebreak\chaptertocindent\relax
+\rightskip \@tocrmarg\relax
+\noindent\scshape\footnotesize#1\par\addvspace{-10pt}}}
+\makeatother
+\newcommand\authortoc[1]{%
+  \gdef\chapterauthor{#1}%
+  \addtocontents{toc}{\authortoctext{#1}}}
+
+% Modify TOC appearance for chapters
+\makeatletter
+\def\l@chapter#1#2{\pagebreak[3]
+   \vskip 1.0em plus 1pt  % space above chapter line
+   \@tempdima 2em       % width of box holding chapter number
+   \begingroup
+     \parindent \z@ \rightskip \@pnumwidth
+     \parfillskip -\@pnumwidth
+     %\bfseries           
+     \leavevmode          % TeX command to enter horizontal mode.
+     \chaptertocindent
+     #1\dotfill \hbox to\@pnumwidth{\hss\normalfont\large\bfseries #2}\par
+   \endgroup}
+\makeatother
+
+ % Hides section numbering
+\renewcommand{\thesection}{}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+\makeatletter
+\def\@seccntformat#1{\csname #1ignore\expandafter\endcsname\csname the#1\endcsname\quad}
+\let\sectionignore\@gobbletwo
+\let\latex@numberline\numberline
+\def\numberline#1{\if\relax#1\relax\else\latex@numberline{#1}\fi}
+\makeatother
+
+% For \male and \female symbols
+\usepackage{wasysym}
+
+\setlength{\evensidemargin}{\oddsidemargin}
+
+\ifxetex
+  \usepackage{fontspec}
+  \setmainfont[Scale=1.1]{HelveticaNeueLTStd-Lt}
+  \defaultfontfeatures{Ligatures=TeX} % To support LaTeX quoting style
+\else
+  \usepackage[T1]{fontenc}
+  \usepackage[latin1]{inputenc}
+\fi
+
+%%% FOOTNOTES %%%
+\renewcommand{\footnotesize}{\fontsize{6.5pt}{9.5pt}\selectfont} % Font size
+\setlength{\skip\footins}{.8cm} % Space between text and note
+
+\usepackage{enumitem}
+\makeatletter
+\renewenvironment{thebibliography}[1]
+     {\section*{\refname}%
+      \@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}%
+      \begin{enumerate}[label={%[\arabic{enumi}]
+      },itemindent=*,leftmargin=4em]
+      \@openbib@code
+      \sloppy
+      \clubpenalty4000
+      \@clubpenalty \clubpenalty
+      \widowpenalty4000
+      \sfcode`\.\@m}
+     {\def\@noitemerr
+       {\@latex@warning{Empty `thebibliography' environment}}%
+      \end{enumerate}}
+\makeatother
+
+\begin{document}
+\fontsize{9}{10.2}\selectfont
+\noindent
+
+\pagestyle{empty}
+
+\makeatletter
+\renewcommand{\thetable}{\@arabic\c@table}
+\@addtoreset{table}{chapter}
+\renewcommand{\thefigure}{\@arabic\c@figure}
+\@addtoreset{figure}{chapter}
+\makeatother
+
+\BackgroundFrontPic
+\clearpage\null\newpage
+\vspace*{\fill}
+%{
+%\normalsize
+%\raggedright
+%\textbf{\color{MUSE}A cura di} \\
+%-\\
+%\vspace{.5cm}
+%{\footnotesize
+%}
+%\vspace{.3cm}
+%\textbf{\color{MUSE}Grafica e impaginazione} \\
+%Aaron Iemma - MUSE - Museo delle Scienze di Trento\\
+%\vspace{.3cm}
+%\textbf{\color{MUSE}Foto di copertina} \\
+%{\footnotesize
+%}
+%\vspace{.1cm}
+%\textbf{\color{MUSE}Stampato da} \\
+%Publistampa Arti Grafiche s.n.c. di Casagrande Silvio \& C. - 38057 Pergine Valsugana (TN), Via Dolomiti 36\\
+%\vspace{.2cm}
+%{\footnotesize
+%\textbf{\color{MUSE}Citazione consigliata} \\
+%- (a cura di) 2016. \emph{Atlante dei Mammiferi del Trentino}. Ed. MUSE, pp. \pageref{LastPage}\\
+%}
+%\vspace{.2cm}
+%ISBN \\
+%\textcopyright  2016 MUSE - Museo delle Scienze, Trento \\
+%}
+
+%\newpage
+%\begin{adjustwidth}{-1cm}{-1cm}
+%\begin{center}
+%\begin{figure}[!h]
+%\includegraphics[width=.7\columnwidth]{logo_MUSE_verde_nospace.png}
+%\end{figure}
+%\end{center}
+%\vspace{22.5cm}
+
+%a cura di: - \\
+%\noindent\color{MUSE}\rule{27cm}{2pt}
+%\vspace*{\fill}
+%\end{adjustwidth}
+
+\cleardoublepage
+\pagestyle{ATLASpage}
+\pagenumbering{roman}
+\begin{KeepFromToc}
+  \tableofcontents
+  %\listoftables
+  %\listoffigures
+\end{KeepFromToc}
+
+%\part{Introduzione}
+\pagenumbering{arabic}
+
+\chapterstyle{ATLAS}
+{\large\itshape}
+
+\part{Ordine Artiodattili}
+\newpagecolor{white}\afterpage{\restorepagecolor}
+\pagestyle{empty}
+\newpagecolor{white}\afterpage{\restorepagecolor}
+\pagestyle{empty}
+\vspace{1cm}
+\input{06_Artiodattili/INTRO.tex}
+\newpage
+\input{06_Artiodattili/01_CINGHIALE/CINGHIALE.tex}
+\input{06_Artiodattili/02_CERVO/CERVO.tex}
+\input{06_Artiodattili/03_CAPRIOLO/CAPRIOLO.tex}
+\input{06_Artiodattili/04_MUFLONE/MUFLONE.tex}
+\input{06_Artiodattili/05_STAMBECCO/STAMBECCO.tex}
+\input{06_Artiodattili/06_CAMOSCIO/CAMOSCIO.tex}
+\newpage
+\input{06_Artiodattili/BIBLIOGRAFIA.tex}
+
+
+%\part{Ordine Lagomorfi}
+%\newpagecolor{white}\afterpage{\restorepagecolor}
+%\pagestyle{empty}
+%\input{03_Lagomorfi/01_LEPRE_COMUNE/LEPRE_COMUNE.tex}
+%\input{03_Lagomorfi/02_LEPRE_BIANCA/LEPRE_BIANCA.tex}
+%\input{03_Lagomorfi/03_CONIGLIO_SELVATICO/CONIGLIO_SELVATICO.tex}
+
+%\part{Ordine Roditori}
+%\newpagecolor{white}\afterpage{\restorepagecolor}
+%\pagestyle{empty}
+%\input{04_Roditori/RODITORI_intro.tex}
+%\input{04_Roditori/03_GHIRO/GHIRO.tex}
+%\input{04_Roditori/04_MOSCARDINO/MOSCARDINO.tex}
+%\input{04_Roditori/05_QUERCINO/QUERCINO.tex}
+%\input{04_Roditori/06_DRIOMIO/DRIOMIO.tex}
+%\input{04_Roditori/07_ARVICOLA_DELLE_NEVI/ARVICOLA_DELLE_NEVI.tex}
+%\input{04_Roditori/08_ARVICOLA_AGRESTE/ARVICOLA_AGRESTE.tex}
+%\input{04_Roditori/09_ARVICOLA_CAMPESTRE/ARVICOLA_CAMPESTRE.tex}
+%\input{04_Roditori/10_ARVICOLA_DEL_LIECHTENSTEIN/ARVICOLA_DEL_LIECHTENSTEIN.tex}
+%\input{04_Roditori/11_ARVICOLA_DI_FATIO/ARVICOLA_DI_FATIO.tex}
+%\input{04_Roditori/12_ARVICOLA_SOTTERRANEA/ARVICOLA_SOTTERRANEA.tex}
+%\input{04_Roditori/13_ARVICOLA_ROSSASTRA/ARVICOLA_ROSSASTRA.tex}
+%\input{04_Roditori/15_TOPO_SELVATICO_A_COLLO_GIALLO/TOPO_SELVATICO_A_COLLO_GIALLO.tex}
+%\input{04_Roditori/16_TOPO_SELVATICO/TOPO_SELVATICO.tex}
+%\input{04_Roditori/18_TOPOLINO_DOMESTICO/TOPOLINO_DOMESTICO.tex}
+%\input{04_Roditori/19_RATTO_DELLE_CHIAVICHE/RATTO_DELLE_CHIAVICHE.tex}
+%\input{04_Roditori/20_RATTO_NERO/RATTO_NERO.tex}
+
+%\part{Ordine Carnivori}
+%\newpagecolor{white}\afterpage{\restorepagecolor}
+%\pagestyle{empty}
+%\input{05_Carnivori/01_SCIACALLO_DORATO/SCIACALLO_DORATO.tex}
+%\input{05_Carnivori/03_VOLPE/VOLPE.tex}
+%\input{05_Carnivori/04_ORSO_BRUNO/ORSO_BRUNO.tex}
+%\input{05_Carnivori/05_FAINA/FAINA.tex}
+%\input{05_Carnivori/06_MARTORA/MARTORA.tex}
+%\input{05_Carnivori/07_ERMELLINO/ERMELLINO.tex}
+%\input{05_Carnivori/08_DONNOLA/DONNOLA.tex}
+%\input{05_Carnivori/09_PUZZOLA/PUZZOLA.tex}
+%\input{05_Carnivori/10_TASSO/TASSO.tex}
+%\input{05_Carnivori/13_LINCE/LINCE.tex}
+
+%\part{Ordine Artiodattili}
+%\newpagecolor{white}\afterpage{\restorepagecolor}
+%\pagestyle{empty}
+%\input{06_Artiodattili/ARTIODATTILI_intro.tex}
+%\input{06_Artiodattili/01_CINGHIALE/CINGHIALE.tex}
+%\input{06_Artiodattili/02_CERVO/CERVO.tex}
+%\input{06_Artiodattili/03_CAPRIOLO/CAPRIOLO.tex}
+%\input{06_Artiodattili/04_MUFLONE/MUFLONE.tex}
+%\input{06_Artiodattili/05_STAMBECCO/STAMBECCO.tex}
+%\input{06_Artiodattili/06_CAMOSCIO/CAMOSCIO.tex}
+%\newpage
+%\input{06_Artiodattili/BIBLIOGRAFIA.tex}
+
+\end{document}

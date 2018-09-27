@@ -1,0 +1,809 @@
+\documentclass[10pt,twoside,openany,x11names,svgnames,italian,a5paper,dvipsnames,table]{memoir}
+\usepackage[italian]{babel}
+\usepackage{lmodern}
+\usepackage{wallpaper}
+\usepackage{tikz}
+\usetikzlibrary{shapes,positioning}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{verbatim}
+
+
+\usepackage{rotating}
+\usepackage{wrapfig}
+\usepackage{pdfpages}
+\usepackage{subcaption}
+
+\usepackage[xindy,nopostdot]{glossaries}
+
+\usepackage{tabularx, booktabs}
+
+\usepackage{lipsum}
+\usepackage[ISBN=978-80-85955-35-4]{ean13isbn}
+\usepackage{graphicx}
+\usepackage{titlesec}% http://ctan.org/pkg/titlesec
+\graphicspath{ {./img/} {./img/chap/} {./img/logo/} {./img/front/} {./img/icon/} {./img/back/} }
+
+% Captions
+\usepackage[labelfont={footnotesize,sf,bf},textfont={footnotesize,sf}]{caption}
+
+% Links
+\usepackage[pdftitle={LIFE + T.E.N.: Azione A8 - Piano d’azione per la conservazione della trota marmorata in Trentino},
+     pdfauthor={Sezione Zoologia dei Vertebrati, MUSE - Museo delle Scienze},
+     colorlinks,linktocpage=true,linkcolor=RoyalBlue,urlcolor=BrickRed,citecolor=OliveGreen,bookmarks]{hyperref}
+
+% Adjust margins around typeblock
+\setlrmarginsandblock{23mm}{18mm}{*}
+\setulmarginsandblock{23mm}{23mm}{*}
+
+% Header and footer heights
+\setheadfoot{\baselineskip}{10mm}
+\setlength\headsep{7mm}
+
+% Apply and enforce layout
+\checkandfixthelayout
+
+% Command to hold chapter illustration image
+\newcommand\chapterillustration{}
+
+\usepackage{xcolor}
+\definecolor[named]{GreenTea}{HTML}{CAE8A2}
+\definecolor[named]{MilkTea}{HTML}{C5A16F}
+\definecolor{verylightgray}{gray}{0.95}
+\definecolor{grey}{gray}{0.5} % 0-nero; 1-bianco
+
+% Pantone for ANFIBI
+\definecolor[named]{LightBlue}{HTML}{006EB5}
+\definecolor[named]{SlimeGreen}{HTML}{009B71}
+\definecolor[named]{EggYellow}{HTML}{F59701}
+% Pantone for SPECIE ORNITICHE ALTA QUOTA
+\definecolor[named]{DarkGreen}{HTML}{012F08}
+\definecolor[named]{LightGray}{HTML}{817F84}
+\definecolor[named]{Ice}{HTML}{4470B7}
+% Pantone for SPECIE ORNITICHE AMBIENTI PRATIVI
+% Pantone for SPECIE ORNITICHE FORESTALI
+\definecolor[named]{LightGreen}{HTML}{00A131}
+\definecolor[named]{YellowGreen}{HTML}{97C000}
+\definecolor[named]{PureGreen}{HTML}{01832D}
+% Pantone for SPECIE ORNITICHE ZONE UMIDE
+\definecolor[named]{PureBrown}{HTML}{4F250D}
+\definecolor[named]{Azure}{HTML}{0082CD}
+\definecolor[named]{GreenAzure}{HTML}{01994C}
+
+\renewcommand{\labelitemi}{\textcolor{\backgroundrectanglecolor}{$\bullet$}}
+\newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
+\newcommand{\etal}{\textsl{et al}. }
+\newcommand{\ph}{\emph{Ph}. }
+\newcommand{\ie}{\emph{i}.\emph{e}. }
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newsubfloat{figure} % Allow subfloats in figure environment
+
+\newcommand{\chaptercolor}{Azure}
+\newcommand{\toprectanglecolor}{Azure}
+\newcommand{\pageboxcolor}{LightBlue}
+\newcommand{\backgroundrectanglecolor}{Azure!60!white}
+\newcommand{\decoratelinecolor}{SlimeGreen}
+\newcommand{\titlecolor}{Azure!90!black}
+\newcommand{\backpagecolor}{Azure}
+
+\newcommand{\tablespecie}[2]{\parbox[t]{2.5cm}{#1 \newline \emph{#2}}}
+
+\nouppercaseheads
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% BEGIN DOCUMENT STYLYING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\bibsection}{%
+\section{\bibname}
+\prebibhook}
+
+% CHAPTER STYLE DEFINITION BEGIN
+\makechapterstyle{chapterstyle}{
+% Vertical space before main text 
+  \setlength\beforechapskip{0pt}
+  \setlength\midchapskip{0pt}
+  \setlength\afterchapskip{70mm}
+
+  \renewcommand*\printchaptername{}
+  \renewcommand*\printchapternum{}
+  %% Re-define how the chapter title is printed
+  \def\printchaptertitle##1{
+    % Background image at top of page
+    \ThisULCornerWallPaper{1}{\chapterillustration}
+    % Draw a semi-transparent rectangle across the top
+    \tikz[overlay,remember picture]
+    \fill[fill=\chaptercolor,opacity=.7]
+      (current page.north west) rectangle 
+      ([yshift=-3cm] current page.north east);
+      % Check if on an odd or even page
+      \strictpagecheck\checkoddpage
+      % On odd pages, "logo" image at lower right
+      % corner; Chapter number printed near spine
+      % edge (near the left); chapter title printed
+      % near outer edge (near the right).
+      \ifoddpage{
+        % Insert picture in lower right corner
+        \ThisLRCornerWallPaper{.25}{marmo_small_right.png}
+        % Chapter heading style for ODD pages
+        \begin{tikzpicture}[overlay,remember picture]
+          \node[anchor=south west,
+            xshift=20mm,yshift=-30mm,
+            font=\sffamily\bfseries\huge] 
+            at (current page.north west) 
+            {}; %\chaptername\chapternamenum\thechapter
+          \node[fill=\chaptercolor,text=white,
+            font=\Huge\bfseries, 
+            inner ysep=12pt, inner xsep=20pt,
+            rectangle,anchor=east, 
+            xshift=-20mm,yshift=-30mm] 
+            at (current page.north east) {##1};
+        \end{tikzpicture}
+      }
+      % On even pages, "logo" image at lower left
+      % corner; Chapter number printed near outer
+      % edge (near the right); chapter title printed
+      % near spine edge (near the left).
+      \else {
+        % Insert picture in lower left corner
+        \ThisLLCornerWallPaper{.25}{marmo_small_left.png}
+        % Chapter heading style for EVEN pages
+        \begin{tikzpicture}[overlay,remember picture]
+          \node[anchor=south east,
+            xshift=-20mm,yshift=-30mm,
+            font=\sffamily\bfseries\huge] 
+            at (current page.north east)
+            {}; % \chaptername\chapternamenum\thechapter
+          \node[fill=\chaptercolor,text=white,
+            font=\Huge\bfseries,
+              inner sep=12pt, inner xsep=20pt,
+              rectangle,anchor=west,
+              xshift=20mm,yshift=-30mm] 
+              at ( current page.north west) {##1};
+        \end{tikzpicture}
+      } % END IF
+      \fi
+    } 
+} % END CHAPTER STYLE
+
+
+% CHAPTER STYLE FOR UNNUMBERED CHAPTERS
+\makechapterstyle{chapterstyleunnumbered}{
+  % Vertical Space before main text starts
+  \setlength\beforechapskip{0pt}
+  \setlength\midchapskip{0pt}
+  \setlength\afterchapskip{47mm}
+
+  \renewcommand*\printchaptername{}
+  \renewcommand*\printchapternum{}
+  %% Re-define how the chapter title is printed
+  \def\printchaptertitle##1{
+    % Draw a semi-transparent rectangle across the top
+    \tikz[overlay,remember picture]
+    \fill[fill=\toprectanglecolor,opacity=.7]
+      (current page.north west) rectangle 
+      ([yshift=-3cm] current page.north east);
+    % Check if on an odd or even page
+    \strictpagecheck\checkoddpage
+      \ifoddpage{
+        \begin{tikzpicture}[remember picture, overlay]
+        \node[fill=\chaptercolor,text=white,
+          font=\Huge\bfseries, 
+          inner ysep=12pt, inner xsep=20pt,
+          rectangle,anchor=east, 
+          xshift=-20mm,yshift=-30mm] 
+          at (current page.north east) {##1};
+        \end{tikzpicture}
+      }
+      \else {
+        \begin{tikzpicture}[remember picture, overlay]
+          \node[fill=\chaptercolor,text=white,
+            font=\Huge\bfseries,
+            inner sep=12pt, inner xsep=20pt,
+            rectangle,anchor=west,
+            xshift=20mm,yshift=-30mm] 
+            at ( current page.north west) {##1};
+        \end{tikzpicture}
+      } % END IF
+      \fi
+    } 
+} % END CHAPTER STYLE
+
+
+% Set the uniform width of the colour box
+% displaying the page number in footer
+% to the width of "99"
+\newlength\pagenumwidth
+\settowidth{\pagenumwidth}{99}
+
+% PAGE NUMBER COLOR BOX STYLE
+\tikzset{pagefooter/.style={
+anchor=base,font=\sffamily\bfseries\small,
+text=white,fill=\pageboxcolor,text centered,
+text depth=17mm,text width=\pagenumwidth}}
+
+%%%%%
+%% Re-define running headers on non-chapter odd pages
+%%%%%
+\makeoddhead{headings}
+% Left header is empty but I'm using it as a hook to paint the
+% background rectangles underneath everything else
+{\begin{tikzpicture}[remember picture,overlay]
+\fill[\backgroundrectanglecolor] (current page.north east) 
+	rectangle (current page.south west);
+\fill[white, rounded corners] 
+	([xshift=-10mm,yshift=-20mm]current page.north east) rectangle 	
+	([xshift=15mm,yshift=17mm]current page.south west);
+\end{tikzpicture}}%
+% Blank centre header
+{}%
+% Display a decorate line and the right mark (chapter title)
+% at right end
+{\begin{tikzpicture}[xshift=-.75\baselineskip,yshift=.25\baselineskip,remember picture, overlay,fill=\decoratelinecolor,draw=\decoratelinecolor]\fill circle(3pt);\draw[semithick](0,0) -- (current page.west |- 0,0);\end{tikzpicture}\textcolor{white}{\sffamily\itshape\small\rightmark}}
+
+%%%%%
+%% Re-define running footers on ODD pages
+%% i.e. display the page number on the right
+%%%%%
+\makeoddfoot{headings}{}{}{\tikz[baseline]\node[pagefooter]{\thepage};}
+\makeoddfoot{plain}{}{}{\tikz[baseline]\node[pagefooter]{\thepage};}
+
+%%%%%
+%% Re-define running headers on non-chapter EVEN pages
+%%%%%
+\makeevenhead{headings}
+% Draw the background rectangles; then the left mark (section
+% title) and the decorate line
+{{\begin{tikzpicture}[remember picture,overlay]
+  \fill[\backgroundrectanglecolor] (current page.north east) rectangle (current page.south west);
+  \fill[white, rounded corners] ([xshift=-15mm,yshift=-20mm]current page.north east) rectangle ([xshift=10mm,yshift=17mm]current page.south west);
+\end{tikzpicture}}%
+\textcolor{white}{\sffamily\itshape\small\leftmark}
+\begin{tikzpicture}[xshift=.5\baselineskip,yshift=.25\baselineskip,remember picture, overlay,fill=\decoratelinecolor,draw=\decoratelinecolor]\fill (0,0) circle (3pt); \draw[semithick](0,0) -- (current page.east |- 0,0 );\end{tikzpicture}}{}{}
+\makeevenfoot{headings}{\tikz[baseline]\node[pagefooter]{\thepage};}{}{}
+\makeevenfoot{plain}{\tikz[baseline]\node[pagefooter]{\thepage};}
+% Empty centre and right headers on even pages
+{}{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% END DOCUMENT STYLYING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setsecnumdepth{chapter}
+
+
+\newglossaryentry{introgressione}{
+  name=introgressione,
+  description={introduzione di geni di una specie nel patrimonio genetico un'altra a seguito di successivi reincroci e ibridazioni.} 
+}
+
+\newglossaryentry{golena}{
+  name=golena,
+  description={quello spazio compreso fra il corso d'acqua e il suo argine.}
+}
+
+\newglossaryentry{frega}{
+  name=frega,
+  description={la frega rappresenta il periodo di deposizione delle uova nell'acqua da parte delle femmine di una specie. Con zona di frega si intende quel tratto del corso d'acqua in cui i pesci si spostano per la riproduzione. 
+Il periodo di frega e uno speciale divieto temporaneo di pesca e di qualsiasi altra turbativa, nel tratto di corso d'acqua interessato dalla riproduzione della specie.}
+}
+
+\makeglossaries
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% DOCUMENTMATTER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\frontmatter
+
+%%%%%%%
+% Cover page
+%%%%%%%
+% No header nor footer on the cover
+\thispagestyle{empty}
+% Bar across the top
+\tikz[remember picture,overlay]%
+\node[fill=\chaptercolor,text=white,font=\LARGE\bfseries,text=Cornsilk,%
+minimum width=\paperwidth,minimum height=5em,anchor=north]%
+at (current page.north){
+\begin{tabular}{c}
+LIFE + T.E.N.: Azione A8\\
+\end{tabular}};
+
+% Cover illustration
+\ThisLLCornerWallPaper{1}{grassland.jpg}
+
+\vspace*{1\baselineskip}
+% Title
+{\bfseries\textcolor{\titlecolor}{\selectfont
+\\
+{\normalsize \emph{Action plans} per la conservazione di specie focali \\[0.05]
+di interesse comunitario} \\[0.3cm]
+{\huge\noindent Trota marmorata}}}\\[0.1cm]
+
+
+
+% Footer image
+\begin{tikzpicture}[remember picture, overlay]
+  \node[fill=\chaptercolor,font=\LARGE\bfseries,text=Cornsilk,%
+  minimum width=\paperwidth,minimum height=5em,anchor=south]%
+  at (current page.south) {}; 
+  \node[anchor=south,inner sep=0pt] at (current page.south) { \includegraphics[width=\textwidth]{footer.png}};
+\end{tikzpicture}
+
+
+
+\vspace*{6\baselineskip}
+
+\includepdf[pages={1}]{second_cover_marmo.pdf}
+
+\cleartorecto
+
+% Invoke fancy unnumbered chapter style
+% for the table of contents
+\chapterstyle{chapterstyleunnumbered}
+\setlength\afterchapskip{10mm}
+\setcounter{tocdepth}{0}
+\tableofcontents*
+
+% Main matter starts here; resets page-numberings to arabic numeral 1
+\mainmatter
+
+% Invoke the chapterstyle chapter style
+\chapterstyle{chapterstyle}
+\setlength\afterchapskip{10mm}
+
+\chapter{Che cos'\`e un piano di azione}
+\renewcommand\chapterillustration{}
+\footnotesize
+\vspace{.5cm}
+In generale, l'approccio ecosistemico costituisce la strategia più corretta ed efficace per la conservazione della natura: attraverso la conservazione degli ecosistemi, ovvero degli ambienti naturali e delle relazioni che si instaurano tra le varie componenti che in essi si rinvengono, si garantisce la conservazione sia delle singole specie che dei processi ecologici e dei fenomeni di interazione tra specie e tra fattori biotici e abiotici che consentono la presenza delle specie stesse.
+Vi sono tuttavia alcune situazioni nelle quali le misure di tutela ambientale possono non essere sufficienti per garantire la sopravvivenza di specie minacciate, che necessitano di misure di conservazione dedicate e spesso specie-specifiche. In questi casi è necessario seguire un approccio specie-specifico, intervenendo direttamente sui \emph{taxa} fortemente minacciati di estinzione, che richiedono misure urgenti di conservazione. L’approccio specie – specifico prevede misure di intervento delineate in documenti tecnici denominati “Piani d’Azione” \cite{EUCOUNCIL98}.
+
+Un piano d’azione si basa sulle informazioni disponibili relative a biologia, ecologia, distribuzione ed abbondanza della specie trattata ed in base a queste propone misure d’intervento, delineate a partire dalla definizione delle minacce che mettono a rischio la sopravvivenza della specie. Il piano d’azione si compone poi degli obiettivi volti ad assicurare la conservazione della specie nel lungo periodo e delle corrispondenti azioni necessarie per realizzarli.
+
+Una corretta strategia di conservazione relativa ad una determinata specie deve contemplare la pianificazione degli obiettivi nel breve, medio e lungo periodo e deve essere flessibile e modificabile nel tempo. Infatti periodiche verifiche circa lo stato di realizzazione ed avanzamento delle azioni, in rapporto al raggiungimento degli obiettivi, possono mettere in luce la necessità di un loro adeguamento, in funzione anche di scenari mutati.
+
+La finalità del Piano d'Azione qui sviluppato nell’ambito dell'Azione A.8 del LIFE+T.E.N., è fornire delle linee guida sulle azioni da intraprendere per ottenere la tutela e la conservazione della trota marmorata \emph{Salmo trutta marmoratus} tramite il recupero e la conservazione degli \emph{habitat}, e la successiva reintroduzione in aree in cui la trota è oggi estinta; il sostentamento delle popolazioni relittuali, favorendo la loro irradiazione in altre aree del Trentino idonee a questa specie e quindi l’espansione dell’areale della stessa. \\
+
+
+%\noindent\emph{Mattia Brambilla \& Paolo Pedrini}
+
+
+
+\normalsize  
+\setlength\afterchapskip{55mm}
+\chapter{Inquadramento generale}
+\renewcommand\chapterillustration{1.jpg}
+
+\section{Distribuzione e status di conservazione}
+La trota marmorata, descritta per la prima volta da Cuvier nel 1817 \cite{Cuvier}, considerata buona specie \emph{Salmo marmoratus} secondo i più recenti concetti di \emph{Evolutionary Significant Units} (ESU) e \emph{Management Units} (MU) proposti in biologia della conservazione \cite{AAVV13}, è endemica dei fiumi del distretto padano veneto, in via di rarefazione in tutto il suo areale, sottoposta a forte pressione di pesca. E’ presente nel Fiume Po con i suoi principali affluenti di sinistra, nei fiumi della pianura veneta e in quelli del versante adriatico della Slovenia e della Croazia \cite{Delpino}, \cite{Pomini39}, \cite{Pomini40}, \cite{Sommani61}, \cite{Sommani66}, \cite{AAVV00}. Fino a cinquant’anni fa la marmorata era la trota caratteristica dei corsi d'acqua principali che sfociano nell'alto Adriatico; oggi, nella maggior parte delle località, la specie è diventata rara, in alcune è del tutto scomparsa \cite{Zerunian02}, \cite{Turin06}. E’ menzionata nell’allegato 2 (elenco degli animali la cui tutela richiede la designazione di zone speciali di conservazione) della direttiva 92/43/CEE (direttiva Habitat) considerata in pericolo critico (CR) nella Lista Rossa dei Vertebrati italiani \cite{Betti} \cite{Rondinini}.
+
+
+\section{Biologia ed ecologia}
+\begin{comment}
+\begin{wrapfigure}{r}{.6\textwidth}
+\begin{center}
+\includegraphics[width=.55\textwidth]{}
+\caption*{}
+\end{center}
+\end{wrapfigure}
+\end{comment}
+In passato le ricerche sulla trota marmorata hanno riguardato soprattutto gli aspetti relativi all'origine, alla distribuzione e alla posizione sistematica. Le indagini più recenti sono invece rivolte in gran parte alle caratteristiche geno-fenotipiche del taxon e ai problemi connessi con la gestione dei ripopolamenti.
+
+La trota marmorata popola il tratto medio e medio-superiore dei corsi d'acqua di maggiore portata. Anche se è in grado di spingersi fino a quote elevate, di solito nelle acque di montagna è sostituita dalla fario \emph{Salmo trutta}. Così come altri rappresentanti del genere \emph{Salmo}, la trota marmorata preferisce acque limpide, fresche (con temperature inferiori a 18$^\circ$C), bene ossigenate e con corrente sostenuta, che scorrono su fondali sassosi e nei tratti d’alveo dove abbondano i nascondigli e buche profonde. La tendenza a restare nascosta nei rifugi sembra essere più evidente rispetto alla trota fario e sembra accentuarsi maggiormente negli individui di grossa taglia. Pur essendo un salmonide tipico delle acque fluviali, la trota marmorata può spostarsi nei laghi e risalire poi gli immissari per la riproduzione. Si trova spesso associata con il temolo \emph{Thymallus thymallus}, con lo scazzone \emph{Cottus gobio} e anche con la trota fario, spesso immessa negli ambienti tipici della trota marmorata. Nell'alta pianura condivide il proprio habitat con diverse specie di ciprinidi reofili quali il barbo comune \emph{Barbus plebejus}, il barbo canino \emph{Barbus meridionalis}, il cavedano \emph{Leuciscus cephalus} e il vairone \emph{Leuciscus souffia} \cite{Tortonese}.
+
+Pesce predatore, la trota marmorata ha una dieta molto simile a quella della trota fario nei primi due o tre anni di vita. Si nutre di larve di insetti, crostacei, oligocheti e spesso anche insetti adulti che cattura sulla superficie dell'acqua. In età più avanzata inizia a predare pesci, soprattutto scazzoni, sanguinerole, vaironi e anche trotelle. La tendenza all'ittiofagia si accentua con l'aumentare della taglia. 
+
+Le informazioni sull'accrescimento, la struttura e la dinamica di popolazione della trota marmorata sono aumentate in questi ultimi anni, in seguito alle indagini effettuate per la redazione delle Carte ittiche e dei piani di pesca e condotte dalle locali Amministrazioni in diverse regioni italiane negli anni successivi, mentre queste ultime rallentano sensibilmente il loro incremento in lunghezza e peso, le marmorate continuano ad avere ritmi di crescita notevolmente elevati fino a 8-10 anni d'età. Nel Torrente Avisio raggiunge lunghezze totali di circa 9-14 cm al primo inverno, 15-22 cm al secondo, 22-30 cm al terzo, 28-37 cm al quarto, 32-41 cm al quinto e 36-42 cm al sesto; nello stesso ambiente il ritmo di crescita degli ibridi tra marmorata e fario è sensibilmente minore. La marmorata può raggiungere taglie considerevoli; nel Fiume Brenta è nota la cattura di un esemplare di 21,75 kg di peso. La maggior parte degli individui non supera gli 8 anni d'età, anche se non sono rari esemplari di oltre 10 anni \cite{Gandolfi91}.
+
+La maturità sessuale è raggiunta al 2$^\circ$- 3$^\circ$ anno dai maschi e un anno più tardi dalle femmine. La stagione riproduttiva è limitata ai mesi di novembre e dicembre. I riproduttori compiono brevi spostamenti risalendo i fiumi e gli affluenti principali per raggiungere zone a fondo ghiaioso o con ciottoli, in acque poco profonde (10-40 cm). Le uova hanno diametro di 4-5 mm; la deposizione avviene su substrati a ghiaia grossa. La fertilità relativa è abbastanza elevata, con un valore medio di 2279 $\pm$ 554 uova per kg di peso corporeo, rilevato in femmine del Torrente Avisio di età compresa fra 3 e 8 anni \cite{Ielli}. Alla temperatura media di 5 C$^\circ$, la schiusa avviene dopo 80 giorni circa; dopo la schiusa, gli avannotti rimangono sotto la ghiaia ancora per 2-3 settimane e, completato il riassorbimento del sacco vitellino, si disperdono verso valle, su bassi fondali, assumendo comportamento territoriale.
+
+\vspace*{\fill} 
+ \begin{center}
+\includegraphics[width=.8\columnwidth]{wikipedia_scazzone.jpg}
+\end{center}
+\captionof*{figure}{\textbf{Scazzone} \emph{Cottus gobio} (\ph Hans Hillewaert, Wikimedia Commons).}
+\vspace*{\fill}
+
+\newpage
+\begin{sidewaysfigure}[H]
+\centering
+\includegraphics[width=1\columnwidth]{17_distribuzione_trota_marmorata.jpg}
+\caption*{Distribuzione della trota marmorata in provincia di Trento (Ufficio Faunistico, PAT)}
+\end{sidewaysfigure}
+
+
+  
+\chapter{Stato della specie in Trentino}
+\renewcommand\chapterillustration{2.jpg}
+\section{Distribuzione e status di conservazione in Trentino}
+
+La trota marmorata viene citata per la prima volta come appartenente alla fauna ittica del Trentino da Heller \cite{Heller}, che la considera una varietà della trota fario. Tale la ritiene anche il Largaiolli, che la segnala nell’Avisio \cite{Largaiolli02} e nell’Adige \cite{Largaiolli34}. In seguito agli studi di Delpino, Pomini e Sommani (cit.), che la considerano un'entità sistematica distinta dalla trota fario, è Bernardi \cite{Bernardi51} \cite{Bernardi56} a occuparsi della trota marmorata in Trentino segnalando l'urgenza di adottare misure adatte alla sua conservazione, in particolare legate all'uso idroelettrico dei principali corsi d'acqua.
+Vittori \cite{Vittori66} \cite{Vittori81} indica le linee di intervento per la tutela della specie: la conservazione o il ripristino degli ambienti naturali e il ripopolamento con uova embrionate, ottenute da riproduttori catturati in loco. Pontalti \cite{Pontalti89} esamina gli effetti di una siffatta gestione ittica in un corso d’acqua: il Torrente Avisio della Valle di Cembra. Forneris \cite{Forneris}, Gandolfi \etal \cite{Gandolfi10a} valutano le caratteristiche genetiche e il livello di introgressione con la trota fario. 
+
+Oggi la trota marmorata è numericamente superiore alla fario solo in determinati tratti di pochi corsi d'acqua, a differenza dell'inizio del secolo scorso in cui era superiore alla fario nei principali corsi d'aqua del Trentino.
+
+A partire dal primo dopoguerra, si è assistito ad una rapida e forte contrazione numerica delle popolazioni autoctone di Trota marmorata, provocandone addirittura la completa estinzione in vasti settori del reticolo idrografico. In particolare, l’alterazione diffusa degli alvei e la riduzione delle portate naturali e l’inquinamento organico delle acque hanno indotto una fortissima rarefazione delle aree di rifugio e dei siti riproduttivi, mentre in molti casi non è diminuita o è addirittura aumentata la disponibilità trofica a seguito dell’eutrofizzazione diffusa del reticolo idrografico.
+In altri casi si sono verificati fenomeni di forte incidenza dell’ibridazione con la Trota fario, sia a seguito delle continue, diffuse e ormai ultracentenarie immissioni artificiali di quest’ultima, sia in conseguenza dell’alterazione di molti tratti fluviali nei quali la riduzione permanente delle portate naturali ha favorito una transizione dell’ambiente da condizioni tipiche dell’habitat della Trota marmorata a quelle caratteristiche dell’habitat della Trota fario. Esempi eloquenti di questa transizione si osservano anche attualmente a valle dei principali sbarramenti idrolelettrici di fondovalle (Avisio immediatamente a valle di Moena e di Stramentizzo, Leno di Terragnolo, Adige a valle di Mori e di Ala etc\dots).
+
+Per valutare la consistenza delle popolazioni di trota marmorata e delle altre specie ittiche e aggiornare conseguentemente i Piani di gestione della pesca, dal 1980 in provincia di Trento si effettuano, a cura del Servizio Foreste e fauna, appositi monitoraggi con elettropesca e reti, ripetuti ogni cinque anni: i più recenti Piani pesca, approvati con D.G.P. n. 2637 del 7 dicembre 2012, ne hanno richiesti oltre 200. Pur numericamente rarefatta, la trota marmorata oggi occupa un areale che non si discosta molto da quello originario. La specie si trova nel Fiume Adige e negli affluenti Fersina e Leno di Terragnolo, nel Fiume Noce e negli affluenti Rabbies e Pescara, nel Torrente Avisio, nel Fiume Sarca, nel Fiume Chiese, nel Fiume Brenta e nel Torrente Vanoi. 
+
+Nei laghi del bacino del Sarca - Cavedine, Toblino e Santa Massenza, dove tende ad assumere la livrea della trota lacustre - la marmorata è chiamata “truta miaga”; essa è presente anche nei bacini artificiali di Santa Giustina, Mollaro, Ponte Pià, Buse, San Colombano, Speccheri, Stramentizzo, Pezzè, Schenér, Pian Palù, Malga Boazzo, Morandin e Cimego \cite{Tomasi}.
+
+\begin{comment}
+\begin{center}
+\includegraphics[width=.8\textwidth]{13_avisio_panchia.jpg}
+\captionof*{figure}{L’Avisio presso Panchià (Valle di Fiemme): un tratto di corso d’acqua della Zona della trota marmorata che conserva, in gran parte, l’originaria naturalità.}
+\end{center}
+\end{comment}
+
+  
+\chapter{Fattori di minaccia}
+\renewcommand\chapterillustration{3.jpg}
+\section*{}
+Le principali minacce per la conservazione della trota marmorata vengono dall’alterazione dei corsi d’acqua alpini: artificializzazione degli alvei, sbarramenti e dighe che impediscono la risalita per la riproduzione, captazioni d’acqua per uso idroelettrico e irriguo col conseguente inquinamento delle scarse portate residue. Un ulteriore pericolo è rappresentato dall’ibridazione della marmorata con la fario, che è la trota tipica degli affluenti minori: le due forme possono dare origine a individui che presentano un'ampia gamma di caratteri intermedi \cite{Lucarda}.
+
+\section[Alterazione del regime idrologico]{Alterazione del regime idrologico e depauperamento delle portate natutali}
+
+La drastica riduzione, anche se temporanea, delle portate naturali dei corsi d'acqua comporta gravi conseguenze dirette e indirette sull'ittiofauna. Il caso limite più grave è quello del completo prosciugamento dell'alveo, con associate morie diffuse e totali della fauna acquatica. Va rilevato che tali effetti devastanti sono provocati da periodi anche brevi di "secca", anche se prima e dopo l'acqua in alveo è presente.
+
+È particolarmente grave, tuttavia, anche l'effetto delle drastiche riduzioni di portata, sia pure non totali. Queste, infatti, causano principalmente una forte riduzione del mezzo ambiente, la concentrazione degli inquinanti, l'incremento delle escursioni termiche spesso oltre i limiti di tolleranza di diverse specie ittiche autoctone, la riduzione e semplificazione della fauna \begin{wrapfigure}[16]{r}{.6\textwidth}
+\vspace*{-.4cm}
+\centering
+\includegraphics[width=.6\textwidth]{8_aree_frega_in_secca.jpg}
+\caption*{Aree di frega messe in secca dalle variazioni artificiali di portata a valle dello scarico di una centrale idroelettrica.}
+\end{wrapfigure}
+macrobentonica e la conseguente inibizione parziale della capacità di autodepurazione. Ne consegue la scomparsa progressiva delle specie ittiche meno tolleranti (Trota marmorata, Temolo, Scazzone, Trota fario etc.) e, in molti casi, il forte incremento numerico di specie originariamente marginali che vengono favorite dalle più elevate temperature estive e dalla maggiore disponibilità di cibo detritico di origine vegetale a seguito dei processi di eutrofizzazione fluviale. 
+Numerose captazioni per uso irriguo e soprattutto idroelettrico sono presenti su quasi tutti i corsi d’acqua della provincia di Trento e ciò comporta una diminuzione della produzione ittica conseguente alla riduzione della superficie d’alveo bagnata e, nel caso della presenza di scarichi inquinanti, anche l’impossibilità per il fiume di autodepurarsi completamente.
+
+Gli scarichi delle principali centrali idroelettriche determinano forti variazioni artificiali delle portate, con sbalzi improvvisi dell’altezza idrometrica anche superiori al metro: la frequenza, un tempo quotidiana o settimanale, è divenuta oggi irregolare in quanto dipendente dalla momentanea quotazione di mercato dell’energia elettrica. Ne sono interessate a intermittenza ampie porzioni degli alvei fluviali (Adige, basso corso del Noce e del Chiese, ecc.), con la conseguente contrazione quantitativa del macrozoobenthos (principale alimento dei pesci) e la possibile messa in secca delle freghe di trota marmorata.
+\section{Sbarramenti}
+Per alimentarsi e deporre le uova, la trota marmorata si sposta lungo il corso del fiume. Di conseguenza il suo ciclo vitale è condizionato dalla presenza di manufatti non superabili, frequentemente realizzati ai fini della sicurezza idraulica (briglie) o per la derivazione delle portate, soprattutto ad uso idroelettrico (dighe).
+\begin{wrapfigure}[15]{l}{.6\textwidth}
+\begin{center}
+\vspace{-.4cm}
+\includegraphics[width=.6\textwidth]{7_briglia_brenta.jpg}
+\caption*{La briglia sul Fiume Brenta, a Grigno.}
+\end{center}
+\end{wrapfigure}
+Un tempo le trote marmorate potevano raggiungere, in occasione delle piene, il Mare Adriatico per poi risalire il Po, l’Adige, il Brenta e tornare, al momento della riproduzione, sulle aree di frega localizzate nel tratto montano dei loro principali affluenti. I nuovi nati compivano la migrazione periodica inversa verso i fiumi principali, dove avveniva l’accrescimento; le varie generazioni si succedevano in un contesto genetico assai ampio.
+Oggi, 36 sbarramenti insuperabili suddividono in segmenti le aste fluviali, perciò le trote non possono più spostarsi verso monte ma, nel migliore dei casi, solamente verso valle, senza possibilità di risalita \cite{Giovannini}. Questo può avere conseguenze negative al momento della riproduzione: le generazioni discendenti da pochi individui, rimasti isolati nei tratti a monte, si riducono a varietà locali sempre più povere geneticamente.
+
+\section{Artificializzazione degli alvei}
+Le diverse combinazioni di velocità di corrente, morfologia dell'alveo e granulometria del fondo caratterizzano le \emph{facies} di scorrimento di un corso d’acqua: raschi, rapide, zone piatte, buche di curva, buche profonde, ecc\dots Perchè la trota marmorata possa farne suo habitat, nel corso d'acqua devono essere presenti sopratutto buche e zone d'acqua profonda che costituiscono ripari ricercati dai riproduttori e dagli esemplari più rappresentativi. Questi possono arrivare a superare il metro di lunghezza.
+\begin{wrapfigure}[14]{r}{.6\textwidth}
+\begin{center}
+\vspace{-.6cm}
+\includegraphics[width=.6\textwidth]{10_alveo_rettificato_adige.jpg}
+\caption*{L’alveo rettificato dell’Adige, a Trento.}
+\end{center}
+\end{wrapfigure}Nell’Adige, il fiume più importante della provincia di Trento, la rettificazione e canalizzazione dell’alveo fra Merano e Rovereto hanno quasi del tutto eliminato le nicchie d’acqua profonda, con la conseguente progressiva rarefazione della trota marmorata, sostituita da altre specie ittiche meno pregiate. Fino alla metà del XIX secolo l’Adige scorreva con percorso sinuoso, circondato da paludi, in alveo assai più largo dell’attuale. La rettificazione di metà ’800 ha accorciato la lunghezza del fiume di alcuni chilometri, ha ridotto la larghezza dell’alveo fino a 1/3 e ha eliminato le migliaia di ettari di terreni palustri che lo circondavano, trasformandoli in coltivazioni \cite{Canestrini}. La riduzione della superficie bagnata ha comportato anche la proporzionale diminuzione dell’autodepurazione naturale delle acque.
+
+
+
+
+\section{Riduzione dei substrati adatti alle freghe}
+Quando il corso del fiume è sbarrato da una diga, la ghiaia si deposita alla testata del bacino, dove solitamente viene estratta e utilizzata in edilizia. Nel tratto di fiume a valle della diga, la ghiaia è progressivamente trasportata dalle masse d’acqua tracimanti in occasione delle piene. 
+
+Se mancano affluenti significativi, in alveo restano solamente i massi e i ciottoli di grandi dimensioni, oltre alla sabbia e ai limi che fuoriescono dal bacino. Ciò si verifica, ad esempio, nel tratto di Torrente di Avisio che scorre nell’alta Valle di Cembra.
+
+
+Massi, ciottoli, sabbia e limo rappresentano substrati non utilizzabili dalle trote per la riproduzione. La deposizione delle uova e le prime fasi di sviluppo degli embrioni possono avvenire solamente nella ghiaia (granulometria 2-8 centimetri).
+
+\section{Inquinamento genetico}
+L’ibridazione con la trota fario rappresenta una minaccia per la conservazione della trota marmorata nell’intero suo areale. Nel Trentino, le ricerche più recenti, condotte con le tecniche d’indagine utilizzate dalla biologia molecolare, hanno escluso la presenza di ceppi autoctoni di trota fario, confermandone la provenienza d’oltralpe \cite{Gandolfi91}.
+
+\begin{wrapfigure}[15]{l}{.6\textwidth}
+\begin{center}
+\vspace{-.6cm}
+\includegraphics[width=.6\textwidth]{12_incrocio_marmorata_fario.jpg}
+\caption*{Ibrido fra la trota marmorata e la trota fario, Torrente Vanoi (\ph Moreno Cavalli)}
+\end{center}
+\end{wrapfigure}
+
+La trota fario atlantica, importata dal centro Europa già alla fine del medioevo e immessa nei ruscelli montani (molti dei quali erano, fino ad allora, probabilmente privi di fauna ittica), ha convissuto per secoli con la trota marmorata senza significative interferenze, ciascuna nella propria area di distribuzione: la prima nei ruscelli, la seconda nei corsi d’acqua maggiori. Negli ultimi sessant’anni la trota fario ha conosciuto una formidabile espansione verso valle, fin quasi a soppiantare l’originaria trota marmorata. 
+Ad aprire la strada all'invasione è stata la profonda alterazione degli ecosistemi fluviali:
+\begin{itemize}\itemsep0pt
+  \item la captazione delle portate, soprattutto per uso idroelettrico, ha reso simili a ruscelli alcuni fra i principali corsi d’acqua; 
+  \item la costruzione di sbarramenti e dighe ha impedito alla trota marmorata di risalire la corrente per raggiungere le aree più adatte alla riproduzione; 
+  \item la canalizzazione degli alvei ha eliminato le nicchie d’acqua profonda, indispensabili per la trota marmorata che rispetto alla fario raggiunge dimensioni maggiori.
+\end{itemize}
+
+Queste condizioni, penalizzanti per la trota marmorata, hanno invece favorito la trota fario che, sostenuta anche dalle immissioni fatte dai pescatori sportivi, ha progressivamente occupato le acque del fondovalle, incrociandosi frequentemente con le trote marmorate rimaste, dando progenie feconda.
+
+
+\begin{comment}
+\section{Avifauna ittiofaga}
+In seguito alle misure di protezione attuate a livello nazionale e europeo, la presenza di avifauna ittiofaga in provincia di Trento ha conosciuto recentemente incrementi notevoli. Oltre all’aumentata presenza dell’airone cenerino \emph{Ardea cinerea} - dai pochissimi esemplari degli anni ‘90 agli attuali 400-450 presenti tutto l’anno prevalentemente lungo i ruscelli - ha destato preoccupazione l’incremento del cormorano \emph{Phalacrocorax carbo}. Questo ittiofago specializzato, svernante in provincia di Trento, presente solo sporadicamente prima del 1994 ma aumentato in quantità senza precedenti a memoria d’uomo in seguito all’entrata in vigore della normativa europea che tutela la specie, ha avuto un impatto evidente sull’ittiofauna.
+
+La popolazione di cormorano svernante nel Trentino - regolarmente monitorata del Servizio Foreste e fauna nei principali dormitori, lungo le direttrici di dispersione e nelle zone di alimentazione - è cresciuta dagli 8 individui del 1994 fino agli attuali 400 \cite{Pedrini05}. I rilevamenti hanno evidenziato la sempre maggiore penetrazione del cormorano nelle valli interne della provincia, con i siti di alimentazione che oggi durante i mesi di novembre e dicembre, impegnati nella riproduzione e raccolti sulle aree di frega, gli esemplari di trota marmorata diventano vulnerabili e facilmente predabili.
+
+I monitoraggi ittici condotti dal Servizio Foreste e fauna in collaborazione con la Fondazione Mach hanno evidenziato, contemporaneamente all’aumento dei cormorani, la contrazione numerica della trota marmorata. La predazione rappresenta un problema per la pesca: in seguito all’affermarsi dei cormorani si rileva un calo del pescato di trota marmorata che supera, in alcune zone, l’80\%.
+
+Sentito l’Istituto Nazionale per la Fauna Selvatica (ora \href{http://www.isprambiente.gov.it/it}{ISPRA}, Istituto Superiore per la Protezione e la Ricerca Ambientale), al fine di limitare l’attività predatoria del cormorano sulla trota marmorata sono state attivate, a partire dalla stagione 2008-2009, apposite forme di controllo. 
+\end{comment}
+
+
+
+\vspace*{\fill} 
+ \begin{center}
+\includegraphics[width=1\columnwidth]{cormorani_muse.jpg}
+\end{center}
+\captionof*{figure}{\textbf{Cormorani} \emph{Phalacrocorax carbo} in volo a fine inverno. Il recupero e la riqualificazione ambientale rappresenta una delle azioni auspicate nel presente Piano, al fine e mitigare la predazione naturale da parte di uccelli ittiofagi come il cormorano. Questa specie è ricomparsa come svernante nelle vallate della nostra provincia dai primi anni Novanta. I monitoraggi e gli studi condotti da PAT in collaborazione con l’allora Museo Tridentino di Scienze Naturali (oggi MUSE) e quelli successivi studi con FEM, ben documentano l’evoluzione della popolazione svernante, oggi stabile attorno a 400-500 esemplari, come anche la sua dieta prevalentemente ittiofaga e in parte limitata anche ai salmonidi, fra i quali la trota mormorata. A sua difesa anche in Trentino la Provincia Autonoma di Trento organizza interventi di controllo, con abbattimenti contingentati, al fine di limitare il possibile impatto dei cormorani sui popolamenti più significativi di trota marmorata (\ph Arch. MUSE / Paolo Pedrini).}
+\vspace*{\fill}
+
+\chapter{Azioni di conservazione}
+\renewcommand\chapterillustration{4.jpg}
+\section*{}
+Alla luce di queste considerazioni appare evidente l'importanza di proteggere rigorosamente le residue popolazioni di trota marmorata dei corsi d'acqua italiani, nel rispetto della normativa nazionale e europea. In provincia di Trento, la legge provinciale \begin{wrapfigure}[14]{r}{.6\textwidth}
+\vspace{-0.7cm}
+\begin{center}
+\includegraphics[width=.6\textwidth]{14_briglia_rapida.jpg}
+\caption*{Briglia trasformata in rapida artificiale sul Torrente Cismon, a Fiera di Primiero}
+\end{center}
+\end{wrapfigure}12 dicembre 1978 n. 60 sulla pesca prescrive, all’articolo 6, il mantenimento delle linee genetiche originarie delle specie ittiche. Concorrono al raggiungimento di questo obiettivo il rilascio dei deflussi minimi vitali (DMV) a valle delle derivazioni sulle aste fluviali, la costruzione di passaggi per pesci in corrispondenza degli sbarramenti, la rinaturalizzazione degli alvei e il miglioramento della depurazione.
+Deve inoltre essere assicurato il controllo delle immissioni e della pressione di pesca utilizzando, per gli eventuali ripopolamenti, solamente le uova e gli avannotti ottenuti da esemplari di trota marmorata catturati in natura e opportunamente selezionati \cite{Vittori81}, \cite{AAVV03}, \cite{Pontalti08}. Infine vanno migliorate le condizioni degli habitat naturali dei corsi d'acqua anche per mitigare l'impatto della predazione naturale.
+Nel definire le strategie e le azioni di conservazione conviene tenere presente che, oltre a ospitare pesci, l’acqua di un fiume è necessaria alla comunità per gli usi potabile, irriguo, zootecnico, idroelettrico, industriale. Perciò la conservazione della trota marmorata si dovrà inserire nell’attuale contesto naturale e umano, senza porsi in alternativa agli indispensabili usi dell’acqua ma secondo un ragionevole compromesso. Punto di partenza sarà l’utilizzo razionale e senza sprechi del territorio e delle sue risorse, secondo i criteri di priorità, economicità ed equità, rafforzando ulteriormente alcune importanti misure già in atto. Agendo in base a questi presupposti, oltre alla trota marmorata trarranno beneficio anche l’intera successione degli ecosistemi fluviali, la qualità delle acque, la difesa del territorio contro il dissesto idrogeologico, il paesaggio, il turismo, e con essi la qualità della vita dell'intera comunità. 
+
+
+
+
+
+\section{Miglioramento dell'ambiente acquatico}
+
+\subsection{Deflussi minimi vitali}
+I rilasci dei deflussi minimi vitali (DMV) effettuati a valle delle grandi derivazioni a partire dal 2000, nella misura di due litri d’acqua al secondo per chilometro quadrato di bacino imbrifero sotteso, hanno in molti casi consentito il ripristino dell’habitat della trota marmorata e l’immediato miglioramento della qualità degli ecosistemi fluviali, quest’ultimo confermato dai campionamenti IBE nel Brenta, nell’Avisio della Val di Fiemme e, soprattutto, nel Chiese \cite{PAT01}, \cite{PAT07}. 
+I rilasci dovranno ora essere completati secondo le indicazioni contenute nel Piano Generale di Utilizzazione delle Acque Pubbliche (PGUAP), con la loro estensione anche alle piccole derivazioni e la modulazione sulla base dei regimi idrologici (glaciale e nivale-pluviale) dei corsi d’acqua.
+
+
+\subsection{Passaggi per i pesci}
+I nuovi sbarramenti artificiali realizzati sui corsi d’acqua della provincia di Trento abitati dalla trota marmorata sono, di norma, dotati di passaggi per i pesci; per alcuni di quelli preesistenti andrà valutata la possibilità della loro trasformazione in rapide artificiali che permettono la risalita delle trote. Gli ostacoli insuperabili per la trota marmorata, individuati lungo i principali corsi d’acqua del Trentino, sono 36. 
+
+Di questi, 22 sono briglie di altezza modesta, che si ritiene possano essere trasformate in rapide artificiali.
+Esistono già diversi esempi di rapide artificiali realizzate dall’Amministrazione provinciale (Servizio Bacini Montani) al posto delle briglie, con beneficio per la stabilità dell’alveo, per il paesaggio e per i pesci. Le progettazioni dovranno ovviamente considerare con precedenza gli aspetti riguardanti l’uso dell’acqua, la sicurezza idraulica e la difesa dall’erosione che i manufatti, opportunamente modificati ai fini ittici, dovranno in ogni caso continuare a garantire.
+
+Si dettaglia la legenda dei codici presenti nella cartografia a seguire:
+
+\begin{table}[!htb]
+    \begin{minipage}[t]{.5\linewidth}
+      \centering
+      \scalebox{.7}{ 
+        \begin{tabular}[t]{ll}
+            \textbf{Codice} & \textbf{Torrente e località} \\
+            \toprule
+\multicolumn{2}{l}{\textbf{Singoli ostacoli}} \\
+            1 & Rabies, Malè \\
+            2 & Pescara, Cagnò \\
+            3 & Avisio, Cembra \\
+            4 & Avisio, Ziano \\
+            5 & Noana, Imer \\
+            6 & Sarca, Sarche \\
+            7 & Sarca, Pietramurata \\
+            8 & Sarca, Pietramurata \\
+            9 & Rimone Vecchio, Cavedine \\
+            10 & Sarca, Ragoli \\
+            11 & Sarca, Torbole \\
+            12 & Adige, Mori \\
+            13 & Sarca, Vigo Rendena \\ 
+\multicolumn{2}{l}{\textbf{Gruppi di ostacoli}} \\
+            14 & Barnes, Cis \\
+            15 & Rio Cadino, Molina di Fiemme \\
+            16 & Travignolo, Predazzo \\
+            17 & Vanoi, Canal S. Bovo \\
+            18 & Leno, Rovereto \\
+            19 & Adanà, Pieve di Bono \\
+            20 & Arnò, Tione \\
+            21 & Sarca, Preore \\
+            22 & Meledrio, Dimaro \\            
+            \bottomrule
+        \end{tabular}
+      }
+      
+    \end{minipage}%
+    \begin{minipage}[t]{.5\linewidth}
+      \centering
+      \scalebox{.7}{
+      
+        \begin{tabular}[t]{ll}
+            \textbf{Codice} & \textbf{Torrente e località} \\
+            \toprule
+    \multicolumn{2}{l}{\textbf{Ostacoli inamovibili}} \\        
+            23 & Noce, S. Giustina \\
+            24 & Noce, Mollaro \\
+            25 & Noce, Rocchetta \\
+            26 & Avisio, Lavis \\
+            27 & Avisio, Stramentizzo \\
+            28 & Avisio, Pezzè di Moena \\
+            29 & Fersina, Trento \\
+            30 & Fersina, Trento \\
+            31 & Fersina, Civezzano \\
+            32 & Sarca, Ponte Pià \\
+            33 & Leno di Terragnolo, San Colombano \\
+            34 & Leno di Vallarsa, San Colombano \\
+            35 & Chiese, Cimego \\
+            36 & Chiese, Murandin \\
+            \bottomrule
+        \end{tabular}
+
+      }
+      
+    \end{minipage} 
+\end{table}
+
+\begin{sidewaysfigure}
+\centering
+\includegraphics[width=.9\columnwidth]{cart.png}
+\captionof{figure}*{Sbarramenti per la trota marmorata, presenti lungo i principali corsi d’acqua della provincia di Trento}
+\label{fig:sbarr}
+\end{sidewaysfigure}
+
+\newpage
+\subsection{Rinaturalizzazione degli alvei}
+La distribuzione delle trote, lungo un corso d'acqua, non è omogenea: le esigenze variano in funzione dello stadio di sviluppo (uovo - avannotto - giovane - adulto) e dell'attività in determinati momenti della stagione o della giornata (riproduzione, riposo, alimentazione). Di conseguenza, l’habitat della trota è caratterizzato da zone con diversa velocità di corrente, granulometria del substrato, pendenza, turbolenza, profondità, morfologia dell’alveo. Le diverse combinazioni di velocità di corrente, morfologia dell'alveo e granulometria del fondo caratterizzano le \emph{facies} di scorrimento: raschi, rapide, zone piatte, buche di curva, buche profonde, ecc..
+
+Gli stadi giovanili della trota marmorata (fino a 2 anni d'età) colonizzano gli ambienti poco profondi con buona velocità di corrente, come raschi, rapide e zone piatte veloci. Le trote adulte prediligono zone con elevata profondità e bassa velocità di corrente, che trovano nelle buche, preferibilmente ombreggiate e ricche di ripari. La presenza di grossi massi consente alle trote adulte di occupare anche tratti di fiume con elevata velocità di corrente e resistere a forti e repentine variazioni di portata, quali possono verificarsi, ad esempio, a valle degli scarichi delle centrali idroelettriche.
+
+Oggi in provincia di Trento i lavori in alveo per la sicurezza idraulica prevedono, ovunque possibile, la conservazione delle principali facies di scorrimento, comprese le nicchie d’acqua profonda, indispensabili per la trota marmorata. Col diminuire della velocità di corrente e della granulometria del trasporto solido, aumenta la gamma delle tecniche naturalistiche integrative o sostitutive di quelle tradizionali, applicabili sul fiume a difesa dall’erosione. Queste tecniche, nel caso di alcuni tratti dei principali corsi d’acqua di fondovalle del Trentino, dovranno ulteriormente diversificare la morfologia ampliando le sezioni di golena, creando casse di espansione e innescando, con la piantumazione di talee di salice e ontano, la formazione di sistemi paranaturali con benefici sia idraulici sia naturalistici: si è constatato che, in un tratto d’alveo rinaturalizzato, la trota marmorata torna spontaneamente ad insediarsi.
+
+\newpage
+\subsection{Tutela delle zone di frega a valle delle dighe}
+Le aree di riproduzione della trota, determinate soprattutto dalla portata e dalla granulometria del substrato, normalmente si trovano alla fine di una buca, all'inizio di un raschio o nelle zone piatte veloci, cioè in zone poco profonde dove le caratteristiche idrodinamiche favoriscono la sedimentazione della ghiaia e ne evitano lo riempimento degli interstizi, assicurando la circolazione dell'acqua da cui dipende l'ossigenazione delle uova. Nelle zone di frega, l'altezza dell'acqua varia mediamente dai 10 ai 40 cm, la velocità di corrente é almeno 10 - 20 cm/s e il substrato é costituito da ghiaia con granulometria 2 - 8 cm. Grandezza e profondità delle freghe sono proporzionali alla taglia della femmina che scava il nido.
+
+L’acqua residua negli alvei a valle degli sbarramenti idroelettrici, quando è sufficiente per consentire lo spostamento agli esemplari adulti per la riproduzione, è spesso di qualità compatibile con lo sviluppo degli embrioni dopo la frega. Fattore limitante per le freghe è, talvolta, la scarsa presenza di ghiaia di granulometria idonea che è trascinata via dall’acqua rilasciata dalle dighe nei momenti di piena senza essere rimpiazzata. Il posizionamento periodico di pochi metri cubi di ghiaia (“tondo di fiume”, non materiale di frantoio) potrà ripristinare i letti di frega e migliorare la riproduzione naturale.
+
+Gli svasi periodici di materiale terrigeno a valle dei bacini idroelettrici dovranno essere limitati ai periodi di morbida e modulati in conformità alla torbidità e all’ossigeno disciolto in acqua, al fine di contenere le conseguenti alterazioni della qualità dei tratti fluviali interessati.
+
+\section{Controllo della pesca sportiva e dei ripopolamenti}
+In provincia di Trento , le gestione della pesca sportiva e i ripopolamenti vanno tradizionalmente di pari passo. Queste azioni assorbono la maggior parte delle risorse delle Associazioni pescatori e il loro controllo suscita, da sempre, grande interesse. A tale riguardo saranno adottati i seguenti accorgimenti:
+
+\subsection{Rispetto della zonazione ittica}
+La trota marmorata sarà utilizzata per il ripopolamento di corsi d’acqua maggiori, corrispondenti alla ‘Zona della trota marmorata’ mentre la trota fario sarà utilizzata nei ruscelli corrispondenti alla ‘Zona della trota fario’. Gli individui, immessi in quantità definite, saranno preferibilmente appartenenti a ceppi di ruscello ottenuti da parentali e prelevati nelle ‘Zone di rifugio’., individuate in ciascun bacino idrografico dell’Amministrazione \cite{Pontalti11}.
+
+\subsection{Utilizzo di materiale rustico}
+\begin{wrapfigure}[16]{r}{.5\textwidth}
+\begin{center}
+\vspace{-.4cm}
+\includegraphics[width=.5\textwidth]{15_impianto_ittiogenico.jpg}
+\caption*{Impianto ittiogenico per la riproduzione della trota marmorata: avannotteria.}
+\end{center}
+\end{wrapfigure}
+Sedici impianti ittiogenici gestiti dalle principali Associazioni pescatori del Trentino oggi moltiplicano la trota marmorata per il ripopolamento delle acque libere. Con determinazione del dirigente del Servizio Foreste e fauna  n. 647 del 22 dicembre 2006, è stato approvato un apposito Protocollo, utilizzato dalle Associazioni pescatori per la conduzione dei loro impianti. In tal modo le trote marmorate si accrescono nelle condizioni più favorevoli alla buona riuscita dei successivi ripopolamenti; inoltre, l’impatto sull’ambiente di questi piccoli impianti è molto contenuto \cite{Pontalti09}.
+
+
+La disponibilità di materiale ittico geneticamente qualificato, oltre a contribuire al sostegno della pesca sportiva, consente il rinsanguamento dei ceppi di trota marmorata rimasti isolati a monte degli sbarramenti insuperabili per i pesci. Ci sono almeno quattro impianti per ciascuno dei tre principali bacini idrografici (Adige, Brenta, Po): in questo modo è possibile riprodurre i ceppi locali senza bisogno d’importare pesci da fuori, tutelando così le linee genetiche originarie anche in caso d’imprevisto in uno degli impianti.
+
+\begin{sidewaysfigure}[H]
+\centering
+\includegraphics[width=.9\textwidth]{16_distribuzione_impianti_ittiogenici.jpg}
+\caption*{Distribuzione degli impianti ittiogenici, gestiti dalle Associazioni pescatori, nei principali bacini idrografici in provincia di Trento.}
+\end{sidewaysfigure}
+
+
+
+\subsection{Zone interdette al ripopolamento e alla pesca}
+Lo sforzo più importante dovrà essere rivolto alla conservazione e al ripristino delle condizioni nelle quali le popolazioni locali di trota marmorata si sono evolute, accompagnato da un limite al prelievo: la variabilità genetica potrà sussistere se la specie \begin{wrapfigure}[15]{l}{.6\textwidth}
+\begin{center}
+\includegraphics[width=.6\textwidth]{riproduzione_artificiale_marmorata_adige.jpg}
+\caption*{Riproduzione artificiale di trota marmorata\newline nell'Adige.}
+\end{center}
+\end{wrapfigure}continuerà ad evolversi in condizioni naturali. Nelle acque montane, le principali aree riproduttive della trota marmorata saranno oggetto di particolare tutela, evitando ogni tipo di disturbo soprattutto nel periodo della riproduzione e dello sviluppo embrionale. Nei principali corsi d’acqua del Trentino saranno istituite zone di divieto di ripopolamento e di pesca, di dimensioni adeguate per la tutela delle popolazioni locali di trota marmorata.
+
+
+La pressione selettiva indotta dalle condizioni ambientali locali, in assenza di disturbi o immissioni, opererà per far riemergere le condizioni genotipiche più adatte a quella popolazione.
+
+\section{Carta Ittica e Piani di Gestione della pesca}
+
+La Carta ittica del Trentino (DGP 21 settembre 2001, n. 2432) e i Piani di gestione della pesca, (DGP 7 dicembre 2012, n. 2637) - reperibili sul sito internet \url{www.fauna.provincia.tn.it} - rappresentano i documenti fondamentali per la conservazione degli ecosistemi acquatici e la coltivazione ittica razionale, con particolare riferimento alla trota marmorata.
+I Piani sono il frutto dei rilevamenti sull’ambiente e sui pesci, periodicamente aggiornati, effettuati dal Servizio Foreste e fauna in collaborazione con la Fondazione Edmund Mach (FEM) con le modalità di ricerca indicate nella Carta ittica. Essi contengono:
+\begin{itemize}\itemsep0pt
+\item le indicazioni per i miglioramenti ambientali, realizzabili come accordo fra le parti interessate alla risorsa idrica, nei suoi diversi aspetti;
+\item la segnalazione delle più significative aree di frega della trota marmorata; 
+\item le prescrizioni per una corretta gestione della pesca sportiva;
+\item i dati sulle immissioni ittiche e sul pescato.
+\end{itemize}
+Le azioni di conservazione sono ispirate agli obiettivi sopra illustrati e così riassumibili:
+\begin{itemize}\itemsep0pt
+\item accertare le condizioni degli ambienti acquatici e dei popolamenti ittici, assicurando la regolare raccolta dei dati in ciascun bacino idrografico secondo criteri di priorità e necessità;
+\item conservare e ripristinare ovunque possibile le portate e le superfici di ruscellamento degli ecosistemi d’acqua corrente nonché l’estensione degli specchi d’acqua e delle zone umide circostanti;
+\item coltivare la risorsa ittica conservandone la rinnovabilità, con interventi mirati in favore delle popolazioni indigene e particolare riguardo verso quelle più a rischio, istituendo zone di bandita di pesca, limitando le eventuali immissioni ai ceppi indigeni ottenuti in condizioni controllate di pescicoltura a partire da riproduttori locali, togliendo per quanto possibile le specie esotiche acclimatate;
+\item ricercare e favorire il coinvolgimento attivo della comunità e delle Associazioni pescatori nella definizione, perseguimento e aggiornamento degli obiettivi sopraelencati.
+\end{itemize}  
+
+Nei Piani di gestione della pesca sono riportate le quantità annue di trota marmorata che è possibile immettere in ciascun corso d’acqua della provincia di Trento: queste quantità sono oggi prodotte negli impianti gestiti dai pescatori. Sarà compito dell’Amministrazione assicurare l’assistenza tecnica agli impianti, l’aggiornamento dei responsabili della conduzione e le verifiche sull’applicazione del Protocollo.
+
+
+%\newpage
+%\setlength\afterchapskip{10mm}
+%\renewcommand\chapterillustration{}
+%\printglossaries
+  
+\setlength\afterchapskip{10mm}
+\chapter{Bibliografia}
+\renewcommand\chapterillustration{}
+\renewcommand*{\bibname}{}
+\begin{thebibliography}{9}
+\footnotesize
+\bibitem{EUCOUNCIL98} Council of Europe, 1998. \emph{Drafting and implementing action plans for threatened species.} Environmental encounters, Council of Europe (Ed), Strasbourg, 39: 1-4.
+\bibitem{Cuvier} Cuvier G., 1817 - \emph{Le Règne animal distribué d’après son organisation}. Paris.
+\bibitem{AAVV13} AA.VV., 2013 - \emph{Gruppo di lavoro “Salmonidi”: documento finale}. Associazione Italiana Ittiologi Acque Dolci, 66 pp. (in stampa).
+\bibitem{Delpino} Delpino I., 1935 - \emph{Diffusione e distribuzione in Italia della Trutta genivittata Heck.}. Boll. di Pesca, Piscic. e Idrob., XI, 2.
+\bibitem{Pomini39} Pomini F.P., 1939 - \emph{Ricerche sugli stadi larvali e primi stadi post-larvali dei Salmo italiani}. Arch. Zool. Ital., XXVII, 335-428 + 14 tav.
+\bibitem{Pomini40} Pomini F.P., 1940 - \emph{Il problema biologico dei Salmo}. Arch. Zool. It. - XXVIII, 421-481.
+\bibitem{Sommani61} Sommani E., 1961 - \emph{Il salmo marmoratus Cuv.: sua origine e distribuzione nell’Italia settentrionale}. Boll. pesca, pescic. e idrob.. XV, 1, 40-47.
+\bibitem{Sommani66} Sommani E., 1966 - \emph{La trota marmorata (Salmo trutta marmoratus Cuv.): suo valore sistematico e importanza come entità zoologica}. Natura, LVII, 3, 173-177. Museo Civico di Storia Naturale di Milano.
+\bibitem{AAVV00} AA.VV., 2000 - \emph{Atti del convegno: “1$^\circ$ Italian-slovenian meeting on marble trout”}. S. Pietro al Natisone, 31 marzo 2000. A cura di: Ente Tutela Pesca della Regione Autonoma Friuli - Venezia Giulia e A.I.I.A.D. Quaderni ETP, 29/2000, 74 pp.
+\bibitem{Zerunian02} Zerunian S., 2002 - \emph{Condannati all’estinzione? Biodiversità, biologia, minacce e strategie di conservazione dei Pesci d’acqua dolce indigeni in Italia}. Edagricole, 220 pp.
+\bibitem{Turin06} Turin P., Zanetti M., Bilo’ M.F., 2006 - \emph{Distribuzione e stato delle popolazioni di trota marmorata nelle acque del bacino dell’Alto Adriatico}. Biol. Amb. 2006, 20 (1): 39 - 44.
+\bibitem{Betti} Betti L., 2006 - \emph{Lista rossa dei pesci della provincia di Trento}. Biologia Ambientale, 20(1): 1-5.
+\bibitem{Rondinini} Rondinini C., Battistoni A., Peronace V., Teofili C. (compilatori), 2013 - \emph{Lista Rossa IUCN dei vertebrati Italiani}. Comitato italiano IUCN e Ministero dell’Ambiente e della tutela del territorio e del mare, Roma.
+\bibitem{Tortonese} Tortonese E., 1970 - \emph{Osteichthyes}. Fauna d'Italia, vol. X e XI. Edizioni Calderini, Bologna, 565 e 636 pp.
+\bibitem{Gandolfi91} Gandolfi G., Zerunian S., Torricelli P., Marconato A., 1991 - \emph{I pesci delle acque interne italiane}. Istituto Poligrafico e Zecca dello Stato. Roma, 616 pp.
+\bibitem{Pedrini05}Pedrini P., Caldonazzi M., Zanghellini S., (eds.) 2005. \emph{Atlante degli Uccelli nidificanti e svernanti in provincia di Trento.} Museo Tridentino di Scienze Naturali, Trento. Studi Trentini di Scienze Naturali, Acta Biologica 80 (2003), 2: 1-674.
+\bibitem{Gandolfi10a} Gandolfi A., Lunelli F., Baraldi F., Gratton P., De Siervo L., 2010 - \emph{Gestione sostenibile della trota marmorata (S. t. marmoratus) nel Bacino dell’Adige: caratterizzazione genetica, fenotipica e ecologica finalizzate alla conservazione (Progetto GAME)}. Relazione finale, 46 pp.
+\bibitem{Heller} Heller C., 1871. \emph{Die Fische Tirols und Vorarlbergs}. Innsbruck, 77 pp. 
+\bibitem{Largaiolli02} Largaiolli V., 1902 - \emph{I pesci del Trentino (Vol. 2)}. Trento, 122 pp.
+\bibitem{Largaiolli34} Largaiolli  V., 1934 - \emph{Sulla riproduzione del Salmo fario L. nell’Adige}. Studi Trentini di Scienze Naturali, 117-120.
+\bibitem{Bernardi51} Bernardi C., 1951 - \emph{L’importanza della “Marmorata” nella soluzione razionale del problema dell’acquicoltura intensiva nella Regione Trentino - Alto Adige}. St. Trent. di Sc. Nat., 28, 175-182. 
+\bibitem{Bernardi56} Bernardi C., 1956 - \emph{Considerazioni sulla paleodiffusione nelle nostre acque alpine di alcune rare specie di Salmo e sulle ragioni che impongono l’adozione di misure protettive idonee ad impedirne il prevedibile prossimo annientamento}. Boll. di Pesca, Piscic. e Idrob., X, 3-47.
+\bibitem{Vittori66} Vittori A., 1966 - \emph{Due specie dell’ittiofauna alpina in progressiva diminuzione: Salvelinus alpinus Sch. e Salmo marmoratus Cuv.} Natura Alpina, 2: 39-44. 
+\bibitem{Vittori81} Vittori A., 1981 - \emph{Sperimentazione pluriennale sulla fecondazione artificiale e l’incubazione dei salmonidi autoctoni}. Staz. Sperim. Agr. Forest. di S.Michele a/A. Esperienze e Ricerche, Nuova Serie, X: 193-199.
+\bibitem{Pontalti89} Pontalti L., 1989 - \emph{Evoluzione del popolamento a salmonidi nel Torrente Avisio della Val di Cembra (Trentino)}. Studi Trentini di Sc. Nat., vol.65 (1988), Acta Biol.,: 165-176, Trento.
+\bibitem{Forneris} Forneris G., 2005 - \emph{Caratterizzazione morfologico - genetica di Salmo trutta marmoratus della Provincia di Trento per l’attuazione di un piano di recupero e ricostituzione delle popolazioni d’origine}. Relazione finale dell’Università degli Studi di Torino al Servizio Foreste e fauna della PAT.
+\bibitem{Tomasi} Tomasi G., 2004 - \emph{I trecento laghi del Trentino}. Ed. Artimedia - Temi, Trento, 535 pp.
+\bibitem{Lucarda} Lucarda A.N., D’Isep E., Forneris G., 2004 - \emph{Utilizzo dell’analisi d’immagine per uno studio morfometrico su Salmo trutta trutta, Salmo trutta marmoratus e sul loro “ibrido”}. Biologia Ambientale, 18(1):167-179.
+\bibitem{Giovannini} Giovannini R., Pontalti L., 2013 - \emph{Passaggi per pesci lungo i fiumi in provincia di Trento}. Dendronatura, n.2/2013.
+\bibitem{Canestrini} Canestrini A., 1913 - \emph{Le condizioni ittiologiche del Trentino e la nuova legge sulla pesca}. Rovereto, 115 pp.
+\bibitem{AAVV03} AA.VV., 2003 - \emph{Atti del Convegno “Salmonidi alpini, gestione delle popolazioni autoctone e qualità dei ripopolamenti”}. Rovereto (TN), \emph{suppl. n. 3/2003 de “Il Pescatore Trentino”}, a cura di L. Betti. Ed. Ass. Pesc. Dil. Trentini, 127 pp.
+\bibitem{PAT01} Provincia Autonoma di Trento, 2001 - \emph{Carta ittica del Trentino. Servizio Faunistico}, 255 pp. 
+\bibitem{PAT07} Provincia Autonoma di Trento, 2007 - \emph{Piani di gestione della pesca 2007 - 2011}. D.G.P. n. 1468 del 21 luglio 2006 (I$^\circ$ stralcio), D.G.P. n. 2934 del 29 dicembre 2006 (II$^\circ$ stralcio), D.G.P. n. 1052 del 25 maggio 2007 (III$^\circ$ stralcio), D.G.P. n. 2415 del 9 novembre 2007 (IV$^\circ$ stralcio). Servizio Foreste e fauna, Ufficio Faunistico. 654 pp.
+
+\bibitem{Pontalti08} Pontalti L., 2008 - \emph{Scelta dei criteri e dei parametri per un protocollo d’allevamento delle trote destinate all’immissione nelle acque libere}. Atti XII Convegno nazionale AIIAD, Studi Trent. Sci. Nat., 87(2010): 39-46.
+\bibitem{Pontalti11} Pontalti L., 2011 - \emph{La trota fario Salmo trutta L. nella provincia di Trento: cenni storici e gestione ittica}. Dendronatura, n. 1/2011, 48-52.
+\bibitem{Pontalti09} Pontalti L., 2009 - \emph{Protocollo di conduzione degli impianti ittiogenici per il ripopolamento delle acque libere}. (Approvato con determinazione del dirigente del Servizio Foreste e fauna  n. 647 del 22 dicembre 2006). Provincia Autonoma di Trento, 52 pp.
+\bibitem{AAVV82} AA.VV., 1982 - \emph{Carta ittica. Stazione Sperimentale Agraria Forestale di S.Michele all’Adige (TN)}. 11 volumi.
+\bibitem{DiretticaCEE} \emph{Direttiva 92/43/CEE del Consiglio, del 21 maggio 1992, relativa alla conservazione di habitat naturali e seminaturali e della flora e della fauna selvatiche}.
+\bibitem{Gandolfi10b} Gandolfi A., 2010 - \emph{Progetto Fario PAT. Relazione finale}. Ricerca svolta per il Servizio Foreste e Fauna della Provincia Autonoma di Trento (non pubbl.), 13 pp. 
+\bibitem{Kottelat} Kottelat M., Freyhof J., 2007 - \emph{Handbook of European Freshwater Fishes}. Kottelat, Cornol, Switzerland and Freyhof, Berlin, Germany. 646 pp. 
+\bibitem{Ielli} Ielli F., 1989 - \emph{Accrescimento, alimentazione e riproduzione di una popolazione di trota marmorata, S. trutta marmoratus Cuv., in Trentino Alto Adige}. Tesi di Laurea in Scienze biologiche, Facoltà di Scienze matematiche, fisiche e naturali, Università di Parma, 98 pp.
+\bibitem{Malesani} Malesani V., 1984 - \emph{Evoluzione conoscitiva e comparazione morfologica della trota lacustre (Salmo trutta lacustris L.) del Garda con S.t.carpio, S.t.marmoratus, S.t.fario e S.gairdneri.} Atti del Museo Civ. di St. Nat. di Trieste, XXXVI, (2): 83-106.
+\bibitem{Perini} Perini G., Zanghellini S., 2001 -  \emph{I pesci del Trentino}. Provincia Autonoma di Trento. 78 pp. Trento.
+
+
+\bibitem{PAT78} Provincia Autonoma di Trento, 1978 - \emph{Legge Provinciale 12 dicembre 1978, n. 60, sulla Pesca.}
+\bibitem{PAT79} Provincia Autonoma di Trento, 1979 - \emph{Regolamento della pesca. DPGP 3 dicembre 1979, n.22-18/Leg}.
+\bibitem{PAT12} Provincia Autonoma di Trento, 2012 - \emph{Piani di gestione della pesca}. Servizio Foreste e fauna, Ufficio Faunistico, 5 volumi, 1189 pp.
+\bibitem{Vittori80} Vittori A., 1980 - \emph{Pesci. Biologia, morfologia, distribuzione delle specie ittiche che popolano le acque del Trentino}. Provincia Autonoma di Trento, 88 pp.
+
+\end{thebibliography}
+\cleartoverso
+
+  
+
+%%%%%%%%%%%
+% Back cover
+%%%%%%%%%%%
+\normalsize
+% Temporarily enlarge this page to push
+% down the bottom margin
+\enlargethispage{3\baselineskip}
+\thispagestyle{empty}
+\pagecolor{\backpagecolor}
+%\pagecolor[HTML]{0E0407}
+\begin{center}
+\vspace*{\fill}
+
+\begin{figure}[htp]
+\captionsetup{font=normalsize}
+\centering
+\subcaptionbox*{\url{www.lifeten.tn.it}}[.3\linewidth]{\includegraphics[width=.3\columnwidth]{logo_LIFETEN.png}}
+\subcaptionbox*{\url{www.provincia.tn.it}}[.3\linewidth]{\includegraphics[width=.15\columnwidth]{logo_PAT.png}}
+\subcaptionbox*{\url{www.muse.it}}[.3\linewidth]{\includegraphics[width=.3\columnwidth]{logo_MUSE_verde_nospace.png}}
+\end{figure}
+\textbf{\textcolor{LightGoldenrod!50!Gold}{MUSE - Museo delle Scienze}}
+
+\vspace*{\baselineskip}
+
+\textbf{\textcolor{LightGoldenrod}{Sezione di Zoologia dei Vertebrati}}
+\end{center}
+
+
+\end{document}

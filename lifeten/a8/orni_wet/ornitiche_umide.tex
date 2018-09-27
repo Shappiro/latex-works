@@ -1,0 +1,795 @@
+\documentclass[10pt,twoside,openany,x11names,svgnames,italian,a5paper,dvipsnames,table]{memoir}
+\usepackage[italian]{babel}
+\usepackage{lmodern}
+\usepackage{wallpaper}
+\usepackage{tikz}
+\usetikzlibrary{shapes,positioning}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+
+\usepackage[hyphens]{url} % For URL automated linebreaks
+
+\usepackage{tabularx, booktabs}
+
+\usepackage{wrapfig}
+\usepackage{minibox}
+\usepackage{pdfpages}
+\usepackage{subcaption}
+\usepackage{lipsum}
+\usepackage[ISBN=978-80-85955-35-4]{ean13isbn}
+\usepackage{graphicx}
+\graphicspath{ {./img/} {./img/chap/} {./img/logo/} {./img/front/} {./img/icon/} {./img/back/} }
+
+% Captions
+\usepackage[labelfont={footnotesize,sf,bf},textfont={footnotesize,sf}]{caption}
+
+% Links
+\input{pantone_colori.tex}
+%%% COLORS
+\newcommand{\chaptercolor}{F8}                  
+\newcommand{\toprectanglecolor}{F8}         
+\newcommand{\pageboxcolor}{F10}                 % Box around number page
+\newcommand{\backgroundrectanglecolor}{F8!80!white}      % Box around every non-empty page
+\newcommand{\decoratelinecolor}{\pageboxcolor}
+\newcommand{\titlecolor}{F11}
+\newcommand{\backpagecolor}{\chaptercolor}
+\usepackage[pdftitle={Azione A8 - Piano d’azione per la conservazione delle specie ornitiche delle zone umide in Trentino},
+     pdfauthor={Sezione Zoologia dei Vertebrati, MUSE - Museo delle Scienze},
+     colorlinks,linktocpage=true,linkcolor=\titlecolor,urlcolor=BrickRed,citecolor=OliveGreen,bookmarks]{hyperref}
+
+% Adjust margins around typeblock
+\setlrmarginsandblock{23mm}{18mm}{*}
+\setulmarginsandblock{23mm}{23mm}{*}
+
+% Header and footer heights
+\setheadfoot{\baselineskip}{10mm}
+\setlength\headsep{7mm}
+
+% Apply and enforce layout
+\checkandfixthelayout
+
+% Command to hold chapter illustration image
+\newcommand\chapterillustration{}
+
+\usepackage{xcolor}
+\definecolor[named]{GreenTea}{HTML}{CAE8A2}
+\definecolor[named]{MilkTea}{HTML}{C5A16F}
+\definecolor{verylightgray}{gray}{0.95}
+\definecolor{grey}{gray}{0.5} % 0-nero; 1-bianco
+
+\renewcommand{\labelitemi}{\textcolor{\backgroundrectanglecolor}{$\bullet$}}
+\newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
+\newcommand{\etal}{\textsl{et al}. }
+\newcommand{\ph}{\emph{Ph}. }
+\newcommand{\ie}{\emph{i}.\emph{e}. }
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newsubfloat{figure} % Allow subfloats in figure environment
+
+
+
+
+\newcommand{\tablespecie}[3]{\multicolumn{1}{c}{\parbox[t]{4.1cm}{\begin{minipage}[t][.8cm][t]{\textwidth}#1 \newline \href{#2}{\emph{#3}}\end{minipage}}}}
+
+\nouppercaseheads
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% BEGIN DOCUMENT STYLYING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\bibsection}{%
+\section{\bibname}
+\prebibhook}
+
+% CHAPTER STYLE DEFINITION BEGIN
+\makechapterstyle{chapterstyle}{
+% Vertical space before main text 
+  \setlength\beforechapskip{0pt}
+  \setlength\midchapskip{0pt}
+  \setlength\afterchapskip{70mm}
+
+  \renewcommand*\printchaptername{}
+  \renewcommand*\printchapternum{}
+  %% Re-define how the chapter title is printed
+  \def\printchaptertitle##1{
+    % Background image at top of page
+    \ThisULCornerWallPaper{1}{\chapterillustration}
+    % Draw a semi-transparent rectangle across the top
+    \tikz[overlay,remember picture]
+    \fill[fill=\chaptercolor,opacity=.7]
+      (current page.north west) rectangle 
+      ([yshift=-3cm] current page.north east);
+      % Check if on an odd or even page
+      \strictpagecheck\checkoddpage
+      % On odd pages, "logo" image at lower right
+      % corner; Chapter number printed near spine
+      % edge (near the left); chapter title printed
+      % near outer edge (near the right).
+      \ifoddpage{
+        % Insert picture in lower right corner
+        \ThisLRCornerWallPaper{.25}{svax_small_right.png}
+        % Chapter heading style for ODD pages
+        \begin{tikzpicture}[overlay,remember picture]
+          \node[anchor=south west,
+            xshift=10mm,yshift=-30mm,
+            font=\sffamily\bfseries\huge] 
+            at (current page.north west) 
+            {}; %\chaptername\chapternamenum\thechapter
+          \node[fill=\chaptercolor,text=white,
+            font=\huge\bfseries, 
+            inner ysep=12pt, inner xsep=20pt,
+            rectangle,anchor=east, 
+            xshift=-10mm,yshift=-30mm] 
+            at (current page.north east) {##1};
+        \end{tikzpicture}
+      }
+      % On even pages, "logo" image at lower left
+      % corner; Chapter number printed near outer
+      % edge (near the right); chapter title printed
+      % near spine edge (near the left).
+      \else {
+        % Insert picture in lower left corner
+        \ThisLLCornerWallPaper{.25}{svax_small_left.png}
+        % Chapter heading style for EVEN pages
+        \begin{tikzpicture}[overlay,remember picture]
+          \node[anchor=south east,
+            xshift=-15mm,yshift=-30mm,
+            font=\sffamily\bfseries\huge] 
+            at (current page.north east)
+            {}; % \chaptername\chapternamenum\thechapter
+          \node[fill=\chaptercolor,text=white,
+            font=\huge\bfseries,
+              inner sep=12pt, inner xsep=20pt,
+              rectangle,anchor=west,
+              xshift=15mm,yshift=-30mm] 
+              at ( current page.north west) {##1};
+        \end{tikzpicture}
+      } % END IF
+      \fi
+    } 
+} % END CHAPTER STYLE
+
+
+% CHAPTER STYLE FOR UNNUMBERED CHAPTERS
+\makechapterstyle{chapterstyleunnumbered}{
+  % Vertical Space before main text starts
+  \setlength\beforechapskip{0pt}
+  \setlength\midchapskip{0pt}
+  \setlength\afterchapskip{52mm}
+
+  \renewcommand*\printchaptername{}
+  \renewcommand*\printchapternum{}
+  %% Re-define how the chapter title is printed
+  \def\printchaptertitle##1{
+    % Draw a semi-transparent rectangle across the top
+    \tikz[overlay,remember picture]
+    \fill[fill=\toprectanglecolor,opacity=.7]
+      (current page.north west) rectangle 
+      ([yshift=-3cm] current page.north east);
+    % Check if on an odd or even page
+    \strictpagecheck\checkoddpage
+      \ifoddpage{
+        \begin{tikzpicture}[remember picture, overlay]
+        \node[fill=\chaptercolor,text=white,
+          font=\Huge\bfseries, 
+          inner ysep=12pt, inner xsep=20pt,
+          rectangle,anchor=east, 
+          xshift=-10mm,yshift=-30mm] 
+          at (current page.north east) {##1};
+        \end{tikzpicture}
+      }
+      \else {
+        \begin{tikzpicture}[remember picture, overlay]
+          \node[fill=\chaptercolor,text=white,
+            font=\Huge\bfseries,
+            inner sep=12pt, inner xsep=20pt,
+            rectangle,anchor=west,
+            xshift=10mm,yshift=-30mm] 
+            at ( current page.north west) {##1};
+        \end{tikzpicture}
+      } % END IF
+      \fi
+    } 
+} % END CHAPTER STYLE
+
+
+% Set the uniform width of the colour box
+% displaying the page number in footer
+% to the width of "99"
+\newlength\pagenumwidth
+\settowidth{\pagenumwidth}{99}
+
+% PAGE NUMBER COLOR BOX STYLE
+\tikzset{pagefooter/.style={
+anchor=base,font=\sffamily\bfseries\small,
+text=white,fill=\pageboxcolor,text centered,
+text depth=17mm,text width=\pagenumwidth}}
+
+%%%%%
+%% Re-define running headers on non-chapter odd pages
+%%%%%
+\makeoddhead{headings}
+% Left header is empty but I'm using it as a hook to paint the
+% background rectangles underneath everything else
+{\begin{tikzpicture}[remember picture,overlay]
+\fill[\backgroundrectanglecolor] (current page.north east) 
+  rectangle (current page.south west);
+\fill[white, rounded corners] 
+  ([xshift=-10mm,yshift=-20mm]current page.north east) rectangle  
+  ([xshift=15mm,yshift=17mm]current page.south west);
+\end{tikzpicture}}%
+% Blank centre header
+{}%
+% Display a decorate line and the right mark (chapter title)
+% at right end
+{\begin{tikzpicture}[xshift=-.75\baselineskip,yshift=.25\baselineskip,remember picture, overlay,fill=\decoratelinecolor,draw=\decoratelinecolor]\fill circle(3pt);\draw[semithick](0,0) -- (current page.west |- 0,0);\end{tikzpicture}\textcolor{white}{\sffamily\itshape\small\rightmark}}
+
+%%%%%
+%% Re-define running footers on ODD pages
+%% i.e. display the page number on the right
+%%%%%
+\makeoddfoot{headings}{}{}{\tikz[baseline]\node[pagefooter]{\thepage};}
+\makeoddfoot{plain}{}{}{\tikz[baseline]\node[pagefooter]{\thepage};}
+
+%%%%%
+%% Re-define running headers on non-chapter EVEN pages
+%%%%%
+\makeevenhead{headings}
+% Draw the background rectangles; then the left mark (section
+% title) and the decorate line
+{{\begin{tikzpicture}[remember picture,overlay]
+  \fill[\backgroundrectanglecolor] (current page.north east) rectangle (current page.south west);
+  \fill[white, rounded corners] ([xshift=-15mm,yshift=-20mm]current page.north east) rectangle ([xshift=10mm,yshift=17mm]current page.south west);
+\end{tikzpicture}}%
+\textcolor{white}{\sffamily\itshape\small\leftmark}
+\begin{tikzpicture}[xshift=.5\baselineskip,yshift=.25\baselineskip,remember picture, overlay,fill=\decoratelinecolor,draw=\decoratelinecolor]\fill (0,0) circle (3pt); \draw[semithick](0,0) -- (current page.east |- 0,0 );\end{tikzpicture}}{}{}
+\makeevenfoot{headings}{\tikz[baseline]\node[pagefooter]{\thepage};}{}{}
+\makeevenfoot{plain}{\tikz[baseline]\node[pagefooter]{\thepage};}
+% Empty centre and right headers on even pages
+{}{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% END DOCUMENT STYLYING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setsecnumdepth{chapter}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% DOCUMENTMATTER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\frontmatter
+
+%%%%%%%
+% Cover page
+%%%%%%%
+% No header nor footer on the cover
+\thispagestyle{empty}
+% Bar across the top
+\tikz[remember picture,overlay]%
+\node[fill=\chaptercolor,text=white,font=\LARGE\bfseries,text=Cornsilk,%
+minimum width=\paperwidth,minimum height=5em,anchor=north]%
+at (current page.north){
+\begin{tabular}{c}
+LIFE + T.E.N.: Azione A8\\
+\end{tabular}};
+
+% Cover illustration
+\ThisLLCornerWallPaper{1}{grassland.jpg}
+
+\vspace*{1\baselineskip}
+% Title
+{\bfseries\textcolor{\titlecolor}{\selectfont
+\\
+{\normalsize \emph{Action plans} per la conservazione di specie focali \\[0.05cm]
+di interesse comunitario} \\[0.3cm]
+{\huge\noindent Specie ornitiche\\[0.1cm]
+ delle zone umide}}} \\[.2cm]
+
+\vspace*{2\baselineskip}
+
+
+
+% Footer image
+\begin{tikzpicture}[remember picture, overlay]
+  \node[fill=\chaptercolor,font=\LARGE\bfseries,text=Cornsilk,%
+  minimum width=\paperwidth,minimum height=5em,anchor=south]%
+  at (current page.south) {}; 
+  \node[anchor=south,inner sep=0pt] at (current page.south) { \includegraphics[width=\textwidth]{footer.png}};
+\end{tikzpicture}
+
+
+
+\vspace*{6\baselineskip}
+
+\includepdf[pages={1}]{second_cover_ornitiche_umide.pdf}
+
+\cleartorecto
+
+% Invoke fancy unnumbered chapter style
+% for the table of contents
+
+\chapterstyle{chapterstyleunnumbered}
+\setlength\afterchapskip{10mm}
+\setcounter{tocdepth}{0}
+\tableofcontents*
+
+% Main matter starts here; resets page-numberings to arabic numeral 1
+\mainmatter
+
+% Invoke the chapterstyle chapter style
+\chapterstyle{chapterstyle}
+
+% Public domain image from
+% http://www.public-domain-image.com/objects/computer-chips/slides/six-computers-chips-circuits.html
+\setlength\afterchapskip{10mm}
+\chapter{Cos'\`e un piano di azione}
+\renewcommand\chapterillustration{}
+\footnotesize
+In generale, l'approccio ecosistemico costituisce la strategia più corretta e efficace per la conservazione della natura: attraverso la conservazione degli ecosistemi, ovvero degli ambienti naturali e delle relazioni che si instaurano tra le varie componenti che in essi si rinvengono, si garantisce la conservazione sia delle singole specie che dei processi ecologici e dei fenomeni di interazione tra specie e tra fattori biotici e abiotici che consentono la presenza delle specie stesse.
+Vi sono tuttavia alcune situazioni nelle quali le misure di tutela ambientale possono non essere sufficienti per garantire la sopravvivenza di specie minacciate, che necessitano di misure di conservazione dedicate e spesso specie-specifiche. In questi casi è necessario seguire un approccio specie-specifico, intervenendo direttamente sui taxa fortemente minacciati di estinzione, che richiedono misure urgenti di conservazione. L’approccio specie – specifico prevede misure di intervento delineate in documenti tecnici denominati “Piani d’Azione” \cite{EUCOUNCIL98}.
+
+Un piano d’azione si basa sulle informazioni disponibili relative a biologia, ecologia, distribuzione e abbondanza della specie trattata e in base a queste propone misure d’intervento, delineate a partire dalla definizione delle minacce che mettono a rischio la sopravvivenza della specie. Il piano d’azione si compone poi degli obiettivi volti ad assicurare la conservazione della specie nel lungo periodo e delle corrispondenti azioni necessarie per realizzarli.
+Una corretta strategia di conservazione relativa a una determinata specie deve contemplare la pianificazione degli obiettivi nel breve, medio e lungo periodo e deve essere flessibile e modificabile nel tempo. Infatti periodiche verifiche circa lo stato di realizzazione e avanzamento delle azioni, in rapporto al raggiungimento degli obiettivi, possono mettere in luce la necessità di un loro adeguamento, in funzione anche di scenari mutati.
+Nell'ambito di questo piano d'azione sviluppato nell'Azione A8 del LIFE + T.E.N., così come di alcuni altri piani sempre realizzati nell'ambito dell'azione, si è utilizzato un approccio innovativo, a cavallo tra quello ecosistemico e quello specie-specifico, redigendo piani d'azione per gruppi di specie che occupano gli stessi ambienti e che risultano sostanzialmente sottoposte alle stesse minacce e pressioni. In questo modo, si intende massimizzare l'efficacia degli interventi proposti per la conservazione e ottimizzare il relativo rapporto costi/benefici, proponendo indicazioni che mirano alla salvaguardia non di una sola specie, ma di un gruppo di specie con esigenze ecologiche largamente sovrapposte e che spesso necessitano di strategie di conservazione simili.
+Nel caso delle zone umide, tale approccio risulta ancora più significativo per la necessità di perseguire azioni comuni finalizzate ad arrestare la progressiva evoluzione, anche naturale, di questi ambienti di fondovalle sempre più rari e minacciati dal progressivo isolamento ecologico conseguente all’urbanizzazione e ai cambiamenti ambientali in atto.
+
+
+  
+\setlength\afterchapskip{52mm}
+\normalsize
+\chapter{Inquadramento generale}
+\renewcommand\chapterillustration{1.JPG}
+\section{Inquadramento dell'habitat e delle specie}
+Le zone umide rappresentano alcuni tra gli ambienti più ricchi di biodiversità e più importanti per la fornitura di servizi ecosistemici a livello globale. Il numero di specie selvatiche ospitate, l'acqua fornita, le potenzialità in termini di mitigazione di piene e alluvioni o di fornitura di energia elettrica, lo sfruttamento di risorse ittiche, l'utilizzo a fini ricreativi turistici o di trasporto di uomini o merci rendono le zone umide un ambiente straordinariamente ricco e importante. Al tempo stesso, sono anche tra gli ecosistemi più minacciati in diverse regioni del mondo: bonifiche, distruzioni, alterazioni, inquinamento, frammentazione, cambiamenti climatici minacciano molte zone umide.
+In gran parte d'Europa e in tutta Italia, le zone umide attualmente presenti sono solo una piccola parte delle estensioni che in passato occupavano vaste aree planiziali, distrutte nel corso dei secoli per far spazio alle coltivazioni e agli insediamenti umani. Anche a livello alpino, i fondivalle, un tempo ricchi di stagni, paludi e acquitrini creati dalle esondazioni dai fiumi, sono stati in larghissima parte bonificati per lasciar posto a campi, abitazioni, insediamenti industriali e infrastrutture. Quel che rimane delle estese zone umide di un tempo ha comunque un valore naturalistico e ecosistemico spesso elevatissimo; ciononostante, sono ancora molte le pressioni dirette e indirette che agiscono su questi ambienti residui di grande importanza.
+
+Questo piano d'azione è mirato principalmente alla conservazione delle specie ornitiche nidificanti, che sono quelle con il legame più stretto con il territorio e, al tempo stesso, maggiormente minacciate in Trentino. Tuttavia, è importante ricordare come le zone umide svolgano un ruolo essenziale anche come siti di sosta durante la migrazione e in inverno per molte altre specie di uccelli acquatici \cite{Pedrini05}. A queste si farà qualche specifico riferimento esemplificativo, come conseguenza positiva ulteriore alle azioni proposte in questo documento.
+
+Le specie target sono pertanto quelle nidificanti, in quanto legate nel periodo riproduttivo alla presenza simultanea di acque aperte e vegetazione acquatica o igrofila di vario tipo. La differenziazione delle loro esigenze ecologiche riflette la complessità di ambienti che contraddistingue le zone umide, dove in condizioni naturali si assiste generalmente a un graduale passaggio dall'acqua aperta agli ambienti 'asciutti' come boschi mesofili, attraverso una successione di habitat che sfumano l'uno nell'altro disegnando paesaggi diversificati e ricchissimi di specie selvatiche, sia faunistiche che floristiche.
+
+La diversità di specie presenti in un’area umida dipende quindi dall’estensione e dalla complessità  della serie di ambienti umidi che si situano lungo la successione ecologica appena descritta. Prendendo ad esempio le zone umide di maggiore estensione del Trentino, quali i grandi laghi di fondovalle, si trovano infatti da specie come  lo svasso maggiore \emph{Podiceps cristatus}, la folaga \emph{Fulica atra}, il germano reale \emph{Anas platyrhynchos} e, localmente, la più rara moretta \emph{Aythya fuligula}, che trascorrono gran parte del loro tempo in acque aperte e nidificano lungo le rive ma sempre a contatto con l'acqua (lo svasso ad esempio costruisce nidi galleggianti ancorati alla vegetazione emergente). Procedendo verso l'esterno delle zone umide, si incontrano altre specie  che frequentano le fasce di canneto allagate, come tarabusino \emph{Ixobrychus minutus}, porciglione \emph{Rallus aquaticus} o gli acrocefali, come il cannareccione \emph{Acrocephalus arundinaceus}, fino ad arrivare a quelle che s’insediano nelle fasce di vegetazione igrofila senza però mostrare particolari legami con l'acqua, come cannaiola verdognola \emph{Acrocephalus palustris} e usignolo di fiume \emph{Cettia cetti}.
+
+Una distinzione tutto sommato simile si osserva anche durante l'inverno: anche in questa stagione, vi sono specie legate ad acque aperte e profonde, come le strolaghe \emph{Gavia spp.}, altre legate ad acque più basse e riparate, come molti anatidi, altre infine legate alla vegetazione palustre, come il tarabuso \emph{Botaurus stellaris}.
+Anche durante la migrazione, la distribuzione delle specie di passo che si fermano per riposare e alimentarsi nelle zone umide rispecchia le diverse abitudini e le esigenze ecologiche differenti: le anatre tuffatrici e quelle di superficie, in migrazione frequentano le acque aperte, i rallidi occupano soprattutto canneti, tifeti e cariceti allagati, i Passeriformi boscaglie igrofile, canneti e ambienti di transizione.
+
+
+\section{Distribuzione e status di conservazione in Italia e Europa}
+
+\begin{wrapfigure}[18]{r}{.6\textwidth}
+\begin{center}
+\vspace{-.7cm}
+\includegraphics[width=.6\textwidth]{tarabusino_mauro_mendini.jpg}
+\caption*{\textbf{Tarabusino} \emph{Ixobrychus minutus}. Il più piccolo degli aironi, migratore transahariano, nidifica con poche coppie negli ultimi lembi di canneto dei principali laghi e zone umide del Trentino; specie fortemente minacciata a scala locale e alpina (\ph Mauro Mendini).}
+\end{center}
+\end{wrapfigure}
+
+Le specie target del presente piano d'azione sono tarabusino, voltolino \emph{Porzana porzana}, schiribilla \emph{Porzana parva}, nibbio bruno \emph{Milvus migrans}, martin pescatore. Altre specie (non inserite nell'Allegato I della Direttiva Uccelli) che potrebbero beneficiare delle misure formulate a partire dalle esigenze ecologiche delle specie target sopra elencate, sono moretta, airone cenerino \emph{Ardea cinerea}, svasso maggiore, tuffetto \emph{Tachybaptus ruficollis}, porciglione, gallinella d'acqua \emph{Gallinula chloropus}, corriere piccolo \emph{Charadrius dubius}, cutrettola \emph{Motacilla flava}, \emph{Cettia cetti}, cannaiola verdognola, cannaiola comune \emph{Acrocephalus scirpaceus}, cannareccione, migliarino di palude \emph{Emberiza schoeniclus}. Alcune di queste specie sono sedentarie o migratrici a corto raggio (martin pescatore, svasso maggiore, tuffetto, porciglione, gallinella d'acqua, usignolo di fiume, migliarino di palude), altre sono migratrici a lungo raggio (nibbio bruno, cutrettola, cannaiola verdognola, cannaiola comune, cannareccione), altre sono invece nidificanti rari ma svernanti comuni (moretta). Voltolino e schiribilla, un tempo nidificanti, si rinvengono attualmente solo durante la migrazione \cite{Pedrini05}. Si tratta in tutti i casi di specie ampiamente diffuse nella regione paleartica \cite{Brichetti03}.
+
+\begin{wrapfigure}[17]{l}{.6\textwidth}
+\includegraphics[width=.6\textwidth]{martin_pescatore_mauro_mendini.jpg}
+\caption*{\textbf{Martin pescatore} \emph{Alcedo atthis}. Presente e nidificante, oltre che svernante nei fondivalle, frequenta le aree prossime agli ambienti umidi; è in forte calo per la distruzione degli argini naturali e sabbiosi, suo habitat di nidificazione (\ph Mauro Mendini).}
+\end{wrapfigure}
+
+Alcune di queste specie mostrano stato di conservazione sfavorevole a livello europeo \cite{Birdlife04}, buona parte a livello italiano \cite{Peronace12}, praticamente tutte in provincia di Trento \cite{Pedrini05}, a ulteriore conferma del forte effetto negativo che alterazioni, distruzioni e isolamento delle zone umide esercitano a più livelli, con un ovvio primo effetto a piccole scale spaziali.
+
+Infine un riferimento va anche fatto all’avifauna migratrice e quella svernante che trova, soprattutto nelle zone umide poste lungo le rotte di migrazione, siti idonei di rifugio, di sosta e di alimentazione nei mesi più freddi. Tali aree (siti di \emph{stop-over} e di svernamento) svolgono una funzione fondamentale in primavera e in inverno, consentendo ai migratori il recupero energetico necessario al difficile attraversamento delle Alpi, mentre in tarda estate vengono frequentati per la fase di muta e ingrasso, nonché per il loro ruolo di siti di rifugio e di alimentazione durante il volo migratorio di rientro verso i quartieri di svernamento. In Trentino giocano un ruolo vitale per questa componente ornitologica gli ultimi lembi di paludi di fondovalle, oggi tutelati come biotopi in Riserve Naturali, ma soprattutto i maggiori contesti umidi lacustri, come i laghi di Caldonazzo e Levico e il Lago di Toblino nella Valle dei Laghi \cite{Pedrini05} \cite{Pedrini12} e il Lago d'Idro.
+
+\section{Biologia ed ecologia generali}
+
+
+Tutte le specie oggetto del piano d'azione sono prevalentemente o inscindibilmente legate alla presenza di ambienti umidi, quantomeno in Trentino. 
+Nibbio bruno e cutrettola possono essere incontrati anche lontano dagli ambienti umidi: il primo, pur alimentandosi in prevalenza presso fiumi, laghi e paludi, nidifica spesso su pareti rocciose o in boschi su versanti scoscesi; la seconda può occupare ambienti prativi o coltivazioni erbacee anche in contesti asciutti, sebbene in Trentino si rinvenga quasi esclusivamente presso prati umidi. Il corriere piccolo può occupare ambienti anche asciutti, ma sul territorio provinciale, come del resto in buona parte d'Italia, si rinviene soprattutto lungo i greti fluviali e in altri ambienti legati alla presenza di corpi idrici e zone umide; in alcuni casi si insedia in cave da poco dismesse, purché prossime ai corsi d’acqua.
+\begin{wrapfigure}[17]{l}{.6\textwidth}
+\begin{center}
+\vspace{-.7cm}
+\includegraphics[width=.6\textwidth]{migliarino_di_palude_mauro_mendini.jpg}
+\caption*{\textbf{Migliarino di palude} \emph{Emberiza schoeniclus}. Delle piccole popolazioni trentine rinvenute negli anni Novanta, rimangono ora solamente poche coppie isolate, nidificanti in modo irregolare: si tratta per questo di una specie tra le più minacciate a scala locale (\ph Mauro Mendini).}
+\end{center}
+\end{wrapfigure}
+Molte delle specie considerate sono legate alla presenza di vegetazione acquatica emergente, come canneti o tifeti: tarabusino, voltolino, schiribilla, tuffetto, porciglione, cannaiola, cannareccione nidificano in queste tipologie vegetazionali. Alla presenza di arbusti o arbusteti igrofili sono invece spesso legati usignolo di fiume, cannaiola verdognola e migliarino di palude; ai ghiareti lungo i fiumi il corriere piccolo e, in minor misura, il piro piro piccolo.
+
+Il martin pescatore nidifica in sponde e argini con scarpate di terra, al cui interno scava il proprio nido 'a tunnel'. La profondità dell'acqua gioca un ruolo importante per molte specie, che si insediano esclusivamente in siti compresi in un range di profondità abbastanza ben definito. La scarsa disponibilità di questi contesti ambientali in provincia di Trento, giustifica la rarità delle specie sopra riportate, la loro estrema localizzazione in periodo riproduttivo e la limitata presenza numerica, che appare per lo più in diminuzione negli ultimi anni; tali aspetti sono stati ben evidenziati dai recenti monitoraggi condotti negli anni successivi all’Atlante degli Uccelli nidificanti \cite{Pedrini05}.
+\newpage
+
+\vspace*{\fill}
+
+\begin{center}
+\includegraphics[width=1\columnwidth]{nibbio_bruno_mauro_mendini.jpg}
+\end{center}
+\captionof*{figure}{\textbf{Nibbio bruno} \emph{Milvus migrans}. Rapace migratore, giunge in Trentino verso la fine di marzo; si riproduce in colonie lasse costruendo il nido in pareti rocciose boscate e nelle forre, poco distante da laghi e corsi d'acqua (\ph Mauro Mendini).}
+
+\vspace*{\fill}
+
+\newpage
+%\rowcolors{2}{\backgroundrectanglecolor!60!white}{white}
+\begin{table}[H]
+\centering
+\begin{adjustwidth*}{-0.6cm}{-0.6cm}
+\scalebox{.8}{
+\begin{tabular}{l|l|l|l|l|l|l|l}
+
+\toprule                          
+  \textbf{\textsc{\textcolor{\backgroundrectanglecolor}{Specie}}} & 
+  \rotatebox{270}{\textbf{\textcolor{\backgroundrectanglecolor}{\textsc{All. I D.U.}}}} &   
+  \rotatebox{270}{\textbf{\textsc{\textcolor{\backgroundrectanglecolor}{Cat. SPEC}}}} &
+  \rotatebox{270}{\textbf{\textsc{\textcolor{\backgroundrectanglecolor}{Stato EU}}}} &
+  \rotatebox{270}{\textbf{\textsc{\textcolor{\backgroundrectanglecolor}{Stato IT}}}} &
+  \rotatebox{270}{\textbf{\textsc{\textcolor{\backgroundrectanglecolor}{LR IT (2013)}}}} &
+  \rotatebox{270}{\textbf{\textsc{\textcolor{\backgroundrectanglecolor}{LR TN (2005)}}}} &
+  \rotatebox{270}{\textbf{\textsc{\textcolor{\backgroundrectanglecolor}{Prior. A2}}}} \\  
+\midrule
+\showrowcolors                          
+\tablespecie{Tarabusino}{http://217.199.4.93/webgis/?specie=Ixobrychus\%20minutus}{Ixobrychus minutus} & $\bullet$ & 3 & popolazione ridotta & cattivo & VU  & EN & 46.8  \\
+\tablespecie{Nibbio bruno}{http://217.199.4.93/webgis/?specie=Milvus\%20migrans}{Milvus migrans} & $\bullet$ & 3 & sicuro  & inadeguato  & NT  & VU  & 37.3\\
+\tablespecie{Voltolino}{http://217.199.4.93/webgis/?specie=Porzana\%20porzana}{Porzana porzana} & $\bullet$&  - & sicuro  & cattivo & DD  & EX  & - \\
+\tablespecie{Schiribilla}{http://217.199.4.93/webgis/?specie=Porzana\%20parva}{Porzana parva} & $\bullet$& - & sicuro  & cattivo & DD  & EX  & - \\
+\tablespecie{Martin pescatore}{http://217.199.4.93/webgis/?specie=Alcedo\%20atthis}{Alcedo atthis}  & $\bullet$& 3 & popolazione ridotta & inadeguato  & LC  & VU & 44.4  \\
+\tablespecie{Moretta}{http://217.199.4.93/webgis/?specie=Aythya\%20fuligula}{Aythya fuligula} & & 3 & in declino  & cattivo & VU  & VU & - \\
+\tablespecie{Airone cenerino}{http://217.199.4.93/webgis/?specie=Ardea\%20cinerea}{Ardea cinerea} & & - & sicuro  & favorevole  & LC  & NT & -  \\
+\tablespecie{Svasso maggiore}{http://217.199.4.93/webgis/?specie=Podiceps\%20cristatus}{Podiceps cristatus}  & & - & sicuro  & favorevole  & LC  & LC & - \\
+\tablespecie{Tuffetto}{http://217.199.4.93/webgis/?specie=Tachybaptus\%20ruficollis}{Tachybaptus ruficollis} & & - & sicuro  & favorevole  & LC  & VU  &  - \\
+\tablespecie{Porciglione}{http://217.199.4.93/webgis/?specie=Rallus\%20aquaticus}{Rallus aquaticus}  & & - & sicuro  & inadeguato  & LC  & VU  & - \\
+\tablespecie{Gallinella d'acqua}{http://217.199.4.93/webgis/?specie=Gallinula\%20chloropus}{Gallinula chloropus}  & & - & sicuro  & favorevole  & LC  & LC & - \\
+\tablespecie{Corriere piccolo}{http://217.199.4.93/webgis/?specie=Charadrius\%20dubius}{Charadrius dubius}  & & - & sicuro  & cattivo & NT  & EN  & - \\
+\tablespecie{Cutrettola}{http://217.199.4.93/webgis/?specie=Motacilla\%20flava}{Motacilla flava}  & & -   & in declino  & inadeguato  & VU  & EN & - \\
+\tablespecie{Usignolo di fiume}{http://217.199.4.93/webgis/?specie=Cettia\%20cetti}{Cettia cetti}  & & - & sicuro  & inadeguato  & LC  & NT & - \\
+\tablespecie{Cannaiola verdognola}{http://217.199.4.93/webgis/?specie=Acrocephalus\%20palustris}{Acrocephalus palustris} & & - & sicuro  & inadeguato  & LC  & EN & - \\
+\tablespecie{Cannaiola comune}{http://217.199.4.93/webgis/?specie=Acrocephalus\%20scirpaceus}{Acrocephalus scirpaceus}  & & - & sicuro  & inadeguato  & LC  & EN & - \\
+\tablespecie{Cannareccione}{http://217.199.4.93/webgis/?specie=Acrocephalus\%20arundinaceus}{Acrocephalus arundinaceus} & & - & in declino  & cattivo & NT  & EN & - \\
+\tablespecie{Migliarino di palude}{http://217.199.4.93/webgis/?specie=Emberiza\%20schoeniclus}{Emberiza schoeniclus} & & - & in declino  & cattivo & NT  & EN & - \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustwidth*}
+\caption{Categorie di minaccia per le specie target. Per il significato delle abbreviazioni utilizzate, si veda la pagina seguente, per dettagli sulla priorità dell'Azione A2 si veda invece \href{http://www.lifeten.tn.it/binary/pat_lifeten/azioni_preparatorie/LifeTEN_Report_A2.1395233849.pdf}{il relativo documento}, per dettagli sulla Direttiva Uccelli, la pagina Web \url{http://www.minambiente.it/pagina/direttiva-uccelli}}
+\label{tab:minaccia}
+\end{table}
+
+\newpage
+\label{tab:legende}
+
+\hiderowcolors
+\begin{table}[H]
+\centering
+\begin{adjustwidth*}{-.6cm}{-.6cm}
+\scalebox{.75}{
+\begin{tabular}{p{0.05\columnwidth}p{14cm}}
+ \multicolumn{2}{l}{\textbf{\Large Legenda Liste Rosse}} \\
+ \medskip \\
+ \textbf{Sigla} & \textbf{Significato}\\
+ \midrule
+ \showrowcolors
+ \textbf{RE} & Estinta nella regione (\emph{Regional Exctinct}): presente in passato, 
+ con popolazioni naturali che si sono estinte nell’intera regione\\
+   \textbf{RE?} & Probabilmente estinta nella regione (\emph{Regional Exctinct}?): presente in passato, 
+ con popolazioni naturali la cui estinzione seppur molto probabile non si ritiene sufficientemente accertata \\
+ \textbf{CR} & In pericolo in modo critico (\emph{Critically Endangered}): 
+ con altissimo rischio di estinzione nell’immediato futuro, per la quale occorrono urgenti interventi di tutela\\
+   \textbf{EN} & In pericolo (\emph{Endangered}): fortemente minacciata di estinzione in un prossimo futuro, 
+ cioè presente con piccole popolazioni o le cui popolazioni sono in significativo regresso in quasi
+ tutta la regione o scomparse da determinate zone \\
+ \textbf{VU} & Vulnerabile (\emph{Vulnerable}): minacciata di estinzione nel futuro a medio termine,
+ ovvero minacciata in numerose località della regione, con popolazioni piccole o piccolissime
+ o che hanno subito un regresso a livello regionale o sono localmente scomparse \\
+   \textbf{NT} & Potenzialmente minacciata (\emph{Near Threatened}): non si qualifica per alcuna delle
+ categorie di minaccia sopra elencate, per la quale sono noti tuttavia elementi che inducono a
+ considerarla in uno stato di conservazione non scevro da rischi in regione \\
+ \textbf{LC} & Non minacciata (\emph{Least Concern}): non inseribile in nessuna delle categorie
+ precedenti in quanto ampiamente diffusa e frequente \\
+   \textbf{DD} & Carenza di informazioni (\emph{Data Deficient}): le conoscenze sulla presenza 
+ e diffusione nella regione non sono ancora ben note e di conseguenza non sono 
+ manifeste le reali minacce che possono interessare le sue popolazioni \\
+ \textbf{NE} & Non valutata (\emph{Not Evaluated}): non è stata fatta alcuna valutazione \\
+\bottomrule
+ \end{tabular}
+}
+\end{adjustwidth*}
+\end{table}
+      
+\hiderowcolors
+\begin{table}[H]
+\centering
+\scalebox{.75}{
+\begin{tabular}{p{0.15\columnwidth}p{12cm}}
+\multicolumn{2}{l}{\textbf{\Large Categorie SPEC} - Species of European Conservation Concern} \\
+\multicolumn{2}{l}{così come indicate da \emph{BirdLife International} \cite{Birdlife04}} \\
+ \medskip \\
+ \textbf{Sigla} & \textbf{Significato}\\  
+  \midrule
+  \showrowcolors
+  SPEC 1 & Specie di rilevanza conservazionistica globale\\
+  SPEC 2 & Concentrata in Europa con uno \emph{status} conservazionistico sfavorevole \\
+  SPEC 3 & Non concentrata in Europa, ma con uno \emph{status} conservazionistico sfavorevole \\
+  Ne & Concentrata in Europa, ma con uno \emph{status} conservazionistico favorevole \\
+  N & Non concentrata in Europa, e con uno \emph{status} conservazionistico favorevole \\
+  \midrule
+\end{tabular}
+}
+\end{table}
+\newpage
+
+
+
+  
+\setlength\afterchapskip{55mm}
+\chapter{Stato delle specie in Trentino}
+\renewcommand\chapterillustration{4.jpg}
+
+
+\section{Distribuzione e status di conservazione}
+Dall’Atlante degli Uccelli nidificanti in Trentino \cite{Pedrini05}, che riassume le molte ricerche e censimenti condotte negli anni Novanta sull’avifauna acquatica nei biotopi provinciali, emerge il quadro più aggiornato dello stato di conservazione, integrato alla data attuale dai dati di altri monitoraggi condotti in tempi più recenti condotti da PAT e MUSE. Un quadro complessivo delle presenze invernali emerge dai \href{http://www.isprambiente.gov.it/it/temi/biodiversita/lispra-e-la-biodiversita/attivita-e-progetti/progetto-iwc-italia}{censimenti IWC} (\emph{International Waterbird Censurs}), che annualmente si svolgono, come in Italia, anche in tutte le zone umide del Trentino \cite{Pedrini12}.
+
+Tutte le specie nidificanti mostrano uno stato di conservazione sfavorevole a livello Trentino.
+
+Un tempo, molte di queste specie erano relativamente comuni e diffuse, se non abbondanti, alle basse e medie quote negli ambienti acquatici e umidi che occupavano ampie estensioni di fondovalle. Allo stato attuale, la loro condizione critica rispecchia la marcata contrazione degli ambienti umidi che si è verificata nell'ultimo secolo su tutto il territorio provinciale. Il buon livello di protezione ora accordato ai biotopi residui non è comunque sufficiente per permettere una significativa ripresa delle popolazioni di queste specie. 
+
+\newpage
+\section{Ecologia in Trentino}
+Il \textbf{tarabusino} occupa corpi idrici di dimensioni variabili purché con presenza di canneti o altra vegetazione adatta a ospitarne il nido; in particolare, frequenta canneti, tifeti e giuncheti alle quote inferiori. Le poche coppie, non sempre nidificanti, sono legate ai lembi di canneto dei principali laghi (Caldonazzo, Levico, Toblino); le presenze più significative, sempre comunque limitate a singole coppie, si registrano nelle ultime paludi e torbiere di fondovalle (la più importante Fiavè, poi, Palude di Tuenno e Borghetto). 
+Il \textbf{nibbio bruno} sul territorio provinciale si rinviene lungo tutti i principali fondivalle, aste fluviali e bacini lacustri, delle valli dell’Adige, Val di Non, Sarca, Benaco e Giudicarie e in Val Sugana; ricerche e studi condotti negli anni 2000 confermano lo stretto legame trofico con gli ambienti lacustri prealpini \cite{Sergio03a} \cite{Sergio03b} \cite{Sergio03c} \cite{Sergio03d}.
+
+\textbf{Voltolino} e \textbf{schiribilla}, un tempo nidificanti, sono ora presenze rare durante la migrazione e frequentano zone umide a bassa quota con canneti e altra vegetazione erbacea igrofila; risentono della mancanza in Trentino dei prati umidi e allagati, un tempo presenti grazie alla naturale successione ecologica nella fascia esterna ai canneti circumlacuali e alle zone umide di fondovalle \cite{Pedrini05}.
+
+Il \textbf{martin pescatore} può insediarsi presso ambienti acquatici di vario tipo, purché caratterizzati dalla presenza di sponde verticali o ripide scarpate in cui nidificare, e di acque non troppo turbolente né eccessivamente eutrofizzate, in cui possa scorgere e pescare le proprie prede (piccoli pesci soprattutto). In Trentino si rinviene soprattutto nei fondivalle principali, nei tratti idonei di corsi d’acqua e sponde dei laghi, localmente anche in ambienti agricoli, laddove esiste una rete di fossati con acque poco inquinate e con sponde idonee alla nidificazione.
+
+La \textbf{moretta} nidifica regolarmente dai primi anni 2000 in Trentino esclusivamente nei laghi di Toblino e di Santa Massenza, dove frequenta soprattutto sponde tranquille con scarso disturbo e presenza di canneti e vegetazione palustre. Svernante soprattutto a Caldonazzo e Levico, è aumentata in numero, favorita dalla presenza di \emph{Dreissena polymorpha}, bivalve alloctono insediatosi negli anni Ottanta, trasportato dalle imbarcazioni di turisti del centro Europa.
+
+Il \textbf{tuffetto} è in grado di occupare ambienti anche di ridotte dimensioni, purché con acque aperte e ricca vegetazione acquatica, soprattutto emergente. Nell’ultimo decennio ha registrato un sensibile incremento numerico, soprattutto nei piccoli specchi d’acqua recentemente realizzati in alcuni biotopi di fondovalle, e localmente anche in alta quota. 
+Il porciglione in Trentino appare curiosamente più frequente tra i 500 e i 1000 m s.l.m. che nei fondivalle, nonostante si tratti di una specie generalmente legata alle basse quote; questa apparente anomalia è da ricercarsi nel fatto che gli ambienti che frequenta, quali canneti, magnocariceti, paludi, si trovano ormai  in misura maggiore nella fascia a quote medio-basse che non nei fondivalle alluvionali alle quote inferiori \cite{Brambilla12}.
+
+\begin{wrapfigure}[16]{r}{.6\textwidth}
+\begin{center}
+\vspace{-.7cm}
+\includegraphics[width=.6\textwidth]{porciglione_mauro_mendini.jpg}
+\caption*{\textbf{Porciglione} \emph{Rallus aquaticus}. Questo rallide di palude sopravvive nelle poche zone umide di fondovalle e di bassa montagna e risulta in generale calo numerico sul territorio provinciale (\ph Mauro Mendini).}
+\end{center}
+\end{wrapfigure}
+
+Il corriere piccolo occupa prevalentemente ghiareti e sabbioni e altri ambienti con vegetazione assente o molto rada lungo fiumi e torrenti e occasionalmente lungo il bordo di altri corpi idrici. E' in forte declino l'unica popolazione rilevante, che sopravvive alle foci dell'Avisio, sebbene anch'essa in calo.
+
+La cutrettola frequenta soprattutto prati umidi, molinieti, altri ambienti prativi seminaturali o coltivati, soprattutto se interessati dalla presenza di corsi d'acqua o fossati o se in prossimità di corpi idrici. Delle popolazioni residue rimangono singole coppie in poche zone umide.
+
+Usignolo di fiume e cannaiola verdognola occupano le porzioni solitamente più 'esterne' e meno frequentemente allagate delle zone umide, dove il canneto cede gradualmente spazio a boscaglie igrofile, consorzi erbacei mesoigrofili e altre tipologie vegetazionali di transizione tra l'ambiente 'umido' e quello 'asciutto'. L'usignolo di fiume si può trovare anche in cespuglieti abbastanza ridotti lungo i corsi d'acqua e al bordo di laghi e stagni, mentre la cannaiola verdognola può insediarsi al bordo di prati umidi, specialmente nelle vicinanze di fossi, torrenti o depressioni più umide, purchè ricche di vegetazione arbustiva. 
+
+Cannaiola comune e cannareccione sono strettamente legati al canneto e in particolare alle cenosi dominate da \emph{Phragmites australis} e permanentemente allagate. Il cannareccione sembra essere concentrato soprattutto nei canneti perilacuali, ma le presenze, già molto ridotte ai primi anni 2000, sono ulteriormente calate. 
+
+Il migliarino di palude frequenta fragmiteti più 'asciutti', in stadio di evoluzione avanzata, spesso in transizione verso boscaglie igrofile, e beneficia della presenza di elementi arbustivi o basso-arborei all'interno del canneto. Anche per questa specie si è registrato un sensibile calo delle già scarse popolazioni nidificanti nei siti storici rilevati negli anni Novanta, con alcuni casi di completa sparizione. Dopo il 2005 le popolazioni nidificanti di Fiavè, Palude di Tuenno, Borghetto sono ad esempio non più presenti, o ridotte a singole coppie non presenti tutti gli anni (dati ined. MUSE/PAT).
+\vspace*{\fill}
+\begin{center}
+\includegraphics[width=1\columnwidth]{airone_cenerino_mauro_mendini.jpg}
+\end{center}
+\captionof*{figure}{\textbf{Airone cenerino} \emph{Ardea cinerea}. Specie ad ampio spettro alimentare, si nutre anche di specie ittiche alloctone introdotte dall’uomo, come il carassio dorato \emph{Carassius auratus} (il comune 'pesce rosso') predato dall'individuo ritratto nella foto (\ph Mauro Mendini).}
+\vspace*{\fill}
+
+  
+\setlength\afterchapskip{52mm}
+\chapter{Fattori di minaccia}
+\renewcommand\chapterillustration{3.jpg}
+\section*{}
+Tutte queste specie sono minacciate a livello provinciale dalla distruzione, riduzione o alterazione delle zone umide, nonché dal loro progressivo isolamento, derivante anche dalle trasformazioni che avvengono nella matrice ambientale in cui le zone umide sono immerse.
+I principali fattori di minaccia per le specie oggetto del presente piano d'azione sono di seguito sinteticamente elencati:
+\begin{itemize}\itemsep0pt
+  \item la distruzione delle zone umide (tutte le specie);
+  \item l'alterazione delle zone umide (tutte le specie);
+  \item l'inquinamento delle acque (tutte le specie);
+  \item la riduzione degli ambienti al margine delle zone umide (es. prati e arbusteti igrofili; cutrettola, usignolo di fiume, cannaiola verdognola, migliarino di palude);
+  \item l'evoluzione sfavorevole della vegetazione, dovuta a eutrofizzazione e interramento spontanei in zone umide di dimensioni modeste (tutte le specie);
+  \item le condizioni nei quartieri di svernamento (Africa; tarabusino, nibbio bruno, voltolino, schiribilla, cutrettola, cannaiola verdognola, cannaiola comune, cannareccione);
+  \item la presenza di cavi aerei sopra gli ambienti umidi (tarabusino, airone cenerino, nibbio bruno);
+  \item il disturbo antropico: caccia, pesca, attività ricreative con conseguenze dirette (mortalità accidentale) o indirette (eccessivo dispendio energetico, abbandono dei nidi con conseguente fallimento della riproduzione; potenzialmente tutte le specie (tutte le specie);
+  \item l'elevata frammentazione degli habitat, dovuta principalmente all'espansione delle coltivazioni intensive e delle aree antropizzate (tarabusino, porciglione, cannaiola comune, cannareccione, potenzialmente quasi tutte le altre specie);
+  \item l'elevata frammentazione delle popolazioni, conseguente in parte alla frammentazione degli habitat e in parte legata al carattere marginale delle popolazioni di alcune specie (voltolino, schiribilla, moretta, tuffetto, porciglione, corriere piccolo, cutrettola, usignolo di fiume, cannaiola verdognola, cannaiola comune, cannareccione, migliarino di palude);
+  \item la perdita di habitat all'interno della zona umida (es. cariceti; voltolino, migliarino di palude);
+  \item la riduzione delle prede causata dall’uso dei pesticidi (tutte le specie);
+  \item le variazioni nel livello idrico (voltolino, schiribilla, porciglione, corriere piccolo, cannaiola comune, cannareccione);
+  \item la regimazione dei corsi d'acqua (martin pescatore, corriere piccolo, in misura minore tutte le altre specie);
+  \item la presenza di specie alloctone invasive (flora e fauna): il numero di specie invasive nelle zone umide è particolarmente elevato; tali specie possono modificare drasticamente gli equilibri ambientali e alterare le catene alimentari, la struttura e il funzionamento degli habitat acquatici (potenzialmente tutte le specie);
+  \item i cambiamenti climatici: modificazioni nel regime delle precipitazioni, innalzamento delle temperature, aumento della competizione e spostamenti latitudinali e altitudinali di specie e popolazioni possono modificare sostanzialmente struttura e funzionamento delle zone umide (potenzialmente tutte le specie).
+\end{itemize}
+
+
+
+L'inquinamento delle acque merita un commento a parte. La qualità delle acque influenza in misura determinante la composizione della flora e della fauna invertebrata nei corpi idrici, con immediate conseguenze sulla disponibilità alimentare per le specie acquatiche; l'inquinamento dell'acqua può quindi diminuire drasticamente l'idoneità di un ambiente fino a causare tossicità e impedire la presenza di molte specie. L'ingestione di materie plastiche, la presenza di rifiuti, lenze da pesca, reti, etc. può causare mortalità diretta soprattutto ai “non Passeriformi” acquatici. Le variazioni nel livello trofico dei corpi idrici, largamente determinate dall'impatto dell'uomo e dall'inquinamento in particolare, sono molto importanti. La progressiva eutrofizzazione dovuta agli apporti di nutrienti provenienti da attività agricole, forestali o da ambiti residenziali può modificare sostanzialmente composizione e qualità delle biocenosi delle zone umide \cite{Gustin09} \cite{Gustin10}. 
+
+\begin{wrapfigure}[16]{l}{.6\textwidth}
+\begin{center}
+\vspace{-.7cm}
+\includegraphics[width=.6\textwidth]{menegon_dalmatina.jpg}
+\caption*{\textbf{Rana agile} \emph{Rana dalmatina}. La conservazione dell’avifauna degli ambienti umidi e dei loro habitat di nidificazione è funzionale alla tutela dei siti riproduttivi degli anfibi Anuri, quali rane e rospi (\ph Michele Menegon).}
+\end{center}
+\end{wrapfigure}
+D'altra parte, il recupero di condizioni di oligo o mesotrofia può comportare in alcuni casi una diminuzione delle prede per specie come il nibbio bruno, che si avvantaggia di condizioni di eutrofia che garantiscono maggior disponibilità di pesci \cite{Sergio03b}.
+
+Molte delle specie oggetto del presente piano d'azione si trovano principalmente in condizioni di eutrofia o di meso-eutrofia, mentre condizioni di ipertrofia, quali quelle che contraddistinguono le zone umide soggette a maggior afflusso di nutrienti o maggior inquinamento, sono generalmente negative per tutte le specie \cite{Brichetti03} \cite{Pedrini05} \cite{Gustin09} \cite{Gustin10}.
+
+
+
+
+  
+\setlength\afterchapskip{52mm}
+\chapter{Strategia di conservazione}
+\renewcommand\chapterillustration{2.jpg}
+
+
+\section{Obiettivo generale} 
+Mantenere e, ove necessario e possibile, ricreare, ambienti idonei alla conservazione di popolazioni vitali o all'aumento delle popolazioni delle specie target, con migliori prospettive di sopravvivenza a lungo termine e distribuzione meno frammentata, attraverso:
+\begin{itemize}\itemsep0pt
+\item il mantenimento di condizioni idonee alle specie nelle zone umide, prevenendo fenomeni di inquinamento, alterazione, disturbo, evoluzione sfavorevole della vegetazione;
+\item la riduzione dell'isolamento cui sono attualmente sottoposte le zone umide del territorio provinciale, attraverso la mitigazione delle interruzioni e la creazione di nuovi ambienti.
+\end{itemize}
+
+\section{Obiettivi specifici}
+La strategia per la conservazione delle comunità ornitiche e biologiche in generale delle zone umide deve quindi considerare da un lato la salvaguardia delle zone umide rimaste e delle relative caratteristiche favorevoli alle specie e, dall'altro, l'attenuazione dell'isolamento delle zone umide stesse, puntando a ricreare un sistema di ambienti in grado di scambiare individui tra le popolazioni ospitate. Relativamente a quest’ultimo aspetto, è bene sottolineare come non sia necessario (soprattutto per gli uccelli, qui considerati) creare connessioni dirette tra corpi idrici, che avrebbero anche l'effetto di favorire lo spostamento delle specie aliene, bensì sia auspicabile creare nuove zone umide in ambiti strategici e migliorare la permeabilità della matrice al cui interno sono inserite  le zone umide stesse.
+
+Gli obiettivi specifici sono quindi:
+\begin{itemize}\itemsep0pt
+  \item conservare gli ambienti umidi residui, attraverso una rigorosa tutela che eviti nuove alterazioni, inclusa la realizzazione di nuove infrastrutture, l'espansione delle colture o degli ambiti urbanizzati a scapito del margine delle zone umide;
+  \item mantenere condizioni idonee all'interno delle zone umide, attraverso un'adeguata gestione che tenga conto delle esigenze delle specie di maggior pregio, in particolare per quanto riguarda:
+    \begin{itemize}\itemsep0pt
+      \item il livello dell'acqua: mantenere nelle zone rilevanti (vegetazione emergente, littorale, acque aperte) la profondità adeguata alle specie target;
+      \item l'evoluzione della vegetazione: mantenere o ricreare gli stadi serali cui sono associate le specie target;
+      \item la presenza di \emph{microhabitat}:
+        \begin{itemize}\itemsep0pt
+          \item canneti e tifeti (in diversi stadi di età/sviluppo: tessere di canneto 'vecchio' necessario per rallidi e altre specie);
+          \item lamineti;
+          \item boscaglie igrofile: mantenere alcuni elementi può essere importante per diverse specie (usignolo di fiume, cannaiola verdognola, migliarino di palude), ma in molti casi può rendersi necessario contenerne l'espansione;
+        \end{itemize}
+      \item il disturbo antropico: escludere/ridurre attività impattanti quali caccia e pesca, indirizzare la fruizione secondo itinerari e modalità compatibili con la presenza e in particolare la riproduzione delle specie sensibili;
+    \end{itemize}
+  \item migliorare e mantenere lo stato di conservazione dei laghi, e in particolare degli ambienti umidi perilacuali, non solo entro i biotopi protetti, ma anche sulle sponde, mantenendo una naturalità diffusa per favorire la protezione e il riaffermarsi della vegetazione riparia perilacuale; 
+  \item favorire interventi di riqualificazione fluviale e ricreare formazioni vegetazionali ripariali;
+  \item ridurre l'isolamento delle zone umide, che al momento è tale da avere effetti negativi persino su specie altamente mobili, (es. porciglione), attraverso la creazione di nuove aree umide;
+  \item migliorare la permeabilità della matrice ambientale rurale circostante, attraverso la realizzazione di pozze, piccoli stagni e porzioni allagate anche di dimensioni ridotte, oltre che di siepi e boschetti igrofili, incluse fasce tampone con vegetazione igrofila lungo fossati. Questi, se opportunamente gestiti, possono soddisfare le esigenze ecologiche delle specie proprie delle zone umide. Questo obiettivo può essere perseguito anche attraverso apposite azioni all'interno del Piano d Sviluppo Rurale provinciale;
+  \item sensibilizzare il mondo agricolo e gli \emph{stakeholder} sull'importanza della conservazione di zone umide residue, la rete dei fossi e gli ambienti marginali alle aree agricole anche intensive;
+  \item ridurre le fonti di inquinamento conseguenti alla concimazione intensiva in ambienti agricoli e gli scarichi di inquinanti in prossimità di aree urbane e periurbane;
+  \item indirizzare gli sforzi di ricerca e di monitoraggio;
+  \item indagare le esigenze ecologiche delle specie ancora poco conosciute e in particolare dei fattori ambientali e spaziali che influenzano presenza e abbondanza delle specie di maggior interesse conservazionistico;
+  \item attuare un monitoraggio in grado di tenere sotto controllo l’andamento delle popolazioni delle specie target.
+\end{itemize}
+
+
+
+  
+\setlength\afterchapskip{52mm}
+\chapter{Azioni di conservazione}
+\renewcommand\chapterillustration{5.jpg}
+
+
+\section{Conservazione delle zone umide}
+Sebbene possa sembrare scontato porre l'accento sulla necessità di conservare le zone umide esistenti, un esame della realtà provinciale anche nell'ultimo ventennio, dopo l’entrata in vigore della L.P. a tutela dei Biotopi provinciali, rivela come invece siano ancora molteplici i fattori che possono mettere in crisi questi piccoli lembi di zone umide: dalla riduzione progressiva delle loro superfici dovuta all'ampliamento delle coltivazioni o delle aree edificate, alla frammentazione indotta dalla realizzazione di nuove o dall'ampliamento di preesistenti infrastrutture, sono ancora diverse le minacce che incombono sullo stato di conservazione delle zone umide. I monitoraggi e le ricerche condotte negli ultimi anni hanno inoltre evidenziato come le limitate dimensioni di molte di queste aree siano l’elemento principale di debolezza di un sistema che, se non collegato ecologicamente, risente in maniera evidente dell'isolamento e della marginalità delle popolazioni \cite{Brambilla12}, con un progressivo impoverimento di specie sia faunistiche che floristiche.
+
+\section{Gestione delle zone umide}
+Per il loro elevato interesse naturalistico, diversi di questi habitat sono stati classificati di “interesse comunitario” secondo la Direttiva Habitat 92/43/CEE (Allegato I; con * sono indicati gli habitat prioritari): 3130 Acque stagnanti, da oligotrofe a mesotrofe, con vegetazione dei \emph{Littorelletea uniflorae} e/o degli \emph{Isoeto-Nanojuncetea}; 3150 Laghi eutrofici naturali con vegetazione del tipo \emph{Magnopotamion} o \emph{Hydrocharition}; 3160 Laghi e stagni distrofici; 7210* Paludi calcaree con \emph{Cladium mariscus} e specie del \emph{Caricion davallianae}; altri ambienti di zone umide, comunque inclusi tra quelli di importanza comunitaria per il loro valore naturalistico (floristico in particolare), risultano generalmente di minor interesse per l'avifauna. Al margine di zone umide o presso le stesse in fase avanzata di interramento si può rinvenire anche l'habitat 6410 Praterie con Molinia su terreni calcarei, torbosi o argilloso-limosi (\emph{Molinion caeruleae}). La loro gestione quindi deve tener conto anche delle esigenze legate alla gestione dei siti Natura 2000 entro cui molto spesso ricadono.
+
+Altri habitat di rilevante interesse naturalistico e soprattutto avifaunistico, sebbene non inclusi negli habitat di interesse comunitario (ancorché riferibili ad alcuni habitat di interesse comunitario in alcuni casi), sono canneti, tifeti e magnocariceti.
+
+Praticamente tutte le zone umide seguono una dinamica evolutiva che conduce ad un progressivo interramento con riempimento delle depressioni in cui le zone umide stesse sono situate, e per questa ragione è necessario mantenere attraverso un'adeguata gestione lo stadio serale (o gli stadi serali) di maggior interesse, dal momento che la formazione di nuove zone umide, processo spontaneo in natura, è attualmente preclusa dalla regimazione dei fiumi e dall'utilizzo antropico del territorio.
+
+Come già anticipato in precedenza, la gestione delle zone umide per quanto riguarda l'avifauna deve  tener conto almeno di alcuni fattori essenziali:
+\begin{itemize}\itemsep0pt
+  \item livello dell'acqua, che deve essere adeguato alle esigenze delle specie target, con particolare attenzione a tarabusino, porciglione, schiribilla, acrocefali;
+  \item evoluzione della vegetazione: come sopra esplicitato, le zone umide tendono spontaneamente ad evolvere verso formazioni sempre più 'asciutte' e arrestare o invertire la successione ecologica è talvolta necessario per mantenere o ricreare gli stadi serali che includono gli habitat cui sono associate le specie target;
+  \item presenza degli habitat necessari alle specie target:
+  \item canneti e tifeti, generalmente ben allagati, ma da mantenere in diversi stadi di età/sviluppo: per molte specie è necessario conservare porzioni 'vecchie', quantomeno gli steli dell'anno precedente, per favorire la nidificazione in primavera \cite{Jedlikowski14}; 'isole' di canneto solo molto appetite da numerose specie spiccatamente acquatiche per nidificare;
+  \item lamineti: rallidi, tuffetto e tarabusino sfruttano spesso la presenza di lamineti a ninfea e/o nannufaro come ambienti di foraggiamento o di riparo;
+  \item boscaglie igrofile: mantenere alcuni elementi può essere importante per diverse specie (usignolo di fiume, cannaiola verdognola, migliarino di palude), soprattutto nella parte esterna delle zone umide, ma in molti casi può rendersi necessario contenerne l'espansione a danno di formazioni erbacee quali canneti, tifeti o magnocariceti.
+\end{itemize}
+
+Stante la riduzione (in numero e in superficie) delle zone umide trentine, i siti di maggiori dimensioni, ovvero i laghi, si trovano ad essere in molti casi gli unici contesti in cui diverse tipologie ambientali proprie delle zone umide sono sufficientemente rappresentati e disposti secondo la naturale successione ecologica. Diventa pertanto importante valorizzare il più possibile gli ambiti lacustri, attraverso una serie di accorgimenti:
+\begin{itemize}\itemsep0pt
+  \item promuovendo la presenza di stadi serali particolarmente importanti da un punto di vista naturalistico;
+  \item preservando dal disturbo antropico le porzioni più significative per presenze faunistiche potenzialmente sensibili;
+  \item gestendo in modo adeguato la vegetazione, regolando la navigazione e l'utilizzo a fini ricreativi delle sponde e delle acque prossime alle rive.
+\end{itemize}
+
+\section{Attenuazione dell'isolamento}
+Le zone umide in Trentino risultano altamente isolate, al punto che persino alcune specie ornitiche, come il porciglione, risentono negativamente dell'isolamento delle aree umide del territorio provinciale \cite{Brambilla12}. Idealmente, la distribuzione delle zone umide sul territorio provinciale dovrebbe configurare una 'rete nella rete', con siti tra loro 'collegati' da zone umide minori, ricreate ad hoc, che possano fungere da \emph{stepping stones} e permettere scambi di individui tra le popolazioni delle diverse specie insediate nei vari contesti territoriali e nei vari siti, attualmente spesso tra loro troppo lontani e isolati affinché si realizzi un consistente flusso di individui (e di geni) tra le diverse zone umide. Tale obiettivo è di vitale importanza non solo per gli Uccelli, ma anche (e soprattutto) per le popolazioni di Anfibi e Rettili che le popolano e che essendo molto meno mobili risentono fortemente del marcato isolamento geografico successivo alle bonifiche del secolo scorso, ma anche di quelle più recenti dell’ultimo ventennio.  
+
+
+\section{Indagini e monitoraggio dell'avifauna delle zone umide trentine}
+Migliorare le conoscenze sull'ecologia, la distribuzione, l'andamento di popolazione, i fattori che regolano presenza e abbondanza e le principali minacce per le specie delle zone umide è un elemento imprescindibile per sviluppare un'efficace strategia di conservazione di questi straordinari ambienti e delle loro ricchissime comunità biologiche.
+Alcune linee di indagine particolarmente importanti per continuare il percorso di conservazione e promozione delle zone umide trentine e della loro avifauna sono le seguenti:
+\begin{itemize}\itemsep0pt
+  \item monitorare nel tempo l’avifauna di 'biotopi' e altre zone umide, per valutare l'evoluzione delle popolazioni delle specie ornitiche e, grazie al loro valore di indicatori, comprendere anche l'andamento 'generale' delle biocenosi di un sito;
+  \item confrontare la situazione attuale con quella pregressa per tutti i siti in cui la disponibilità di dati relativi al recente passato lo consente e valutare quali fattori hanno influenzato l'evoluzione delle comunità ornitiche, in modo da ricavare utili informazioni per la pianificazione e la programmazione delle azioni di conservazione e non solo;
+  \item indagare a fondo le esigenze ecologiche delle specie target e l'effetto di fattori ambientali, antropici e spaziali sulla loro presenza e abbondanza e, qualora possibile, sul loro successo riproduttivo, per calibrare misure e strategie di conservazione;
+  \item predisporre e attuare una serie di misure volte a favorire la connessione ecologica tra zone umide, in modo da ridurne l'isolamento (anche attraverso il Piano di Sviluppo Rurale), e valutarne l'efficacia attraverso adeguati monitoraggi.
+\end{itemize}
+
+\vspace*{\fill}
+\begin{center}
+\includegraphics[width=.8\columnwidth]{tarabuso_mauro_mendini.jpg}
+\end{center}
+\captionof*{figure}{\textbf{Tarabuso} \emph{Botarus stellaris} Rara specie svernante, frequenta le poche zone umide con buona presenza di canneti (\ph Mauro Mendini).}
+\vspace*{\fill}
+
+
+  
+\setlength\afterchapskip{10mm}
+\chapter{Bibliografia}
+\renewcommand\chapterillustration{}
+\renewcommand*{\bibname}{}
+\begingroup
+\renewcommand{\addcontentsline}[3]{}% Remove functionality of \addcontentsline
+\renewcommand{\section}[2]{}% Remove functionality of \section
+\begin{thebibliography}{9}
+\footnotesize
+\bibitem{EUCOUNCIL98} Council of Europe, 1998. \emph{Drafting and implementing action plans for threatened species.} Environmental encounters, Council of Europe (Ed), Strasbourg, 39: 1-4.
+\bibitem{Pedrini05} Pedrini P., Caldonazzi M., Zanghellini S. (eds.) 2005. \emph{Atlante degli Uccelli nidificanti e svernanti in provincia di Trento}. Museo Tridentino di Scienze Naturali, Trento. Studi Trentini di Scienze Naturali, Acta Biologica 80(2003), 2: 1-674.
+\bibitem{Pedrini12} Pedrini P. (a cura di) 2011. \emph{Gli uccelli acquatici svernanti in Trentino: sintesi dei censimenti IWC (2000-09)}. Museo delle Scienze, Trento. 1-134.
+\bibitem{Cramp98} Cramp S. 1998. \href{http://ciso-coi.it/wp-content/uploads/2012/10/redlist-2011.pdf}{\emph{The Complete Birds of the Western Palearctic}}. Oxford University Press.
+\bibitem{Peronace12} Peronace, V., Cecere, J.G., Gustin, M., Rondinini, C. 2012. \emph{Lista Rossa 2011 degli Uccelli nidificanti in Italia}. Avocetta 36: 11–58.
+\bibitem{Gustin09} Gustin M., Brambilla M., Celada C. 2009. \href{http://www.uccellidaproteggere.it/content/download/4210/46448/file/valutazione_avifauna_italiana_volumeI.pdf}{\emph{Valutazione dello stato di conservazione dell’avifauna italiana}}. Roma: Ministero dell’Ambiente, della Tutela del Territorio e del Mare \& LIPU/BirdLife Italia.
+\bibitem{Gustin10} Gustin M., Brambilla M., Celada C. 2010. \emph{Stato di conservazione dell’avifauna italiana - le specie nidificanti e svernanti in Italia non inserite nell’Allegato I della Direttiva Uccelli}. Roma: Ministero dell’Ambiente e della Tutela del Territorio e del Mare \& LIPU/BirdLife Italia.
+\bibitem{Sergio03a} Sergio F., Marchesi L., Pedrini P. 2003. \emph{Spatial refugia and the coexistence of a diurnal raptor with its intraguild owl predator}. Journal of Animal Ecology 72: 232-245.
+\bibitem{Sergio04} Sergio F., Marchesi L, Pedrini P. 2004. \emph{Integrating individual habitat choices and regional distribution of a biodiversity indicator and top predator}. Journal of Biogeography 31: 619-628.
+\bibitem{Sergio03b} Sergio F, Pedrini P., Marchesi L. 2003. \emph{Reconciling the dichotomy between single species and ecosystem conservation: black kites (\emph{Milvus migrans}) and eutrophication in pre-Alpine lakes}. Biological Conservation 110: 101-111.
+\bibitem{Sergio03c} Sergio F, Pedrini P., Marchesi L. 2003. \emph{Spatio-temporal shifts in gradients of habitat quality for an opportunist avian predator}. Ecography 26: 243-255.
+\bibitem{Sergio03d} Sergio F, Pedrini P., Marchesi L. 2003. \emph{Adaptive selection of foraging and nesting habitat by black kites (\emph{Milvus migrans}) and its implications for conservation: a multi-scale approach}. Biological Conservation 112: 351-362.
+\bibitem{Brambilla12} Brambilla M., Rizzolli F., Pedrini P. 2012. \emph{The effects of habitat and spatial features of wetland fragments on the abundance of two rallid species with different degree of habitat specialization}. Bird Study 59: 279-285.
+\bibitem{Jedlikowski14} Jedlikowski J., M. Brambilla, M. Suska-Malawska. 2014. \emph{Nest site selection in Little Crake \emph{Porzana parva} and Water Rail \emph{Rallus aquaticus} in small midfield ponds}. Bird Study 61: 171-181.
+\bibitem{Allavena06} Allavena S., Andreotti A., Angelini J., Scotti M. 2006. \emph{Status e conservazione del Nibbio reale e Nibbio bruno in Italia e in Europa meridionale}. In: Status e conservazione del Nibbio reale e Nibbio bruno in Italia e in Europa meridionale, S. Maria del Mercato, Serra S. Quirico 11-12 marzo 2006: 4-5.
+\bibitem{Battisti04} Battisti C., Zocchi A. 2004. \emph{Nesting habitat structure of the Black Kite, Milvus migrans, in a suburban area (Rome, Central Italy)}. Riv. Ital. Orn., 74: 97-106.
+\bibitem{Bogliani07} Bogliani G., Agapito Ludovici A., Arduino S., Brambilla M., Casale F., Crovetto G.M., Falco R., Siccardi P., Trivellini G. 2007. \href{http://www.flanet.org/it/95/pubblicazione/aree-prioritarie-la-biodiversit%C3%A0-nella-pianura-padana-lombarda}{\emph{Aree prioritarie per la biodiversità nella Pianura Padana lombarda}}. Fondazione Lombardia per l’Ambiente e Regione Lombardia, Milano.
+\bibitem{Brambilla04} Brambilla M., Rubolini D. 2004. \emph{Water Rail Rallus aquaticus breeding density and habitat preferences in northern Italy}. Ardea 92: 11-18.
+\bibitem{Brambilla09} Brambilla M., Jenkins R.K.B. 2009. \emph{Cost-effective estimates of Water Rail Rallus aquaticus breeding population size}. Ardeola 56: 95-102.
+\bibitem{Brichetti03} Brichetti P., Fracasso G. 2003. \emph{Ornitologia Italiana Vol. I - Gaviidae-Falconidae}. Alberto Perdisa Editore.
+\end{thebibliography}
+
+\makeatletter
+\renewcommand\@biblabel[1]{\textcolor{\backgroundrectanglecolor}{$\bullet$}}
+\makeatother
+
+\renewcommand*{\bibname}{Bibliografia non citata}
+\textbf{\large Bigliografia non citata} 
+\begin{thebibliography}{9}
+\footnotesize
+\bibitem{Cramp80} Cramp S, Simmons KEL (eds.) 1980. \emph{The Birds of the Western Paleartic, 2}. Oxford: Oxford University Press.
+\bibitem{Cramp93} Cramp S., Perrins C.M. 1993. \emph{The Birds of the Western Palearctic}. Oxford University Press, Oxford. Volume VII.
+\bibitem{Cramp80b} Cramp S., Simmons K.E.L. 1980. \emph{The Birds of the Western Palearctic}. Oxford University Press, Oxford. Volume II.
+\bibitem{Gillian02} Gillian G. 2002. \href{http://www.tandfonline.com/doi/pdf/10.1080/00063650209461247}{\emph{The status and habitat of Spotted Crakes Porzana porzana in Britain in 1999}}. Bird Study 49: 79-86.
+\bibitem{Grattini03} Grattini N. 2003. \emph{Biologia riproduttiva del tarabusino in un'area protetta della pianura mantovana}. Avocetta 27: 159.
+\bibitem{Jenkins02} Jenkins, R.K.B., Ormerod, S.J. 2002. \emph{Habitat preferences of breeding Water Rail Rallus aquaticus}. Bird Study, 42: 2-10.
+\bibitem{Martinez-Vilalta02} Martinez-Vilalta J., Bertolero A., Bigas D., Paquet J.Y., Martinez-Vilalta A. 2002. \href{http://www.researchgate.net/publication/225556327_Habitat_selection_of_passerine_birds_nesting_in_the_Ebro_Delta_reedbeds_(NE_Spain)_Management_implications/file/79e4150f71df9ec967.pdf}{\emph{Habitat selection of passerine birds nesting in the Ebro Delta reedbeds (NE Spain), Management implications}}. Wetlands, 22: 318-325. 
+\bibitem{Sergio99} Sergio F., Boto A. 1999. \href{https://sora.unm.edu/sites/default/files/journals/jrr/v033n03/p00207-p00217.pdf}{\emph{Nest dispersion, diet, and breeding success of Black Kites (\emph{Milvus migrans}) in the Italian pre-Alps}}. Journal of Raptor Research 33: 207-217.
+\bibitem{Tucker97} Tucker G.M., Evans M.I. 1997. \emph{Habitats for Birds in Europe: A Conservation Strategy for the Wider Environment}. Cambridge: BirdLife International.
+\bibitem{Tucker94} Tucker G.M., Heath M.F. 1994. \emph{Birds in Europe: their conservation status}. Cambridge: BirdLife International.
+\bibitem{Tyler98} Tyler G.A., Smith K.W., Burgess N.D. 1998. \emph{Reedbed management and breeding bitterns Botaurus stellaris in the UK}. Biological Conservation, 86: 257-266.
+\bibitem{Birdlife04} BirdLife International, 2004. \emph{Birds in Europe: population estimates, trends and conservation status.} Cambridge, UK: BirdLife International, BirdLife Conservation Series No. 12.
+\end{thebibliography}
+\endgroup
+\cleartoverso
+
+\normalsize
+
+
+
+%%%%%%%%%%%
+% Back cover
+%%%%%%%%%%%
+\normalsize
+% Temporarily enlarge this page to push
+% down the bottom margin
+\enlargethispage{3\baselineskip}
+\thispagestyle{empty}
+\pagecolor{\backpagecolor}
+%\pagecolor[HTML]{0E0407}
+
+\begin{center}
+\vspace*{\fill}
+
+\begin{figure}[htp]
+\captionsetup{font=normalsize}
+\centering
+\subcaptionbox*{\url{www.lifeten.tn.it}}[.3\linewidth]{\includegraphics[width=.3\columnwidth]{logo_LIFETEN.png}}
+\subcaptionbox*{\url{www.provincia.tn.it}}[.3\linewidth]{\includegraphics[width=.15\columnwidth]{logo_PAT.png}}
+\subcaptionbox*{\url{www.muse.it}}[.3\linewidth]{\includegraphics[width=.3\columnwidth]{logo_MUSE_verde_nospace.png}}
+\end{figure}
+
+\textbf{\textcolor{LightGoldenrod!50!Gold}{MUSE - Museo delle Scienze}}
+
+\vspace*{\baselineskip}
+
+\textbf{\textcolor{LightGoldenrod}{Sezione di Zoologia dei Vertebrati}}
+\end{center}
+
+
+\end{document}

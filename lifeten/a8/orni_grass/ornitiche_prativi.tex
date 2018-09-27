@@ -1,0 +1,810 @@
+    \documentclass[10pt,twoside,openany,x11names,svgnames,italian,a5paper,dvipsnames,table]{memoir}
+\usepackage[italian]{babel}
+\usepackage{lmodern}
+\usepackage{wallpaper}
+\usepackage{tikz}
+\usetikzlibrary{shapes,positioning}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+
+\usepackage[hyphens]{url} % For URL automated linebreaks
+\usepackage{lipsum}
+\usepackage[framemethod=tikz]{mdframed}
+
+\usepackage{wrapfig}
+\usepackage{overpic}
+\usepackage{minibox}
+\usepackage{pdfpages}
+\usepackage{subcaption}
+
+\usepackage{tabularx, booktabs}
+
+\usepackage{lipsum}
+\usepackage[ISBN=978-80-85955-35-4]{ean13isbn}
+\usepackage{graphicx}
+\graphicspath{ {./img/} {./img/chap/} {./img/logo/} {./img/front/} {./img/icon/} {./img/back/} }
+
+% Captions
+\usepackage[labelfont={footnotesize,sf,bf},textfont={footnotesize,sf}]{caption}
+
+% Links
+\usepackage[pdftitle={LIFE+T.E.N.: Azione A8 - Piano d’azione per la conservazione delle specie ornitiche degli ambienti prativi in Trentino},
+     pdfauthor={Sezione Zoologia dei Vertebrati, MUSE - Museo delle Scienze},
+     colorlinks,linktocpage=true,linkcolor=Sienna!50!Gold,urlcolor=BrickRed,citecolor=OliveGreen,bookmarks]{hyperref}
+
+% Adjust margins around typeblock
+\setlrmarginsandblock{23mm}{18mm}{*}
+\setulmarginsandblock{23mm}{23mm}{*}
+
+% Header and footer heights
+\setheadfoot{\baselineskip}{10mm}
+\setlength\headsep{7mm}
+
+% Apply and enforce layout
+\checkandfixthelayout
+
+% Command to hold chapter illustration image
+\newcommand\chapterillustration{}
+
+\usepackage{xcolor}
+\definecolor[named]{GreenTea}{HTML}{CAE8A2}
+\definecolor[named]{MilkTea}{HTML}{C5A16F}
+\definecolor{verylightgray}{gray}{0.95}
+\definecolor{grey}{gray}{0.5} % 0-nero; 1-bianco
+
+
+\renewcommand{\labelitemi}{\textcolor{MilkTea}{$\bullet$}}
+\newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
+\newcommand{\etal}{\textsl{et al}. }
+\newcommand{\ie}{\emph{i}.\emph{e}. }
+\newcommand{\ph}{\emph{Ph}. }
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newsubfloat{figure} % Allow subfloats in figure environment
+
+
+\newcommand{\tablespecie}[3]{\multicolumn{1}{c}{\parbox[t]{4.1cm}{\begin{minipage}[t][.8cm][t]{\textwidth}#1 \newline \href{#2}{\emph{#3}}\end{minipage}}}}
+
+\nouppercaseheads
+
+\newmdenv[innerlinewidth=0.5pt, roundcorner=4pt,linecolor=Sienna!80!white,innerleftmargin=6pt,
+innerrightmargin=6pt,innertopmargin=6pt,innerbottommargin=6pt]{speciebox}
+
+\tikzset{
+  every overlay node/.style={
+    anchor=north west,
+  },
+}
+% Usage:
+% \tikzoverlay at (-1cm,-5cm) {content};
+% or
+% \tikzoverlay[text width=5cm] at (-1cm,-5cm) {content};
+\def\tikzoverlay{%
+   \tikz[baseline,overlay]\node[every overlay node]
+}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% BEGIN DOCUMENT STYLYING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\bibsection}{%
+\section{\bibname}
+\prebibhook}
+
+% CHAPTER STYLE DEFINITION BEGIN
+\makechapterstyle{chapterstyle}{
+% Vertical space before main text 
+  \setlength\beforechapskip{0pt}
+  \setlength\midchapskip{0pt}
+  \setlength\afterchapskip{70mm}
+
+  \renewcommand*\printchaptername{}
+  \renewcommand*\printchapternum{}
+  %% Re-define how the chapter title is printed
+  \def\printchaptertitle##1{
+    % Background image at top of page
+    \ThisULCornerWallPaper{1}{\chapterillustration}
+    % Draw a semi-transparent rectangle across the top
+    \tikz[overlay,remember picture]
+    \fill[fill=Sienna!80!white,opacity=.7]
+      (current page.north west) rectangle 
+      ([yshift=-3cm] current page.north east);
+      % Check if on an odd or even page
+      \strictpagecheck\checkoddpage
+      % On odd pages, "logo" image at lower right
+      % corner; Chapter number printed near spine
+      % edge (near the left); chapter title printed
+      % near outer edge (near the right).
+      \ifoddpage{
+        % Insert picture in lower right corner
+        \ThisLRCornerWallPaper{.25}{crex_small_right.png}
+        % Chapter heading style for ODD pages
+        \begin{tikzpicture}[overlay,remember picture]
+          \node[anchor=south west,
+            xshift=10mm,yshift=-30mm,
+            font=\sffamily\bfseries\huge] 
+            at (current page.north west) 
+            {}; %\chaptername\chapternamenum\thechapter
+          \node[fill=Sienna!80!black,text=white,
+            font=\huge\bfseries, 
+            inner ysep=12pt, inner xsep=20pt,
+            rectangle,anchor=east, 
+            xshift=-10mm,yshift=-30mm] 
+            at (current page.north east) {##1};
+        \end{tikzpicture}
+      }
+      % On even pages, "logo" image at lower left
+      % corner; Chapter number printed near outer
+      % edge (near the right); chapter title printed
+      % near spine edge (near the left).
+      \else {
+        % Insert picture in lower left corner
+        \ThisLLCornerWallPaper{.25}{crex_small_left.png}
+        % Chapter heading style for EVEN pages
+        \begin{tikzpicture}[overlay,remember picture]
+          \node[anchor=south east,
+            xshift=-10mm,yshift=-30mm,
+            font=\sffamily\bfseries\huge] 
+            at (current page.north east)
+            {}; % \chaptername\chapternamenum\thechapter
+          \node[fill=Sienna!80!black,text=white,
+            font=\huge\bfseries,
+              inner sep=12pt, inner xsep=20pt,
+              rectangle,anchor=west,
+              xshift=10mm,yshift=-30mm] 
+              at ( current page.north west) {##1};
+        \end{tikzpicture}
+      } % END IF
+      \fi
+    } 
+} % END CHAPTER STYLE
+
+
+% CHAPTER STYLE FOR UNNUMBERED CHAPTERS
+\makechapterstyle{chapterstyleunnumbered}{
+  % Vertical Space before main text starts
+  \setlength\beforechapskip{0pt}
+  \setlength\midchapskip{0pt}
+  \setlength\afterchapskip{47mm}
+
+  \renewcommand*\printchaptername{}
+  \renewcommand*\printchapternum{}
+  %% Re-define how the chapter title is printed
+  \def\printchaptertitle##1{
+    % Draw a semi-transparent rectangle across the top
+    \tikz[overlay,remember picture]
+    \fill[fill=Sienna,opacity=.7]
+      (current page.north west) rectangle 
+      ([yshift=-3cm] current page.north east);
+    % Check if on an odd or even page
+    \strictpagecheck\checkoddpage
+      \ifoddpage{
+        \begin{tikzpicture}[remember picture, overlay]
+        \node[fill=Sienna!80!black,text=white,
+          font=\Huge\bfseries, 
+          inner ysep=12pt, inner xsep=20pt,
+          rectangle,anchor=east, 
+          xshift=-10mm,yshift=-30mm] 
+          at (current page.north east) {##1};
+        \end{tikzpicture}
+      }
+      \else {
+        \begin{tikzpicture}[remember picture, overlay]
+          \node[fill=Sienna!80!black,text=white,
+            font=\Huge\bfseries,
+            inner sep=12pt, inner xsep=20pt,
+            rectangle,anchor=west,
+            xshift=10mm,yshift=-30mm] 
+            at ( current page.north west) {##1};
+        \end{tikzpicture}
+      } % END IF
+      \fi
+    } 
+} % END CHAPTER STYLE
+
+
+% Set the uniform width of the colour box
+% displaying the page number in footer
+% to the width of "99"
+\newlength\pagenumwidth
+\settowidth{\pagenumwidth}{99}
+
+% PAGE NUMBER COLOR BOX STYLE
+\tikzset{pagefooter/.style={
+anchor=base,font=\sffamily\bfseries\small,
+text=white,fill=Sienna!80!white,text centered,
+text depth=17mm,text width=\pagenumwidth}}
+
+%%%%%
+%% Re-define running headers on non-chapter odd pages
+%%%%%
+\makeoddhead{headings}
+% Left header is empty but I'm using it as a hook to paint the
+% background rectangles underneath everything else
+{\begin{tikzpicture}[remember picture,overlay]
+\fill[MilkTea!25!white] (current page.north east) 
+	rectangle (current page.south west);
+\fill[white, rounded corners] 
+	([xshift=-10mm,yshift=-20mm]current page.north east) rectangle 	
+	([xshift=15mm,yshift=17mm]current page.south west);
+\end{tikzpicture}}%
+% Blank centre header
+{}%
+% Display a decorate line and the right mark (chapter title)
+% at right end
+{\begin{tikzpicture}[xshift=-.75\baselineskip,yshift=.25\baselineskip,remember picture, overlay,fill=Orange,draw=Orange]\fill circle(3pt);\draw[semithick](0,0) -- (current page.west |- 0,0);\end{tikzpicture}\sffamily\itshape\small\rightmark}
+
+%%%%%
+%% Re-define running footers on ODD pages
+%% i.e. display the page number on the right
+%%%%%
+\makeoddfoot{headings}{}{}{\tikz[baseline]\node[pagefooter]{\thepage};}
+\makeoddfoot{plain}{}{}{\tikz[baseline]\node[pagefooter]{\thepage};}
+
+%%%%%
+%% Re-define running headers on non-chapter EVEN pages
+%%%%%
+\makeevenhead{headings}
+% Draw the background rectangles; then the left mark (section
+% title) and the decorate line
+{{\begin{tikzpicture}[remember picture,overlay]
+  \fill[MilkTea!25!white] (current page.north east) rectangle (current page.south west);
+  \fill[white, rounded corners] ([xshift=-15mm,yshift=-20mm]current page.north east) rectangle ([xshift=10mm,yshift=17mm]current page.south west);
+\end{tikzpicture}}%
+\sffamily\itshape\small\leftmark\ 
+\begin{tikzpicture}[xshift=.5\baselineskip,yshift=.25\baselineskip,remember picture, overlay,fill=Orange,draw=Orange]\fill (0,0) circle (3pt); \draw[semithick](0,0) -- (current page.east |- 0,0 );\end{tikzpicture}}{}{}
+\makeevenfoot{headings}{\tikz[baseline]\node[pagefooter]{\thepage};}{}{}
+\makeevenfoot{plain}{\tikz[baseline]\node[pagefooter]{\thepage};}
+% Empty centre and right headers on even pages
+{}{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% END DOCUMENT STYLYING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setsecnumdepth{chapter}
+
+\newlength\mylena
+\setlength\mylena{.6in}
+\newlength\mylenb
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% DOCUMENTMATTER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\frontmatter
+
+%%%%%%%
+% Cover page
+%%%%%%%
+% No header nor footer on the cover
+\thispagestyle{empty}
+% Bar across the top
+\tikz[remember picture,overlay]%
+\node[fill=Sienna,text=white,font=\LARGE\bfseries,text=Cornsilk,%
+minimum width=\paperwidth,minimum height=5em,anchor=north]%
+at (current page.north){
+\begin{tabular}{c}
+LIFE + T.E.N.: Azione A8\\
+\end{tabular}};
+
+% Cover illustration
+\ThisLLCornerWallPaper{1}{grassland.jpg}
+
+\vspace*{1\baselineskip}
+% Title
+{\bfseries\textcolor{MilkTea}{\selectfont
+\\
+{\normalsize \emph{Action plans} per la conservazione di specie focali \\[0.05cm]
+di interesse comunitario} \\[0.3cm]
+{\huge\noindent Specie ornitiche\\[0.1cm]
+degli ambienti prativi}}}\\[0.2cm]
+
+\vspace*{2\baselineskip}
+
+
+
+% Footer image
+\begin{tikzpicture}[remember picture, overlay]
+  \node[fill=Sienna,font=\LARGE\bfseries,text=Cornsilk,%
+  minimum width=\paperwidth,minimum height=5em,anchor=south]%
+  at (current page.south) {}; 
+  \node[anchor=south,inner sep=0pt] at (current page.south) { \includegraphics[width=\textwidth]{footer.png}};
+\end{tikzpicture}
+
+
+
+\vspace*{6\baselineskip}
+
+\includepdf[pages={1}]{second_cover_ornitiche_prativi.pdf}
+
+\cleartorecto
+
+% Invoke fancy unnumbered chapter style
+% for the table of contents
+\chapterstyle{chapterstyleunnumbered}
+\setcounter{tocdepth}{0}
+\tableofcontents*
+
+% Main matter starts here; resets page-numberings to arabic numeral 1
+\mainmatter
+
+% Invoke the chapterstyle chapter style
+\chapterstyle{chapterstyle}
+
+% Public domain image from
+% http://www.public-domain-image.com/objects/computer-chips/slides/six-computers-chips-circuits.html
+\setlength\afterchapskip{10mm}
+\chapter{Che cos'\`e un piano di azione}
+\renewcommand\chapterillustration{}
+\footnotesize
+\vspace{.5cm}
+In generale, l'approccio ecosistemico costituisce la strategia più corretta ed efficace per la conservazione della natura: attraverso la conservazione degli ecosistemi, ovvero degli ambienti naturali e delle relazioni che s’instaurano tra le varie componenti che in essi si rinvengono, si garantisce la conservazione sia delle singole specie che dei processi ecologici e dei fenomeni di interazione tra specie e tra fattori biotici e abiotici che consentono la presenza delle specie stesse.
+
+Vi sono tuttavia alcune situazioni nelle quali le misure di tutela ambientale possono non essere sufficienti per garantire la sopravvivenza di specie minacciate, che necessitano di misure di conservazione dedicate e spesso specie-specifiche. In questi casi è necessario seguire un approccio specie-specifico, intervenendo direttamente sui taxa fortemente minacciati di estinzione, che richiedono misure urgenti di conservazione. L’approccio specie – specifico prevede misure di intervento delineate in documenti tecnici denominati “Piani d’Azione” \cite{EUCOUNCIL98}.
+
+Un piano d’azione si basa sulle informazioni disponibili relative a biologia, ecologia, distribuzione e abbondanza della specie trattata e in base a queste propone misure d’intervento, delineate a partire dalla definizione delle minacce che mettono a rischio la sopravvivenza della specie. Il piano d’azione si compone poi degli obiettivi volti ad assicurare la conservazione della specie nel lungo periodo e delle corrispondenti azioni necessarie per realizzarli.
+
+Una corretta strategia di conservazione relativa a una determinata specie deve contemplare la pianificazione degli obiettivi nel breve, medio e lungo periodo, e deve essere flessibile e modificabile nel tempo. Infatti periodiche verifiche circa lo stato di realizzazione ed avanzamento delle azioni, in rapporto al raggiungimento degli obiettivi, possono mettere in luce la necessità di un
+loro adeguamento, in funzione anche di scenari mutati.
+
+Nell'ambito di questo piano sviluppato nell'Azione A8 del LIFE + T.E.N., così come in alcuni altri sempre realizzati nello stesso LIFE, si è utilizzato un approccio innovativo, a cavallo tra quello ecosistemico e quello specie-specifico, riferito a gruppi di specie che occupano gli stessi ambienti e che risultano sostanzialmente sottoposte alle stesse minacce e pressioni. In questo modo, s’intende massimizzare l'efficacia degli interventi proposti per la conservazione e ottimizzare il relativo rapporto costi/benefici, proponendo indicazioni che mirino alla salvaguardia non di una sola specie, ma di un gruppo di specie con esigenze ecologiche largamente sovrapposte e che spesso necessitano di strategie di conservazione simili.\\ 
+
+
+\setlength\afterchapskip{52mm}
+\normalsize
+\chapter{Inquadramento generale}
+\renewcommand\chapterillustration{agro.jpg}
+
+\section{Inquadramento dell'habitat e delle specie}
+In molte aree del mondo e in particolare in Europa, la millenaria storia d’interazione tra l’uomo e la natura ha avuto ed ha tuttora un impatto determinante sulla biodiversità \cite{Pain97}. In particolare, l’espansione di ambienti aperti e semi-aperti utilizzati per la produzione alimentare, quali campi coltivati a cereali, coltivazioni di alberi da frutto, prati da sfalcio e pascoli, ha profondamente modificato l'originario paesaggio europeo, largamente dominato da foreste e da altri ambienti naturali, come le zone umide, nelle piane e valli alluvionali. 
+
+Queste trasformazioni avvenute in epoca storica hanno permesso a numerose specie originariamente legate ad ambienti di tipo steppico di occupare larghe porzioni del continente europeo: prati, campi e pascoli si sono rivelati un ottimo habitat, fino al punto da rappresentare il loro ambiente principale. 
+
+In epoca più recente, i profondi cambiamenti nelle pratiche agricole avvenuti, dopo gli anni Cinquanta, hanno però causato la progressiva rarefazione o scomparsa di molte di queste specie. Tra le più minacciate rientrano quelle legate agli ambienti aperti o semi-aperti, largamente originati e mantenuti dall’attività agricola tradizionale e dalla pastorizia \cite{Donald01}. In particolare, l’ambiente che ospita il maggior numero di specie di Uccelli attualmente minacciate a livello continentale è proprio quello degli ambienti agricoli \cite{BirdLife08}. Il preoccupante declino mostrato da molte specie negli ultimi decenni appare in larga parte dovuto all’intensificazione delle pratiche agricole \cite{Donald01}, ma anche all’abbandono delle aree rurali, fenomeno che risulta ancora in corso in buona parte d’Europa \cite{Laiolo04} \cite{Brambilla10}.
+
+In tale quadro generale, appare evidente come l’individuazione di modelli gestionali, concretamente applicabili e in grado di rendere le pratiche agro-pastorali compatibili con la conservazione della biodiversità, sia fondamentale per la conservazione di una larga parte della biodiversità presente a livello continentale.
+
+Questo stato di cose è ancora più accentuato sulle Alpi, dove lo spopolamento delle zone montane meno favorevoli alle moderne esigenze economiche è particolarmente evidente e il venir meno delle pratiche agricole e di allevamento
+tradizionale, così come la diffusione delle monocolture intensive alle medie e basse quote e l’urbanizzazione dei fondivalle e della fascia collinare, hanno profondamente modificato il paesaggio e gli habitat impoverendo la flora e la fauna.
+
+ Nelle Alpi meridionali, e in particolare nella fascia prealpina, gli ambienti aperti di media e bassa montagna sono oggi un elemento del paesaggio in forte contrazione spaziale. Tra le specie più significative in questo contesto ambientale, che si rinvengono con popolazioni ancora apprezzabili sul territorio provinciale, alcune sono di grande valore conservazionistico, per il loro stato di conservazione sfavorevole a scala europea o globale e per l'essere inserite nell'Allegato I della Direttiva Uccelli, la cui presenza è fortemente legata al mantenimento di alcune forme di paesaggio agricolo tradizionale. 
+
+La specie più rappresentativa è il re di quaglie \emph{Crex crex}, rallide migratore e visitatore estivo, minacciato a livello globale. Scomparso dalle aree aperte di fondovalle e bassa quota, nidifica oggi sulle Alpi orientali in misura assolutamente preponderante nei prati da sfalcio di media montagna gestiti in maniera estensiva \cite{Pedrini02} \cite{Pedrini05} \cite{Pedrini12}. I fattori di minaccia per questa specie sono rappresentati, oltre che dai cambi colturali, dallo sfalcio meccanizzato e dalla eccessiva fertilizzazione. Le ultime popolazioni vitali sopravvivono infatti dove la gestione del prato si svolge ancora con pratiche tradizionali che poco incidono sul successo riproduttivo della specie e hanno effetti limitati sulla mortalità di adulti e di giovani dell’anno. La gestione degli ambienti prativi è quindi il fattore chiave per garantire la conservazione di questa specie \cite{Broyer96} \cite{Crockford96} \cite{Brambilla13}. Tra i Passeriformi, l’averla piccola \emph{Lanius collurio}, Lanide un tempo decisamente più diffuso e numeroso, oggi raggiunge le densità più elevate nei pascoli di media quota e nei prati da sfalcio condotti con metodi non intensivi \cite{Brambilla09}. La sua presenza, come quella della bigia padovana \emph{Sylvia nisoria}, è infatti minacciata tanto dall’intensificazione delle pratiche agricole, quanto dall’abbandono della montagna e dal conseguente rimboschimento naturale \cite{Brambilla07} \cite{Brambilla10}. 
+
+Nei prati da sfalcio analoga sorte riguarda anche molte specie di piccoli Passeriformi, come l’allodola \emph{Alauda arvensis}, lo stiaccino \emph{Saxicola rubetra} e diversi zigoli (Emberizidi), un tempo presenze diffuse, le cui popolazioni alpine risultano inscindibilmente legate al tipo di coltivazione e alle modalità di sfalcio nelle praterie montane \cite{Muller05} \cite{Britschgi06}. 
+
+Infine, non bisogna dimenticare come la perdita di eterogeneità ambientale propria del mosaico agricolo e causata dall’intensificazione, dall’abbandono o da errate pratiche di coltivazione, determini la scomparsa di risorse chiave per il completamento del ciclo vitale di molte di queste specie \cite{Benton03} \cite{Heikkinen04} \cite{Brambilla08} \cite{Brambilla12} \cite{Vickery12}.
+
+Le potenzialità in termini di ricadute positive per la conservazione delle specie minacciate che una gestione oculata e sensibile delle coltivazioni può avere, trovano evidenza in specifici studi che mostrano come semplici accorgimenti possano consentire la sopravvivenza di rilevanti popolazioni persino in ambienti coltivati generalmente ritenuti di limitato interesse per la biodiversità \cite{Arlettaz10} \cite{Casale09}. 
+
+
+
+
+\section{Distribuzione e status di conservazione in Italia e in Europa}
+Le specie \emph{target} del presente piano d'azione sono re di quaglie, bigia padovana, averla piccola, ortolano \emph{Emberiza hortulana}. Altre specie (non inserite nell'Allegato I della Direttiva Uccelli) che potrebbero beneficiare delle misure formulate a partire dalle esigenze ecologiche delle specie target sopra elencate, sono allodola, stiaccino, saltimpalo \emph{Saxicola torquatus}, zigolo giallo \emph{Emberiza citrinella}. Si tratta in tutti i casi di specie a distribuzione esclusivamente o prevalentemente paleartica, sebbene, ad eccezione di allodola, saltimpalo e zigolo giallo, svernino prevalentemente nell'Africa subsahariana.
+
+A livello nazionale, re di quaglie e bigia padovana sono largamente confinate alle regioni nord-orientali \cite{Gustin09}; lo stiaccino e lo zigolo giallo sono prevalentemente legati alle Alpi e agli  Appennini, l'allodola e l'averla piccola sono presenti in buona parte delle regioni, seppure con abbondanze molto variabili, mentre l'ortolano risulta assente dalle regioni più meridionali \cite{Gustin09} \cite{Gustin10}.
+
+\section{Biologia ed ecologia generali}
+Tutte queste specie sono diversamente legate al mantenimento e alla modalità di coltivazione dei prati e dei pascoli che deve però consentire anche il mantenimento di specifici elementi di marginalità vitali al loro ciclo biologico. 
+
+Re di quaglie, allodola e stiaccino possono occupare ambienti prativi destinati allo sfalcio, apparentemente senza altri elementi ambientali, ma in realtà la loro presenza è fortemente legata alla disponibilità di porzioni marginali di prati umidi, piccole superfici non falciate, vegetazione erbacea a megaforbie prossima ai corsi d’acqua, ambienti ideali di alimentazione, nidificazione e rifugio durante le operazioni di taglio dell’erba. Le altre specie sono più o meno legate alla presenza di elementi 'marginali' quali siepi, cespugli, macchie arbustive o piccoli boschetti, utilizzati come siti di nidificazione e di rifugio, oppure come posatoi per il canto o a scopo trofico \cite{Cramp98}. L’ortolano, che tra quelle qui considerate è la specie più rara in Trentino, occupa prati aridi, coltivi a cereali con elementi marginali arbustivi e arborei e pascoli magri in terreni calcarei con rocce affioranti; risulta generalmente associato alla presenza di porzioni di suolo privo di vegetazione. 
+
+Con la parziale eccezione della bigia padovana e dell’ortolano, tutte queste specie sono influenzate dalle pratiche agricole e dai loro effetti sulla struttura e sulla qualità dell'ambiente prativo e delle aree contigue \cite{Green99} \cite{Donald02} \cite{Negri05} \cite{Wilson05} \cite{Brambilla13} \cite{Josefsson13}.
+
+Le attività agricole possono condizionare fortemente la struttura o la qualità dell'habitat, come pure ridurre drasticamente la sopravvivenza di adulti, pulcini o nidi. Alcune specie, come re di quaglie, allodola e stiaccino, depongono più di una covata all'anno all'interno di ambienti prativi e necessitano di un buon successo riproduttivo per mantenere popolazioni vitali; lo sfalcio meccanizzato dei prati su ampia scala e altre pratiche agricole possono determinare facilmente un crollo nel successo riproduttivo, con conseguente calo demografico \cite{Crockford96} \cite{Brambilla13}. Per queste ragioni, una corretta gestione delle pratiche agricole è essenziale per la conservazione di queste specie e dell'ampia diversità biologica ad esse associata.
+
+\newpage
+%\rowcolors{2}{MilkTea!25!white}{white}
+\begin{table}[H]
+\centering
+\begin{adjustwidth*}{-.3cm}{-.3cm}
+\scalebox{.8}{
+\begin{tabular}{l|l|l|l|l|l|l|l}
+\toprule 
+\hiderowcolors                         
+  \textbf{\textcolor{Sienna!80!white}{Specie}} &
+  \rotatebox{270}{\textbf{\textsc{\textcolor{Sienna!80!white}{All. I D.U.}}}} &   
+  \rotatebox{270}{\textbf{\textsc{\textcolor{Sienna!80!white}{Cat. SPEC}}}} &
+  \rotatebox{270}{\textbf{\textsc{\textcolor{Sienna!80!white}{Stato EU}}}} & 
+  \rotatebox{270}{\textbf{\textsc{\textcolor{Sienna!80!white}{Stato IT}}}} & 
+  \rotatebox{270}{\textbf{\textsc{\textcolor{Sienna!80!white}{LR IT (2011)}}}} &
+  \rotatebox{270}{\textbf{\textsc{\textcolor{Sienna!80!white}{LR TN (2005)}}}} &
+  \rotatebox{270}{\textbf{\textsc{\textcolor{Sienna!80!white}{Prior. A2}}}} \\   
+\midrule 
+    \showrowcolors
+      \tablespecie{Re di quaglie}{http://217.199.4.93/webgis/?specie=Crex\%20crex}{Crex crex} & $\bullet$ & SPEC1 & pop. ridotta & cattivo & VU & CR & 61.9  \\
+      \tablespecie{Allodola}{http://217.199.4.93/webgis/?specie=Crex\%20crex}{Alauda arvensis}  & & SPEC3 & in declino  & cattivo & VU & VU & -\\
+      \tablespecie{Stiaccino}{http://217.199.4.93/webgis/?specie=Saxicola\%20rubetra}{Saxicola rubetra}  & & - & in declino  & cattivo & LC & NT & - \\
+      \tablespecie{Saltimpalo}{http://217.199.4.93/webgis/?specie=Saxicola\%20torquatus}{Saxicola torquatus}  & & - & sicuro  & inadeguato  & VU & VU & -\\
+      \tablespecie{Bigia padovana}{http://217.199.4.93/webgis/?specie=Sylvia\%20nisoria}{Sylvia nisoria} & $\bullet$ & - & sicuro  & cattivo & CR & EN & 46.8\\
+      \tablespecie{Averla piccola}{http://217.199.4.93/webgis/?specie=Lanius\%20collurio}{Lanius collurio}  & $\bullet$ & SPEC3 & pop. ridotta & cattivo & VU & VU & 51.6 \\
+      \tablespecie{Zigolo giallo}{http://217.199.4.93/webgis/?specie=Emberiza\%20citrinella}{Emberiza citrinella} & & - & in declino  & cattivo & LC & VU & -\\
+      \tablespecie{Ortolano}{http://217.199.4.93/webgis/?specie=Emberiza\%20hortulana}{Emberiza hortulana} & $\bullet$ & SPEC2 & in declino  & cattivo & DD & CR & 71.4\\
+\bottomrule
+\end{tabular}
+}
+\end{adjustwidth*}
+\caption*{Categorie di minaccia per le specie target. Per il significato delle abbreviazioni utilizzate, si veda la pagina seguente, per dettagli sulla priorità dell'Azione A2 si veda invece \href{http://www.lifeten.tn.it/binary/pat_lifeten/azioni_preparatorie/LifeTEN_Report_A2.1395233849.pdf}{il relativo documento}, per dettagli sulla Direttiva Uccelli, la pagina Web \url{http://www.minambiente.it/pagina/direttiva-uccelli}}
+\label{tab:minaccia}
+\end{table} 
+
+
+\newpage
+\label{tab:legende}
+
+\begin{table}[H]
+\centering
+\begin{adjustwidth*}{-.6cm}{-.6cm}
+\scalebox{.75}{
+\begin{tabular}{p{0.05\columnwidth}p{14cm}}
+\hiderowcolors
+ \multicolumn{2}{l}{\textbf{\Large Legenda Liste Rosse}} \\
+ \medskip \\
+ \textbf{Sigla} & \textbf{Significato}\\
+ \midrule
+ \showrowcolors
+ \textbf{RE} & Estinta nella regione (\emph{Regional Exctinct}): presente in passato, 
+ con popolazioni naturali che si sono estinte nell’intera regione\\
+   \textbf{RE?} & Probabilmente estinta nella regione (\emph{Regional Exctinct}?): presente in passato, 
+ con popolazioni naturali la cui estinzione seppur molto probabile non si ritiene sufficientemente accertata \\
+ \textbf{CR} & In pericolo in modo critico (\emph{Critically Endangered}): 
+ con altissimo rischio di estinzione nell’immediato futuro, per la quale occorrono urgenti interventi di tutela\\
+   \textbf{EN} & In pericolo (\emph{Endangered}): fortemente minacciata di estinzione in un prossimo futuro, 
+ cioè presente con piccole popolazioni o le cui popolazioni sono in significativo regresso in quasi
+ tutta la regione o scomparse da determinate zone \\
+ \textbf{VU} & Vulnerabile (\emph{Vulnerable}): minacciata di estinzione nel futuro a medio termine,
+ ovvero minacciata in numerose località della regione, con popolazioni piccole o piccolissime
+ o che hanno subito un regresso a livello regionale o sono localmente scomparse \\
+   \textbf{NT} & Potenzialmente minacciata (\emph{Near Threatened}): non si qualifica per alcuna delle
+ categorie di minaccia sopra elencate, per la quale sono noti tuttavia elementi che inducono a
+ considerarla in uno stato di conservazione non scevro da rischi in regione \\
+ \textbf{LC} & Non minacciata (\emph{Least Concern}): non inseribile in nessuna delle categorie
+ precedenti in quanto ampiamente diffusa e frequente \\
+   \textbf{DD} & Carenza di informazioni (\emph{Data Deficient}): le conoscenze sulla presenza 
+ e diffusione nella regione non sono ancora ben note e di conseguenza non sono 
+ manifeste le reali minacce che possono interessare le sue popolazioni \\
+ \textbf{NE} & Non valutata (\emph{Not Evaluated}): non è stata fatta alcuna valutazione \\
+\bottomrule
+ \end{tabular}
+}
+\end{adjustwidth*}
+\end{table}
+      
+
+\begin{table}[H]
+\centering
+\scalebox{.75}{
+\hiderowcolors
+\begin{tabular}{p{0.15\columnwidth}p{12cm}}
+\multicolumn{2}{l}{\textbf{\Large Categorie SPEC} - Species of European Conservation Concern} \\
+\multicolumn{2}{l}{così come indicate da \emph{BirdLife International} \cite{Birdlife04}} \\
+ \medskip \\
+ \textbf{Sigla} & \textbf{Significato}\\  
+  \midrule
+  \showrowcolors
+  SPEC 1 & Specie di rilevanza conservazionistica globale\\
+  SPEC 2 & Concentrata in Europa con uno \emph{status} conservazionistico sfavorevole \\
+  SPEC 3 & Non concentrata in Europa, ma con uno \emph{status} conservazionistico sfavorevole \\
+  Ne & Concentrata in Europa, ma con uno \emph{status} conservazionistico favorevole \\
+  N & Non concentrata in Europa, e con uno \emph{status} conservazionistico favorevole \\
+  \midrule
+\end{tabular}
+}
+\end{table}
+
+ 
+\chapter{Stato delle specie in Trentino}
+\renewcommand\chapterillustration{1.JPG}
+
+\section{Distribuzione e stato di conservazione in Trentino}
+Tutte queste specie mostrano uno stato di conservazione sfavorevole a livello Trentino, come pure a livello nazionale e spesso europeo).
+
+Un tempo esse erano comuni o relativamente diffuse negli ambienti aperti trentini a quote medie e basse. Attualmente, tutte hanno mostrato segni di declino e di riduzione di areale \cite{Pedrini05}. Emblematico è il caso del re di quaglie, specie per la quale il Trentino ospita una parte assolutamente rilevante della popolazione nazionale e che purtroppo prosegue nel suo \emph{trend} demografico assai preoccupante \cite{Pedrini02}. Anche la situazione delle altre specie appare piuttosto critica, in particolare per quanto riguarda l'ortolano, prossimo all'estinzione \cite{Pedrini05}.
+
+
+\section{Ecologia in Trentino}
+Come già accennato, tutte queste specie abitano ambienti prativi o mosaici ambientali includenti aree a prateria. Si tratta quasi esclusivamente di praterie secondarie, originatesi per l'intervento umano e mantenute per la produzione di foraggio per il bestiame e per il pascolo estivo in quota. 
+
+
+Il \textbf{re di quaglie}, che giunge in Trentino nel mese di maggio, nidifica  soprattutto in prati pingui di media montagna, con pendenza moderata o nulla, esposti a sudovest o a sudest, privilegiando i prati da sfalcio mesofili e mesoigrofili entro i 1400-1500 m, prevalentemente arrenatereti anche in fasi transitorie verso triseteti, molinieti o consorzi di megaforbie.
+
+ \begin{wrapfigure}[31]{l}{.6\columnwidth}
+\centering
+  \includegraphics[width=.6\columnwidth]{mendini_re_di_quaglie.jpg}
+  \caption*{\textbf{Re di quaglie} \emph{Crex crex}. Questo rallide è ormai estinto come nidificante negli ambienti prativi e umidi dei fondivalle e seguito dei cambiamenti ambientali per scopi agricoli. Bonifiche, meccanizzazione delle pratiche di sfalcio, forestazione naturale dei prati sono le cause principali della sua scomparsa a quelle quote (\ph Mauro Mendini).}
+\end{wrapfigure}
+
+Le condizioni più favorevoli, praterie secondarie con elevata altezza dell’erba e ridotta densità al suolo, sono solitamente legate a buona fertilità e ridotto numero di sfalci su scala annuale. La presenza della specie è spesso associata a diverse dicotiledoni con ombrellifere e \emph{Geranium phaeum}, condizioni indicanti sfalcio tardivo e non intensivo e ambienti umidi e fertili \cite{Pedrini02} \cite{Pedrini05}. Sono note importanti variazioni nel numero di maschi cantori nelle diverse aree con il progredire della stagione \cite{Brambilla11}: il numero dei maschi cantori varia infatti tra maggio-giugno (prima dello sfalcio dei prati) e giugno-luglio (dopo lo sfalcio di giugno). Alle quote inferiori si registra una diminuzione del numero di cantori, mentre a quelle superiori l’abbondanza della specie aumenta, con una variazione molto evidente nonostante la differenza relativamente ridotta tra aree a 'bassa' e 'alta' quota. Il numero cantori sembra inoltre diminuire nella seconda metà della stagione, dopo lo sfalcio dei prati, e alle quote superiori \cite{Brambilla11}. Le densità  rilevate in Trentino appaiono elevate se confrontate con i valori noti per altre zone italiane \cite{Pedrini12}. A livello di struttura del paesaggio, la specie occupa ambienti di prato aperto, pianeggiante o poco pendente con una buona esposizione e con una certa variabilità ambientale dovuta alla presenza di cespugli, alberi bassi ed ambienti di ecotono \cite{Pedrini05}.
+
+Le principali aree di presenza stabile in periodo riproduttivo sono, in ordine di importanza, il Tesino, l’Altopiano di Folgaria e Lavarone, le aree prative dell’Alta Val di Non, Bordala e, in minor misura e con presenza più irregolare, il Monte Baldo e la Val di Fiemme. In tutte le aree però la specie appare in costante e preoccupante calo numerico. 
+
+\begin{wrapfigure}{l}{.6\columnwidth}
+\centering
+  \includegraphics[width=.6\columnwidth]{mendini_averla_piccola.jpg}
+  \caption*{\textbf{Averla piccola} \emph{Lanius collurio}. Passeriforme migratore transahariano, un tempo decisamente più diffuso e numeroso in Trentino, raggiunge le densità più elevate nei pascoli di media quota e nei prati da sfalcio condotti con metodi non intensivi (\ph Mauro Mendini).}
+\end{wrapfigure}
+
+
+L'\textbf{averla piccola} in Trentino mostra esigenze ecologiche simili a quelle rilevate in altri contesti montani dell’Italia centro-settentrionale \cite{Ceresa12}. A scala locale sembra essere associata alla presenza, all'interno delle aree prative falciate o pascolate, di prato non falciato e non pascolato, arbusti isolati, arbusteti e siepi, mentre evita le aree boscate. Le densità della specie (0.5-2.2 coppie per 10 ha) rappresentano valori apprezzabili per aree a mosaico con ambienti idonei sparsi, ma sono relativamente basse per aree vocate o molto vocate, quali alcuni settori in altri contesti prealpini e appenninici del nord Italia \cite{Ceresa12}. A scala provinciale, i settori più idonei alla specie sono quelli prealpini e, tra quelli interni, la Val di Fiemme e l'Alta Val di Non; coppie sparse o isolate si rinvengono in buona parte del territorio provinciale, spesso in contesti sub-ottimali non in grado di mantenere popolazioni stabili e vitali \cite{Pedrini05}. A livello di struttura di paesaggio, l'averla piccola occupa aree aperte sufficientemente grandi, a quote medie e basse e ben esposte, con pendenza lieve e una certa varietà di habitat (presenza di cespugli ed alberelli).
+
+
+L'\textbf{ortolano}, sebbene sia molto raro e localizzato a livello provinciale, si rinviene in Trentino in ambienti tra loro abbastanza differenti, tutti caratterizzati però da struttura aperta e da un mosaico di vegetazione bassa erbacea (generalmente dominante), vegetazione arbustiva e, secondariamente, arborea. Si tratta quasi sempre di contesti relativamente caldi e aridi, caratterizzati dalla presenza di tessere con vegetazione rada e presenza di terreno nudo, anche roccioso. La progressiva riforestazione naturale degli ambienti idonei ha determinato un calo della popolazione, stimata ai primi anni del secolo in poche decine di coppie \cite{Pedrini05}. 
+
+\begin{wrapfigure}{l}{.6\columnwidth}
+\centering
+  \includegraphics[width=.6\textwidth]{mendini_ortolano.jpg}
+  \caption*{\textbf{Ortolano} \emph{Emberiza hortulana}. Fra tutti i Passeriformi nidificanti in Trentino, è la specie più minacciata a seguito delle modifiche ambientali in atto: la popolazione nidificante è limitata a forse meno di dieci coppie (\ph Mauro Mendini).}
+\end{wrapfigure}
+
+
+Ultima fra le specie nidificanti dell’Allegato I della D.U., la \textbf{bigia padovana} occupa ambienti caratterizzati da marcata presenza di arbusti e alberi bassi, solitamente in aree ben esposte e a quote basse e medie; la maggior parte dei contesti di presenza ricade nelle fasce marginali di ambienti prativi. Il progressivo avanzare delle coltivazioni intensive e il rimboschimento naturale di prati e pascoli di versante ha fortemente ridotto la popolazione nidificante, oggi stimata in alcune decine di coppie \cite{Pedrini05}; recenti ricerche hanno permesso di dettagliare la sua distribuzione e quantificare la sua presenza, comunque localizzata, con popolazioni di maggior rilievo in Val di Fiemme e in altri settori provinciali, come nella Rete di Riserve della Val di Cembra (Capriana), in quella del Baldo, e in Alta Val di Non. 
+
+
+L'\textbf{allodola}, scomparsa dai fondivalle dove nidificava fino agli anni Novanta, occupa i residui ambienti prativi o simili (prati da sfalcio, coltivazioni erbacee e cerealicole) e le aree di pascolo e prateria montana, mostrando un ampio range altitudinale \cite{Pedrini05}.
+
+
+Lo \textbf{stiaccino}, un tempo nidificante anche alle basse quote, si rinviene oggi prevalentemente in ambienti prativi tra i 1000 e i 2000 m s.l.m., spesso anche al limite degli arbusteti e della vegetazione arborea. Frequenta sia pascoli che prati da sfalcio ma risulta sfavorito dallo sfalcio precoce e dal pascolo intensivo \cite{Pedrini05}.
+
+\begin{wrapfigure}{r}{.6\columnwidth}
+\centering
+  \includegraphics[width=.6\columnwidth]{mendini_saltimpalo.jpg}
+  \caption*{Il \textbf{saltimpalo} \emph{Saxicola torquatus} è una specie tipica degli ambienti di margine delle coltivazione estensive, dove
+nidifica in singole coppie territoriali tra la vegetazione dei fossi e lungo le scarpate. L’intensificazione delle colture agricole ha inciso negativamente sulla presenza e di questo piccolo Passeriforme (\ph Mauro Mendini).}
+\end{wrapfigure}
+
+Il \textbf{saltimpalo} è legato agli ambienti aperti o semi-aperti, come prati, coltivazioni estensive, margini di zone umide, prevalentemente a quote basse e medie, dove necessita comunque della presenza di vegetazione arbustiva (nuclei arbustati, cespugli, siepi) o almeno di fasce di vegetazione erbacea alta e incolta. Nell’ultimo decennio appare per questo in forte calo numerico, e la sua presenza è ormai limitata a singole coppie isolate \cite{Pedrini05}.
+
+
+Lo \textbf{zigolo giallo}, più diffuso delle precedenti, si rinviene in una fascia altitudinale piuttosto ampia, nella quale risulta associato ad ambienti a mosaico, dove a estensioni prative (prati da sfalcio, pascoli) si affiancano arbusteti, siepi, filari, arbusti sparsi. Diventando sempre più rara dove l'agricoltura intensiva  ha preso il sopravvento su quella estensiva, anche questa specie risulta in declino \cite{Pedrini05}.
+
+\newpage
+\chapter{Fattori di minaccia}
+\renewcommand\chapterillustration{5.JPG}
+\section*{}
+Come già evidenziato nelle sezioni precedenti, tutte queste specie, così legate ad ambienti agricoli non intensivi, risultano essere minacciate da intensificazione delle pratiche agricole e nel contempo anche dall’abbandono delle colture e dei pascoli di versante e media e bassa quota. Entrambi questi fattori hanno svolto (e svolgono) un ruolo cruciale nel determinare il declino di molte specie di ambienti aperti in Europa. 
+A livello provinciale, l'intensificazione delle pratiche agricole interessa particolarmente l’ambito dei fondivalle e delle fasce a frutteto/vigneto, mentre l'abbandono dei paesaggi agricoli tradizionali riguarda soprattutto aree a quote medie, spesso meno redditizie o più scomode da raggiungere. 
+I principali fattori di minaccia per le specie oggetto del presente piano d'azione sono:
+
+\begin{itemize}\itemsep0pt
+  \item abbandono dei paesaggi agricoli tradizionali, con perdita del mosaico ambientale (tutte le specie);
+  \item avanzata del bosco (soprattutto nelle porzioni vallive interne; tutte le specie);
+  \item bonifica o distruzione delle zone umide e dei relativi prati igrofili, soprattutto in fondovalle (re di quaglie, saltimpalo, bigia padovana, averla piccola);
+  \item condizioni nei quartieri di svernamento (Africa; re di quaglie, stiaccino, bigia padovana, averla piccola, ortolano);
+  \item cambio di coltura: conversione di aree prative in altre tipologie (frutteti, mais, etc.; tutte le specie);
+  \item presenza di cavi aerei sopra gli ambienti prativi (re di quaglie);
+  \item disturbo antropico (re di quaglie, averla piccola);
+  \item eccessiva fertilizzazione, con crescita troppo rapida delle colture erbacee (re di quaglie, averla piccola, stiaccino, zigolo giallo, ortolano);
+  \item elevata frammentazione degli habitat, dovuta principalmente all'espansione delle coltivazioni intensive e secondariamente all'abbandono (tutte le specie);
+  \item elevata frammentazione delle popolazioni, conseguente in parte alla frammentazione degli habitat e in parte legata al carattere marginale delle popolazioni di alcune specie (averla piccola, ortolano, bigia padovana);
+  \item meccanizzazione dello sfalcio e sfalcio precoce (alta; tutte le specie);
+  \item pascolo intensivo durante la stagione riproduttiva (re di quaglie, allodola, stiaccino, averla piccola, zigolo giallo);
+  \item riduzione degli invertebrati causata dall’uso dei pesticidi e fertilizzazione in epoca riproduttiva (tutte le specie);
+  \item rimozione di elementi marginali ‘improduttivi’ come siepi e arbusti (con conseguente scomparsa di siti di nidificazione, ripari e posatoi; tutte le specie ad eccezione dell'allodola);
+  \item sfalcio meccanizzato in periodo riproduttivo, soprattutto se prato su vaste aree in breve tempo (re di quaglie, allodola, stiaccino);
+  \item sfalcio precoce (re di quaglie, allodola, stiaccino);
+  \item sostituzione dei prati con monocolture intensive a frutteto e mais (tutte le specie); 
+  \item urbanizzazione (tutte le specie).
+\end{itemize}
+
+ 
+\chapter{Strategia di conservazione}
+\renewcommand\chapterillustration{3.JPG}
+\section{Obiettivo generale}
+Mantenere e, ove necessario e possibile, ricreare, condizioni idonee alla conservazione di popolazioni vitali delle specie target, con densità riproduttive apprezzabili e migliori prospettive di sopravvivenza a lungo termine, attraverso la promozione di:
+\begin{itemize}\itemsep0pt
+  \item ambienti aperti legati ad un'agricoltura di tipo 'tradizionale', con il caratteristico paesaggio a mosaico ad essa associato che consente la presenza simultanea di numerose specie grazie alla presenza di molte nicchie ecologiche. Mantenere questi ambienti riveste particolare valore anche in termini culturali e turistici;
+  \item pratiche agricole compatibili con le esigenze delle specie target, con particolare riferimento a conservazione di habitat di nidificazione e alimentazione, mantenimento di disponibilità alimentari e salvaguardia della riproduzione.
+\end{itemize}
+
+\section{Obiettivi specifici}
+La strategia per la conservazione delle specie target deve quindi tendere da un lato alla salvaguardia dei paesaggi aperti e dall'altro al miglioramento delle condizioni ecologiche negli ambienti prativi, alla mitigazione o rimozione dell’impatto delle pratiche agricole sulla specie.
+Gli obiettivi specifici sono i seguenti:
+
+\begin{itemize}\itemsep0pt
+  \item favorire la conservazione degli ambienti aperti con agricoltura “tradizionale”, caratterizzati da pratiche non intensive, eterogeneità ambientale a piccola scala, parcellizzazione delle proprietà con conseguente mosaico di tecniche di coltivazione e di periodo di sfalcio; tali ambienti risultano attualmente in fase di regresso per abbandono o conversione in altri tipi di uso del suolo;
+  \item limitare l'effetto negativo della meccanizzazione, che rende non adatti a specie come il re di quaglie alcuni ambienti potenzialmente idonei (ad esempio il Monte Baldo) e che in prospettiva potrebbe rendere inospitali altre zone ancora favorevoli alla specie (es. Alta Val di Non);
+  \item favorire il buon esito della riproduzione delle specie che nidificano in prati stabili, attraverso una compatibile conduzione delle operazioni agricole, come preservando dallo sfalcio meccanizzato la nidificazione e l’allevamento dei pulcini;
+  \item ripristinare ambienti idonei alle specie target anche nelle aree di fondovalle, attualmente compromesse dall’intensificazione delle pratiche agricole, attraverso la creazione di ambienti marginali quali fasce tampone con vegetazione erbacea opportunamente gestite nei pressi di fiumi, laghi e nei biotopi, oppure nelle fasce di transizione tra coltivi e altri ambienti;
+  \item garantire la conservazione di ambienti di margine, quali boschi residui, zone umide, vegetazione erbacea, ma anche siepi a divisione delle proprietà, e fasce di riparo prossime a vie di collegamento;
+  \item prevedere interventi di riapertura di pascoli e prati in fase di abbandono;
+  \item sensibilizzare il mondo agricolo e gli stakeholder relativamente all’importanza di conservare gli ambienti rurali di qualità e le specie ad essi associate, anche attraverso la promozione della conservazione, anche per finalità turistico-ricreative, degli ambienti a prato e del paesaggio rurale montano, un tempo tipico dell’area alpina ed oggi in forte restrizione;
+  \item indirizzare gli sforzi di ricerca e per il monitoraggio:
+  \begin{itemize}\itemsep0pt
+    \item definire le esigenze ecologiche delle specie ancora poco studiate;
+    \item ottenere informazioni dettagliate su fenologia e biologia riproduttiva delle specie target in Trentino, per indirizzare al meglio gestione ambientale e pratiche agricole. In particolare, migliorare le conoscenze relative ai fattori che influenzano il successo riproduttivo delle specie target; per il re di quaglie e altre specie sensibili alle operazioni agricole ed alle alterazioni prodotte dall'attività umana, questo ha dirette implicazioni gestionali; in generale, comprendere i meccanismi che regolano l’esito della riproduzione costituisce un ulteriore e fondamentale passaggio per indirizzare al meglio gli interventi di conservazione e per valutarne l’efficacia: ottenere alte densità ma basso successo riproduttivo può essere addirittura controproducente per la conservazione, dando origine a sink che si mantengono solo grazie al continuo apporto di individui immigrati da altre aree (come verificato per l’averla piccola); utile in questo senso è verificare la possibile correlazione tra successo riproduttivo e idoneità ambientale; 
+    \item attuare un monitoraggio in grado di tenere sotto controllo l’andamento delle popolazioni delle specie target;
+    \item valutare approfonditamente gli esiti delle diverse pratiche agricole e delle azioni finanziate dal Piano di Sviluppo Rurale.
+  \end{itemize}
+\end{itemize}
+
+
+\begin{center}
+\includegraphics[width=.55\columnwidth]{mendini_zigolo_giallo.jpg}
+\captionsetup{width=.55\columnwidth}
+\captionof*{figure}{\textbf{Zigolo giallo} \emph{Emberiza citrinella}. Caratteristica presenza dei contesti rurali estensivi a prato, è oggi in forte declino a seguito dell’ introduzione di pratiche agricole meccanizzate, accompagnate dall’eccessiva concimazione dei prati (\ph Mauro Mendini).}
+\end{center}
+
+\chapter{Azioni di conservazione}
+\renewcommand\chapterillustration{4.JPG}
+\section{Gestione dei prati}
+Per il loro elevato interesse naturalistico, alcuni di questi habitat sono stati classificati di “interesse comunitario” secondo la Direttiva Habitat 92/43/CEE (Allegato I; habitat 6510 “Praterie magre da fieno a bassa altitudine (\emph{Alopecurus pratensis}, \emph{Sanguisorba officinalis}); habitat 6520 “Praterie montane da fieno”; habitat 6210 "Formazioni erbose secche seminaturali (\emph{Festuco-Brometalia})"; habitat 6430 "Bordure planiziali montane e alpine di megaforbie idrofile"; habitat 6410 "praterie con Molinia e prati umidi in genere"). La loro gestione quindi deve tener conto anche delle esigenze legate alla gestione dei siti Natura 2000 entro cui spesso ricadono.
+
+Questi ambienti prativi sono generalmente sottoposti a diversi sfalci meccanizzati e a ripetute pratiche di letamazione o concimazione, e nel periodo autunnale alcune di queste aree vengono pascolate. In assenza di sfruttamento agricolo, la vegetazione di questi ambienti tende spontaneamente a ritornare progressivamente verso il bosco, sebbene le modifiche occorse al suolo a causa dei lavori agricoli possano impedire o limitare per lungo tempo il ritorno a condizioni ecologiche prossime a quelle climaciche. 
+
+La presenza di elementi marginali quali siepi, filari, fossati, lembi di zone umide e incolti, arbusti isolati o in aggregati e alberi isolati e muretti e versanti terrazzati a secco, è fondamentale per la presenza di molte specie, tra cui saltimpalo, stiaccino, bigia padovana, averla piccola e per gli zigoli. 
+Nelle aree prative in generale, è auspicabile attuare alcune misure importanti per favorire condizioni idonee alla presenza e alla riproduzione di tutte le specie target:
+\begin{itemize}\itemsep0pt
+  \item mantenere una porzione di prato non falciato durante il periodo riproduttivo (1 giugno - 15 agosto), idealmente al bordo dei prati, anche in forma di ’striscia’ a fianco del prato (utile per tutte le specie); questa potrebbe coincidere con una porzione di prato poco idoneo allo sfalcio (es. prati umidi), ma potenzialmente molto rilevante per diverse specie quale zona di rifugio o di nidificazione e alimentazione. Un buon compromesso è lasciare non falciata per il periodo riproduttivo una fascia di circa 1500 m2 per ettaro, in parte lungo siepi o attorno a chiazze arbustive idonee alla nidificazione di averla piccola, bigia padovana, saltimpalo e altre specie; al termine della stagione riproduttiva, le porzioni non falciate possono essere tagliate; è necessario che esse vengano falciate almeno una volta ogni due o tre anni, a seconda dei contesti ambientali e climatici e della presenza di specie invasive, per impedire l’ingresso di arbusti e alberi. Idealmente lo sfalcio di queste aree può essere posticipato a febbraio, favorendo così lo svernamento di piccoli mammiferi ed insetti. Mantenere alcune porzioni non falciate per 2-3 anni può favorire l’abbondanza di invertebrati medio-grandi (beetle banks). In caso di presenza di specie alloctone potenzialmente invasive è preferibile realizzare le fasce attraverso la semina di appositi miscugli di specie autoctone, di provenienza locale;
+  \item favorire la conservazione di siepi o arbusti (idealmente 1000-1500 m2 per ettaro), con specie autoctone rappresentative per l’area in questione, tra cui alcune specie con struttura densa e fitto fogliame; questi ambienti hanno un ruolo di rifugio, habitat di nidificazione, ma anche di alimentazione nella fase di muta e premigratoria per molti Passeriformi. Essi sono inoltre di vitale importanza per molte altre specie, sia Uccelli che Mammiferi (Lagomorfi);
+  \item evitare sovraccarico nel caso di pascolamento autunnale;
+  \item concimare ogni due o tre anni, preferibilmente in periodo autunnale ed evitando invece la concimazione in primavera, con letame maturo e in maniera non eccessiva; evitare la concimazione in caso di prati magri e aridi.
+\end{itemize}
+Nelle principali aree di riproduzione di re di quaglie e stiaccino, specie con stato di conservazione sfavorevole e fortemente condizionate dalle pratiche di sfalcio, è opportuno adottare delle misure ulteriori:
+\begin{itemize}\itemsep0pt
+  \item prevedere in tali aree sfalci tardivi, attuati secondo uno schema a mosaico, con sfalci saltuari (autunnali o invernali) nelle aree in fase di abbandono; anche in questo caso, un’accurata indagine dell’area potrebbe consentire una pianificazione efficace, in grado di evidenziare le aree a maggior valore ecologico per le specie di maggior pregio e conseguentemente indirizzare gli interventi;
+  \item mantenere alcune porzioni di vegetazione erbacea prevedendone lo sfalcio ogni due o tre anni per favorire la disponibilità di siti idonei alla nidificazione del re di quaglie, evitandone nel contempo la colonizzazione da parte di vegetazione arboreo-arbustiva; tali porzioni possono essere individuate nelle aree meno redditizie ai fini dello sfalcio, ma potenzialmente adatte alle specie di interesse;
+  \item utilizzare modalità di sfalcio compatibili con la conservazione delle specie: frazionare lo sfalcio (evitando invece sfalci simultanei su vaste superfici), condurlo a partire dal centro dell’area da falciare, in senso centrifugo o secondo percorsi paralleli, muovendosi dalle porzioni centrali verso la periferia.
+\end{itemize}
+
+\section[Gestione dei campi coltivati]{Gestione dei campi coltivati (cereali, foraggere, altre colture erbacee)}
+Anche i coltivi, se gestiti in maniera non intensiva e se posti all'interno di un ambiente a mosaico, possono offrire condizioni idonee alla presenza di numerose delle specie target del presente piano d'azione.
+Nel caso di campi coltivati:
+\begin{itemize}\itemsep0pt
+  \item creare fasce di vegetazione erbacea non falciata, anche a lati di campi di cereali o foraggere, può rivelarsi molto utile generando effetti benefici per allodola, stiaccino, saltimpalo e potenzialmente averla piccola e zigoli. Per la gestione delle fasce prative non falciate a lato dei coltivi valgono le stesse considerazioni espresse a proposito delle fasce prative lungo i prati permanenti. Le dimensioni della fascia non falciata devono essere di qualche metro di larghezza e di qualche decina di metri di lunghezza. Nel caso di fasce prative ampie (larghe più di 4 metri), può essere utile tagliare una metà della fascia ogni anno e metà ogni 2-3 anni, riservando il taglio più sporadico alla porzione più vicina a siepi o arbusti;
+  \item in aree di presenza del re di quaglie, preferire coltivazioni erbacee caratterizzate da densità di piante vicino al suolo relativamente bassa, gestite in maniera non intensiva e con ridotto uso di pesticidi;
+  \item preservare tessere con vegetazione molto bassa o rada, soprattutto se accanto alle fasce non falciate, può aumentare la reperibilità delle prede;
+  \item nelle porzioni marginali delle colture, dove la vegetazione originaria è stata rimossa durante l'impianto delle colture, può essere utile ricreare fasce prative;
+  \item ove possibile, realizzare aree a prato, di ampiezza minima 4000-5000 m$^2$, rendendo meno intensive le coltivazioni e consentendo la presenza di numerose specie.
+\end{itemize}
+
+\section{Presenza di siepi}
+Le siepi, elementi lineari caratteristici dei paesaggi agricoli non intensivi e caratterizzate dalla presenza predominante di vegetazione arbustiva, offrono riparo, siti di nidificazione e posatoi per molte specie ornitiche e spesso fungono da 'corridoi ecologici' all’interno delle matrici agricole. Per favorire le specie che vi nidificano, tra cui saltimpalo, bigia padovana, averla piccola e zigolo giallo, le siepi dovrebbero:
+\begin{itemize}\itemsep0pt
+  \item includere arbusti densi e di altezza diversa, preferibilmente disposti su più file;
+  \item essere fiancheggiate da fasce di vegetazione erbacea non falciata;
+  \item essere mantenute, se necessario, con un denso strato arbustivo basso;
+  \item essere presenti indicativamente con un'estensione lineare di diverse decine di m per ha.
+\end{itemize}
+
+\section{Indagini e monitoraggio dell'avifauna degli ambienti aperti}
+Migliorare le conoscenze sull’ecologia, la distribuzione, l’andamento di popolazione anche e soprattutto in relazione alle pratiche agricole servirà a comprendere i fattori che regolano presenza e abbondanza della specie e ridurre gli impatti negativi sulla biodiversità. Queste conoscenze sono imprescindibili per sviluppare un’efficace strategia di conservazione delle specie.
+Alcune linee di indagine particolarmente importanti per continuare il percorso di conservazione e promozione delle zone prative trentine e della loro avifauna sono le seguenti:
+\begin{itemize}\itemsep0pt
+  \item monitorare nel tempo le popolazioni del re di quaglie nelle aree campione già monitorate a partire dalla fine degli anni Novanta; per questa specie prevedere inoltre, ogni cinque anni, un censimento esteso a tutti gli ambienti idonei;
+  \item monitorare l’avifauna degli ambienti prativi in aree campione, da individuare entro le Rete di riserve e/o in altre aree rappresentative, utilizzando l’averla piccola come specie target in modo da valutare l'evoluzione delle popolazioni di specie ornitiche. Grazie al loro valore di indicatori sarà possibile comprendere anche l'andamento 'generale' delle biocenosi di un sito;
+  \item confrontare la situazione attuale con quella pregressa per tutti i siti in cui la disponibilità di dati relativi al recente passato lo consente e valutare quali fattori hanno influenzato l'evoluzione delle comunità ornitiche, in modo da ricavare utili informazioni per la pianificazione e la programmazione delle azioni di conservazione e non solo;
+  \item indagare a fondo le esigenze ecologiche delle specie target e l'effetto di fattori ambientali, antropici e spaziali sulla loro presenza e abbondanza e, qualora possibile, sul loro successo riproduttivo;
+  \item prevedere appropriate e periodiche indagini, misurare gli effetti delle azioni di conservazione e di gestione delle aree prative (previste nel Piano di Sviluppo Rurale) per valutarne l’efficacia sia in termini di mantenimento delle popolazioni sia di connessione ecologica tra aree, in modo da ridurne l'isolamento.
+\end{itemize}
+
+Le modalità per il monitoraggio delle specie qui trattate sono descritte all'interno delle linee guida per il monitoraggio prodotte nell’ambito dell'azione A.5 del progetto LIFE Ten, sviluppate in collaborazione con il Servizio Foreste e fauna e da attuare con in coinvolgimento di Aree protette e Reti di riserve, e a cui si rimanda per gli approfondimenti del caso (cfr. \href{http://www.lifeten.tn.it/actions/preliminary_actions/pagina5.html}{A5, LIFE TEN}). 
+
+\vspace*{\fill}
+\begin{center}
+\includegraphics[width=1\columnwidth]{longo_padovana.jpg}
+\end{center}
+\captionof*{figure}{\textbf{Bigia padovana} \emph{Sylvia nisoria}. Silvide ormai raro sulle Alpi, nidifica in poche coppie negli ambienti rurali estensivi coltivati a prati da sfalcio; ideali siti sono le siepi ai margini dei prati, spesso condivise con l’averla piccola (Ph. Luca Longo).}
+\vspace*{\fill}
+
+
+ \newpage
+\setlength\afterchapskip{10mm}
+\chapter{Bibliografia}
+\renewcommand\chapterillustration{}
+\renewcommand*{\bibname}{}
+\begingroup
+\renewcommand{\addcontentsline}[3]{}% Remove functionality of \addcontentsline
+\renewcommand{\section}[2]{}% Remove functionality of \section
+\begin{thebibliography}{99}
+\footnotesize
+\bibitem{EUCOUNCIL98} Council of Europe, 1998. \emph{Drafting and implementing action plans for threatened species.} Environmental encounters, Council of Europe (Ed), Strasbourg, 39: 1-4.
+\bibitem{Negri05}Negri I., Brambilla M., Guidali F. 2005. \emph{Abbondanza degli zigoli (Emberizidae) in relazione all’uso del suolo nell’Appennino settentrionale.} Avocetta 29: 95.
+\bibitem{Pedrini02}Pedrini P., Rizzolli F., Cavallaro V., Marchesi L., Odasso M. 2002. \emph{Status e distribuzione del Re di quaglie \emph{Crex crex} in provincia di Trento (Alpi centro-orientali, Italia).} Studi Trentini di Scienze Naturali, Acta Biologica 78(2000): 55–60.
+\bibitem{Ceresa10}Ceresa F., 2010. \emph{Analisi delle preferenze ambientali di una specie minacciata: confronto tra metodi quantitativi.} Tesi di Laurea in Scienze della Natura, Università degli Studi di Pavia.
+\bibitem{Heikkinen04}Heikkinen R.K., Luoto M., Virkkala R., Rainio, K. 2004. \emph{Effects of habitat cover, landscape structure and spatial variables on the abundance of birds in an agricultural–forest mosaic.} J. Appl. Ecol. 41: 824–835.
+\bibitem{Vickery12}Vickery, J., Arlettaz, R. 2012. \emph{The importance of habitat heterogeneity at multiple scales for birds in European agricultural landscapes.} In Fuller, R.J. (ed.), Birds and Habitat. Relationships in Changing Landscapes. Cambridge University Press, Cambridge.
+\bibitem{Pedrini11}Pedrini P., Brambilla M., Rizzolli F., Tattoni C., Fin V. 2011. \emph{Il re di quaglie \emph{Crex crex} in Trentino e il PSR provinciale: dalla ricerca ornitologica alla definizione di misure agroambientali per la tutela di una specie minacciata.} Atti del XVI Convegno Italiano di Ornitologia, Cervia (RA), 22-25 settembre 2011.
+\bibitem{Pain97}Pain D.J., Pienkowski M.W. 1997. \emph{Farming and Birds in Europe. The Common Agricultural Policy and its Implications for Bird Conservation.} London: Academic Press.
+\bibitem{Pedrini05}Pedrini P., Caldonazzi M., Zanghellini S. (eds.) 2005. \emph{Atlante degli Uccelli nidificanti e svernanti in provincia di Trento.} Museo Tridentino di Scienze Naturali, Trento. Studi Trentini di Scienze Naturali, Acta Biologica 80(2003), 2: 1-674.
+\bibitem{Brambilla08}Brambilla M., Guidali F., Negri I. 2008. \emph{The importance of an agricultural mosaic for Cirl Buntings \emph{Emberiza cirlus} in Italy.} Ibis 150:628–632.
+\bibitem{Buvoli10}Buvoli L., Calvi G., De Carli E., Pedrini P., Rizzolli F. 2010 (datt.) \emph{Banca Dati Ornitologica Provinciale (BDOP). Stato di conservazione delle specie comuni nidificanti in Trentino.} Museo Tridentino di Scienze Naturali in coll. Fauna Viva (MI), pp. 108. 
+\bibitem{Gustin09}Gustin M., Brambilla M., Celada C. 2009. \href{http://www.uccellidaproteggere.it/content/download/4210/46448/file/valutazione_avifauna_italiana_volumeI.pdf}{\emph{Valutazione dello stato di conservazione dell’avifauna italiana.}} Roma: Ministero dell’Ambiente, della Tutela del Territorio e del Mare \& LIPU/BirdLife Italia. 
+\bibitem{Josefsson13}Josefsson, J., Berg, Å., Hiron, M., Pärt, T., Eggers S. 2013. \emph{Grass buffer strips benefit invertebrate and breeding skylark numbers in a heterogeneous agricultural landscape.} Agriculture, Ecosystems \& Environment, 181: 101-107.
+\bibitem{Brambilla12}Brambilla M., Falco R., Negri I. 2012. \emph{A spatially explicit assessment of within-season changes in environmental suitability for farmland birds along an altitudinal gradient.} Animal Conservation 15: 638-647.
+\bibitem{Karlsson04}Karlsson S. 2004. \emph{Season-dependent diet composition and habitat use of Red-backed Shrikes \emph{Lanius collurio} in SW Finland.} Ornis Fennica 81: 97-108.
+\bibitem{Brambilla12a}Brambilla M., Ficetola G.F. 2012. \emph{Species distribution models as a tool to estimate reproductive parameters: a case study with a passerine bird species.} Journal of Animal Ecology 81: 781-787.
+\bibitem{Brambilla11}Brambilla M., Negri I., Bergero V., Pedrini P. 2011. \emph{Mid-season habitat shifts in farmland birds: implications for research and conservation.} Abstract book, VIII EOU Congress, Riga (LV), 27-30 agosto 2011.
+\bibitem{Golawski08}Golawski A., Meissner W. 2008. \emph{The influence of territory characteristics and food supply on the breeding performance of the Red-backed Shrike (\emph{Lanius collurio}) in an extensively farmed region of eastern Poland.} Ecological Research 23: 347–353.
+\bibitem{Berg07}Berg A., Gustafson T. 2007. \emph{Meadow management and occurrence of corncrake \emph{Crex crex.}} Agr. Ecosyst. Environ. 120: 139–144.
+\bibitem{Arlettaz10}Arlettaz R., Ioset A., Maurer M., Menz M., Reichlin T., Weisshaupt N., Abadi F., Schaub M. 2010. \href{http://www.bou.org.uk/bouproc-net/lfb3/arlettaz-etal.pdf}{\emph{Bare soil as a staple commodity for declining ground-foraging insectivorous farmland birds.}} BOU proceedings. 
+\bibitem{Vanhinsbergh02}Vanhinsbergh D., Evans A. 2002. \emph{Habitat associations of the Red-backed Shrike (\emph{Lanius collurio}) in Carinthia, Austria.} Journal of Ornithology 143: 405-415.
+\bibitem{Brambilla11c}Brambilla M., Pedrini P. 2011. \emph{Intra-seasonal changes in local pattern of Corncrake \emph{Crex crex} occurrence require adaptive conservation strategies in Alpine meadows.} Bird Conservation International 21: 388-393.
+\bibitem{Fornasari00}Fornasari L., Massa R. 2000. \emph{Habitat or climate? Influences of environmental factors on the breeding success of the red-backed shrike.} The ring 21: 74.
+\bibitem{Crockford96}Crockford N., Green R., Rocamora G., Schäffer N., Stowe T., Williams G. 1996. \href{http://ec.europa.eu/environment/nature/conservation/wildbirds/action_plans/docs/crex_crex.pdf}{\emph{Action plan for the Corncrake (\emph{Crex crex}) in Europe.}} BirdLife International/European Commission.
+\bibitem{Casale09}Casale F., Brambilla M., 2009. \emph{Averla piccola. Ecologia e conservazione.} Fondazione Lombardia per l’Ambiente e Regione Lombardia, Milano. 
+\bibitem{Laiolo04}Laiolo P., Dondero F., Ciliento E., Rolando A. 2004. \emph{Consequences of pastoral abandonment for the structure and diversity of alpine avifauna.} Journal of Applied Ecology 41: 294-304.
+\bibitem{Wilson05}Wilson J.D., Whittingham M.J., Bradbury R.B. 2005. \emph{The management of crop structure: a general approach to reversing the impacts of agricultural intensification on birds?} Ibis: 147, 453–463.
+\bibitem{Borgo01}Borgo A., Genero F., Favalli M. 2001. \emph{Censimento e preferenze ambientali del re di quaglie \emph{Crex crex} nel Parco Naturale Prealpi Giulie.} Avocetta 25: 181.
+\bibitem{Ceresa12}Ceresa F., Bogliani G., Pedrini P., Brambilla M. 2012. \emph{The importance of key marginal habitat features for birds in farmland: an assessment of habitat preferences of Red-backed Shrikes \emph{Lanius collurio} in the Italian Alps.} Bird Study 59: 327-334.
+\setcounter{firstbib}{\value{enumiv}}
+\end{thebibliography}
+
+\makeatletter
+\renewcommand\@biblabel[1]{\textcolor{MilkTea}{$\bullet$}}
+\makeatother
+
+\renewcommand*{\bibname}{Bigliorafia non citata}
+\textbf{\large Bibliografia non citata}
+\begin{thebibliography}{9}
+\footnotesize
+\bibitem{Benton03}Benton T.G., Vickery J.A., Wilson J.D. 2003. \emph{Farmland biodiversity: is habitat heterogeneity the key?} Trends in Ecology and Evolution 18: 182–188. 
+\bibitem{BirdLife08}BirdLife International 2008. \emph{Species factsheet: \emph{Crex crex.}} Downloaded from \url{http://www.birdlife.org} on autumn 2008.
+\bibitem{Borgo03}Borgo A. 2003. \emph{Esigenze ecologiche del Re di quaglie \emph{Crex crex} in ambiente alpino.} Avocetta 27:94.
+\bibitem{Brambilla10}Brambilla M., Casale F., Bergero V., Bogliani G, Crovetto G.M., Falco R., Roati M., Negri I. 2010. \emph{Glorious past, uncertain present, bad future? Assessing effects of land-use changes on habitat suitability for a threatened farmland bird species.} Biol. Conserv. 143: 2770-2778.
+\bibitem{Brambilla09}Brambilla M., Casale F., Bergero V., Crovetto G.M., Falco R., Negri I., Siccardi P., Bogliani G. 2009. \emph{GIS-models work well, but are not enough: habitat preferences of \emph{Lanius collurio} at multiple levels and conservation implications.} Biological Conservation 142: 2033–2042.
+\bibitem{Brambilla09b}Brambilla M., Guidali F., Negri I. 2009. \href{http://www.birdlife.fi/ornisfennica/pdf/2009/of_86_41-50.pdf}{\emph{Breeding-season habitat associations of the declining Corn Bunting \emph{Emberiza calandra} - a potential indicator of the overall bunting richness.}} Ornis Fennica 86:41–50.
+\bibitem{Brambilla09c}Brambilla M., Rubolini D. 2009. \emph{Intra-seasonal changes in distribution and habitat associations of a multi-brooded bird species: implications for conservation planning.} Animal Conservation 12: 71–77.
+\bibitem{Brambilla07}Brambilla M., Rubolini D., Guidali F. 2007. \href{http://www.tandfonline.com/doi/pdf/10.1080/00063650709461471}{\emph{Between land abandonment and agricultural intensification: habitat preferences of Red-backed Shrikes \emph{Lanius collurio} in low-intensity farming conditions.}} Bird Study 54: 160–167.
+\bibitem{Brambilla11b}Brambilla M., Negri I., Bergero V., Pedrini P. 2011. \emph{Variazioni intra-stagionali nelle preferenze ambientali e nella distribuzione delle specie ornitiche di ambienti agricoli e implicazioni per la conservazione.} Atti del XVI Convegno Italiano di Ornitologia, Cervia (RA), 22-25 settembre 2011.
+\bibitem{Brambilla13}Brambilla M., Pedrini P. 2013. \emph{The introduction of subsidies for grassland conservation in the Italian Alps coincided with population decline in a threatened grassland species, the Corncrake \emph{Crex crex.}} Bird Study 60: 404-408.
+\bibitem{Britschgi06}Britschgi A., Spaar R., Arlettaz R. 2006. \href{http://www.ecolevol.unibe.ch/content/e6671/e6673/e6861/BritschgiSpaar.pdf}{\emph{Impact of grassland farming intensification on the breeding ecology of an indicator insectivorous passerine, the Whinchat \emph{Saxicola rubetra}: Lessons for overall Alpine meadowland management.}} Biol. Conserv. 130: 193-205.
+\bibitem{Broyer96}Broyer J. 1996. \emph{“Outward mowing”, as a way of reducing losses of young corncrakes \emph{Crex crex} and quails \emph{Coturnix coturnix}.} Rev. Ecol.(Terre Vie) 51: 269-276.
+\bibitem{Casale07}Casale F., Bionda R., Falco R., Siccardi P., Toninelli V., Rubolini D., Brambilla M. 2007. \emph{Misure gestionali in campo agro-pastorale per la conservazione dell’averla piccola \emph{Lanius collurio}.} Atti Museo Civico di Storia Naturale di Trieste.
+\bibitem{Conte95}Conte M., Movalli C., Fornasari L. 1995. \emph{Confronto tra telemetria e metodi di marcaggio tradizionali nello studio dell’home range di averla piccola (\emph{Lanius collurio}).} Suppl. Ric. Biol. Selvaggina XXIII: 169-175.
+\bibitem{Cramp98}Cramp S. 1998. \emph{The Complete Birds of the Western Palearctic.} Oxford University Press.
+\bibitem{Donald02}Donald P.F., Evans A.D., Muirhead L.B., Buckingham, D.L., Kirby, W.B., Schmitt, S.I.A. 2002. \emph{Survival rates, causes of failure and productivity of Skylark \emph{Alauda arvensis} nests on lowland farmland.} Ibis 144: 652–664.
+\bibitem{Donald01}Donald P.F., Green R.E., Heath M.F. 2001. \href{http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1087596/pdf/PB010025.pdf}{\emph{Agricultural intensification and the collapse of Europe’s farmland bird populations.}} Proc. R. Soc. Lond. B 268: 25–29.
+\bibitem{Fornasari97}Fornasari L., Kurlavicius P., Massa R., 1997. \emph{\emph{Lanius collurio} red-backed shrike.} In: Hagemeijer, E.J.M., Blair, M.J. (Eds.), \emph{The EBCC Atlas of European Breeding Birds: Their Distribution and Abundance.} T\&AD Poyser, London, pp. 660–661.
+\bibitem{Green99}Green R. E. 1999. \emph{Survival and dispersal of male Corncrakes \emph{Crex crex} in a threatened population.} Bird Study 46 (Suppl.): 218–229.
+\bibitem{Green04}Green R. E. 2004. \emph{A new method for estimating the adult survival rate of the Corncrake \emph{Crex crex} and comparison with estimates from ring-recovery and ringrecapture data.} Ibis 146: 501–508.86.
+\bibitem{Guerrieri03}Guerrieri G., Castaldi A. 2003. \emph{Costi della riproduzione nell'ambiente mediterraneo dell’averla piccola \emph{Lanius collurio} nell’Italia centrale.} Avocetta 27:14.
+\bibitem{Gustin10}Gustin M., Brambilla M., Celada C. 2010. \emph{Stato di conservazione dell’avifauna italiana - le specie nidificanti e svernanti in Italia non inserite nell’Allegato I della Direttiva Uccelli.} Roma: Ministero dell’Ambiente e della Tutela del Territorio e del Mare \& LIPU/BirdLife Italia.
+\bibitem{Muller05}Müller M., Spaar R., Schifferli L., Jenni L. 2005. \emph{Effects of changes in farming of subalpine meadows on a grassland bird, the Whinchat (\emph{Saxicola rubetra}).} J. Ornithol. 146: 14–23.
+\bibitem{Olsson95}Olsson V. 1995. \emph{The Red-backed Shrike \emph{Lanius collurio} in southeastern Sweden: Habitat and territory.} Ornis Svecica 5: 31-41.
+\bibitem{Pedrini12}Pedrini P., Rizzolli F., Rossi, F. Brambilla, M. 2012. \emph{Population trend and breeding density of corncrake \emph{Crex crex} (\emph{Aves: Rallidae}) in the Alps: monitoring and conservation implications of a 15-year survey in Trentino, Italy.} Italian Journal of Zoology. 79: 377-384.
+\bibitem{Peronace12}Peronace, V., Cecere, J.G., Gustin, M., Rondinini, C. 2012. \href{http://ciso-coi.it/wp-content/uploads/2012/10/redlist-2011.pdf}{\emph{Lista Rossa 2011 degli Uccelli nidificanti in Italia.}} Avocetta 36: 11–58.
+\bibitem{Philips06}Phillips S.J., Anderson R.P., Schapire R.E. 2006. \href{http://www.cs.princeton.edu/~schapire/papers/ecolmod.pdf}{\emph{Maximum entropy modeling of species geographic distributions.}} Ecological Modelling, 190: 231-259.
+\bibitem{Pons03}Pons P., Lambert B., Rigolot E., Prodon R. 2003. \emph{The effects of grassland management using fire on habitat occupancy and conservation of birds in a mosaic landscape.} Biodiversity and Conservation 12: 1843-1860.
+\bibitem{Pustjens04}Pustjens A.Z., Petrs J.L., Geertsma M., Gerats T., Esselink H. 2004. \href{http://www.pg.science.ru.nl/pubs/2004_biollett41.pdf}{\emph{Using microsatellites to obtain genetic structure data for Red-backed Shrike (\emph{Lanius collurio}): a pilot study.}} Biological Letters 41: 95-101.
+\bibitem{Rassati07}Rassati G, Rodaro P. 2007. \emph{Habitat, vegetation and land management of Corncrake \emph{Crex crex} breeding sites in Carnia (Friuli-Venezia Giulia, NE Italy).} Acrocephalus 28:61-68.
+\bibitem{Ross04}Roos S., Pärt T. 2004. \emph{Nest predators affect spatial dynamics of breeding redbacked shrikes (\emph{Lanius collurio}).} Journal of Animal Ecology 73: 117–127.
+\bibitem{Sergio09}Sergio F., Marchesi L., Pedrini P. 2009. \emph{Conservation of Scops Owl \emph{Otus scops} in the Alps: relationships with grassland management, predation risk and woider biodiversity.} Ibis 151:40-50.
+\bibitem{Suarez02}Suárez-Seoane S., Osborne P.E., Baudry J. 2002. \emph{Responses of birds of different biogeographic origins and habitat requirements to agricultural land abandonment in northern Spain.} Biological Conservation 105: 333–344.
+\bibitem{Tryjanowski06}Tryjanowski P., Sparks T.H., Crick H.Q.P. 2006. \emph{Red-backed Shrike (\emph{Lanius collurio}) nest performance in a declining British population: a comparison with a stable population in Poland.} Ornis Fennica 83: 181-186.
+\bibitem{Tucker97}Tucker G.M., Evans M.I. 1997. \emph{Habitats for Birds in Europe: A Conservation Strategy for the Wider Environment.} Cambridge: BirdLife International.
+\bibitem{Tucker94}Tucker G.M., Heath M.F. 1994. \href{http://www.uam.es/personal_pdi/ciencias/jonate/Investigacion/CLI/CLI-1.pdf}{\emph{Birds in Europe: their conservation status.}} Cambridge: BirdLife International.
+\bibitem{Birdlife04} BirdLife International, 2004. \emph{Birds in Europe: population estimates, trends and conservation status.} Cambridge, UK: BirdLife International, BirdLife Conservation Series No. 12.
+\end{thebibliography}
+\endgroup
+
+\cleartoverso
+
+
+
+%%%%%%%%%%%
+% Back cover
+%%%%%%%%%%%
+\normalsize
+% Temporarily enlarge this page to push
+% down the bottom margin
+\enlargethispage{3\baselineskip}
+\thispagestyle{empty}
+\pagecolor{Sienna!90!white}
+%\pagecolor[HTML]{0E0407}
+\begin{center}
+\vspace*{\fill}
+
+\begin{figure}[htp]
+\captionsetup{font=normalsize}
+\centering
+\subcaptionbox*{\url{www.lifeten.tn.it}}[.3\linewidth]{\includegraphics[width=.3\columnwidth]{logo_LIFETEN.png}}
+\subcaptionbox*{\url{www.provincia.tn.it}}[.3\linewidth]{\includegraphics[width=.15\columnwidth]{logo_PAT.png}}
+\subcaptionbox*{\url{www.muse.it}}[.3\linewidth]{\includegraphics[width=.3\columnwidth]{logo_MUSE_verde_nospace.png}}
+\end{figure}
+\textbf{\textcolor{LightGoldenrod!50!Gold}{MUSE - Museo delle Scienze}}
+
+\vspace*{\baselineskip}
+
+\textbf{\textcolor{LightGoldenrod}{Sezione di Zoologia dei Vertebrati}}
+\end{center}
+
+\end{document}

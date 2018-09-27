@@ -1,0 +1,648 @@
+\documentclass[10pt,twoside,openany,x11names,svgnames,italian,a5paper,dvipsnames,table]{memoir}
+\usepackage[italian]{babel}
+
+\usepackage{lmodern}
+\usepackage{wallpaper}
+\usepackage{tikz}
+\usetikzlibrary{shapes,positioning}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{verbatim}
+
+\usepackage{tabularx, booktabs}
+
+\usepackage{wrapfig}
+\usepackage{minibox}
+\usepackage{pdfpages}
+\usepackage{subcaption}
+
+%\usepackage{trebuchet}
+\usepackage{lipsum}
+\usepackage[ISBN=978-80-85955-35-4]{ean13isbn}
+\usepackage{graphicx}
+\graphicspath{ {./img/} {./img/chap/} {./img/logo/} {./img/front/} {./img/icon/} {./img/back/} }
+
+% Captions
+\usepackage[labelfont={footnotesize,sf,bf},textfont={footnotesize,sf}]{caption}
+
+% Links
+\usepackage[pdftitle={LIFE+T.E.N.: Azione A8 - Piano d’azione per la conservazione degli anfibi e rettili in Trentino},
+     pdfauthor={Sezione Zoologia dei Vertebrati, MUSE - Museo delle Scienze},
+     colorlinks,linktocpage=true,linkcolor=RoyalBlue,urlcolor=BrickRed,citecolor=OliveGreen,bookmarks]{hyperref}
+
+% Adjust margins around typeblock
+\setlrmarginsandblock{23mm}{18mm}{*}
+\setulmarginsandblock{23mm}{23mm}{*}
+
+% Header and footer heights
+\setheadfoot{\baselineskip}{10mm}
+\setlength\headsep{7mm}
+
+% Apply and enforce layout
+\checkandfixthelayout
+
+% Command to hold chapter illustration image
+\newcommand\chapterillustration{}
+
+\usepackage{xcolor}
+\definecolor[named]{GreenTea}{HTML}{CAE8A2}
+\definecolor[named]{MilkTea}{HTML}{C5A16F}
+\definecolor{verylightgray}{gray}{0.95}
+\definecolor{grey}{gray}{0.5} % 0-nero; 1-bianco
+
+% Pantone for ANFIBI
+\definecolor[named]{LightBlue}{HTML}{006EB5}
+\definecolor[named]{SlimeGreen}{HTML}{009B71}
+\definecolor[named]{EggYellow}{HTML}{F59701}
+% Pantone for SPECIE ORNITICHE ALTA QUOTA
+\definecolor[named]{DarkGreen}{HTML}{012F08}
+\definecolor[named]{LightGray}{HTML}{817F84}
+\definecolor[named]{Ice}{HTML}{4470B7}
+% Pantone for SPECIE ORNITICHE AMBIENTI PRATIVI
+% Pantone for SPECIE ORNITICHE FORESTALI
+\definecolor[named]{LightGreen}{HTML}{00A131}
+\definecolor[named]{YellowGreen}{HTML}{97C000}
+\definecolor[named]{PureGreen}{HTML}{01832D}
+% Pantone for SPECIE ORNITICHE ZONE UMIDE
+\definecolor[named]{PureBrown}{HTML}{4F250D}
+\definecolor[named]{Azure}{HTML}{0082CD}
+\definecolor[named]{GreenAzure}{HTML}{01994C}
+
+\renewcommand{\labelitemi}{\textcolor{\backgroundrectanglecolor}{$\bullet$}}
+\newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
+\newcommand{\etal}{\textsl{et al}. }
+\newcommand{\ph}{\emph{Ph}. }
+\newcommand{\ie}{\emph{i}.\emph{e}. }
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newsubfloat{figure} % Allow subfloats in figure environment
+
+\newcommand{\chaptercolor}{LightGreen}
+\newcommand{\toprectanglecolor}{LightGreen!80!white}
+\newcommand{\pageboxcolor}{Green}
+\newcommand{\backgroundrectanglecolor}{LightGreen!80!white}
+\newcommand{\decoratelinecolor}{DarkGreen}
+\newcommand{\titlecolor}{PureGreen}
+\newcommand{\backpagecolor}{\chaptercolor}
+
+
+\newcommand{\tablespecie}[2]{\parbox[t]{2.5cm}{#1 \newline \emph{#2}}}
+
+\nouppercaseheads
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% BEGIN DOCUMENT STYLYING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\bibsection}{%
+\section{\bibname}
+\prebibhook}
+
+% CHAPTER STYLE DEFINITION BEGIN
+\makechapterstyle{chapterstyle}{
+% Vertical space before main text 
+  \setlength\beforechapskip{0pt}
+  \setlength\midchapskip{0pt}
+  \setlength\afterchapskip{70mm}
+
+  \renewcommand*\printchaptername{}
+  \renewcommand*\printchapternum{}
+  %% Re-define how the chapter title is printed
+  \def\printchaptertitle##1{
+    % Background image at top of page
+    \ThisULCornerWallPaper{1}{\chapterillustration}
+    % Draw a semi-transparent rectangle across the top
+    \tikz[overlay,remember picture]
+    \fill[fill=\toprectanglecolor,opacity=.7]
+      (current page.north west) rectangle 
+      ([yshift=-3cm] current page.north east);
+      % Check if on an odd or even page
+      \strictpagecheck\checkoddpage
+      % On odd pages, "logo" image at lower right
+      % corner; Chapter number printed near spine
+      % edge (near the left); chapter title printed
+      % near outer edge (near the right).
+      \ifoddpage{
+        % Insert picture in lower right corner
+        \ThisLRCornerWallPaper{.25}{triturus_small_right.png}
+        % Chapter heading style for ODD pages
+        \begin{tikzpicture}[overlay,remember picture]
+          \node[anchor=south west,
+            xshift=20mm,yshift=-30mm,
+            font=\sffamily\bfseries\huge] 
+            at (current page.north west) 
+            {}; %\chaptername\chapternamenum\thechapter
+          \node[fill=\chaptercolor,text=white,
+            font=\Huge\bfseries, 
+            inner ysep=12pt, inner xsep=20pt,
+            rectangle,anchor=east, 
+            xshift=-20mm,yshift=-30mm] 
+            at (current page.north east) {##1};
+        \end{tikzpicture}
+      }
+      % On even pages, "logo" image at lower left
+      % corner; Chapter number printed near outer
+      % edge (near the right); chapter title printed
+      % near spine edge (near the left).
+      \else {
+        % Insert picture in lower left corner
+        \ThisLLCornerWallPaper{.25}{triturus_small_left.png}
+        % Chapter heading style for EVEN pages
+        \begin{tikzpicture}[overlay,remember picture]
+          \node[anchor=south east,
+            xshift=-20mm,yshift=-30mm,
+            font=\sffamily\bfseries\huge] 
+            at (current page.north east)
+            {}; % \chaptername\chapternamenum\thechapter
+          \node[fill=\chaptercolor,text=white,
+            font=\Huge\bfseries,
+              inner sep=12pt, inner xsep=20pt,
+              rectangle,anchor=west,
+              xshift=20mm,yshift=-30mm] 
+              at ( current page.north west) {##1};
+        \end{tikzpicture}
+      } % END IF
+      \fi
+    } 
+} % END CHAPTER STYLE
+
+
+% CHAPTER STYLE FOR UNNUMBERED CHAPTERS
+\makechapterstyle{chapterstyleunnumbered}{
+  % Vertical Space before main text starts
+  \setlength\beforechapskip{0pt}
+  \setlength\midchapskip{0pt}
+  \setlength\afterchapskip{52mm}
+
+  \renewcommand*\printchaptername{}
+  \renewcommand*\printchapternum{}
+  %% Re-define how the chapter title is printed
+  \def\printchaptertitle##1{
+    % Draw a semi-transparent rectangle across the top
+    \tikz[overlay,remember picture]
+    \fill[fill=\toprectanglecolor,opacity=.7]
+      (current page.north west) rectangle 
+      ([yshift=-3cm] current page.north east);
+    % Check if on an odd or even page
+    \strictpagecheck\checkoddpage
+      \ifoddpage{
+        \begin{tikzpicture}[remember picture, overlay]
+        \node[fill=\chaptercolor,text=white,
+          font=\Huge\bfseries, 
+          inner ysep=12pt, inner xsep=20pt,
+          rectangle,anchor=east, 
+          xshift=-20mm,yshift=-30mm] 
+          at (current page.north east) {##1};
+        \end{tikzpicture}
+      }
+      \else {
+        \begin{tikzpicture}[remember picture, overlay]
+          \node[fill=\chaptercolor,text=white,
+            font=\Huge\bfseries,
+            inner sep=12pt, inner xsep=20pt,
+            rectangle,anchor=west,
+            xshift=20mm,yshift=-30mm] 
+            at ( current page.north west) {##1};
+        \end{tikzpicture}
+      } % END IF
+      \fi
+    } 
+} % END CHAPTER STYLE
+
+
+% Set the uniform width of the colour box
+% displaying the page number in footer
+% to the width of "99"
+\newlength\pagenumwidth
+\settowidth{\pagenumwidth}{99}
+
+% PAGE NUMBER COLOR BOX STYLE
+\tikzset{pagefooter/.style={
+anchor=base,font=\sffamily\bfseries\small,
+text=white,fill=\pageboxcolor,text centered,
+text depth=17mm,text width=\pagenumwidth}}
+
+%%%%%
+%% Re-define running headers on non-chapter odd pages
+%%%%%
+\makeoddhead{headings}
+% Left header is empty but I'm using it as a hook to paint the
+% background rectangles underneath everything else
+{\begin{tikzpicture}[remember picture,overlay]
+\fill[\backgroundrectanglecolor] (current page.north east) 
+  rectangle (current page.south west);
+\fill[white, rounded corners] 
+  ([xshift=-10mm,yshift=-20mm]current page.north east) rectangle  
+  ([xshift=15mm,yshift=17mm]current page.south west);
+\end{tikzpicture}}%
+% Blank centre header
+{}%
+% Display a decorate line and the right mark (chapter title)
+% at right end
+{\begin{tikzpicture}[xshift=-.75\baselineskip,yshift=.25\baselineskip,remember picture, overlay,fill=\decoratelinecolor,draw=\decoratelinecolor]\fill circle(3pt);\draw[semithick](0,0) -- (current page.west |- 0,0);\end{tikzpicture}\textcolor{white}{\sffamily\itshape\small\rightmark}}
+
+%%%%%
+%% Re-define running footers on ODD pages
+%% i.e. display the page number on the right
+%%%%%
+\makeoddfoot{headings}{}{}{\tikz[baseline]\node[pagefooter]{\thepage};}
+\makeoddfoot{plain}{}{}{\tikz[baseline]\node[pagefooter]{\thepage};}
+
+%%%%%
+%% Re-define running headers on non-chapter EVEN pages
+%%%%%
+\makeevenhead{headings}
+% Draw the background rectangles; then the left mark (section
+% title) and the decorate line
+{{\begin{tikzpicture}[remember picture,overlay]
+  \fill[\backgroundrectanglecolor] (current page.north east) rectangle (current page.south west);
+  \fill[white, rounded corners] ([xshift=-15mm,yshift=-20mm]current page.north east) rectangle ([xshift=10mm,yshift=17mm]current page.south west);
+\end{tikzpicture}}%
+\textcolor{white}{\sffamily\itshape\small\leftmark}
+\begin{tikzpicture}[xshift=.5\baselineskip,yshift=.25\baselineskip,remember picture, overlay,fill=\decoratelinecolor,draw=\decoratelinecolor]\fill (0,0) circle (3pt); \draw[semithick](0,0) -- (current page.east |- 0,0 );\end{tikzpicture}}{}{}
+\makeevenfoot{headings}{\tikz[baseline]\node[pagefooter]{\thepage};}{}{}
+\makeevenfoot{plain}{\tikz[baseline]\node[pagefooter]{\thepage};}
+% Empty centre and right headers on even pages
+{}{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% END DOCUMENT STYLYING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setsecnumdepth{chapter}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% DOCUMENTMATTER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\frontmatter
+
+%%%%%%%
+% Cover page
+%%%%%%%
+% No header nor footer on the cover
+\thispagestyle{empty}
+% Bar across the top
+\tikz[remember picture,overlay]%
+\node[fill=\chaptercolor,text=white,font=\LARGE\bfseries,text=Cornsilk,%
+minimum width=\paperwidth,minimum height=5em,anchor=north]%
+at (current page.north){
+\begin{tabular}{c}
+LIFE + T.E.N.: Azione A8\\
+\end{tabular}};
+
+% Cover illustration
+\ThisLLCornerWallPaper{1}{grassland.jpg}
+
+\vspace*{1\baselineskip}
+% Title
+{\bfseries\textcolor{\titlecolor}{\selectfont
+\\
+{\normalsize \emph{Action plans} per la conservazione di specie focali \\[0.05cm]
+di interesse comunitario} \\[0.3cm]
+{\huge\noindent Anfibi}}} \\
+
+
+\vspace*{2\baselineskip}
+
+
+
+% Footer image
+\begin{tikzpicture}[remember picture, overlay]
+  \node[fill=\chaptercolor,font=\LARGE\bfseries,text=Cornsilk,%
+  minimum width=\paperwidth,minimum height=5em,anchor=south]%
+  at (current page.south) {}; 
+  \node[anchor=south,inner sep=0pt] at (current page.south) { \includegraphics[width=\textwidth]{footer.png}};
+\end{tikzpicture}
+
+
+
+\vspace*{6\baselineskip}
+\includepdf[pages={1}]{second_cover_anfibi_rettili.pdf}
+
+\cleartorecto
+
+% Invoke fancy unnumbered chapter style
+% for the table of contents
+
+\chapterstyle{chapterstyleunnumbered}
+\setlength\afterchapskip{10mm}
+\setcounter{tocdepth}{0}
+\tableofcontents*
+
+% Main matter starts here; resets page-numberings to arabic numeral 1
+\mainmatter
+
+% Invoke the chapterstyle chapter style
+\chapterstyle{chapterstyle}
+
+% Public domain image from
+% http://www.public-domain-image.com/objects/computer-chips/slides/six-computers-chips-circuits.html
+\setlength\afterchapskip{10mm}
+\chapter{Che cos'\`e un piano di azione}
+\renewcommand\chapterillustration{}
+\footnotesize
+\vspace{.2cm}
+In generale, l'approccio ecosistemico costituisce la strategia più corretta e efficace per la conservazione della natura: attraverso la conservazione degli ecosistemi, ovvero degli ambienti naturali e delle relazioni che si instaurano tra le varie componenti che in essi si rinvengono, si garantisce la conservazione sia delle singole specie che dei processi ecologici e dei fenomeni di interazione tra specie e tra fattori biotici e abiotici che consentono la presenza delle specie stesse.
+Vi sono tuttavia alcune situazioni nelle quali le misure di tutela ambientale possono non essere sufficienti per garantire la sopravvivenza di specie minacciate, che necessitano di misure di conservazione dedicate e spesso specie-specifiche. In questi casi è necessario seguire un approccio specie-specifico, intervenendo direttamente sui taxa fortemente minacciati di estinzione, che richiedono misure urgenti di conservazione. L’approccio specie – specifico prevede misure di intervento delineate in documenti tecnici denominati “Piani d’Azione” \cite{EUCOUNCIL98}.
+
+Un piano d’azione si basa sulle informazioni disponibili relative a biologia, ecologia, distribuzione e abbondanza della specie trattata e in base a queste propone misure d’intervento, delineate a partire dalla definizione delle minacce che mettono a rischio la sopravvivenza della specie. Il piano d’azione si compone poi degli obiettivi volti ad assicurare la conservazione della specie nel lungo periodo e delle corrispondenti azioni necessarie per realizzarli.
+Una corretta strategia di conservazione relativa a una determinata specie deve contemplare la pianificazione degli obiettivi nel breve, medio e lungo periodo e deve essere flessibile e modificabile nel tempo. Infatti periodiche verifiche circa lo stato di realizzazione e avanzamento delle azioni, in rapporto al raggiungimento degli obiettivi, possono mettere in luce la necessità di un loro adeguamento, in funzione anche di scenari mutati.
+
+Nell'ambito di questo piano d'azione sviluppato nell'Azione A8 del LIFE + T.E.N., così come di alcuni altri piani sempre realizzati nell'ambito dell'azione, si è utilizzato un approccio innovativo, a cavallo tra quello ecosistemico e quello specie-specifico, redigendo piani d'azione per gruppi di specie che occupano gli stessi ambienti e che risultano sostanzialmente sottoposte alle stesse minacce e pressioni. In questo modo, si intende massimizzare l'efficacia degli interventi proposti per la conservazione e ottimizzare il relativo rapporto costi/benefici, proponendo indicazioni che mirano alla salvaguardia non di una sola specie, ma di un gruppo di specie con esigenze ecologiche largamente sovrapposte e che spesso necessitano di strategie di conservazione simili.
+Nel caso delle zone umide, tale approccio risulta ancora più significativo per la necessità di perseguire azioni comuni finalizzate ad arrestare la progressiva evoluzione, anche naturale, di questi ambienti di fondovalle sempre più rari e minacciati dal progressivo isolamento ecologico conseguente all’urbanizzazione e ai cambiamenti ambientali in atto.
+
+
+
+%\noindent\emph{Mattia Brambilla \& Paolo Pedrini}
+
+\normalsize
+\setlength\afterchapskip{52mm}
+\chapter{Inquadramento generale}
+\renewcommand\chapterillustration{1.JPG}
+
+\section{Distribuzione e status di conservazione in Italia e in Europa}
+La salamandra alpina \href{http://217.199.4.93/webgis/?specie=Salamandra%20atra}{\emph{Salamandra atra}} è un anfibio urodelo presente in due principali ambiti geografici: uno sulle Alpi centrali e orientali (Alpi italiane, svizzere, austriache e propaggine meridionale delle Alpi bavaresi) e un altro sulle Alpi Dinariche, fino all'Albania settentrionale. In Italia si trova a nord sulle Alpi e Prealpi centrali e orientali, mentre il margine meridionale dell'area occupata della specie si sviluppa attraverso le Alpi Orobie, le Piccole Dolomiti, l'Altopiano dei Sette Comuni e quello di Vezzena, le Dolomiti Bellunesi, l'Altopiano del Cansiglio, le Prealpi Carniche e Giulie \cite{Bellon08b} \cite{Bernini04} \cite{Bonato07} \cite{Bovero13} \cite{Sindaco06}. In Trentino sono due le sottospecie di salamandra alpina sicuramente presenti: \emph{Salamandra atra atra}, la sottospecie maggiormente diffusa sulle Alpi e la salamandra di Aurora \href{http://217.199.4.93/webgis/?specie=Salamandra%20atra%20aurorae}{\emph{Salamandra atra aurorae}}, endemica degli Altopiani dei Sette Comuni e di Vezzena \cite{AAVV11b} \cite{Beukema08} \cite{Bonato01} \cite{Bonato00} \cite{Caldonazzi02} \cite{Romanazzi14}.
+Entrambe le sottospecie sono elencate nell'Allegato IV della Direttiva 92/43/CEE "Habitat". La salamandra di Aurora è inoltre inserita anche dell'Allegato II*, ossia fa parte delle specie che hanno priorità di conservazione in tutto il territorio europeo. L’importanza di queste specie richiede inoltre la definizione di Zone Speciali di Conservazione. Nell’area di distribuzione delle specie oggi nota, Salamandra atra atra è considerata specie "a minore preoccupazione" (LC) a livello globale, europeo e nazionale, mentre la salamandra di Aurora è segnalata come "vulnerabile" (VU) nell'ambito della Lista Rossa dei Vertebrati italiani elaborata dall'IUCN nel 2013 ed è considerata "in pericolo critico" nella Lista Rossa mondiale \cite{AAVV11b} \cite{Bellon08b} \cite{Caldonazzi02} \cite{Rondinini13} \cite{Temple09}. 
+Il tritone crestato italiano \href{http://217.199.4.93/webgis/?specie=Triturus%20carnifex}{\emph{Triturus carnifex}} è diffuso in gran parte d'Italia (ad eccezione delle isole e dell'estrema propaggine meridionale della Calabria), nel Canton Ticino in Svizzera, in Austria, parte della Repubblica Ceca e dell'Ungheria, in Slovenia, in Croazia e parte della Bosnia-Erzegovina \cite{Bellon08c} \cite{Damm07} \cite{Edgar06} \cite{Sindaco06}. La sua presenza pare più continua nella parte centro-occidentale della Pianura Padana e in quella Friulana, mentre più localizzata nelle parti più interne delle Alpi \cite{Bellon08b} \cite{Bernini04} \cite{Bonato07} \cite{Bovero13}.
+Il tritone crestato italiano è inserito tra le specie di interesse comunitario negli Allegati II e IV della Direttiva 92/43/CEE ed è elencato come specie "quasi minacciata" (NT) nella Lista Rossa nazionale elaborata dalla IUCN \cite{Rondinini13} \cite{Temple09}.
+L'ululone dal ventre giallo \href{http://217.199.4.93/webgis/?specie=Bombina%20variegata}{\emph{Bombina variegata}} è presente in gran parte dell'Europa centrale e dei Balcani. Il suo areale si estende a nord dalla Francia fino alla Germania e una limitata parte dell'Olanda; a est fino alla Romania e all'Ucraina, a sud fino al Peloponneso settentrionale e, in Italia, alla valle del Po \cite{Bellon08a} \cite{Bernini04} \cite{Bonato07} \cite{Bovero13} \cite{Caldonazzi02}.
+
+Questo anfibio anuro è inserito tra le specie di interesse comunitario negli Allegati II e IV della Direttiva 92/43/CEE e la sua presenza richiede quindi la creazione di Zone Speciali di Conservazione \cite{Bellon08a}.
+
+\vspace*{\fill} 
+ \begin{center}
+\includegraphics[width=.7\columnwidth]{karol_ululone_1.jpg}
+\end{center}
+\captionof*{figure}{\textbf{Ululone dal ventre giallo} \emph{Bombina variegata} (\ph Karol Tabarelli de Fatis).}
+\vspace*{\fill}
+ 
+\setlength\afterchapskip{52mm}
+\chapter{Biologia ed ecologia generali}
+\renewcommand\chapterillustration{2.JPG}
+\section*{}
+L’evoluzione della modalità di riproduzione vivipara ha permesso alle salamandre alpine di svincolarsi completamente dalle zone umide: uno o due piccoli, nascono infatti completamente formati, dopo una gestazione che può durare da due a quattro anni. La salamandra di Aurora \cite{Trevisan82} è l'unica salamandra alpina a presentare il dorso sempre coperto da macchie che possono variare per forma e colore, da piccole macchie sparse a grandi aree che ne possono coprire fino a metà superficie; il colore è normalmente giallo crema, con variazioni dal giallo brillante al grigio-marrone. Sono animali sfuggenti, attivi tra maggio e ottobre, periodo in cui lasciano i rifugi solo di notte o in occasione di piogge intense, rimanendo in letargo in ripari sotterranei per i restanti sei-sette mesi (Romanazzi, dati inediti). Animali dalle abitudini sedentarie e adattati alle condizioni d’alta quota, occupano principalmente ambienti forestali, praterie alpine e aree a vegetazione arbustiva. Amano terreni dalla struttura complessa, ricchi di cavità sotterranee e coperture superficiali, come detriti rocciosi o legno marcescente. Evitano suoli più compatti, soprattutto se intensamente pascolati, come anche accumuli detritici recenti e non consolidati \cite{Beukema08} \cite{Bonato03} \cite{Bovero13}. 
+La sottospecie \emph{Salamandra atra aurorae} sembra abitare quasi esclusivamente zone con vegetazione forestale, mentre è del tutto assente nei prati pascolati e nelle fasce marginali. Si localizza, generalmente, a un’altitudine compresa tra i 1000 e i 2000 metri, con un picco di abbondanza tra i 1400 e i 1500 metri di quota, che decresce verso il fondovalle e i pascoli di quota. Le maggiori densità sono state rilevate nelle foreste miste umide, caratterizzate da faggio con abete bianco e in misura minore da abete rosso \cite{Beukema08} \cite{Bonato03} \cite{Bonato00} \cite{Bovero13} \cite{Romanazzi14}.
+Il tritone crestato italiano frequenta e si riproduce in ambienti umidi di pianura e a bassa quota, privi di ittiofauna; si tratta in genere di stagni di dimensioni medio-grandi e paludi con una profondità dell'acqua variabile tra 20 cm e sei metri \cite{Biasioli11} \cite{Bovero13} \cite{Damm07} \cite{Edgar06}. Per le popolazioni dell’Italia settentrionale l’attività riproduttiva comincia a gennaio-febbraio; gli adulti rimangono in acqua degli fino a maggio-giugno. Al di fuori della stagione riproduttiva, questi animali non sono legati agli ambienti acquatici: la maggior parte degli individui adotta abitudini terrestri e conduce attività quasi esclusivamente notturna, trascorrendo il giorno al riparo di pietre, tronchi e altri rifugi naturali. In alta quota, la riproduzione può avvenire anche in pozze d'acqua piuttosto povere di vegetazione.
+L'ululone dal ventre giallo si riproduce in stagni, pozze, abbeveratoi, fossati, sorgenti e ruscelli. Predilige acque ferme, poco profonde e ben soleggiate, tendenzialmente prive di vegetazione acquatica, spesso vicine a boschi, anche di piccole dimensioni e cariche di materiali organici. Specie pioniera, colonizza rapidamente raccolte d'acqua temporanee di origine naturale o artificiale, come vasche, pozzanghere e contenitori anche di piccole dimensioni. Durante la fase terrestre frequenta ambienti ombrosi, cercando riparo sotto pietre, nelle fessure tra le rocce o nel sottobosco, fra rami, tronchi e fogliame marcescente; gli stessi anfratti costituiranno anche i rifugi invernali \cite{Bellon08c} \cite{Biasioli11} \cite{Damm07} \cite{Edgar06}.
+
+\begin{center}
+\includegraphics[width=.5\columnwidth]{menegon_tritone_crestato.jpg}
+\end{center}
+\captionof*{figure}{\textbf{Tritone crestato italiano} \emph{Triturus carnifex}. Dopo la fine della stagione riproduttiva il Tritone crestato italiano conduce vita terrestre, la cresta viene riassorbita, la pelle si ispessisce e il colore di fondo si fa più scuro.  Caccia piccoli invertebrati sul terreno di notte, con tempo piovoso (\ph Michele Menegon).}
+\vspace*{\fill}
+ 
+\setlength\afterchapskip{52mm}
+\chapter{Stato delle specie in Trentino}
+\renewcommand\chapterillustration{4.jpg}
+\section{Distribuzione e status di conservazione in Trentino}
+Distribuita esclusivamente nel settore nord orientale del territorio provinciale, la salamandra alpina in Trentino risulta poco diffusa \cite{Caldonazzi02}. Sono state raccolte meno di una decina di osservazioni della sottospecie \emph{aurorae} tutte localizzate sull'Altopiano di Vezzena, nel settore confinante con l’areale veneto (Romanazzi, dati inediti). Le prime osservazioni di questa sottospecie in ambito trentino risalgono al 2007 in Val Postesina \cite{Beukema08}. In seguito è stata osservata anche a Ovest di Valle Sparavieri, sull'Altopiano di Vezzena \cite{AAVV11b} (Romanazzi, dati inediti).
+
+La presenza di \emph{Salamandra atra atra} è stata riscontrata sul bordo occidentale del Gruppo dolomitico delle Pale di San Martino, in Val di Fassa, lungo il margine occidentale della Catena del Lagorai e presso Cima d'Asta. La salamandra alpina nera, sottospecie \emph{atra}, viene menzionata come “potenzialmente minacciata” anche nella Lista rossa degli Anfibi e Rettili del Trentino a differenza della salamandra di Aurora la cui presenza non era ancora stata segnalata ai tempi della redazione dell’Atlante provinciale del 2001 \cite{Caldonazzi02}. 
+
+In Trentino la presenza del tritone crestato italiano \emph{Triturus carnifex} è particolarmente localizzata: negli ultimi vent'anni, infatti, la sua presenza è stata accertata e confermata esclusivamente nel biotopo dei Laghetti di Marco, in Vallagarina, poco a sud di Rovereto. Si tratta quindi, assieme alla salamandra di Aurora, dell'anfibio più raro dell' erpetofauna trentina ed è pertanto considerato, a livello locale, in pericolo di estinzione \cite{AAVV04} \cite{Caldonazzi02}. Le poche osservazioni di fine Ottocento che si riferiscono alla bassa Val di Non, Riva del Garda e Rovereto e, più recentemente Vallarsa, ne testimoniano la presenza in trentino già nel passato. Specie a distribuzione prealpina, il tritone crestato italiano è presente in territori montani limitrofi delle province di Belluno e Vicenza, al confine con la provincia di Trento e, anche nel 2012, esemplari della specie sono stati trovati in diverse località dell'Altopiano dei Sette Comuni \cite{Bonato07} \cite{NISORIA}.
+
+L'ululone dal ventre giallo \emph{Bombina variegata} è presente perlopiù nella parte centrale e prealpina del territorio provinciale Trentino. Nella Valle dell’Adige vivono le popolazioni residue più importanti, tra cui quella cospicua che da nord di Trento arriva fino alla Rotaliana. In Vallagarina, una popolazione è presente presso il Lago di Loppio, altre invece sono localizzate nei settori collinari dell’Altopiano del Calisio, della Val di Cembra e della Valle dei Laghi, come anche in altri settori meridionali del Monte Baldo (Polsa, Altopiano di Brentonico) e della Val dei Ronchi. L’ululone è stato osservato raramente nel Trentino occidentale, mentre nel settore orientale, sebbene mai comune, è stato segnalato sull’Altopiano di Pinè, in Val di Fiemme e in Valsugana.
+Le profonde trasformazioni che hanno modificato, negli ultimi anni, gli ambienti umidi del fondovalle trentino hanno compromesso a tal punto l’ecologia e la stabilità delle popolazioni di ululone da rendere necessaria l’iscrizione della specie nella Lista Rossa provinciale \cite{AAVV11a} \cite{Caldonazzi02}.
+\vspace{-.5cm}
+\section{Ecologia in Trentino}
+In provincia di Trento, la salamandra alpina popola una fascia altitudinale compresa fra i 1280 e i 2150 metri di quota, distribuendosi tanto nei boschi di aghifoglie dell'orizzonte montano, quanto sopra il limite forestale. Qui la specie popola l’ambiente di tundra alpina, gli arbusteti nani, i pascoli sassosi e i versanti detritici, mentre a quote inferiori, sceglie prevalentemente boschi misti di aghifoglie o lariceti \cite{Caldonazzi02}. 
+La salamandra di Aurora è presente soprattutto nei boschi misti, caratterizzati prevalentemente da faggi e abeti bianchi, con una presenza non eccessiva di abete rosso. Analogamente a quanto noto per le zone circostanti, anche qui la presenza attiva di questi animali è stata segnalata tra gli inizi di maggio e la fine di settembre, lasciando intuire un periodo di quiescenza invernale molto lungo di oltre sette mesi \cite{Bonato03}. In Trentino, il tritone crestato italiano è stato osservato solo nei Laghetti di Marco a Rovereto. Si tratta di uno stagno di fondovalle, a quota 166 metridi quota, in un ambiente di frana che in inverno si prosciuga quasi completamente. Questa zona umida è coperta da vegetazione palustre e lacustre come carici e tife ed è circondata da boscaglie di latifoglie composte soprattutto da salici e pinete artificiali a pino nero, con presenza di specie termofile come carpino nero, orniello e roverella. Le poche osservazioni disponibili riferite a esemplari in acqua, sono state fatte tra la fine di marzo e l'inizio di ottobre, periodo in cui gli esemplari possono condividere l’habitat anche con altre specie (sinotipia) come il tritone alpestre \emph{Ichthyosaura alpestris} e il tritone punteggiato \emph{Lissotriton vulgaris} \cite{Caldonazzi02}. 
+\begin{wrapfigure}{l}{.55\columnwidth}
+\centering
+  \includegraphics[width=.55\columnwidth]{pedrini_vasca_ululone.jpg}
+  \caption*{Esempio di sito riproduttivo di Ululone dal ventre giallo \emph{Bombina variegata} in Val di Cembra (\ph Paolo Pedrini, Arch. MUSE).}
+\end{wrapfigure}
+L'ululone dal ventre giallo predilige raccolte d'acqua di piccole dimensioni scarsamente vegetate. In ambienti antropizzati popola le pozzanghere temporanee che si formano nelle strade sterrate, le pozze di esondazione dei torrenti, le raccolte d'acqua e le vasche di decantazione di cave attive o abbandonate. In condizioni naturali si può trovare anche in pozze d’acqua nei boschi e sui prati o in ruscelli a lento corso. Negli ambienti rurali, anche intensivamente coltivati come vigneti e frutteti, frequenta i piccoli fossati di drenaggio scavati tra i campi \cite{AAVV04} \cite{Bellon08a} \cite{Biasioli11} \cite{Bovero13}. Spesso utilizza raccolte d'acqua artificiali, come vasche di cemento (comune sito riproduttivo in Val di Cembra), abbeveratoi, manufatti nei pressi di sorgenti su campi terrazzati e, localmente, le pozze d'alpeggio degli ambienti prealpini. In genere i siti occupati sono privi di vegetazione e la qualità dell'acqua può variare notevolmente, da quella limpida di risorgiva a quella più inquinata delle pozze d'alpeggio, in cui l’acqua si mescola al liquame. In Trentino, la specie è attiva fra aprile e ottobre, con un picco fra maggio e giugno, periodo in cui è stata segnalata anche la presenza di ovature e girini \cite{Caldonazzi02}.
+
+ 
+\setlength\afterchapskip{52mm}
+\chapter{Fattori di minaccia}
+\renewcommand\chapterillustration{5.JPG}
+
+\section{Salamandra aurora}
+Nonostante le abitudini elusive portino la salamandra alpina a prediligere zone e orari solitamente diversi da quelli dell’uomo, l’espansione dell’attività antropica può costituire una seria minaccia per questa specie \cite{AAVV11b} \cite{Bellon08b} \cite{Bonato07}. Peculiari caratteristiche biologiche ed ecologiche, come il potenziale riproduttivo limitato (una femmina adulta partorisce 1-2 piccoli dopo una gestazione di 2-4 anni) e la scarsa capacità di colonizzazione di nuovi territori, rendono infatti la salamandra alpina una specie particolarmente sensibile a stress e variazioni ambientali \cite{NISORIA}. Sviluppo di infrastrutture turistiche e sportive, nuove strade, la gestione delle malghe e la captazione idrica, la messa a dimora di boschi artificiali di conifere, la raccolta illegale per il collezionismo e soprattutto lo sfruttamento forestale costituiscono un serio pericolo per questa specie \cite{Bonato07}. Le popolazioni presenti sull'Altopiano dei Sette Comuni e su quello di Vezzena, note come salamandre di Aurora hanno particolare valore dal punto di vista della conservazione: oltre a essere estremamente localizzate queste salamandre infatti risultano geneticamente e morfologicamente distinte \cite{Trevisan82}. Dalla loro scoperta alla fine degli anni settanta, sono diventate, infatti, preda ambita dei collezionisti e vittime di intensa attività di raccolta illegale \cite{Rondinini13}.  
+La particolare predilezione per i substrati forestali maturi, rende inoltre la salamandra di Aurora particolarmente sensibile alle modifiche ambientali generate dagli interventi selvicolturali. Questi infatti, anche nelle zone e nei periodi di presenza della salamandra, vengono generalmente condotti con tecniche ad alto impatto, che prevedono l’apertura di nuove piste e il transito di mezzi pesanti. Oltre a costituire una causa diretta di mortalità, il passaggio dei veicoli provoca pesanti modifiche all’ecosistema della salamandra, compattando il suolo e distruggendo i suoi rifugi diurni come tronchi, cortecce, ramaglie e rocce \cite{Beukema08} \cite{Romanazzi12}.
+
+\section{Tritone crestato italiano}
+In Trentino, i laghetti di Marco presso Rovereto sono l’unica località nota per il tritone crestato italiano \cite{Caldonazzi02}. Questa unicità aumenta la sensibilità della specie agli effetti generati da eventi stocastici come patologie o intensi eventi climatici aumentandone di conseguenza, a livello locale, il rischio di estinzione. L'isolamento e la relativa scarsa consistenza e variabilità genetica potrebbero inoltre indebolire progressivamente la specie, generando effetti negativi sul lungo termine \cite{Biasioli11} \cite{Scoccianti01}. Anche la presenza antropica sempre più rilevante costituisce una seria minaccia. Spesso i siti riproduttivi, infatti, vengono interrati o inquinati, tanto da sversamenti quanto dall’introduzione di specie estranee all’ecosistema come pesci, tartarughe palustri esotiche o anatidi domestici; anche il traffico che interessa la strada adiacente all’unico sito trentino ai Laghetti di Marco, costituisce un ulteriore fattore di minaccia per la locale popolazione \cite{AAVV04} \cite{AAVV11a}.
+
+In generale, quindi, la frammentazione ambientale, il degrado e la pesante modifica delle zone umide e terrestri, in particolare nel fondovalle, costituiscono tuttora i principali fattori limitanti la colonizzazione di nuove aree \cite{AAVV04} \cite{Caldonazzi02}. 
+
+\section{Ululone dal ventre giallo}
+Nonostante l’ululone dal ventre giallo occupi ancora un’area piuttosto estesa, negli ultimi secoli la sua distribuzione ha subito una notevole contrazione, e oggi risulta raro e localizzato anche in provincia di Trento \cite{Caldonazzi02}. Una delle principali minacce per questa specie è costituita dall’alterazione o dalla distruzione degli habitat riproduttivi, che spesso sono di origine artificiale \cite{Biasioli11}. In particolare interventi come la regimazione dei torrenti, la captazione idrica o la trasformazione di zone umide temporanee in zone umide perenni a uso ricreativo, l'abbandono delle pozze d'alpeggio o al contrario il loro iper utilizzo e l'introduzione di specie predatrici come pesci e anatre, rappresentano modifiche potenzialmente rischiose per la specie come anche l’inquinamento da scarichi civili e zootecnici. In generale, modifiche ambientali che comportano il degrado di aree utilizzate come siti di svernamento o l’eliminazione di rifugi come cataste di legno, muretti a secco, mucchi di sassi e rocce, costituiscono un serio problema per questi animali. Inoltre anche isolamento e dimensione ridotta delle popolazioni, contribuiscono a renderne fragile l’equilibrio risultando quindi particolarmente vulnerabili a eventuali patologie e soggette a fenomeni di \emph{inbreeding} (accoppiamento tra consanguinei). Le trasformazioni agricole e urbanistiche, specialmente delle zone di fondovalle, hanno ridotto l’estensione di boschi e agroecosistemi tradizionali caratterizzati da siepi, fossati e piccole raccolte d'acqua causando quindi, come nel caso del tritone crestato italiano, una notevole diminuzione di habitat. Sui rilievi invece l'abbandono delle malghe e le trasformazioni di vasti settori a scopo urbanistico, turistico e sportivo, hanno causato una notevole riduzione sia del numero di popolazioni sia di esemplari \cite{Biasioli11} \cite{Bovero13}.
+
+\begin{center}
+\includegraphics[width=.9\columnwidth]{menegon_salamandra_aurora_2.jpg}
+\end{center}
+\captionof*{figure}{\textbf{Salamandra di Aurora} \emph{Salamandra atra aurorae}. Salamandra di Aurora nel suo ambiente naturale sull'altopiano di Vezzena (\ph Michele Menegon).}
+\vspace*{\fill}
+ 
+\setlength\afterchapskip{52mm}
+\chapter{Strategia di conservazione}
+\renewcommand\chapterillustration{6.jpg}
+
+\section{Obiettivo generale}
+Il presente piano d’azione traccia le linee e promuove le azioni necessarie a garantire la conservazione, sul lungo termine, di tre specie di anfibi di interesse comunitario, presenti sul territorio amministrato dalla Provincia di Trento: la salamandra di Aurora, il tritone crestato italiano e l’ululone dal ventre giallo. Determinante per il successo di queste azioni e il raggiungimento degli obiettivi di conservazione è la collaborazione di tutte le parti interessate, così come la rigorosa descrizione dello stato attuale delle tre specie è fondamentale per l’organizzazione e la razionalizzazione degli interventi in atto e quelli futuri. È quindi fondamentale, anche in vista della pianificazione di azioni future, integrare le informazioni disponibili sull’effettiva distribuzione di questi anfibi e sui parametri demografici delle principali popolazioni note, conosciute ancora in modo poco soddisfacente. Inoltre, ulteriore obiettivo del Piano, è quello di aumentare il grado di protezione di questi animali nelle aree di presenza, gestendo e monitorando le attività dannose per le specie e i loro habitat.
+
+\section{Obiettivi specifici}
+La conservazione della salamandra di Aurora, del tritone crestato italiano e dell’ululone dal ventre giallo in Trentino, può essere garantita soltanto attraverso una corretta gestione delle popolazioni e dei loro habitat, che si realizza con:
+\begin{itemize}\itemsep0pt
+  \item la raccolta di informazioni relative alla distribuzione storica e attuale di queste specie sul territorio provinciale e l’organizzazione di ricerche specifiche per:
+  \begin{itemize}\itemsep0pt 
+    \item l’individuazione dei rischi legati alla conservazione di queste specie e la valutazione delle condizioni ambientali di habitat attuali e potenziali;
+    \item il monitoraggio dello stato di conservazione delle popolazioni nel tempo e dell’integrità ecologica degli habitat;
+    \item l’identificazione e la mitigazione delle minacce che mettono a rischio la conservazione delle specie e dei loro habitat.
+  \end{itemize}
+  \item l’attuazione di interventi di prevenzione e mitigazione delle minacce che prevedono: 
+  \begin{itemize}\itemsep0pt
+    \item il controllo della diffusione di specie alloctone e di parassiti che possono causare infestazioni letali; 
+    \item la prevenzione di prelievi illegali e di azioni di degrado ambientale; 
+    \item l’individuazione di aree idonee a interventi di riqualificazione, per il recupero delle funzionalità ecologiche degli habitat acquatici e/o terrestri;
+    \item l’individuazione e protezione di aree meritevoli di tutela, per la presenza di popolazioni vitali attraverso, ad esempio, l’istituzione di zone speciali di conservazione, previste dalla normativa di rete Natura 2000 (per queste specie inserite nell'Allegato II della Direttiva 92/43/CEE).
+  \end{itemize}
+  \item la gestione delle popolazioni poco vitali traverso il mantenimento di aree umide e terrestri e secondariamente, valutata la cessazione degli effetti di disturbo che hanno portato al crollo della popolazione, interventi di reintroduzione o ripopolamento;
+  \item l’organizzazione di campagne informative rivolte ad agricoltori, cacciatori, pescatori, personale addetto alla pianificazione o all’esecuzione dei lavori di gestione forestale,della rete idrica e degli eventi sportivi e/o ricreativi sul territorio, alla popolazione locale, alle scolaresche, alle guide naturalistiche e ai turisti, con l’obiettivo di sensibilizzare all’importanza della conservazione di questi animali, e di informare sui comportamenti corretti da adottare per evitare impatti negativi sulle popolazioni e sugli interventi che si intendono attuare.
+\end{itemize}
+
+\vspace*{\fill}
+\begin{center}
+\includegraphics[width=1\columnwidth]{menegon_tritone_crestato_ad.jpg}
+\end{center}
+\captionof*{figure}{\textbf{Tritone crestato italiano} \emph{Triturus carnifex}. Maschio di tritone crestato italiano in acqua, all'inizio della stagione degli amori la cresta dorsale è ancora solo parzialmente sviluppata (\ph Michele Menegon).}
+\vspace*{\fill}
+
+\setlength\afterchapskip{52mm}
+\chapter{Azioni di conservazione}
+\renewcommand\chapterillustration{7.jpg}
+
+\section{Monitoraggio delle popolazioni degli Anfibi e dei loro habitat }
+Il monitoraggio delle popolazioni di salamandra di Aurora, tritone crestato italiano e ululone dal ventre giallo in Trentino è indispensabile per definire lo stato di conservazione di queste specie autoctone e dei loro habitat \cite{AAVV04} \cite{AAVV11a} \cite{Bellon08a} \cite{Bellon08b} \cite{Bellon08c} \cite{Biasioli11} \cite{Bovero13} \cite{Damm07} \cite{Edgar06}. 
+
+Per le altre specie la creazione di un database condiviso come quello realizzato con l’Azione A1 nel presente LIFE, utili a fornire un quadro aggiornato della loro distribuzione e presenza a scala provinciale rappresenta uno strumento essenziale per futuri indirizzi di conservazione e gestione del territorio e degli habitat di queste specie. 
+
+In quest’ottica è fondamentale il campionamento delle singole popolazioni, con raccolta sistematica di dati (anche biometrici come peso, lunghezza muso-cloaca e/o muso-coda e caratterizzazione del sesso per il calcolo della \emph{sex ratio}), per definire presenza, struttura, densità ed entità delle popolazioni stesse. 
+
+Ricerche sulle caratteristiche ambientali degli habitat e il loro periodico monitoraggio, sono fondamentali per definire le possibili aree di intervento e le azioni di protezione. Va inoltre periodicamente controllata la presenza di possibili minacce a livello locale e su area più vasta, come quelle derivanti dalla competizione con specie alloctone, dall’immissione di specie predatrici, dalla diffusione di patologie e da potenziali fonti inquinanti e di alterazione ambientale derivanti da attività primarie e di uso del territorio.
+
+\subsection{Monitoraggio dello stato di salute delle popolazioni di Anfibi}
+Periodiche analisi istologiche e molecolari, eseguite su individui alloctoni e autoctoni, serviranno a monitorare e prevenire le infestazioni di parassiti letali. I corpi idrici infestati dovrebbero essere sottoposti a particolare regolamentazione, soprattutto per quanto riguarda le attività di ricerca, in modo tale da evitare la diffusione dei parassiti da un bacino ad un altro. Un recente articolo comparso su Scienze evidenzia, come questa minaccia da poco individuata, vada monitorata, e come la diffusione di alcuni parassiti fungini, possa rivelarsi letale anche per specie presenti sulle Alpi e oggetto del presente documento (vedi ad es. tritone crestato italiano, tritone punteggiato, salamandra pezzata \cite{Martel14}).
+
+\section{Caratterizzazione genetica delle popolazioni autoctone}
+Per fornire un quadro dettagliato sullo stato di conservazione è importante caratterizzare geneticamente le popolazioni di questi anfibi. Per rendere queste informazioni ancora più complete e fornire un primo quadro della variabilità esistente fra le popolazioni e al loro interno, possono essere utili le indagini molecolari in corso in Trentino su alcune popolazioni di salamandra nera, ululone dal ventre giallo e in particolare salamandra di Aurora (FEM in coll. con MUSE, UNIPD ined.). La realizzazione di specifiche mappe genetiche delle popolazioni presenti in Trentino, attraverso analisi di base (sequenziamento dei geni mitocondriali 16S) o più approfondite (attraverso l’analisi di microsatelliti e altre tecniche di recente utilizzo), rappresenta quindi uno strumento utile alla conservazione delle specie in esame, anche in casi  eventuali interventi di reintroduzione e ripopolamento.
+
+\section{Individuazione e mitigazione delle minacce}
+Individuare sul territorio i principali fattori che minacciano le tre specie di anfibi, è il primo passo necessario alla definizione di misure di tutela efficaci. \\
+
+\vspace{.2cm}
+\textbf{\noindent Salamandra di Aurora} \\
+Gli studi in corso sulla popolazione di salamandra di Aurora sull’Altopiano dei Sette Comuni e quello di Vezzena, rappresentano un primo importante passo per comprendere come migliorare le azioni di mitigazione dell’impatto derivante dalle attività forestali (Università di Padova & Regione Veneto, ined.). Un’attenta gestione dei lavori di taglio ed esbosco in questa particolare zona, risulta fondamentale per il mantenimento di popolazioni vitali di questo anfibio estremamente localizzato.
+Da quanto evidenziato emergono alcune indicazioni utili a definire tempi e modalità:
+
+\begin{itemize}\itemsep0pt
+  \item nelle aree di maggiore presenza, effettuare gli interventi ordinari di taglio ed esbosco fra novembre e aprile, ovvero al di fuori della stagione attiva degli animali; impiegare per queste operazioni mezzi meccanici di piccole dimensioni o meglio ancora teleferiche, evitando in ogni caso il taglio a raso e la creazione di zone prive di copertura boschiva;
+  \item pianificare gli interventi boschivi finalizzandoli al ripristino di una copertura forestale tipica di situazioni non gestite dall’uomo; in questo senso è molto importante mantenere la necromassa legnosa (legno morto) a terra e in piedi, diradare eventuali impianti artificiali coetanei di abete rosso e favorire il progressivo ingresso di specie naturalmente dominanti nell’area, come abete bianco e faggio;
+  \item evitare l’ingresso di animali da pascolo nelle zone boschive occupate dalla salamandra di Aurora;
+  \item sensibilizzare popolazione locale e turisti sull’importanza della conservazione della specie e individuare, insieme agli Agenti di Vigilanza, le misure di controllo più efficaci per reprimere la raccolta illegale di esemplari.
+\end{itemize}
+\vspace{.2cm}
+\textbf{Tritone crestato italiano e ululone dal ventre giallo}\\
+Il forte degrado e la scomparsa degli habitat di fondovalle hanno relegato il tritone crestato italiano a un unico sito noto sul territorio trentino e hanno causato frammentazione e isolamento nelle popolazioni di ululone dal ventre giallo. Con il coinvolgimento del mondo agricolo e dalle attività connesse alla coltivazione dei terreni destinati alla produzione, si possono realizzare semplici azioni finalizzate al mantenimento della diversità degli ambienti rurali utile anche alla conservazione di queste specie. In particolare la conservazione di ambienti umidi di margine e degli ultimi lembi di aree umide, il ripristino o la creazione di ambienti riproduttivi e di rifugio, permetterebbero non solo di recuperare gli habitat idonei alla vita di queste specie ma di migliorare la qualità ecologica dell’intero territorio di fondovalle.
+
+A tal fine anche alla luce degli studi sostenuti da PAT e degli approfondimenti condotti nel presente LIFE si propone di:
+
+\begin{itemize}\itemsep0pt
+  \item promuovere il mantenimento e la creazione negli ambienti agricoli di fondovalle di siti riproduttivi e di rifugio naturali ed artificiali (ad es. vasche di raccolta d’acqua per l'ululone dal ventre giallo) al fine di meglio rispondere alle esigenze ecologiche di queste specie. Mantenere e realizzare ambienti di rifugio come siepi, boschetti, mucchi di pietre e tronchi e progettare interventi di recupero di aree umide e boschive scomparse in seguito a opere di bonifica. In particolare, per quanto riguarda il tritone crestato, è fondamentale e urgente la manutenzione dell’area dei Laghetti di Marco e delle zone circostanti, in corso di rapido interramento;
+  \item creare, dove possibile, fasce di vegetazione che servano da rifugio e da barriera contro  pesticidi e altri inquinanti provenienti da emissioni diffuse e che fungano da tampone per l’intercettazione dei nutrienti rilasciati dai terreni agricoli (fosfati e composti azotati responsabili dei fenomeni di eutrofizzazione);
+  \item regolamentare le modalità di taglio della vegetazione acquatica lungo i fossati, importante rifugio e fonte di nutrimento soprattutto durante lo sviluppo allo stadio larvale e per garantire un’elevata biodiversità (ad es. procedendo a una sola sponda o procedendo a scacchiera); 
+  \item programmare l’esecuzione di interventi più invasivi, preferibilmente in inverno e tarda estate, per consentire lo svolgimento delle fasi più delicate del ciclo vitale degli organismi; 
+  \item mantenere o ripristinare un substrato naturale in alveo per rendere disponibili rifugi per larve e adulti e microhabitat utili al mantenimento di una biodiversità elevata.
+\end{itemize}
+
+\subsection{Mitigare l’impatto veicolare sulla migrazione stagionale degli Anfibi}
+Le rotte della migrazione di molte popolazioni degli anfibi anuri e di alcune specie di urodeli che si riproducono nelle ultime zone umide di fondovalle anche in Trentino sono a rischio di estinzione locale, a causa dell’elevata mortalità dovuta al traffico veicolare, soprattutto nei mesi primaverili e autunnali. Questo tema approfondito in una specifica indagine condotta nel 2013 da MUSE e PAT \cite{Romanazzi13}, viene qui ripreso nei suoi contenuti generali, rimandando al WebGIS del LIFE + T.E.N. e al documento stesso per i dettagli e le soluzioni individuate a scala locale.  Potenzialmente questa minaccia, che numericamente riguarda alcune delle specie più comuni in Trentino quali rospo comune, rana temporaria e tritone alpestre, può localmente interessare popolazioni abbondanti di specie meno diffuse come rana dalmatina (per esempio, Lago di Santa Colomba) e tritone punteggiato (per esempio, Lago di Loppio), e talvolta anche esemplari di ululone dal ventre giallo e in modo molto localizzato di tritone  crestato italiano.
+
+Dal documento si evince come siano già stati individuati in Trentino i siti di maggiore importanza che spesso incrociano le differenti rotte, in modo e con effetti diversi a seconda della frequentazione del sito e della struttura stradale che ne ostacola i trasferimenti. Inoltre contiene i dettagli sulle strutture mobili e fisse (costituiti da barriere - mobili e fisse- e sottopassi) posizionate con lo scopo di direzionare e quindi mitigare l’attraversamento della barriera stradale.
+
+L’entità di questa minaccia va monitorata nel tempo \cite{Pedrini14} attraverso conteggi standardizzati degli esemplari, vivi e morti, rinvenuti lungo transetti posizionati a lato delle strade o nei sottopassi più frequentati dagli animali durante le migrazioni.
+
+Il controllo e il contenimento dell’espansione di specie alloctone predatrici, in particolare ittiofauna, sono indispensabili per migliorare gli habitat e il successo riproduttivo di queste specie (e di tutti gli Anfibi con esclusione delle salamandre alpine). L’alta densità delle popolazioni alloctone da tempo stabilizzate, rende estremamente difficile la loro completa eradicazione, ma azioni di questo tipo sono in via di realizzazione in altri ambiti alpini \footnote{\url{http://www.pngp.it/bioaquae}}. Il monitoraggio periodico delle popolazioni, l’organizzazione di campagne educative e la messa a punto di una normativa specifica che vieti il rilascio e il trasferimento sono gli unici strumenti possibili per contrastarne la diffusione.
+
+\subsection{Conservazione di habitat artificiali utili all’ululone dal ventre giallo}
+Diverse popolazioni di ululone dal ventre giallo sono state segnalate anche in cave, zone agricole 
+intensive, in fossati allevamenti e presso insediamenti abitativi. Alcune di queste popolazioni sono scomparse probabilmente in seguito al progressivo peggioramento dei loro habitat; la presenza di altre è invece garantita dalla presenza di strutture artificiali, quali vasche per la raccolta dell’acqua piovana ancora presenti sul territorio coltivato a vigneto (vedi ad es.,  Val di Cembra). 
+Un’efficace collaborazione con i proprietari degli impianti e dei terreni, e con i tecnici del settore agricoltura, è auspicabile  per garantire la conservazione degli habitat di questi anfibi, anche migliorare la idoneità ecologica in ambienti agricoli, apparentemente poco ospitali.
+
+\section{Informazione e sensibilizzazione della popolazione locale}
+Perché il progetto di conservazione riguardante la salamandra di Aurora, il tritone crestato italiano e l’ululone dal ventre giallo, ma anche la conservazione in genere di tutti gli anfibi, possa proseguire con successo, è necessaria la partecipazione della popolazione locale. A tal fine all’interno dei programmi di condivisione vanno previsti (ad esempo, nell’ambito delle Rete di Riserve) incontri e modalità informative specificheper condividere le strategie di intervento e sensibilizzare sull’importanza ecologica delle specie oggetto di tutela.
+
+Auspicabili sono progetti educativi da realizzare con il mondo della scuola e mediante il coinvolgimento delle associazioni culturali ed ambientaliste locali, come anche occasioni di informazione per operatori e tecnici del settore della conservazione, gestione e dell’agricoltura e foreste.
+
+Tale modalità si potrebbe inoltre rilevare particolarmente utile anche per raccogliere segnalazioni di presenza di queste specie sul territorio e  contribuire a mantenere monitorato lo stato di conservazione di questo gruppo di Vertebrati, fra i più minacciati al mondo.
+
+\begin{comment}
+\vspace*{\fill}
+\begin{center}
+\includegraphics[width=1\columnwidth]{menegon_tritone_crestato_neotenia.jpg}
+\end{center}
+\captionof*{figure}{\textbf{Tritone crestato italiano} \emph{Triturus carnifex}. Le larve di Tritone crestato italiano, come molte larve che si sviluppano in pozze povere di ossigeno, hanno branchie frangiate particolarmente lunghe, che facilitano lo scambio di gas per la respirazione (\ph Michele Menegon).}
+\vspace*{\fill}
+\end{comment} 
+
+\setlength\afterchapskip{10mm}
+\chapter{Bibliografia}
+\renewcommand\chapterillustration{}
+\renewcommand*{\bibname}{}
+\begingroup
+\renewcommand{\addcontentsline}[3]{}% Remove functionality of \addcontentsline
+\renewcommand{\section}[2]{}% Remove functionality of \section
+\begin{thebibliography}{9}
+\footnotesize
+%\bibitem{Deleo}De Leo G.A., Levin S. 1997. \emph{ The multifaceted aspects of ecosystem integrity}. Conservation Ecology, 1: 1-3
+%\bibitem{Landers}Landers P.B., Verner J., Thomas J.W. 1988. \emph{Ecological use of vertebrate indicator species: a critique}. Conservation Biology, 2: 316-328
+%\bibitem{EUcouncil}Council of Europe. 1998. \emph{Drafting and implementing action plans for threatened species}. Environmental encounters, Council of Europe (Ed), Strasbourg , 39:1-4
+%\bibitem{Trevisan} Trevisan P.. 1982. \emph{A new subspecies of alpine salamander}. Boll. Zool., 49: 235-239
+
+%\end{thebibliography}
+
+%\makeatletter
+%\renewcommand\@biblabel[1]{\textcolor{\backgroundrectanglecolor}{$\bullet$}}
+%\makeatother
+
+%\textbf{\large Bibliografia non citata}
+%\begin{thebibliography}{99}
+%\footnotesize
+\bibitem{AAVV04} AA.VV, 2004. \emph{Documento tecnico per la stesura di un Action Plan finalizzato alla gestione delle popolazioni di anfibi e rettili presenti in provincia di Trento}. Museo Tridentino di Scienze Naturali - Sezione di Zoologia dei Vertebrati, Albatros srl, Provincia Autonoma di Trento - Ufficio Faunistico, (datt.), 97 pp.
+\bibitem{AAVV11a} AA.VV. 2011. \emph{Indagine sulle comunità di Anfibi, in alcune Riserve provinciali: loro conservazione e gestione}. Museo delle Scienze - Sezione di Zoologia dei Vertebrati, Provincia Autonoma di Trento - Servizio Conservazione della Natura e Valorizzazione Ambientale, Ufficio Rete Natura, (datt.), 19 pp.
+\bibitem{AAVV11b}AA. VV. 2011. \emph{Indagini preliminari sulla presenza e lo stato di conservazione di Salamandra aurorae in Trentino}. Museo delle Scienze - Sezione di Zoologia dei Vertebrati, Provincia Autonoma di Trento - Servizio Conservazione della Natura e Valorizzazione Ambientale, Ufficio Rete Natura, (datt.), 11 pp.
+\bibitem{Bellon08a} Bellon M., Filacorda S. (a cura di) 2008. \emph{Piano d'azione per la \emph{Bombina variegata} in Friuli-Venezia Giulia e Veneto 2009-2013}. PROGETTO LIFE04 NAT/IT/000167 : “SISTEMA AURORA”, 44 pp.
+\bibitem{Bellon08b}Bellon M., Filacorda S. (a cura di) 2008. \emph{Piano d'azione per la \emph{Salamandra atra aurorae} e \emph{Salamandra atrta pasubiensis} in Veneto 2009-2013}. PROGETTO LIFE04 NAT/IT/000167 : “SISTEMA AURORA”, 48 pp.
+\bibitem{Bellon08c}Bellon M., Filacorda S. (a cura di) 2008. \emph{Piano d'azione per il \emph{Triturus carnifex} in Friuli-Venezia Giulia e Veneto 2009-2013}. PROGETTO LIFE04 NAT/IT/000167 : “SISTEMA AURORA”, 43 pp.
+\bibitem{Bernini04}Bernini F., Bonini L., Ferri V., Gentilli A., Razzetti E.(a cura di) 2004. \emph{Atlante delgi Anfibi e dei Rettili della Lombardia. Monografie di Pianura n$^\circ$ 5}, Provincia di Cremona, Cremona.
+\bibitem{Beukema08} Beukema W., Brakels P., 2008. \emph{Discovery of \emph{Salamandra atra aurorae} (Trevisan, 1982) on the Altopiano di Vezzena, Trentino (North-eastern Italy).} Acta Herpetologica, Firenze University Press, 3 (1): 77-81.
+\bibitem{Biasioli11}Biasioli M., Genovese S., Monti A. 2011. \emph{Gestione e conservazione della fauna minore: esperienze e tecniche di gestione per le specie d'interesse conservazionistico e dei loro habitat}. Parco del Lura, Fondazione Cariplo, 334 pp.
+\bibitem{Bonato01} Bonato L., 2001. \emph{La Salamandra alpina \emph{Salamandra atra} Laurenti, 1768 sulle Prealpi Venete. Primo anno di un progetto di indagine intermuseale.} In: Bon M., Scarton F. (red.), Atti 3$^\circ$ Convegno Faunisti Veneti. Associazione Faunisti Veneti, Boll. Mus. Civ. St. Nat. Venezia, suppl. al vol. 51 (2000): 124-127.
+\bibitem{Bonato03} Bonato L., Fracasso G., 2003. \emph{Movements, distribution pattern and density in a population of \emph{Salamandra atra aurorae} (\emph{Caudata}: \emph{Salamandridae}).} Amphibia-Reptilia, 24 (3): 251-264.
+\bibitem{Bonato00} Bonato L., Grossenbacher K., 2000. \emph{On the distribution and chromatic differentiation of the Alpine Salamander \emph{Salamandra atra} Laurenti, 1768, between Val Lagarina and Val Sugana (Venetian Prealps): an updated review (\emph{Urodela}: \emph{Salamandridae}).} Herpetozoa, 13 (3-4): 171-180.
+\bibitem{Bonato07}Bonato L., Fracasso G., Pollo R., Richard J., Semenzato M. (eds.). 2007. \emph{Atlante degli Anfibi e dei Rettili del Veneto}. Associazione Faunisti Veneti, Nuovadimensione Ed., pp. 48-52.
+\bibitem{Bovero13}Bovero S., Canalis L., Crosetto S. 2013. \emph{Gli anfibi e i rettili delle Alpi}. Blu Edizioni, pp.40-43
+\bibitem{Caldonazzi02}Caldonazzi M., Pedrini P., Zanghellini S. 2002. \emph{Atlante degli anfibi e dei rettili della provincia di Trento, 1987-1996 con aggiornamenti al 2001}. Studi Trentini di Scienze Naturali, Acta Biologica, 175 pp.
+\bibitem{EUCOUNCIL98} Council of Europe, 1998. \emph{Drafting and implementing action plans for threatened species.} Environmental encounters, Council of Europe (Ed), Strasbourg, 39: 1-4.
+\bibitem{Damm07}Damm N., Briggs L., de Vries W., Bibelriether F. 2007. \emph{Action Plan for Triturus cristatus in the former Vejle County}. LIFE04NAT/EE000070: Protection of Triturus cristatus in Eastern Baltic Region, 47 pp.
+\bibitem{Deleo97} De Leo, G.A., Levin, S., 1997. The multifaceted aspects of ecosystem integrity. Conservation Ecology, 1: 1-3
+\bibitem{Edgar06}Edgar P., Bird D.R. 2006. \emph{Action Plan for the Conservation of the Crested Newt Triturus cristatus Species Complex in Europe}. Council of Europe, Convention on the conservation of european wildlife and natural habitats. 26th meeting Strasbourg, 27-30 November 2006, 33 pp.
+\bibitem{Elzinga01} Elzinga C.L., Salzer D.W., Willoughby J.W., Gibbs J.P., 2001. \emph{Monitoring Plant and Animal Populations.} Blackwell Science, Malden, Massachussetts.
+\bibitem{NISORIA} Gruppo Nisoria, Museo Naturalistico di Vicenza, \emph{Atlante degli Anfibi e dei Rettili della provincia di Vicenza}, Padovan Ed., Vicenza, pp. 43-47.
+\bibitem{Houlahan01} Houlahan J.E., Findlay C.S., Schmidt B.R., Meyer A.H., Kuzmin S.L., 2001. \emph{Quantitative evidence for global amphibian population declines.} Nature 412: 499-500.
+\bibitem{Landers88}Landers P.B., Verner J., Thomas J.W., 1988. \emph{Ecological use of vertebrate indicator species: a critique.} Conservation Biology, 2: 316-328.
+\bibitem{Romanazzi12}Romanazzi E., Bonato L., Ficetola G.F., Steinfartz S., Manenti R., Spilinga C., Andreone F., Fritz U. Corti C., Lymberakis P., Di Cerbo, A.R., Gent T., Ursenbacher S., Grossenbacher K., 2012. \emph{The golden Alpine salamander (\emph{Salamandra atra aurorae}) in conservation peril.} Amphibia-Reptilia 33: 541-543.
+\bibitem{Romanazzi14}Romanazzi E., Bonato L., 2014. \emph{Updating the range of the narrowly distributed endemites \emph{Salamandra atra aurorae} and \emph{S. atra pasubiensis} on the Southern Prealps.} Amphibia-Reptilia 35 (2014): 123-128.Scalera R., 2003 - Anfibi e rettili italiani. Elementi di tutela e conservazione. Collana Verde, 104. Corpo Forestale dello Stato. Ministero delle Politiche Agricole e Forestali, Roma, 232 pp.
+\bibitem{Rondinini13}Rondinini, C., Battistoni, A., Peronace, V., Teofili, C. (compilatori). 2013. \emph{Lista Rossa IUCN dei Vertebrati Italiani.} Comitato Italiano IUCN e Ministero dell’Ambiente e della Tutela del Territorio e del Mare, Roma
+\bibitem{Scoccianti01}Scoccianti C., 2001. \emph{Amphibia: aspetti di ecologia della conservazione.} WWF Italia, Sezione Toscana. Editore Guido Persichino Grafica Firenze, 430 pp.
+\bibitem{Sindaco06}Sindaco R., Doria G., Razzetti E., Bernini F. (eds.), 2006. \emph{Atlante degli Anfibi e dei Rettili d'Italia.} Societas Herpetologica Italica, Edizioni Polistampa, Firenze, pp. 190-195.
+\bibitem{Temple09}Temple H.J., Cox N.A. 2009. \emph{European Red List of Amphibians}. Luxembourg: Office for Official Publications of the European Communities, 32 pp.
+\bibitem{Trevisan82}Trevisan P., 1982 - A new subspecies of alpine salamander. Boll. Zool., 49: 235-239
+\bibitem{Romanazzi13}Romanazzi R., Pedrini P. 2013. \emph{Migrazione degli Anfibi: barriere stradali e via di attraversamento. Stato di fatto, problematiche e possibili soluzioni}. MUSE - Museo delle Scienze, pp. 91. 
+\bibitem{Pedrini14} Pedrini P, Brambilla M., Prosser F., Bertolli A. 2014. \href{http://www.lifeten.tn.it/binary/pat_lifeten/azioni_preparatorie/LifeTEN_Report_A5.1395325489.pdf}{\emph{Definizione di "linee guida provinciali" per l'attuazione dei monitoraggi nei siti trentini della rete Natura 2000}}. PAT - Provincia autonoma di Trento. A cura di MUSE - Museo delle Scienze e Fondazione MCR - Museo Civico di Rovereto. 203 pp. 
+\bibitem{Martel14} Martel A., Blooi M., Adriaensen C., Van Rooij P., Beukema W., Fisher  M. C., Farrer  R. A., Schmidt B. R., Tobler U., Goka K.,Lips K. R., Muletz C., Zamudio K. R., Bosch J., Lötters S., Wombwell E., Garner T. W. J., Cunningham A. A., Spitzen-van der Sluijs A., Salvidio S., Ducatelle R., Nishikawa K., Nguyen T. T., Kolby J. E., Van Bocxlaer I., Bossuyt F., Pasmans F. 2014. \emph{Recent introduction of a chytrid fungus endangers Western Palearctic salamanders}. Science 346: 630-631.
+
+
+
+%\bibitem{Jehle}Jehle R., Thiesmeier B., Foster J. 2011. \emph{The Crested Newt}. Laurenti-Verlag, Bielefeld, Germany, 152 pp.
+%\bibitem{Pedrini11}Pedrini P. Agostini A., Fin V. 2011. \emph{Indagine sulle comunità di Anfibi, in alcune Riserve provinciali: loro conservazione e gestione}. Museo delle Scienze - Sezione di Zoologia dei Vertebrati, Provincia Autonoma di Trento - Servizio Conservazione della Natura e Valorizzazione Ambientale, Ufficio Rete Natura, 19pp.
+%\bibitem{Pedrini04}Pedrini P., Olivari M. 2004. \emph{Documento tenico per la stesura di un Action Plan finalizzato alla gestione delle popolazioni di anfibi e rettili presenti in provincia di Trento}. Museo Tridentino di Scienze Naturali - Sezione di Zoologia dei Vertebrati, Provincia Autonoma di Trento - Ufficio Faunistico, 97 pp.
+%\bibitem{Scalera}Scalera R. 2003. \emph{Anfibi e rettili italiani. Elementi di tutela e conservazione}. Collana Verde, 104. Corpo Forestale dello Stato. Ministero delle Politiche Agricole e Forestali, Roma, 232 pp.
+
+
+\end{thebibliography}
+\endgroup
+
+  
+\newpage
+%%%%%%%%%%%
+% Back cover
+%%%%%%%%%%%
+\normalsize
+% Temporarily enlarge this page to push
+% down the bottom margin
+\enlargethispage{3\baselineskip}
+\thispagestyle{empty}
+\pagecolor{\backpagecolor}
+%\pagecolor[HTML]{0E0407}
+\begin{center}
+\vspace*{\fill}
+
+\begin{figure}[htp]
+\captionsetup{font=normalsize}
+\centering
+\subcaptionbox*{\url{www.lifeten.tn.it}}[.3\linewidth]{\includegraphics[width=.3\columnwidth]{logo_LIFETEN.png}}
+\subcaptionbox*{\url{www.provincia.tn.it}}[.3\linewidth]{\includegraphics[width=.15\columnwidth]{logo_PAT.png}}
+\subcaptionbox*{\url{www.muse.it}}[.3\linewidth]{\includegraphics[width=.3\columnwidth]{logo_MUSE_verde_nospace.png}}
+\end{figure}
+\textbf{\textcolor{LightGoldenrod!50!Gold}{MUSE - Museo delle Scienze}}
+
+\vspace*{\baselineskip}
+
+\textbf{\textcolor{LightGoldenrod}{Sezione di Zoologia dei Vertebrati}}
+\end{center}
+
+
+\end{document}

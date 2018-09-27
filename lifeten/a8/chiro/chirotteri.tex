@@ -1,0 +1,624 @@
+\documentclass[10pt,twoside,openany,x11names,svgnames,italian,a5paper,dvipsnames,table]{memoir}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+
+
+\usepackage{lmodern}
+\usepackage{wallpaper}
+\usepackage{tikz}
+\usetikzlibrary{shapes,positioning}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+
+\usepackage{tabularx, booktabs}
+
+\usepackage{wrapfig,longtable}
+\usepackage{minibox}
+\usepackage{pdfpages}
+\usepackage{subcaption}
+
+\usepackage{lipsum}
+\usepackage[ISBN=978-80-85955-35-4]{ean13isbn}
+\usepackage{graphicx}
+\graphicspath{ {./img/} {./img/chap/} {./img/logo/} {./img/front/} {./img/icon/} {./img/back/} }
+
+% Captions
+\usepackage[labelfont={footnotesize,sf,bf},textfont={footnotesize,sf}]{caption}
+
+% Links
+\usepackage[pdftitle={LIFE+T.E.N.: Azione A8 - Piano d’azione per la conservazione dei chirotteri in Trentino},
+     pdfauthor={Sezione Zoologia dei Vertebrati, MUSE - Museo delle Scienze},
+     colorlinks,linktocpage=true,linkcolor=RoyalBlue,urlcolor=BrickRed,citecolor=OliveGreen,bookmarks]{hyperref}
+
+% Adjust margins around typeblock
+\setlrmarginsandblock{23mm}{18mm}{*}
+\setulmarginsandblock{23mm}{23mm}{*}
+
+% Header and footer heights
+\setheadfoot{\baselineskip}{10mm}
+\setlength\headsep{7mm}
+
+% Apply and enforce layout
+\checkandfixthelayout
+
+% Command to hold chapter illustration image
+\newcommand\chapterillustration{}
+
+\usepackage{xcolor}
+\definecolor[named]{GreenTea}{HTML}{CAE8A2}
+\definecolor[named]{MilkTea}{HTML}{C5A16F}
+\definecolor{verylightgray}{gray}{0.95}
+\definecolor{grey}{gray}{0.5} % 0-nero; 1-bianco
+
+% Pantone for ANFIBI
+\definecolor[named]{LightBlue}{HTML}{006EB5}
+\definecolor[named]{SlimeGreen}{HTML}{009B71}
+\definecolor[named]{EggYellow}{HTML}{F59701}
+% Pantone for SPECIE ORNITICHE ALTA QUOTA
+\definecolor[named]{DarkGreen}{HTML}{012F08}
+\definecolor[named]{LightGray}{HTML}{817F84}
+\definecolor[named]{Ice}{HTML}{4470B7}
+% Pantone for SPECIE ORNITICHE AMBIENTI PRATIVI
+% Pantone for SPECIE ORNITICHE FORESTALI
+\definecolor[named]{LightGreen}{HTML}{00A131}
+\definecolor[named]{YellowGreen}{HTML}{97C000}
+\definecolor[named]{PureGreen}{HTML}{01832D}
+% Pantone for SPECIE ORNITICHE ZONE UMIDE
+\definecolor[named]{PureBrown}{HTML}{4F250D}
+\definecolor[named]{Azure}{HTML}{0082CD}
+\definecolor[named]{GreenAzure}{HTML}{01994C}
+% Pantone for CHIROPTERA
+
+
+\renewcommand{\labelitemi}{\textcolor{\backgroundrectanglecolor}{$\bullet$}}
+\newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
+\newcommand{\etal}{\textsl{et al}. }
+\newcommand{\ph}{\emph{Ph}. }
+\newcommand{\ie}{\emph{i}.\emph{e}. }
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newsubfloat{figure} % Allow subfloats in figure environment
+
+\newcommand{\tablespecie}[3]{\multicolumn{1}{c}{\parbox[t]{4.1cm}{\begin{minipage}[t][.8cm][t]{\textwidth}#1 \newline \href{#2}{\emph{#3}}\end{minipage}}}}
+
+\input{pantone_colori.tex}
+%%% COLORS
+\newcommand{\chaptercolor}{B10}
+\newcommand{\toprectanglecolor}{A10}
+\newcommand{\pageboxcolor}{B8}
+\newcommand{\backgroundrectanglecolor}{B9}
+\newcommand{\decoratelinecolor}{D14}
+\newcommand{\titlecolor}{A10}
+\newcommand{\backpagecolor}{\chaptercolor}
+
+
+
+\nouppercaseheads
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% BEGIN DOCUMENT STYLYING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\bibsection}{%
+\section{\bibname}
+\prebibhook}
+
+% CHAPTER STYLE DEFINITION BEGIN
+\makechapterstyle{chapterstyle}{
+% Vertical space before main text 
+  \setlength\beforechapskip{0pt}
+  \setlength\midchapskip{0pt}
+  \setlength\afterchapskip{70mm}
+
+  \renewcommand*\printchaptername{}
+  \renewcommand*\printchapternum{}
+  %% Re-define how the chapter title is printed
+  \def\printchaptertitle##1{
+    % Background image at top of page
+    \ThisULCornerWallPaper{1}{\chapterillustration}
+    % Draw a semi-transparent rectangle across the top
+    \tikz[overlay,remember picture]
+    \fill[fill=\chaptercolor,opacity=.7]
+      (current page.north west) rectangle 
+      ([yshift=-3cm] current page.north east);
+      % Check if on an odd or even page
+      \strictpagecheck\checkoddpage
+      % On odd pages, "logo" image at lower right
+      % corner; Chapter number printed near spine
+      % edge (near the left); chapter title printed
+      % near outer edge (near the right).
+      \ifoddpage{
+        % Insert picture in lower right corner
+        \ThisLRCornerWallPaper{.25}{chiroptera_small_right.png}
+        % Chapter heading style for ODD pages
+        \begin{tikzpicture}[overlay,remember picture]
+          \node[anchor=south west,
+            xshift=20mm,yshift=-30mm,
+            font=\sffamily\bfseries\huge] 
+            at (current page.north west) 
+            {}; %\chaptername\chapternamenum\thechapter
+          \node[fill=\chaptercolor,text=white,
+            font=\Huge\bfseries, 
+            inner ysep=12pt, inner xsep=20pt,
+            rectangle,anchor=east, 
+            xshift=-20mm,yshift=-30mm] 
+            at (current page.north east) {##1};
+        \end{tikzpicture}
+      }
+      % On even pages, "logo" image at lower left
+      % corner; Chapter number printed near outer
+      % edge (near the right); chapter title printed
+      % near spine edge (near the left).
+      \else {
+        % Insert picture in lower left corner
+        \ThisLLCornerWallPaper{.25}{chiroptera_small_left.png}
+        % Chapter heading style for EVEN pages
+        \begin{tikzpicture}[overlay,remember picture]
+          \node[anchor=south east,
+            xshift=-20mm,yshift=-30mm,
+            font=\sffamily\bfseries\huge] 
+            at (current page.north east)
+            {}; % \chaptername\chapternamenum\thechapter
+          \node[fill=\chaptercolor,text=white,
+            font=\Huge\bfseries,
+              inner sep=12pt, inner xsep=20pt,
+              rectangle,anchor=west,
+              xshift=20mm,yshift=-30mm] 
+              at ( current page.north west) {##1};
+        \end{tikzpicture}
+      } % END IF
+      \fi
+    } 
+} % END CHAPTER STYLE
+
+
+% CHAPTER STYLE FOR UNNUMBERED CHAPTERS
+\makechapterstyle{chapterstyleunnumbered}{
+  % Vertical Space before main text starts
+  \setlength\beforechapskip{0pt}
+  \setlength\midchapskip{0pt}
+  \setlength\afterchapskip{52mm}
+
+  \renewcommand*\printchaptername{}
+  \renewcommand*\printchapternum{}
+  %% Re-define how the chapter title is printed
+  \def\printchaptertitle##1{
+    % Draw a semi-transparent rectangle across the top
+    \tikz[overlay,remember picture]
+    \fill[fill=\toprectanglecolor,opacity=.7]
+      (current page.north west) rectangle 
+      ([yshift=-3cm] current page.north east);
+    % Check if on an odd or even page
+    \strictpagecheck\checkoddpage
+      \ifoddpage{
+        \begin{tikzpicture}[remember picture, overlay]
+        \node[fill=\chaptercolor,text=white,
+          font=\Huge\bfseries, 
+          inner ysep=12pt, inner xsep=20pt,
+          rectangle,anchor=east, 
+          xshift=-20mm,yshift=-30mm] 
+          at (current page.north east) {##1};
+        \end{tikzpicture}
+      }
+      \else {
+        \begin{tikzpicture}[remember picture, overlay]
+          \node[fill=\chaptercolor,text=white,
+            font=\Huge\bfseries,
+            inner sep=12pt, inner xsep=20pt,
+            rectangle,anchor=west,
+            xshift=20mm,yshift=-30mm] 
+            at ( current page.north west) {##1};
+        \end{tikzpicture}
+      } % END IF
+      \fi
+    } 
+} % END CHAPTER STYLE
+
+
+% Set the uniform width of the colour box
+% displaying the page number in footer
+% to the width of "99"
+\newlength\pagenumwidth
+\settowidth{\pagenumwidth}{99}
+
+% PAGE NUMBER COLOR BOX STYLE
+\tikzset{pagefooter/.style={
+anchor=base,font=\sffamily\bfseries\small,
+text=white,fill=\pageboxcolor,text centered,
+text depth=17mm,text width=\pagenumwidth}}
+
+%%%%%
+%% Re-define running headers on non-chapter odd pages
+%%%%%
+\makeoddhead{headings}
+% Left header is empty but I'm using it as a hook to paint the
+% background rectangles underneath everything else
+{\begin{tikzpicture}[remember picture,overlay]
+\fill[\backgroundrectanglecolor] (current page.north east) 
+  rectangle (current page.south west);
+\fill[white, rounded corners] 
+  ([xshift=-10mm,yshift=-20mm]current page.north east) rectangle  
+  ([xshift=15mm,yshift=17mm]current page.south west);
+\end{tikzpicture}}%
+% Blank centre header
+{}%
+% Display a decorate line and the right mark (chapter title)
+% at right end
+{\begin{tikzpicture}[xshift=-.75\baselineskip,yshift=.25\baselineskip,remember picture, overlay,fill=\decoratelinecolor,draw=\decoratelinecolor]\fill circle(3pt);\draw[semithick](0,0) -- (current page.west |- 0,0);\end{tikzpicture}\textcolor{white}{\sffamily\itshape\small\rightmark}}
+
+%%%%%
+%% Re-define running footers on ODD pages
+%% i.e. display the page number on the right
+%%%%%
+\makeoddfoot{headings}{}{}{\tikz[baseline]\node[pagefooter]{\thepage};}
+\makeoddfoot{plain}{}{}{\tikz[baseline]\node[pagefooter]{\thepage};}
+
+%%%%%
+%% Re-define running headers on non-chapter EVEN pages
+%%%%%
+\makeevenhead{headings}
+% Draw the background rectangles; then the left mark (section
+% title) and the decorate line
+{{\begin{tikzpicture}[remember picture,overlay]
+  \fill[\backgroundrectanglecolor] (current page.north east) rectangle (current page.south west);
+  \fill[white, rounded corners] ([xshift=-15mm,yshift=-20mm]current page.north east) rectangle ([xshift=10mm,yshift=17mm]current page.south west);
+\end{tikzpicture}}%
+\textcolor{white}{\sffamily\itshape\small\leftmark}
+\begin{tikzpicture}[xshift=.5\baselineskip,yshift=.25\baselineskip,remember picture, overlay,fill=\decoratelinecolor,draw=\decoratelinecolor]\fill (0,0) circle (3pt); \draw[semithick](0,0) -- (current page.east |- 0,0 );\end{tikzpicture}}{}{}
+\makeevenfoot{headings}{\tikz[baseline]\node[pagefooter]{\thepage};}{}{}
+\makeevenfoot{plain}{\tikz[baseline]\node[pagefooter]{\thepage};}
+% Empty centre and right headers on even pages
+{}{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% END DOCUMENT STYLYING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setsecnumdepth{chapter}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% DOCUMENTMATTER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\frontmatter
+
+%%%%%%%
+% Cover page
+%%%%%%%
+% No header nor footer on the cover
+\thispagestyle{empty}
+% Bar across the top
+\tikz[remember picture,overlay]%
+\node[fill=\chaptercolor,text=white,font=\LARGE\bfseries,text=Cornsilk,%
+minimum width=\paperwidth,minimum height=5em,anchor=north]%
+at (current page.north){
+\begin{tabular}{c}
+LIFE + T.E.N.: Azione A8\\
+\end{tabular}};
+
+% Cover illustration
+\ThisLLCornerWallPaper{1}{grassland.jpg}
+
+\vspace*{1\baselineskip}
+% Title
+{\bfseries\textcolor{\titlecolor}{\selectfont
+\\
+{\normalsize\emph{Action plans} per la conservazione di specie focali \\[0.05cm]
+di interesse comunitario} \\[0.3cm]
+{\huge\noindent Chirotteri\\[0.1cm]
+}}}\\[0.2cm]
+
+\vspace*{2\baselineskip}
+
+
+
+% Footer image
+\begin{tikzpicture}[remember picture, overlay]
+  \node[fill=\chaptercolor,font=\LARGE\bfseries,text=Cornsilk,%
+  minimum width=\paperwidth,minimum height=5em,anchor=south]%
+  at (current page.south) {}; 
+  \node[anchor=south,inner sep=0pt] at (current page.south) { \includegraphics[width=\textwidth]{footer.png}};
+\end{tikzpicture}
+
+
+
+\vspace*{6\baselineskip}
+
+\includepdf[pages={1}]{second_cover_chiroptera.pdf}
+
+\cleartorecto
+
+% Invoke fancy unnumbered chapter style
+% for the table of contents
+
+\chapterstyle{chapterstyleunnumbered}
+\setlength\afterchapskip{10mm}
+\setcounter{tocdepth}{0}
+\tableofcontents*
+
+% Main matter starts here; resets page-numberings to arabic numeral 1
+\mainmatter
+
+% Invoke the chapterstyle chapter style
+\chapterstyle{chapterstyle}
+
+% Public domain image from
+% http://www.public-domain-image.com/objects/computer-chips/slides/six-computers-chips-circuits.html
+\setlength\afterchapskip{10mm}
+\chapter{Che cos'\`e un piano di azione}
+\renewcommand\chapterillustration{}
+\footnotesize
+\vspace{.5cm}
+In generale, l'approccio ecosistemico costituisce la strategia più corretta ed efficace per la conservazione della natura: attraverso la conservazione degli ecosistemi, ovvero degli ambienti naturali e delle relazioni che si instaurano tra le varie componenti che in essi si rinvengono, si garantisce la conservazione sia delle singole specie che dei processi ecologici e dei fenomeni di interazione tra specie e tra fattori biotici e abiotici che consentono la presenza delle specie stesse.
+
+Vi sono tuttavia alcune situazioni nelle quali le misure di tutela ambientale possono non essere sufficienti per garantire la sopravvivenza di specie minacciate, che necessitano di misure di conservazione dedicate e spesso specie-specifiche. In questi casi è necessario seguire un approccio specie-specifico, intervenendo direttamente sui \emph{taxa} fortemente minacciati di estinzione, che richiedono misure urgenti di conservazione. L’approccio specie – specifico prevede misure di intervento delineate in documenti tecnici denominati “Piani d’Azione” \cite{EUCOUNCIL98}.
+
+Un piano d’azione si basa sulle informazioni disponibili relative a biologia, ecologia, distribuzione ed abbondanza della specie trattata ed in base a queste propone misure d’intervento, delineate a partire dalla definizione delle minacce che mettono a rischio la sopravvivenza della specie. Il piano d’azione si compone poi degli obiettivi volti ad assicurare la conservazione della specie nel lungo periodo e delle corrispondenti azioni necessarie per realizzarli.
+
+Una corretta strategia di conservazione relativa ad una determinata specie deve contemplare la pianificazione degli obiettivi nel breve, medio e lungo periodo e deve essere flessibile e modificabile nel tempo. Infatti periodiche verifiche circa lo stato di realizzazione ed avanzamento delle azioni, in rapporto al raggiungimento degli obiettivi, possono mettere in luce la necessità di un loro adeguamento, in funzione anche di scenari mutati.
+
+Nell'ambito di questo piano d'azione sviluppato nell'Azione A8 del LIFE + T.E.N., così come di alcuni altri piani sempre realizzati nell'ambito dell'azione, si è utilizzato un approccio innovativo, a cavallo tra quello ecosistemico e quello specie-specifico, redigendo piani d'azione per gruppi di specie che occupano gli stessi ambienti e che risultano sostanzialmente sottoposte alle stesse minacce e pressioni. In questo modo, si intende massimizzare l'efficacia degli interventi proposti per la conservazione e ottimizzare il relativo rapporto costi/benefici, proponendo indicazioni che mirano alla salvaguardia non di una sola specie, ma di un gruppo di specie con esigenze ecologiche largamente sovrapposte e che spesso necessitano di strategie di conservazione simili.\\
+
+%\noindent\emph{Mattia Brambilla \& Paolo Pedrini}
+
+
+\normalsize
+\setlength\afterchapskip{55mm}
+\chapter{Inquadramento generale}
+\renewcommand\chapterillustration{1.jpg}
+
+\section{Inquadramento dell'habitat e delle specie}
+Nel volume Mammalia V della Fauna d’Italia \cite{Lanza} del 2012 sono riportate 39 specie di Chirotteri, appartenenti a 4 Famiglie e 11 Generi. Si tratta per lo più di specie di medio-piccola taglia che possono essere raggruppate, in base alle caratteristiche ecologiche legate alla scelta dei siti riproduttivi, in tre grandi macro-categorie:
+
+\begin{itemize}\itemsep0pt
+  \item specie fitofile, che utilizzano, come rifugi, alberi e/o ambienti boschivi;
+  \item specie troglofile, legate alle grotte e/o a cavità sotterranee, anche artificiali;
+  \item specie antropofile, che trovano rifugio in edifici e manufatti in ambienti antropizzati.
+\end{itemize}
+
+A fronte di questa notevole diversità nella scelta dei rifugi riproduttivi (\emph{nursery}), i siti di svernamento sono costituiti quasi sempre da cavità ipogee naturali e/o siti minerari o manufatti bellici.
+
+Proprio tale stretta dipendenza da specifiche caratteristiche strutturali e microclimatiche dei siti rifugio espone questo gruppo di Mammiferi a gravi problemi di conservazione sul medio-lungo periodo.
+
+\newpage
+\section{Distribuzione e status di conservazione in Italia ed Europa}
+Molti autori \cite{Dietz} \cite{Kunz} \cite{Lanza} \cite{Rondinini} sottolineano il brusco e marcato decremento delle popolazioni
+di numerose specie di pipistrelli a partire dalla metà
+\begin{wrapfigure}[15]{l}{.6\columnwidth}
+\centering
+  \includegraphics[width=.6\columnwidth]{nottola_comune.jpg}
+  \caption*{ \textbf{Nottola comune} \emph{Nyctalus noctula} (\ph Karol Tabarelli de Fatis).}
+\end{wrapfigure}
+ del ventesimo secolo. 
+Questo preoccupante \emph{trend} ha portato a una rigorosa tutela delle specie (oltre la metà delle specie è inserita nell’Allegato II della Direttiva Habitat 92/43/CEE) e ad azioni dirette di conservazione in tutta Europa. Per meglio valutare i timidi segnali di ripresa che mostrano le popolazioni europee di alcune specie, a partire dal 2006 EUROBAT (l’Accordo per la conservazione delle popolazioni di pipistrelli in Europa; entrato in vigore nel 1994 e finora sottoscritto da 32 Paesi) promuove il monitoraggio pan-europeo delle popolazioni di Chirotteri e la definizione dei \emph{trend} delle stesse per ottimizzare gli sforzi e gli interventi di conservazione.
+
+La situazione delle 32 specie riportate nella Lista Rossa dei Vertebrati Italiani del 2013 dal grado di minaccia più alto a scendere, è la seguente:
+
+\footnotesize
+\begin{description}\itemsep0pt
+  \item [In pericolo critico (CR)]: 1 specie, 3.1\% 
+  \item [In pericolo (EN)]: 5 specie, 15.6\% 
+  \item [Vulnerabile (VU)]: 10 specie, 31.2\% 
+  \item [Quasi minacciata (NT)]: 6 specie, 18.7\% 
+  \item [Minor preoccupazione (LC)]: 5 specie, 15.6\% 
+  \item [Dati insufficienti (DD)]: 5 specie, 15.6\%
+\end{description}
+\normalsize
+\newline A seguire in tabella la situazione dettagliata delle specie.
+
+%\rowcolors{2}{white}{\pageboxcolor!80!white}
+\begin{table}[H]
+\begin{adjustwidth*}{-.3cm}{-.3cm}
+\scalebox{.74}{
+\begin{tabular}{l|l|l|l|l}
+\toprule
+\hiderowcolors              
+\textbf{Specie} & \textbf{LR TN (2011)} & \textbf{LR IT (2013)} & \textbf{All. II D.H.} & \textbf{Prior. A2} \\
+\midrule                
+\showrowcolors                  
+\tablespecie{Rinolofo euriale}{http://217.199.4.93/webgis/?specie=Rhinolophus\%20euryale}{Rhinolophus euryale} & CR  & VU  & $\bullet$ &  \\
+\tablespecie{Ferro di cavallo maggiore}{http://217.199.4.93/webgis/?specie=Rhinolophus\%20ferrumequinum}{Rhinolophus ferrumequinum}  & EN  & VU  & $\bullet$ & 62 \\
+\tablespecie{Ferro di cavallo minore}{http://217.199.4.93/webgis/?specie=Rhinolophus\%20hipposideros}{Rhinolophus hipposideros}  & EN  & EN  & $\bullet$ & 58.3 \\
+\tablespecie{Barbastello comune}{http://217.199.4.93/webgis/?specie=Barbastella\%20barbastellus}{Barbastella barbastellus} & CR  & EN  & $\bullet$ & 75.9   \\
+\tablespecie{Serotino di Nilsson}{http://217.199.4.93/webgis/?specie=Eptesicus\%20nilssonii}{Eptesicus nilssonii}  & VU  & DD  & &   \\
+\tablespecie{Serotino comune}{http://217.199.4.93/webgis/?specie=Eptesicus\%20serotinus}{Eptesicus serotinus}  & VU  & NT  & &   \\
+\tablespecie{Pipistrello di Savii}{http://217.199.4.93/webgis/?specie=Hypsugo\%20savii}{Hypsugo savii} & EN  & LC  & &   \\
+\tablespecie{Vespertilio di Bechstein}{http://217.199.4.93/webgis/?specie=Myotis\%20bechsteinii}{Myotis bechsteinii} & CR  & EN  & $\bullet$ &   \\
+\tablespecie{Vespertilio di Blyth}{http://217.199.4.93/webgis/?specie=Myotis\%20blythii}{Myotis blythii} & VU  & VU  & $\bullet$ & 56.5  \\
+\tablespecie{Vespertilio di Capaccini}{http://217.199.4.93/webgis/?specie=Myotis\%20capacinii}{Myotis capacinii} & CR  & EN  & $\bullet$ &   \\
+\tablespecie{Vespertilio di Daubenton}{http://217.199.4.93/webgis/?specie=Myotis\%20daubentonii}{Myotis daubentonii} & VU  & LC  & &   \\
+\tablespecie{Vespertilio smarginato}{http://217.199.4.93/webgis/?specie=Myotis\%20emarginatus}{Myotis emarginatus} & CR  & NT  & $\bullet$ & 75.9  \\
+\tablespecie{Vespertilio maggiore}{http://217.199.4.93/webgis/?specie=Myotis\%20myotis}{Myotis myotis} & EN  & VU  & $\bullet$ & 56.5  \\
+\tablespecie{Vespertilio mustacchino}{http://217.199.4.93/webgis/?specie=Myotis\%20mystacinus}{Myotis mystacinus}  & VU  & VU  & &   \\
+\tablespecie{Vespertilio di Natterer}{http://217.199.4.93/webgis/?specie=Myotis\%20nattereri}{Myotis nattereri}  & EN  & VU  & &   \\
+\tablespecie{Nottola minore}{http://217.199.4.93/webgis/?specie=Nyctalus\%20leisleri}{Nyctalus leisleri} & EN  & NT  & &   \\
+\tablespecie{Nottola comune}{http://217.199.4.93/webgis/?specie=Nyctalus\%20noctula}{Nyctalus noctula} & EN  & VU  & &   \\
+\tablespecie{Pipistrello albolimbato}{http://217.199.4.93/webgis/?specie=Pipistrellus\%20kuhlii}{Pipistrellus kuhlii}  & VU  & LC  & &   \\
+\tablespecie{Pipistrello nano}{http://217.199.4.93/webgis/?specie=Pipistrellus\%20pipistrellus}{Pipistrellus pipistellus} & LC  & LC  & &   \\
+\tablespecie{Pipistrello pigmeo}{http://217.199.4.93/webgis/?specie=Pipistrellus\%20pygmaeus}{Pipistrellus pygmaeus} &   & DD  & &   \\
+\tablespecie{Orecchione bruno}{http://217.199.4.93/webgis/?specie=Plecotus\%20auritus}{Plecotus auritus} & VU  & NT  & &   \\
+\tablespecie{Orecchione grigio}{http://217.199.4.93/webgis/?specie=Plecotus\%20austriacus}{Plecotus austriacus}  & EN  & NT  & &   \\
+\tablespecie{Orecchione alpino}{http://217.199.4.93/webgis/?specie=Plecotus\%20macrobullaris}{Plecotus macrobullaris}  &   & DD  &   & \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustwidth*}
+\caption*{Categorie di minaccia \href{http://jr.iucnredlist.org/documents/redlist_cats_crit_en.pdf}{IUCN} per le specie target(\textbf{LC}: nessun rischio, \textbf{NT}: quasi minacciata, \textbf{EN}: in pericolo, \textbf{CR}: in pericolo critico, \textbf{EX}: estinta), presenza o meno nell'Allegato 2 della \href{http://ec.europa.eu/environment/nature/legislation/habitatsdirective/index_en.htm}{direttiva Habitat} e priorità calcolata nell'\href{http://www.lifeten.tn.it/binary/pat_lifeten/azioni_preparatorie/LifeTEN_Report_A2.1395233849.pdf}{Azione A2} del progetto LIFE+T.E.N.} 
+\end{table}               
+
+
+
+\noindent Il quadro che ne emerge mostra come la metà delle specie di Chirotteri italiani sia inserita nelle categorie di minaccia più elevate.
+
+\chapter{Stato delle specie in Trentino}
+\section{Distribuzione e stato di conservazione}
+
+Le indagini sui Chirotteri in Trentino hanno una lunga “tradizione” che inizia alla fine dell’800 con il lavori del Blasius (1857) e del Dalla Torre (1888). Successivamente, figure di spicco della ricerca zoologica, non solo trentine, quali Giacomelli (1900), Dal Piaz e De Beaux (dagli anni ’20 fino ai ’40) si occuparono diffusamente di Chirotteri compiendo degli studi distributivi.
+
+Il quadro tratteggiato da questi personaggi fu integrato negli anni ’50 dalle ricerche di Conci, Tamanini, Pasa e Galvagni. Tutte queste indagini hanno tracciato un quadro sufficientemente completo sulla Chirotterofauna del Trentino, specialmente per quanto riguarda le vallate principali.
+
+Successivamente le ricerche sui pipistrelli in Trentino rimasero ferme per oltre 40 anni fino alla seconda metà degli anni ’90, quando l’attuale Servizio Conservazione della Natura e Valorizzazione Ambientale e il Museo Tridentino di Scienze Naturali di Trento, in collaborazione con Albatros s.r.l., intrapresero delle indagini volte ad aggiornare le informazioni relative alla distribuzione delle specie di pipistrelli presenti sul territorio provinciale. Nello stesso periodo, accanto a queste indagini di ampio respiro, i Parchi Adamello-Brenta (2001), Paneveggio - Pale di San Martino (2004) e quello dello Stelvio (2011) effettuarono ricerche mirate sugli ambiti territoriali di propria competenza. Tutti questi dati sono confluiti nella banca dati dell'Atlante dei Mammiferi del Trentino (in prep.) e sono stati caricati nel WebGIS sviluppato durante l'Azione A1 del Progetto LIFE+T.E.N. \footnote{\url{http://www.lifeten.tn.it/actions/preliminary_actions/pagina1.html}}
+
+Alla luce delle informazioni raccolte grazie alle indagini sopra ricordate, le specie di Chirotteri presenti sul territorio provinciale sono risultate essere 26, anche se per molte di esse i dati a disposizione sono molto limitati e frammentari. E' questo il caso del vespertilio dasicneme \emph{Myotis dasycneme}, di quello dorato \emph{Myotis aurescens} e di quello di Blyth \emph{Myothis blythi}, così come delle due specie che solo di recente sono state definite a livello tassonomico come i due orecchioni, il grigio \emph{Plecotus austriacus} e l'alpino \emph{Plecotus macrobullaris}.
+
+La distribuzione delle specie in provincia di Trento viene descritta in estrema sintesi nella sezione seguente.
+
+\begin{description}
+  \item [Genere \emph{Rhinolophus} -] 
+  Delle tre specie del genere \emph{Rhinolophus} segnalate per la provincia di Trento, quella caratterizzata dalla maggior valenza conservazionistica è sicuramente il rinolofo minore \emph{Rhinolophus hipposideros}, essendo note per questa specie una decina di \emph{nursery} che per consistenza numerica sono tra le maggiori a livello nazionale \cite{GIRC04}. I distretti di massima presenza sono la Val di Non e il Tesino, con presenze significative anche in Valsugana. Il rinolofo maggiore \emph{Rhinolophus ferrumequinum} è specie ben presente in tutti i principali fondivalle senza però avere mai popolazioni molto numerose. Il rinolofo euriale \emph{Rhinolophus euryale} infine raggiunge in Trentino il limite settentrionale distributivo, con poche stazioni localizzate nella sola Valle dei Laghi.
+  \item [Genere \emph{Myotis}]
+  Il genere \emph{Myotis} comprende un gran numero di specie con abitudini ecologiche molto differenziate e con problematiche tassonomiche ancora in via di definizione. Solo per vespertilio di Daubenton \emph{Myotis daubentoni}, tra le 9 specie di vespertili segnalati per il Trentino, è possibile tracciare un quadro distributivo abbastanza dettagliato. Si tratta infatti di una specie strettamente legata all’acqua e ben distribuita su tutto il territorio provinciale. Il vespertilio maggiore \emph{Myotis myotis} è un’altra specie per cui sono noti alcuni siti di rilevante peso conservazionistico; la sua distribuzione in Trentino non è però ancora definita nel dettaglio. per tutti gli altri vespertili, essendo disponibili solo sporadiche segnalazioni, non è possibile descrivere in maniera dettagliata la distribuzione sul territorio provinciale. Non è da escludere che indagini più approfondite possano in futuro confermare presenze significative di varie di queste specie, soprattutto quelle maggiormente legate agli ambienti forestali per i quali mancano monitoraggi costanti e su vasta scala.
+  \item [Genere \emph{Pipistrellus}]
+  Le quattro specie del genere \emph{Pipistrellus} presenti in Trentino sono ampiamente distribuite in tutti gli ambienti idonei. La conoscenza di alcuni \emph{taxa}, come il pipistrello pigmeo \emph{Pipistrellus pygmaeus} (noto anche con il nome volgare di pipistrello soprano) risulta però ancora lacunosa data la difficoltà di determinare la specie sul campo e la recente separazione dalla "specie sorella".
+  \item [Genere \emph{Hypsugo}]
+  Il genere \emph{Hypsugo} comprende una sola specie segnalata in Trentino, il pipistrello di Savi \emph{Hypsugo savii}, che si caratterizza per l’ampia distribuzione geografica, con buone consistenze numeriche, sebbene siano noti solo pochi siti riproduttivi; sebbene siano noti, forse a causa di un difetto di ricerca, pochi siti riproduttivi.
+  \item [Genere \emph{Eptesicus}]
+  Le due specie di serotini (genere \emph{Eptesicus}) presenti in provincia, serotino comune \emph{Eptesicus serotinus} e serotino di Nillson \emph{Eptesicus nilssoni} mostrano una distribuzione frammentaria, principalmente dovuta alle difficoltà oggettive di monitoraggio di queste specie a spiccata fitofilia. Sono noti solo alcuni siti riproduttivi, ma non è da esclude una loro presenza più consistente viste le notevole disponibilità di habitat idonei che il territorio provinciale offre.
+  \item [Genere \emph{Vespertilio}]
+  Anche per l’unica specie del genere \emph{Vespertilio} segnalata in Trentino, il serotino bicolore \emph{Vespertilio murinus}, sono disponibili poche informazioni che non permettono di definire nel dettaglio la sua distribuzione provinciale e/o la consistenza delle popolazioni ivi presenti.
+  \item [Genere \emph{Nyctalus}]
+  Due sono le specie del genere \emph{Nyctalus} segnalate per il Trentino, la nottola comune \emph{Nyctalus noctula} e quella di Leisler \emph{Nyctalus leisleri}. A seguito di recenti indagini con \emph{bat-detector}, sembrano più abbondanti e meglio distribuite di quanto noto in precedenza. Secondo quanto riportato in bibliografia \cite{Agnelli} \cite{Lanza}, “queste specie generalmente non si riproducono alle nostre latitudini e tipicamente sono presenti in Italia nei mesi invernali fino a maggio, per poi ritornare a partire dal mese di agosto e utilizzare i rifugi per l’accoppiamento” \cite{Agnelli} \cite{Lanza}.
+  \item [Genere \emph{Plecotus}]
+  È stato oggetto di una recente ed importante revisione tassonomica il genere \emph{Plecotus}, che ha portato alla distinzione di almeno 5 specie, al posto dell'unica nota fino a qualche decennio fa, l’attuale orecchione bruno \emph{Plecotus auritus}. Nelle zone alpine vivono in simpatria almeno tre specie di orecchione \cite{Lanza}: orecchione bruno \emph{Plecotus auritus}, orecchione grigio \emph{Plecotus austriacus} e orecchione alpino \emph{Plecotus macrobullaris}. Presumibilmente si tratta di specie relativamente comuni sul territorio provinciale e caratterizzate da un’ampia distribuzione.
+  \item [Genere \emph{Barbastella}]
+  Il barbastello \emph{Barbastella barbastellus} è risultato presente in Trentino in poche stazioni; la sua presenza potrebbe però essere sottostimata a causa della spiccata fitofilia e conseguente difficoltà di indagine. 
+  \item [Genere \emph{Tadarida}]
+  Il molosso di Cestoni \emph{Tadarida teniotis} è l’unica specie del suo genere segnalata per la provincia di Trento e l’Italia in generale. Questo grande pipistrello ha prevalentemente abitudini rupicole, tuttavia può insediarsi anche in edifici nei centri storici. La distribuzione in Trentino è forse limitata alla sola valle dell’Adige. Le segnalazioni comunque sono molto sporadiche, salvo quelle più regolari a Bocca Caset (Tremalzo), relative a soggetti catturati in tarda estate, durante le sessioni di inanellamento dedicate allo studio della migrazione degli uccelli. Questi dati sono riferiti presumibilmente ad animali in spostamento da e per i siti di foraggiamento.
+\end{description}
+
+\begin{comment}
+  \vspace*{\fill}
+  \vspace{-.4cm}
+  \begin{center}
+    \includegraphics[width=.6\columnwidth]{pipistrellus.jpg}
+  \end{center}
+  \captionof*{figure}{\textbf{Pipistrello nano} \emph{Pipistrellus pipistrellus}. Piccolo pipistrello strettamente legato agli ambienti antropici è facile osservarlo in caccia sotto i lampioni stradali (\ph Arch. MUSE)}
+  \vspace*{\fill}
+ \end{comment}
+
+\chapter{Fattori di minaccia}
+\renewcommand\chapterillustration{7.jpg}
+\section*{}
+Tutte le specie europee di Chirotteri hanno mostrato negli ultimi decenni marcati decrementi numerici. Le cause che concorrono a questo preoccupante stato di conservazione possono essere distinte in due grandi categorie: fattori biotici e fattori abiotici (cfr. \cite{Lanza} \cite{Kunz} \cite{Dietz}). Nella prima categoria ricade la riduzione delle risorse conseguente al drammatico calo nella disponibilità di insetti avvenuta in tutto il continente europeo negli ultimi decenni. Tale fenomeno è legato principalmente alle pesanti trasformazioni del paesaggio agricolo che è stato progressivamente eroso dalle aree urbanizzate, unitamente all’uso di pesticidi che hanno ridotto la biomassa di insetti disponibile oltre che contaminarla con sostanze nocive (vedi oltre). Altro fattore biotico è la progressiva “deriva genetica” alla quale vanno incontro numerose popolazioni di Chirotteri europei (in primis \emph{Rhinolophus hipposideros}) a causa del progressivo decremento numerico delle colonie riproduttive. Questo fenomeno sembra esser causa di un “collo di bottiglia genetico” che potrebbe svolgere un ruolo importante nell’ambito delle estinzioni locali che hanno interessato numerose specie di pipistrelli negli ultimi decenni. Ultimo tra i fattori biotici è quello dell’aumentata competizione tra specie diverse di Chirotteri aventi nicchia trofica assai simile e/o sintopici nella scelta dei siti riproduttivi e di svernamento \cite{Arlettaz}. Per quanto riguarda i fattori di minaccia abiotici un ruolo primario è da attribuire alla perdita di siti rifugio e/o alla loro alterazione, sia essa dovuta a interventi inconsapevoli che a seguito di veri e propri atti di persecuzione degli animali. Questo fattore è particolarmente importante per le specie a spiccata antropofilia, in quanto le espone a tutta una serie di rischi connessi alla convivenza con l’uomo. Disturbo diretto e/o lavori di ristrutturazione o conservazione hanno provocato una significativa riduzione dei siti disponibili per la riproduzione. Anche laddove un sito è ancora occupato, il disturbo causato dall’uomo e dalle sue attività può in parte comprometterne le potenzialità, influendo così sulle dimensioni delle popolazioni riproduttive \cite{GIRC08}.
+\begin{wrapfigure}[17]{r}{.6\columnwidth}
+\centering
+  \includegraphics[width=.6\columnwidth]{vespertilio_smarginato.jpg}
+  \caption*{\textbf{Vespertilio smarginato} \emph{Myotis emarginatus}. Specie poco frequente in Trentino, la si rinviene nelle aree boscate a quote medio-basse (\ph Karol Tabarelli de Fatis).}
+\end{wrapfigure}
+Sicuramente i cambiamenti del paesaggio alpino degli ultimi decenni hanno avuto effetti negativi su molte specie di pipistrelli. Alcuni Chirotteri mostrano infatti una spiccata predilezione per l’ambiente delle vallate alpine, tipicamente caratterizzato da un mosaico di aree boscate alternate a radure e zone coltivate di piccole dimensioni. La progressiva banalizzazione delle aree di fondovalle, conseguente alle modificazioni antropiche, può aver avuto anch’essa un effetto molto negativo sulla consistenza della popolazione di molte specie di Chirotteri. Ultimo fattore abiotico, ma non per importanza, è sicuramente l’incremento dell’utilizzo di prodotti chimici in agricoltura iniziato nel Secondo Dopoguerra e che, come noto, ha prodotto effetti negativi in Europa su varie specie animali come ad esempio gli uccelli rapaci. Alcuni Autori ipotizzano che questi deleteri effetti possano aver colpito anche le popolazioni di diverse specie di Chirotteri sia attraverso una contaminazione diretta della loro principale fonte trofica, gli insetti, che indirettamente andando a ridurre la disponibilità di cibo sotto forma di marcato decremento delle popolazioni di invertebrati predati dai pipistrelli. 
+
+
+ 
+\chapter{Strategia di conservazione}
+\renewcommand\chapterillustration{6.jpg}
+\section*{}
+Per molte specie di Chirotteri presenti sul territorio provinciale mancano dettagliate informazioni sulla distribuzione, sulla consistenza delle popolazioni riproduttive e sui \emph{trend} delle stesse. Questo difetto di conoscenza fa si che molti dei siti utilizzati per la riproduzione  e/o per lo svernamento (\emph{hibernacula}) non siano noti e tantomeno oggetto di adeguata tutela. 
+Così come sottolineato da numerosi \begin{wrapfigure}[15]{l}{.6\columnwidth}
+\centering
+  \includegraphics[width=.6\columnwidth]{serotino_bicolore.jpg}
+  \caption*{\textbf{Serotino bicolore} \emph{Vespertilio murinus}. Pipistrello migratore più frequente in Trentino durante gli spostamenti da e per i quartieri di svernamento (\ph Paolo Pedrini, Arch. MUSE).}
+\end{wrapfigure}Autori \cite{Agnelli} \cite{Battersby} \cite{Dietz} \cite{GIRC08} \cite{Lanza} \cite{Kunz} \cite{Mitchell}, proprio la conservazione di \emph{nursery} ed \emph{hibernacula} può essere considerata il fulcro della protezione di 
+questi Mammiferi. I rifugi rivestono infatti una fondamentale importanza nella delicata biologia dei pipistrelli e debbono essere oggetto di specifici programmi di conservazione. Tutte le \emph{nursery} e gli \emph{hibernacula} di rilevante importanza conservazionistica dovrebbero essere oggetto di monitoraggi in tempo reale delle condizioni microclimatiche (temperatura e umidità relativa) mediante \emph{data-logger} (possibilmente a controllo remoto per ridurre al minimo il disturbo). Questi parametri microclimatici sono infatti alla base della scelta e dell’utilizzo dei siti da parte dei pipistrelli e spesso l’abbandono dei rifugi è conseguente a cambiamenti microclimatici dovuti ad attività antropiche. 
+
+Oltre alle condizioni microclimatiche del sito, per ogni rifugio importante si dovrebbero monitorare gli animali presenti, definendo i periodi di utilizzo e realizzando quando opportuno interventi di manutenzione e miglioramento ambientale. Il monitoraggio costante dei siti rifugio può fornire preziose informazioni sul \emph{trend} delle popolazioni di Chirotteri, indirizzando conseguentemente le successive azioni di conservazione e tutela.
+
+\begin{wrapfigure}[17]{r}{.6\columnwidth}
+\centering
+  \includegraphics[width=.6\columnwidth]{ferro_cavallo_minore_3.jpg}
+  \caption*{\textbf{Ferro di cavallo minore} \emph{Rhinolophus hipposideros}. Distribuito a quote medio basse in zone calde, si riproduce per lo più in sottotetti (\ph Karol Tabarelli de Fatis).}
+\end{wrapfigure}
+
+Poche, frammentarie e spesso riferite a contesti geografici molto differenti da quelli locali, sono le informazioni relative alle preferenze ambientali dei Chirotteri e al loro utilizzo del territorio a scopi trofici e/o riproduttivi. I pipistrelli sono infatti molto selettivi ed esigenti in particolare per quanto riguarda le caratteristiche dei loro siti rifugio. Solo un’approfondita conoscenza dell’uso del territorio da parte delle varie specie di Chirotteri, delle caratteristiche degli ambienti forestali a livello di struttura della vegetazione e/o di configurazione del paesaggio, delle specificità dei corridoi faunistici utilizzati da questi Mammiferi e naturalmente dei siti riproduttivi e/o di quelli di svernamento, potrà garantire la definizione e la correttezza delle azioni di tutela e della protezione accordata loro da leggi e regolamenti.
+
+ 
+\chapter{Azioni di conservazione}
+\renewcommand\chapterillustration{3.jpg}
+\section*{}
+Per quanto riguarda la strategia di conservazione, essa si può concretizzare principalmente nella tutela dei siti riproduttivi e di svernamento e nella realizzazione di eventuali interventi di miglioramento degli stessi. Per attivare nel modo più incisivo questo programma risulta indispensabile approfondire il grado di conoscenza sulla distribuzione e sulle esigenze ecologiche delle specie di Chirotteri presenti sul territorio provinciale, in modo da indirizzare nel modo migliore gli sforzi di conservazione.
+
+\emph{Nursery} e \emph{hibernacula} sono già in parte stati oggetto di indagini specifiche che hanno portato nel 2012 alla realizzazione da parte di Albatros srl di un documento programmatico per conto del Servizio Conservazione della Natura e Valorizzazione del Territorio, Ufficio Biotopi e Rete Natura 2000 \cite{Torboli12}. In tale documento vengono indicate le seguenti priorità di intervento, relative a 20 siti di notevole importanza conservazionistica:
+\begin{itemize}\itemsep0pt
+  \item mettere sotto diretta tutela i siti utilizzati dai Chirotteri (\emph{nursery} e/o rifugi di svernamento) aventi un’importanza conservazionistica nazionale o locale (in base alla metodologia proposta dal Gruppo Italiano Ricerca Chirotteri nel 2004 \cite{GIRC04});
+  \item in relazione al siti di maggior valore conservazionistico, ampliare le conoscenze sulla biologia e sull’ecologia delle specie ospitate. Si dovrà procedere con un’analisi di dettaglio delle caratteristiche fisiche e microclimatiche del sito, della composizione e della struttura degli habitat attorno al sito, oltre all’individuazione dei territori di foraggiamento e dei “corridoi di volo” da e per la colonia. Particolare attenzione sarà inoltre dedicata alla ricerca dei rifugi temporanei e alla definizione dei rapporti esistenti con colonie vicine e/o i siti di svernamento;
+  \item realizzare sulla base di queste informazioni appositi documenti che definiscano nel dettaglio interventi gestionali diretti per le aree prospicienti le colonie, in modo da indirizzare opportunamente i piani di gestione del territorio (Piani regolatori generale, Piani di gestione forestale ecc.);
+  \item approntare per \emph{nursery} e rifugi di svernamento opportuni programmi di monitoraggio, preferibilmente mediante sistemi automatici così da limitare al massimo il disturbo degli animali;
+  \item intervenire, laddove questi siti lo richiedano, con azioni dirette di tutela che garantiscano l’integrità del sito nel medio e lungo periodo. In quest’ottica si debbono ipotizzare acquisizioni di siti da parte dell’Ente Pubblico, sovvenzioni regolari per i privati proprietari dei siti occupati da pipistrelli nonché lavori di manutenzione e/o di miglioramento dei siti stessi;
+  \item in alcuni ambiti territoriali di particolare rilevanza per la chirotterofauna, attuare specifici progetti didattici e culturali per sensibilizzare la popolazione. Tali progetti costituiranno inoltre l’occasione per divulgare le finalità, gli obiettivi e i risultati della strategia di gestione dei Chirotteri in Trentino;
+  \item in qualche caso sarà infine opportuno garantire una certa divulgazione al pubblico delle colonie di pipistrelli mediante appositi materiali informativi o attraverso l’utilizzo di telecamere a circuito chiuso appositamente predisposte.
+\end{itemize}
+
+Quest’elenco evidenzia gli obiettivi prioritari al fine di garantire un livello di conservazione ottimale sul medio-lungo periodo per la maggior parte delle specie di Chirotteri presenti in provincia di Trento.
+Accanto a questo documento, il Servizio Conservazione della Natura e Valorizzazione Ambientale, Ufficio Biotopi e Rete Natura 2000, in collaborazione con l’allora Museo Tridentino di Scienze Naturali di Trento e Albatros srl ha redatto degli Action Plan per due specie di Chirotteri di rilevante importanza conservazionistica come il rinolofo minore \emph{Rhinolophus hipposideros} (nel 2008, \cite{Torboli08}) e rinolofo maggiore \emph{Rhinolophus ferrumequinum} (nel 2009, \cite{Torboli09}). Tali Action Plan sono stati mantenuti costantemente aggiornati negli anni e delineano una strategia di conservazione mirata alle specie e strettamente calata sulla realtà provinciale.
+
+I tre documenti sopra citati sintetizzano il quadro delle azioni e degli interventi che debbono essere considerati prioritari per la conservazione dei rifugi dei Chirotteri; possono quindi essere considerati come delle linee guida valide per tutto il territorio provinciale.
+Per quanto riguarda poi lo studio della distribuzione dei Chirotteri, nonostante gli sforzi condotti negli ultimi anni permangono numerose lacune. Al fine di approfondire lo stato delle conoscenze in merito è opportuno dunque approntare dei programmi di monitoraggio standardizzati e ripetuti sul medio-lungo periodo. Tali censimenti si effettuano mediante bat-detector, per tutto il periodo di attività dei Chirotteri, quindi da aprile ad ottobre, in punti d’ascolto posizionati lungo percorsi campione. Tempistiche
+\begin{wrapfigure}[16]{r}{.6\columnwidth}
+\centering
+\vspace{-.4cm}
+  \includegraphics[width=.6\columnwidth]{vespertilio_daubenton.jpg}
+  \caption*{\textbf{Vespertilio di Daubenton}. Pipistrello molto legato agli ambienti acquatici dove è facile scorgerlo cacciare a pelo d’acqua \emph{Myotis daubentonii} (\ph Arch. Albatros).}
+\end{wrapfigure}
+e sforzo di ricerca possono variare in base alle tipologie ambientali indagate e alle quote. Questo tipo di indagine richiede attrezzature professionali (bat-detector), che permettano la registrazione dei segnali emessi dai Chirotteri in modalità “\emph{time expansion}”, utilizzando un sistema di trasformazione degli ultrasuoni tra i più completi che permette di conservare la massima qualità del segnale e conseguentemente di poter compiere analisi dettagliate dei sonogrammi mediante appositi \emph{software}. Con questo metodo è possibile identificare quasi tutte le specie presenti sul territorio nazionale.
+
+Accanto a questa indagine di dettaglio è possibile altresì attivare programmi di censimento mirati ad alcune specie di pipistrelli (le nottole, i rinolofi ecc.) che possono essere identificate con certezza anche con strumentazioni meno sofisticate. Questo sistema è ampiamente utilizzato in varie parti d’Europa (cfr. il \emph{National Bat Monitoring Programme surveys} inglese) grazie al coinvolgimento di volontari. Oltre alle importanti ricadute in termini di conoscenze sulla distribuzione e anche sulla biologia delle specie indagate, questo tipo di monitoraggio presenta degli indubbi vantaggi in termini di promozione della conservazione dei Chirotteri. 
+\vspace*{\fill}
+\begin{center}
+  \includegraphics[width=.7\columnwidth]{orecchione_bruno.jpg}
+\end{center}
+\captionof*{figure}{\textbf{Orecchione alpino} \emph{Plecotus macrobullaris} Specie molto comune e fortemente legata agli insediamenti umani fino a quote molto elevate (\ph Karol Tabarelli de Fatis)}
+ \vspace*{\fill}
+\newpage
+\setlength\afterchapskip{10mm}
+\chapter{Bibliografia}
+\renewcommand\chapterillustration{}
+\renewcommand*{\bibname}{}
+\begingroup
+\renewcommand{\addcontentsline}[3]{}% Remove functionality of \addcontentsline
+\renewcommand{\section}[2]{}% Remove functionality of \section
+\begin{thebibliography}{99}
+\footnotesize
+\bibitem{EUCOUNCIL98} Council of Europe, 1998. \emph{Drafting and implementing action plans for threatened species.} Environmental encounters, Council of Europe (Ed), Strasbourg, 39: 1-4.
+\bibitem{Lanza} Lanza B. 2012. \emph{Mammalia. V, Chiroptera . Fauna d’Italia}. Calderini, Bologna, 786 pp.
+\bibitem {Dietz} Dietz C., Helversen O., Nill D. 2009. \emph{Bats of Britain, Europe \& Northwest Africa}. A\&C Black, London, 400 pp.
+\bibitem{Kunz} Kunz T.H., Parsons S. (eds), 2009. \emph{Ecological and behavioral methods for the study of bats}. 2$^\circ$ Ed. J.Hopkins Univ. Press, Baltimore, 900 pp.
+\bibitem{Rondinini} Rondinini C., Battistoni A., Peronace V., Teofili C. (compilatori) 2013. \emph{Lista Rossa IUCN dei Vertebrati Italiani}. Comitato Italiano IUCN e Ministero dell’Ambiente e della Tutela del Territorio e del Mare, Roma.
+\bibitem{GIRC04} \href{http://www.pipistrelli.net/}{GIRC} (a cura di) 2004. \emph{The Italian bat roost project: a preliminary inventory of sites and conservation perspectives}. Hystrix It. J. Mamm., 15:55-68.
+\bibitem{Agnelli} Agnelli P., Martinoli A., Patriarca E., Russo D., Scaravelli D., Genovesi P. (eds.) 2004. \emph{Linee guida per il monitoraggio dei Chirotteri: indicazioni metodologiche per lo studio e la conservazione dei pipistrelli in Italia}. Ministero dell’Ambiente e della Tutela del Territorio, Istituto Nazionale per la Fauna Selvatica.
+\bibitem{Arlettaz} Arlettaz R., Godat S., Meyer H. 2000. \emph{Competition for food by expanding pipistrelle bat population (P. pipistrellus) might contribute to the decline of lesser horseshoe bats (R. hipposideros)}. Biol. Conserv. 93: 55-60.
+\bibitem{GIRC08} \href{http://www.pipistrelli.net/}{GIRC} (a cura di) 2008. \emph{Linee guida per la conservazione dei Chirotteri nelle costruzioni antropiche e la risoluzione degli aspetti conflittuali connessi}. Ministero dell’Ambiente e della Tutela del Territorio e del Mare, Ministero per i Beni e le Attività Culturali e Università degli Studi dell’Insubria.
+\bibitem{Battersby} Battersby, J. (comp.) 2010. \emph{Guidelines for Surveillance and Monitoring of European Bats}. EUROBATS Publication Series No. 5. UNEP/EUROBATS Secretariat, Bonn, Germany, 95 pp.
+\bibitem{Mitchell} Mitchell-Jones A.J. \& McLeish A.P. (ed). 2004. \emph{Bat workers’ manual}. 3$^\circ$ ed. JNCC Peterborough 178 pp. 
+\bibitem{Torboli12} Torboli C., Caldonazzi M., Marsilli A., Zanghellini S. 2012. \emph{Linee di intervento sui Chirotteri in Provincia di Trento}. Servizio Conservazione della Natura e Valorizzazione del Territorio, Ufficio Biotopi e Rete Natura 2000, Trento.
+\bibitem{Torboli08} Torboli C., Caldonazzi M., Marsilli A. \& Zanghellini S. 2008. \emph{Action Plan per il rinolofo minore (Rhinolophus hipposideros) in provincia di Trento}. Servizio Conservazione della Natura e Valorizzazione del Territorio, Ufficio Biotopi e Rete Natura 2000, Trento.
+\bibitem{Torboli09} Torboli C., Caldonazzi M., Marsilli A. \& Zanghellini S. 2009. \emph{Action Plan per il rinolofo maggiore (Rhinolophus ferrumequinum) in provincia di Trento}. Servizio Conservazione della Natura e Valorizzazione del Territorio, Ufficio Biotopi e Rete Natura 2000, Trento.
+\end{thebibliography}
+
+
+\cleartoverso
+
+%%%%%%%%%%%
+% Back cover
+%%%%%%%%%%%
+\normalsize
+% Temporarily enlarge this page to push
+% down the bottom margin
+\enlargethispage{3\baselineskip}
+\thispagestyle{empty}
+\pagecolor{Sienna!90!white}
+%\pagecolor[HTML]{0E0407}
+\begin{center}
+\vspace*{\fill}
+
+\begin{figure}[htp]
+\captionsetup{font=normalsize}
+\centering
+\subcaptionbox*{\url{www.lifeten.tn.it}}[.3\linewidth]{\includegraphics[width=.3\columnwidth]{logo_LIFETEN.png}}
+\subcaptionbox*{\url{www.provincia.tn.it}}[.3\linewidth]{\includegraphics[width=.15\columnwidth]{logo_PAT.png}}
+\subcaptionbox*{\url{www.muse.it}}[.3\linewidth]{\includegraphics[width=.3\columnwidth]{logo_MUSE_verde_nospace.png}}
+\end{figure}
+\textbf{\textcolor{LightGoldenrod!50!Gold}{MUSE - Museo delle Scienze}}
+
+\vspace*{\baselineskip}
+
+\textbf{\textcolor{LightGoldenrod}{Sezione di Zoologia dei Vertebrati}}
+\end{center}
+
+\end{document}
